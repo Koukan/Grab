@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include "GameState.hpp"
 #include "AudioManager.hpp"
 #include <ClanLib/network.h>
@@ -9,10 +10,17 @@ public:
 	Loading();
 	~Loading();
 	virtual void	onStart();
+	virtual	void	update();
 
 private:
 	void			escape(const CL_InputEvent &event);
-
-  AudioManager _audioManager;
-
+	void			click(const CL_InputEvent &event);
+	void			arrowEvent(const CL_NetGameEvent &e);
+	void			on_connected();
+	void			on_disconnected();
+	void			on_event_received(const CL_NetGameEvent &e);
+	AudioManager _audioManager;
+	CL_NetGameClient	network_client;
+	CL_NetGameEventDispatcher_v0 game_events;
+	CL_SlotContainer	slots;
 };
