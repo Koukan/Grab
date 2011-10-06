@@ -26,10 +26,31 @@ void AudioManager::load(std::string const &name, std::string const &path)
 
 void AudioManager::play(std::string const &name)
 {
-  std::map<std::string, CL_SoundBuffer *>::const_iterator it = _sounds.find(name);
+  std::map<std::string, CL_SoundBuffer_Session>::iterator it_session = _sessions.find(name);
 
-  if (it != _sounds.end())
+  if (it_session != _sessions.end())
+    it_session->second.play();
+  else
     {
-      it->second->play();
+      std::map<std::string, CL_SoundBuffer *>::const_iterator it_sound = _sounds.find(name);
+
+      if (it_sound != _sounds.end())
+	{
+	  _sessions[name] = it_sound->second->play();
+	}
     }
+}
+
+void AudioManager::stop(std::string const &name)
+{
+  std::map<std::string, CL_SoundBuffer_Session>::iterator it = _sessions.find(name);
+
+  if (it != _sessions.end())
+    {
+      it->second.stop();
+    }
+}
+
+void AudioManager::update(GameState &, int)
+{
 }
