@@ -27,7 +27,7 @@ void		InputManager::handleInput(const CL_InputEvent &event, const CL_InputState 
 }
 
 void		InputManager::registerInputCallback(CL_InputEvent::Type eventType,
-		CL_Callback_v1<const CL_InputEvent &>  callback,
+		CL_Callback_v1<const CL_InputEvent &>  &callback,
 		CL_InputDevice::Type inputType , int key)
 {
   CallbackElem	*tmp = new CallbackElem();
@@ -36,6 +36,24 @@ void		InputManager::registerInputCallback(CL_InputEvent::Type eventType,
   tmp->inputType = inputType;
   tmp->key = key;
   _inputCallbacks[eventType].push_back(tmp);
+}
+
+void		InputManager::unmapInput(CL_InputEvent::Type eventType, CL_InputDevice::Type inputType, int key)
+{
+  InputMap::iterator res = _inputCallbacks.find(eventType);
+
+  if (res ==  _inputCallbacks.end())
+    return ;
+  for (std::list<CallbackElem*>::iterator it = (*res).second.begin();
+		  it != (*res).second.end(); it++)
+  {
+    if (((*it)->inputType == inputType ||
+     (inputType == CL_InputDevice::unknown))
+     && ((*it)->key == key || key == -1))
+    {
+		(*res).second.erase(it);
+    }
+  }
 }
 
 void		InputManager::flushCallbacks()
