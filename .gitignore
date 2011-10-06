@@ -1,0 +1,8 @@
+*.o
+*~
+*.user
+*.suo
+*.sdf
+*.swp
+*.swo
+Grab

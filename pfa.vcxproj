@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A649F00C-1C42-4BA7-BEEA-32797FBB5E17}</ProjectGuid>
+    <RootNamespace>pfa</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\snap\Documents\projects\pfa\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Development\Environment\ClanLib\Lib;C:\Development\Environment\ClanLib\Lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib-static-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Development\Environment\ClanLib\Lib;C:\Development\Environment\ClanLib\Lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib-static-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Callback.cpp" />
+    <ClCompile Include="src\Callback_Impl\Callback_Impl_Function.cpp" />
+    <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\EventDispatcher.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\GameObjectManager.cpp" />
+    <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\Loading.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PhysicObject.cpp" />
+    <ClCompile Include="src\ManagerManager.cpp" />
+    <ClCompile Include="src\RendererManager.cpp" />
+    <ClCompile Include="src\Sprite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Callback.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Function.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Function_UserData.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Function_UserData2.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Method.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Method_UserData.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_Method_UserData2.hpp" />
+    <ClInclude Include="src\Callback_Impl\Callback_Impl_UserData.hpp" />
+    <ClInclude Include="src\Clock.hpp" />
+    <ClInclude Include="src\DrawableObject.hpp" />
+    <ClInclude Include="src\Event.hpp" />
+    <ClInclude Include="src\EventDispatcher.hpp" />
+    <ClInclude Include="src\Game.hpp" />
+    <ClInclude Include="src\GameObject.hpp" />
+    <ClInclude Include="src\GameObjectManager.hpp" />
+    <ClInclude Include="src\GameState.hpp" />
+    <ClInclude Include="src\GameStateManager.hpp" />
+    <ClInclude Include="src\InputManager.hpp" />
+    <ClInclude Include="src\Loading.hpp" />
+    <ClInclude Include="src\Manager.hpp" />
+    <ClInclude Include="src\ManagerManager.hpp" />
+    <ClInclude Include="src\NonCopyable.hpp" />
+    <ClInclude Include="src\PhysicObject.hpp" />
+    <ClInclude Include="src\RendererManager.hpp" />
+    <ClInclude Include="src\Singleton.hpp" />
+    <ClInclude Include="src\Sprite.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Callback.ipp" />
+    <None Include="src\Callback_Impl\Callback_Impl_Function_UserData.ipp" />
+    <None Include="src\Callback_Impl\Callback_Impl_Method.ipp" />
+    <None Include="src\Callback_Impl\Callback_Impl_Method_UserData.ipp" />
+    <None Include="src\Callback_Impl\Callback_Impl_UserData.ipp" />
+    <None Include="src\GameObjectManager.ipp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

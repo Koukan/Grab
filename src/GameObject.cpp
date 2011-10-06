@@ -1,0 +1,51 @@
+#include "GameObject.hpp"
+
+
+GameObject::GameObject(double x, double y, Group *group)
+	: _x(x), _y(y), _group(group)
+{
+}
+
+GameObject::~GameObject(void)
+{
+  if (this->_group)
+    _group->removeObject(this);
+}
+
+void		GameObject::operator delete(void *obj)
+{
+  GameObject	*object = static_cast<GameObject*>(obj);
+
+  if (!object->getGroup())
+    ::delete object;
+}
+
+double		GameObject::getX(void) const
+{
+  return _x;
+}
+
+double		GameObject::getY(void) const
+{
+  return _y;
+}
+
+Group		*GameObject::getGroup(void) const
+{
+  return _group;
+}
+
+void		GameObject::setX(double x)
+{
+  _x = x;
+}
+
+void		GameObject::setY(double y)
+{
+  _y = y;
+}
+
+void		GameObject::setGroup(Group *group)
+{
+  _group = group;
+}
