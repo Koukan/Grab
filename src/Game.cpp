@@ -52,7 +52,11 @@ void		Game::initGraphics(const std::string &name)
 	  new CL_Slot(device.sig_key_up().connect(this, &Game::handleInput));
   }
   if (_ic.get_mouse_count() >= 1)
+  {
    new CL_Slot(_ic.get_mouse().sig_pointer_move().connect(this, &Game::handleInput));
+   new CL_Slot(_ic.get_mouse().sig_key_down().connect(this, &Game::handleInput));
+   new CL_Slot(_ic.get_mouse().sig_key_up().connect(this, &Game::handleInput));
+  }
   for (int i = 0; i < _ic.get_joystick_count() && i < 5; i++)
   {
     device = _ic.get_joystick(i);
