@@ -19,7 +19,7 @@ private:
 	void			on_connected();
 	void			on_disconnected();
 	void			on_event_received(const CL_NetGameEvent &e);
-	AudioManager _audioManager;
+
 	CL_NetGameClient	network_client;
 	CL_NetGameEventDispatcher_v0 game_events;
 	CL_SlotContainer	slots;

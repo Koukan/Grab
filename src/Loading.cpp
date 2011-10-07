@@ -51,8 +51,6 @@ void	Loading::arrowEvent(const CL_NetGameEvent &e)
 
 void	Loading::onStart()
 {
-  _audioManager.load("toto", "test.ogg");
-  _audioManager.play("toto");
    this->registerInputCallback(CL_InputEvent::released, *(new CL_Callback_v1<const CL_InputEvent &>(this, &Loading::escape)), CL_InputDevice::keyboard, CL_KEY_ESCAPE);
    this->registerInputCallback(CL_InputEvent::released, *(new CL_Callback_v1<const CL_InputEvent &>(this, &Loading::click)), CL_InputDevice::pointer, CL_MOUSE_LEFT);
    slots.connect(network_client.sig_event_received(), this, &Loading::on_event_received);
