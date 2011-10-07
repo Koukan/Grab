@@ -46,7 +46,7 @@ void	Loading::on_event_received(const CL_NetGameEvent &e)
 
 void	Loading::arrowEvent(const CL_NetGameEvent &e)
 {
-  
+
 }
 
 void	Loading::onStart()
@@ -59,4 +59,3 @@ void	Loading::onStart()
    game_events.func_event("Arrow").set(this, &Loading::arrowEvent);
    network_client.connect("127.0.0.1", "4500");
 }
-
