@@ -79,9 +79,6 @@ void		Game::update(int elapsedTime)
 
 void		Game::handleInput(const CL_InputEvent &event, const CL_InputState &state)
 {
-  for (std::list<GameState*>::iterator it = _loadedStates.begin();
-		  it != _loadedStates.end() ; it++)
-  {
-    (*it)->handleInput(event, state);
-  }
+  if (!_currentStates.empty())
+     _currentStates.front()->handleInput(event, state);
 }
