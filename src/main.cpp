@@ -7,14 +7,22 @@
 #include <ClanLib/mikmod.h>
 #include "Game.hpp"
 #include "AudioManager.hpp"
+#if defined (WIN32)
+#include <direct.h>
+#endif
 
-int	main(int ac, char**av)
+int	main(int /*ac*/, char**av)
 {
   std::string		path = av[0];
 
+  #if defined (WIN32)
+  _chdir(path.substr(0, path.rfind('/')).c_str());
+  #else
   chdir(path.substr(0, path.rfind('/')).c_str());
+  #endif
   try
   {
+    Game::get().init("Grab : The Power of the Lost Grapple");
     Game::get().exec();
     return 0;
   }

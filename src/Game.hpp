@@ -16,19 +16,18 @@
 class Game : public Singleton<Game>, public GameStateManager, public ManagerManager
 {
 public:
-  Game(const std::string &name = "Grab : The Power of the Lost Grapple");
+  Game();
   virtual ~Game();
+  void		init(const std::string &name = "Grab : The Power of the Lost Grapple");
   void		exec();
   void		quit();
 
 private:
-  void		initGraphics(const std::string &);
+  void		initInput(void);
   void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
   void		update(int elapsedTime);
 
   bool			_quit;
-  CL_DisplayWindow	*_window;
-  CL_GraphicContext	_gc;
   CL_InputContext	_ic;
   int			_mainLoopRate;
 
@@ -39,8 +38,6 @@ private:
   CL_SetupCore		_setupCore;
   CL_SetupNetwork	_setupNetwork;
   CL_ConsoleLogger	_logger;
-  CL_SetupDisplay 	_setup_display;
-  CL_SetupGL		_setup_gl;
 };
 
 #endif		/* _GAME_ */

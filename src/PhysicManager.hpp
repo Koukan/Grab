@@ -3,13 +3,15 @@
 
 #include "GameState.hpp"
 #include "PhysicObject.hpp"
+#include "Manager.hpp"
+#include "Singleton.hpp"
 
-class PhysicManager
+class PhysicManager : public Manager, public Singleton<PhysicManager>
 {
   public:
     PhysicManager();
     virtual ~PhysicManager();
-    void		update(const GameState &);
+    virtual void		update(GameState &state, int elapsedTime);
 };
 
 #endif		/* _PHYSICMANAGER_ */

@@ -2,6 +2,7 @@
 #define 	_CALLBACK_IMPL_
 
 #include <stdexcept>
+#include <iostream>
 
 class Callback_Impl
 {
@@ -9,7 +10,7 @@ class Callback_Impl
     virtual ~Callback_Impl(){}
     virtual void	call(void)
     {
-      throw std::exception();
+      	throw std::exception();
     }
 
   protected:

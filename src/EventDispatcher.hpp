@@ -22,17 +22,22 @@ class EventDispatcher
     void	registerEvent(std::string const &type, void (*function)(Event &));
     template <class InstanceClass>
     void	registerEvent(std::string const &type, InstanceClass *instance,
-		 	      void (InstanceClass::*method)(Event &));
+		 	      void (InstanceClass::*method)(Event &))
+  {
+    _registeredEvents[type].push_back(new Callback(instance, method));
+  }
+
+
     void	removeEvent(std::string type);
 
   private:
     void	dispatch();
     void	dispatchTimed();
 
-    std::map<std::string, Callback*>		_registeredEvents;
-    std::queue<Event*>				_events;
-    std::list<timedPair>			_timedEvents;
-    Clock					_clock;
+    std::map<std::string, std::list<Callback*> >	_registeredEvents;
+    std::queue<Event*>					_events;
+    std::list<timedPair>				_timedEvents;
+    Clock						_clock;
 };
 
 #endif		/* _EVENTDISPATCHER_ */

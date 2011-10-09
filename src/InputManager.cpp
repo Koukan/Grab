@@ -27,7 +27,7 @@ void		InputManager::handleInput(const CL_InputEvent &event, const CL_InputState 
 }
 
 void		InputManager::registerInputCallback(CL_InputEvent::Type eventType,
-		CL_Callback_v1<const CL_InputEvent &>  &callback,
+		CL_Callback_v1<const CL_InputEvent &>  callback,
 		CL_InputDevice::Type inputType , int key)
 {
   CallbackElem	*tmp = new CallbackElem();

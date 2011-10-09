@@ -5,11 +5,12 @@
 
 class DrawableObject : public GameObject
 {
-  public:
-	  DrawableObject() {}
-	  virtual ~DrawableObject() {}
+public:
+  DrawableObject(double x = 0, double y = 0) :
+    GameObject(x, y){}
+  virtual ~DrawableObject() {}
 
-	virtual void draw() = 0;
+  virtual void draw() = 0;
 };
 
 #endif		/* _DRAWABLEOBJECT_ */

@@ -1,8 +1,8 @@
 template <class InstanceClass>
-void	GameObjectManager::setRelatedGroups(const std::string &group1,
-		const std::string &group2, InstanceClass *instance,
-		void (InstanceClass::*function)(GameObject&, GameObject&))
+void	GameObjectManager::setCollisionGroups(const std::string &group1,
+		const std::string &group2,
+		void (InstanceClass::*function)(GameObject&))
 {
-  _relatedGroups[stringPair(group1, group2)] =
-	  new Callback(instance, function);
+  _collisionGroups[stringPair(group1, group2)] =
+	  new Callback(function);
 }

@@ -2,49 +2,87 @@
 #include "PhysicObject.hpp"
 #include "DrawableObject.hpp"
 #include "GameObject.hpp"
+#include <iostream>
 
-Group::Group()
-	: physic(false), drawable(false)
+Group::Group(int layer, bool physic)
+	: _layer(layer), _physic(physic)
 {
 }
 
 Group::~Group()
 {
-  for (gameObjectSet::iterator it = this->objects.begin();
-	it != this->objects.end(); it++)
+  for (gameObjectSet::iterator it = this->_objects.begin();
+	it != this->_objects.end(); it++)
   {
-    (*it)->setGroup(0);
+    delete *it;
   }
 }
 
-void		Group::setFlags(int flags)
+bool		Group::getPhysic(void) const
 {
-  this->physic = static_cast<bool>(flags & Group::PHYSIC);
-  this->drawable = static_cast<bool>(flags & Group::DRAWABLE);
+  return this->_physic;
 }
 
-void		Group::setFlags(bool physic, bool drawable)
+int		Group::getLayer(void) const
 {
-  this->physic = physic;
-  this->drawable = drawable;
+  return this->_layer;
+}
+
+gameObjectSet const	&Group::getObjects(void) const
+{
+  return this->_objects;
+}
+
+void		Group::setLayer(int layer)
+{
+  this->_layer = layer;
+}
+
+void		Group::setFlags(int layer, bool physic)
+{
+  this->_physic = physic;
+  this->_layer = layer;
 }
 
 void		Group::addObject(GameObject *object)
 {
-  if (!this->drawable && !this->physic && this->objects.empty())
+  if (this->_objects.empty())
   {
     if (dynamic_cast<PhysicObject*>(object))
-      this->physic = true;
-    if (dynamic_cast<DrawableObject*>(object))
-      this->drawable = true;
+      this->_physic = true;
   }
-  this->objects.insert(object);
+  this->_objects.insert(object);
   object->setGroup(this);
 }
 
 void		Group::removeObject(GameObject *object)
 {
-  this->objects.erase(object);
+  this->_objects.erase(object);
+}
+
+void		Group::draw(int) const
+{
+  if (this->_layer <= 0)
+    return ;
+  for (gameObjectSet::const_iterator it = this->_objects.begin();
+	it != this->_objects.end(); it++)
+  {
+    static_cast<DrawableObject*>(*it)->draw();
+  }
+}
+
+void		Group::addDelete(GameObject *obj)
+{
+  this->_deletes.push(obj);
+}
+
+void		Group::deleteObjects(void)
+{
+  while (!this->_deletes.empty())
+  {
+    ::delete this->_deletes.top();
+    this->_deletes.pop();
+  }
 }
 
 GameObjectManager::GameObjectManager()
@@ -53,44 +91,67 @@ GameObjectManager::GameObjectManager()
 
 GameObjectManager::~GameObjectManager()
 {
+  for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
+	it != this->_collisionGroups.end(); it++)
+    delete it->second;
 }
 
 bool	GameObjectManager::existingGroup(const std::string &group) const
 {
-  return _groups.count(group);
+  return this->_groups.count(group) > 0;
 }
 
-bool	GameObjectManager::relatedGroups(const std::string &group1,
+bool	GameObjectManager::collisionGroups(const std::string &group1,
 					 const std::string &group2,
 					 bool reverse) const
 {
-  bool		test;
-
-  test = _relatedGroups.count(stringPair(group1, group2));
-  return (test) ? true :
-	  reverse && _relatedGroups.count(stringPair(group2, group1));
+  return (this->_collisionGroups.count(stringPair(group1, group2)) > 0) ? true :
+	  reverse && this->_collisionGroups.count(stringPair(group2, group1));
 }
 
-void	GameObjectManager::addGroup(const std::string &group)
+void	GameObjectManager::addGroup(const std::string &group, int layer)
 {
-  _groups[group];
+  if (this->_groups.count(group) == 0)
+  {
+    Group	*groupe = new Group(layer);
+    this->_groups[group] = groupe;
+    this->_display.insert(std::pair<int, Group*>(layer, groupe));
+  }
 }
 
 void	GameObjectManager::addGameObject(GameObject *object,
-					 const std::string &group)
+					 const std::string &group, int layer)
 {
-  _groups[group].addObject(object);
+  if (!object)
+    return ;
+  addGroup(group, layer);
+  this->_groups[group]->addObject(object);
 }
 
-void	GameObjectManager::setRelatedGroups(const std::string &group1,
-		const std::string &group2,
-		void (*function)(GameObject&, GameObject&))
+void	GameObjectManager::removeGameObject(GameObject *object)
 {
-  _relatedGroups[stringPair(group1, group2)] =
-	  new Callback(function);
+  if (object->getGroup())
+    object->getGroup()->removeObject(object);
 }
 
-void	GameObjectManager::setGroup(const std::string &name, int flags)
+void	GameObjectManager::setGroup(const std::string &name, int layer, bool physic)
 {
-  _groups[name].setFlags(flags);
+  addGroup(name, layer);
+  this->_groups[name]->setFlags(layer, physic);
+}
+
+void	GameObjectManager::drawGameObject(int elapseTime) const
+{
+  for (groupsDisplay::const_iterator it = _display.begin(); it != _display.end(); it++)
+    it->second->draw(elapseTime);
+}
+
+collisionGroupsMap const	&GameObjectManager::getCollisionGroups(void) const
+{
+  return this->_collisionGroups;
+}
+
+groupsMap const			&GameObjectManager::getGroups(void) const
+{
+  return this->_groups;
 }

@@ -1,10 +1,9 @@
+#include <iostream>
 #include "GameObject.hpp"
-
 
 GameObject::GameObject(double x, double y, Group *group)
 	: _x(x), _y(y), _group(group)
-{
-}
+{}
 
 GameObject::~GameObject(void)
 {
@@ -18,6 +17,8 @@ void		GameObject::operator delete(void *obj)
 
   if (!object->getGroup())
     ::delete object;
+  else
+    object->getGroup()->addDelete(static_cast<GameObject*>(obj));
 }
 
 double		GameObject::getX(void) const

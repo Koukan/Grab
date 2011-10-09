@@ -10,13 +10,14 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/Loading.cpp						\
 		  $(DIR)/Event.cpp						\
 		  $(DIR)/EventDispatcher.cpp					\
-		  $(DIR)/Clock.cpp						\
 		  $(DIR)/GameObject.cpp						\
 		  $(DIR)/GameObjectManager.cpp					\
 		  $(DIR)/PhysicObject.cpp					\
 		  $(DIR)/PhysicManager.cpp					\
 		  $(DIR)/ManagerManager.cpp					\
 		  $(DIR)/AudioManager.cpp					\
+		  $(DIR)/RendererManager.cpp					\
+		  $(DIR)/Sprite.cpp						\
 		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
@@ -41,3 +42,4 @@ fclean		: clean
 		$(RM) $(NAME)
 
 re		: fclean all
+

@@ -46,9 +46,9 @@ void			GameStateManager::loadState(GameState &state)
   _loadedStates.push_back(&state);
 }
 
-const std::string	&GameStateManager::getCurrentState(void) const
+GameState	&GameStateManager::getCurrentState(void)
 {
-  return _currentStates.front()->name;
+  return *_currentStates.front();
 }
 
 bool			GameStateManager::push(const std::string &name, bool changed)

@@ -1,18 +1,18 @@
 #ifndef		_CALLBACK_IMPL_METHOD_
 #define 	_CALLBACK_IMPL_METHOD_
 
-#include "Callback_Impl.hpp"
+#include "Callback_Impl_Instance.hpp"
 
 template <class InstanceClass>
-class Callback_Impl_Method : public Callback_Impl
+class Callback_Impl_Method : public Callback_Impl_Instance<InstanceClass>
 {
   public:
+    Callback_Impl_Method(void (InstanceClass::*function)());
     Callback_Impl_Method(InstanceClass *instance, void (InstanceClass::*function)());
     virtual ~Callback_Impl_Method();
     virtual void	call();
 
   private:
-    InstanceClass	*_instance;
     void		(InstanceClass::*_func)();
 };
 

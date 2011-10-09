@@ -1,16 +1,21 @@
 #pragma once
 
 #include <list>
-#include "GameObject.hpp"
+#include "DrawableObject.hpp"
 
-class PhysicObject : public GameObject
+class PhysicObject : public DrawableObject
 {
 public:
-	PhysicObject(void);
-	virtual ~PhysicObject(void);
-	virtual bool	collide(PhysicObject &object);
+  PhysicObject(double x = 0, double y = 0);
+  virtual ~PhysicObject();
+  virtual bool collide(PhysicObject &);
+  virtual void draw() = 0;
+  double getVx() const;
+  double getVy() const;
+  void setVx(double);
+  void setVy(double);
 
 protected:
-	int		_vx;
-	int		_vy;
+	double	_vx;
+	double	_vy;
 };

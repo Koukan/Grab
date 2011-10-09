@@ -4,59 +4,69 @@
 #include <map>
 #include <set>
 #include <string>
+#include <stack>
 #include "Callback.hpp"
 
 class GameObject;
+class GameObjectManager;
 
 typedef std::set<GameObject*>	gameObjectSet;
 
 class Group
 {
-  enum
-  {
-    PHYSIC = 1,
-    DRAWABLE = 2
-  };
-
   public:
-    Group();
+    Group(int layer = 0, bool physic = false);
     ~Group();
-    void			setFlags(int flags);
-    void			setFlags(bool physic, bool drawable);
+    bool			getPhysic() const;
+    int				getLayer() const;
+    gameObjectSet const		&getObjects() const;
+    void			setLayer(int layer);
+    void			setFlags(int layer, bool physic);
     void			addObject(GameObject *object);
     void			removeObject(GameObject *object);
+    void			draw(int elapseTime) const;
+    void			addDelete(GameObject *object);
+    void			deleteObjects(void);
 
-    bool			physic;
-    bool			drawable;
-    gameObjectSet 		objects;
+  private:
+    int				_layer;
+    bool			_physic;
+    gameObjectSet		_objects;
+    std::stack<GameObject*>	_deletes;
 };
 
 typedef std::pair<std::string, std::string>	stringPair;
-typedef	std::map<stringPair, Callback*>		relatedGroupsMap;
-typedef std::map<std::string, Group>		groupsMap;
+typedef	std::map<stringPair, Callback*>		collisionGroupsMap;
+typedef std::map<std::string, Group*>		groupsMap;
+typedef std::multimap<int, Group*>		groupsDisplay;
 
 class GameObjectManager
 {
   public:
     GameObjectManager();
+
     virtual ~GameObjectManager();
     bool	existingGroup(const std::string &group) const;
-    bool	relatedGroups(const std::string &group1,
+    bool	collisionGroups(const std::string &group1,
 		const std::string &group2, bool reverse = true) const;
-    void	addGroup(const std::string &group);
-    void	addGameObject(GameObject *object, const std::string &group);
-    void	setRelatedGroups(const std::string &group1,
-		const std::string &group2,
-		void (*function)(GameObject&, GameObject&));
+    void	addGroup(const std::string &group, int layer = 0);
+    void	addGameObject(GameObject *object, const std::string &group, int layer = 0);
+    void	removeGameObject(GameObject *object);
     template <class InstanceClass>
-    void	setRelatedGroups(const std::string &group1,
-		const std::string &group2, InstanceClass *instance,
-		void (InstanceClass::*function)(GameObject&, GameObject&));
-    void	setGroup(const std::string &name, int flags);
+    void	setCollisionGroups(const std::string &group1,
+		const std::string &group2,
+		void (InstanceClass::*function)(GameObject&));
+    void	setGroup(const std::string &name, int layer, bool physic);
+    void	drawGameObject(int elapseTime) const;
+
+    // getter
+    collisionGroupsMap const	&getCollisionGroups(void) const;
+    groupsMap const		&getGroups(void) const;
 
   protected:
-    relatedGroupsMap	_relatedGroups;
-    groupsMap		_groups;
+    collisionGroupsMap		_collisionGroups;
+    groupsMap			_groups;
+    groupsDisplay		_display;
 };
 
 #include "GameObjectManager.ipp"

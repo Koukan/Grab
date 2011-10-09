@@ -1,28 +1,46 @@
 #include "RendererManager.hpp"
 #include "GameObjectManager.hpp"
 #include "DrawableObject.hpp"
+#include "Game.hpp"
 
 RendererManager::RendererManager(void)
 {
+  Game::get().loadManager(this);
 }
 
 RendererManager::~RendererManager(void)
 {
 }
 
-void RendererManager::update(GameState &state, int elapsedTime)
+void	RendererManager::initGraphics(const std::string &name)
 {
-	groupsMap::const_iterator it;
-	std::set<GameObject*>::const_iterator it2;
+  _window = new CL_DisplayWindow(name, 1024, 768, false, true);
+  _gc = _window->get_gc();
+}
 
-	for (it = state.getGroups().begin(); it != state.getGroups().end(); ++it)
-	{
-		if ((*it).second.drawable)
-		{
-			for (it2 = (*it).second.objects.begin(); it2 != (*it).second.objects.end(); ++it2)
-			{
-				static_cast<DrawableObject *>((*it2))->draw();
-			}
-		}
-	}
+void	RendererManager::update(GameState &state, int elapsedTime)
+{
+  clear();
+  state.drawGameObject(elapsedTime);
+  flip();
+}
+
+void			RendererManager::clear(void)
+{
+  _gc.clear();
+}
+
+void			RendererManager::flip(void)
+{
+  _window->flip(-1);
+}
+
+CL_GraphicContext	&RendererManager::getGC(void)
+{
+  return _gc;
+}
+
+CL_DisplayWindow 	*RendererManager::getWindow(void)
+{
+  return _window;
 }

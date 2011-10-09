@@ -15,12 +15,16 @@ class Callback
     // 0 argurment
     Callback(void(*function)());
     template <class InstanceClass>
+    Callback(void(InstanceClass::*function)());
+    template <class InstanceClass>
     Callback(InstanceClass *instance, void(InstanceClass::*function)());
     // 1 argument
     template <typename UserData>
     Callback(void(*function)(UserData&));
     template <typename UserData>
     Callback(void(*function)(UserData&), UserData *data);
+    template <class InstanceClass, typename UserData>
+    Callback(void(InstanceClass::*function)(UserData&));
     template <class InstanceClass, typename UserData>
     Callback(InstanceClass *instance, void(InstanceClass::*function)(UserData&));
     template <class InstanceClass, typename UserData>
@@ -40,8 +44,12 @@ class Callback
 	     UserData1 *data1, UserData2 *data2);
     virtual ~Callback();
     void		call();
+    template <typename InstanceClass>
+    void		callInstance(InstanceClass *instance);
     template <typename UserData>
     void		call(UserData *data);
+    template <typename InstanceClass, typename UserData>
+    void		callInstance(InstanceClass *instance, UserData *data);
     template <typename UserData1, typename UserData2>
     void		call(UserData1 *data1, UserData2 *data2);
 

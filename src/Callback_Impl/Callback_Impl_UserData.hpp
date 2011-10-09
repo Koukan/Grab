@@ -4,7 +4,7 @@
 #include "Callback_Impl.hpp"
 
 template <typename UserData>
-class Callback_Impl_UserData : public Callback_Impl
+class Callback_Impl_UserData : public virtual Callback_Impl
 {
   public:
     Callback_Impl_UserData(UserData *data);

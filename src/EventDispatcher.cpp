@@ -1,4 +1,5 @@
 #include "EventDispatcher.hpp"
+#include <iostream>
 
 EventDispatcher::EventDispatcher()
 {
@@ -21,7 +22,7 @@ void		EventDispatcher::pushEvent(Event *event)
 
 void		EventDispatcher::pushEvent(Event *event, int ms)
 {
-  int		time = ms;
+  int		time = _clock.getElapsedTime() + ms;
 
   for (std::list<timedPair>::iterator it = _timedEvents.begin();
 	it != _timedEvents.end(); it++)
@@ -38,14 +39,7 @@ void		EventDispatcher::pushEvent(Event *event, int ms)
 void		EventDispatcher::registerEvent(std::string const &type,
 					       void (*function)(Event&))
 {
-  _registeredEvents[type] = new Callback(function);
-}
-
-template <class InstanceClass>
-void		EventDispatcher::registerEvent(std::string const &type,
-		InstanceClass *instance, void (InstanceClass::*method)(Event&))
-{
-  _registeredEvents[type] = new Callback(instance, method);
+  _registeredEvents[type].push_back(new Callback(function));
 }
 
 void		EventDispatcher::removeEvent(std::string type)
@@ -55,13 +49,18 @@ void		EventDispatcher::removeEvent(std::string type)
 
 void		EventDispatcher::dispatch(void)
 {
-  std::map<std::string, Callback*>::iterator	it;
+  std::map<std::string, std::list<Callback*> >::iterator	it;
 
   while (!_events.empty())
   {
     it = _registeredEvents.find(_events.front()->getType());
     if (it != _registeredEvents.end())
-      it->second->call(_events.front());
+    {
+      for (std::list<Callback*>::iterator callbacks = it->second.begin(); callbacks != it->second.end(); callbacks++)
+      {
+        (*callbacks)->call(_events.front());
+      }
+    }
     delete _events.front();
     _events.pop();
   }
@@ -69,14 +68,23 @@ void		EventDispatcher::dispatch(void)
 
 void		EventDispatcher::dispatchTimed(void)
 {
-  std::map<std::string, Callback*>::iterator	it;
-
-  while (!_events.empty())
+  if (!_timedEvents.empty())
   {
-    it = _registeredEvents.find(_timedEvents.front().second->getType());
-    if (it != _registeredEvents.end())
-      it->second->call(_events.front());
-    delete _timedEvents.front().second;
-    _timedEvents.pop_front();
+    std::list<timedPair>::iterator	it = _timedEvents.begin();
+    std::map<std::string, std::list<Callback*> >::iterator    callback;
+    int		time = _clock.getElapsedTime();
+    while (it != _timedEvents.end() && it->first < time)
+    {
+      callback = _registeredEvents.find(it->second->getType());
+      if (callback != _registeredEvents.end())
+      {
+        for (std::list<Callback*>::iterator callbacks = callback->second.begin(); callbacks != callback->second.end(); callbacks++)
+      	{
+		(*callbacks)->call(it->second);
+      	}
+      }
+      delete it->second;
+      it = _timedEvents.erase(it);
+    }
   }
 }

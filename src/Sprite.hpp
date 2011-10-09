@@ -6,12 +6,10 @@
 class Sprite : public DrawableObject, public CL_Sprite
 {
 public:
-	Sprite(CL_GraphicContext & gc, const CL_StringRef & fullname);
-	Sprite(CL_GraphicContext & gc, const CL_StringRef & resource_id, CL_ResourceManager * resources);
-	~Sprite(void);
+  Sprite(const CL_StringRef & fullname, double x = 0, double y = 0);
+  Sprite(const CL_StringRef & resource_id, CL_ResourceManager &resources, double x = 0, double y = 0);
+  ~Sprite();
 
-	void Draw();
-
-private:
-	CL_GraphicContext & _gc;
+  virtual void		draw();
+  virtual void		draw(int x, int y);
 };
