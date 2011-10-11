@@ -18,7 +18,7 @@ void	Loading::click(const CL_InputEvent &event)
 {
 }
 
-void	Loading::update()
+void	Loading::update(int elapseTime)
 {
 
 }

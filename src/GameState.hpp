@@ -17,7 +17,7 @@ public:
   virtual void	onEnd(){}
   virtual void	onChange(){}
   virtual void	onResume(){}
-  virtual void	update(){}
+  virtual void	update(int elapseTime = 0){}
 
   const std::string	name;
 };
