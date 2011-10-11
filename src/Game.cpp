@@ -73,11 +73,15 @@ void		Game::initInput(void)
 
 void		Game::update(int elapsedTime)
 {
+  std::list<GameState*>::iterator	temp;
+
   for (std::list<GameState*>::iterator it = _currentStates.begin();
- 	  it != _currentStates.end() ; it++)
+ 	  it != _currentStates.end();)
   {
-    (*it)->dispatchEvent();
-    this->updateManager(**it, elapsedTime);
+    temp = it++;
+    (*temp)->dispatchEvent();
+    (*temp)->update(elapsedTime);
+    this->updateManager(**temp, elapsedTime);
   }
 }
 
