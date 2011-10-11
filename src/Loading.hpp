@@ -3,9 +3,6 @@
 #include "GameState.hpp"
 #include "AudioManager.hpp"
 #include <ClanLib/network.h>
-#include "Font.hpp"
-#include "Monster.hpp"
-#include "Pacman.hpp"
 
 class Loading : public GameState
 {
