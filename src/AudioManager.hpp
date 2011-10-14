@@ -17,7 +17,8 @@ public:
   virtual ~AudioManager();
   virtual void update(GameState &, int);
   void load(std::string const &name, std::string const &path);
-  void play(std::string const &);
+  void load(std::string const &name, CL_ResourceManager *manager);
+  void play(std::string const &, bool loop = false);
   void stop(std::string const &);
 
 private:
