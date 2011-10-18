@@ -14,15 +14,15 @@ RendererManager::~RendererManager(void)
 
 void	RendererManager::initGraphics(const std::string &name)
 {
-  _window = new CL_DisplayWindow(name, 1024, 768, false, true);
+  _window = new CL_DisplayWindow(name, 632, 700, false, true);
   _gc = _window->get_gc();
 }
 
 void	RendererManager::update(GameState &state, int elapsedTime)
 {
-  clear();
+  if ((state.getPaused() & GameState::NODRAW) == GameState::NODRAW)
+    return ;
   state.drawGameObject(elapsedTime);
-  flip();
 }
 
 void			RendererManager::clear(void)

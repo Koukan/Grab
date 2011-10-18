@@ -1,8 +1,8 @@
 #include "Game.hpp"
-#include "Loading.hpp"
 #include "RendererManager.hpp"
 #include "PhysicManager.hpp"
 #include "Clock.hpp"
+#include "Loading.hpp"
 
 Game::Game() : _quit(false), _sound_output(44100)
 {
@@ -18,14 +18,13 @@ void		Game::init(const std::string &name)
   RendererManager::get().initGraphics(name);
   initInput();
   _mainLoopRate = 18;
-  this->loadState(*(new Loading()));
+  this->loadState<Loading>("Loading");
   this->changeState("Loading");
   PhysicManager::get();
 }
 
 void		Game::exec()
 {
-  unsigned int	currentTime;
   int		timeDifference = 0;
   Clock		clock;
 
@@ -33,8 +32,8 @@ void		Game::exec()
   {
     timeDifference = clock.getElapsedTime();
     clock.update();
-    this->update(timeDifference);
     CL_KeepAlive::process();
+    this->update(timeDifference);
     timeDifference = _mainLoopRate - clock.getElapsedTime();
     if (timeDifference > 0)
       CL_System::sleep(timeDifference);
@@ -73,16 +72,24 @@ void		Game::initInput(void)
 
 void		Game::update(int elapsedTime)
 {
-  std::list<GameState*>::iterator	temp;
+  GameState				*state;
+  GameState::Pause			paused;
 
+  RendererManager::get().clear();
   for (std::list<GameState*>::iterator it = _currentStates.begin();
  	  it != _currentStates.end();)
   {
-    temp = it++;
-    (*temp)->dispatchEvent();
-    (*temp)->update(elapsedTime);
-    this->updateManager(**temp, elapsedTime);
+    state = *it++;
+    paused = state->getPaused();
+    if ((paused & GameState::NODRAW) == GameState::NODRAW || !paused)
+    {
+      state->dispatchEvent();
+      state->update(elapsedTime);
+    }
+    this->updateManager(*state, elapsedTime);
   }
+  RendererManager::get().flip();
+  this->removeDelete();
 }
 
 void		Game::handleInput(const CL_InputEvent &event, const CL_InputState &state)

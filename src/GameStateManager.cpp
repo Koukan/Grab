@@ -9,23 +9,25 @@ GameStateManager::~GameStateManager()
 {
 }
 
-bool			GameStateManager::pushState(const std::string &name)
+bool		GameStateManager::pushState(const std::string &name,
+					    GameState::Pause paused)
 {
-  return push(name, true);
+  return push(name, true, paused);
 }
 
-bool			GameStateManager::changeState(const std::string &name)
+bool		GameStateManager::changeState(const std::string &name,
+					      GameState::Pause paused, bool del)
 {
-  pop(false);
-  return push(name, false);
+  pop(false, del);
+  return push(name, false, paused);
 }
 
-void			GameStateManager::popState(void)
+void		GameStateManager::popState(bool del)
 {
-  pop(true);
+  pop(true, del);
 }
 
-void			GameStateManager::removeState(const std::string &name)
+void		GameStateManager::removeState(const std::string &name)
 {
   for (std::list<GameState*>::iterator it = _currentStates.begin();
 	it != _currentStates.end(); it++)
@@ -35,46 +37,77 @@ void			GameStateManager::removeState(const std::string &name)
       it = _currentStates.erase(it);
     }
   _loadedStates.erase(find(_loadedStates.begin(), _loadedStates.end(), name));
+  _keeper.erase(name);
 }
 
-void			GameStateManager::loadState(GameState &state)
-{
-  for (std::list<GameState*>::iterator it = _currentStates.begin();
-	it != _currentStates.end(); it++)
-    if ((*it)->name == state.name)
-      (*it)->onEnd();
-  _loadedStates.push_back(&state);
-}
-
-GameState	&GameStateManager::getCurrentState(void)
+GameState	&GameStateManager::getCurrentState()
 {
   return *_currentStates.front();
 }
 
-bool			GameStateManager::push(const std::string &name, bool changed)
+void		GameStateManager::addDelete(GameState *state)
+{
+  if (state)
+    _deleted.push_back(state);
+}
+
+void		GameStateManager::removeDelete()
+{
+  while (!_deleted.empty())
+  {
+    delete _deleted.front();
+    _deleted.pop_front();
+  }
+}
+
+bool		GameStateManager::push(const std::string &name, bool changed,
+				       GameState::Pause paused)
 {
   std::list<GameState*>::iterator	it;
-
   it = find(_loadedStates.begin(), _loadedStates.end(), name);
   if (it != _loadedStates.end())
   {
     if (changed && !_currentStates.empty())
+    {
       _currentStates.front()->onChange();
+      _currentStates.front()->pause(paused);
+    }
     _currentStates.push_front(*it);
+    _loadedStates.erase(it);
     (*it)->onStart();
+    return true;
+  }
+  instanceMap::iterator		lit = _keeper.find(name);
+  if (lit != _keeper.end())
+  {
+    GameState	*state = lit->second->newInstance();
+    if (changed && !_currentStates.empty())
+    {
+      _currentStates.front()->onChange();
+      _currentStates.front()->pause(paused);
+    }
+    _currentStates.push_front(state);
+    state->onStart();
     return true;
   }
   return false;
 }
 
-void			GameStateManager::pop(bool changed)
+void		GameStateManager::pop(bool changed, bool del)
 {
   if (!_currentStates.empty())
   {
     _currentStates.front()->onEnd();
+    if (del)
+      addDelete(_currentStates.front());
+    else
+      _loadedStates.push_back(_currentStates.front());
     _currentStates.pop_front();
     if (changed && !_currentStates.empty())
+    {
       _currentStates.front()->onResume();
+      _currentStates.front()->play();
+    }
   }
 }
 

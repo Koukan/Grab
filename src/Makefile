@@ -18,7 +18,8 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/AudioManager.cpp					\
 		  $(DIR)/RendererManager.cpp					\
 		  $(DIR)/Sprite.cpp						\
-		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp
+		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp		\
+		  $(DIR)/GameState.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 
