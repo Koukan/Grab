@@ -74,7 +74,8 @@ bool		GameStateManager::push(const std::string &name, bool changed,
     }
     _currentStates.push_front(*it);
     _loadedStates.erase(it);
-    (*it)->onStart();
+    (*it)->onResume();
+    (*it)->play();
     return true;
   }
   instanceMap::iterator		lit = _keeper.find(name);
@@ -97,11 +98,17 @@ void		GameStateManager::pop(bool changed, bool del)
 {
   if (!_currentStates.empty())
   {
-    _currentStates.front()->onEnd();
     if (del)
+    {
+      _currentStates.front()->onEnd();
       addDelete(_currentStates.front());
+    }
     else
+    {
+      _currentStates.front()->onChange();
+      _currentStates.front()->pause();
       _loadedStates.push_back(_currentStates.front());
+    }
     _currentStates.pop_front();
     if (changed && !_currentStates.empty())
     {
