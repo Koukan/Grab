@@ -78,12 +78,11 @@ void		Game::update(int elapsedTime)
   GameState::Pause			paused;
 
   RendererManager::get().clear();
-  int i = 0;
   for (std::list<GameState*>::iterator it = _currentStates.begin();
  	  it != _currentStates.end();)
   {
     state = *it;
-	it++;
+    it++;
     paused = state->getPaused();
     if ((paused & GameState::NODRAW) == GameState::NODRAW || !paused)
     {
@@ -91,7 +90,6 @@ void		Game::update(int elapsedTime)
       state->update(elapsedTime);
     }
     this->updateManager(*state, elapsedTime);
-  i++;
   }
   RendererManager::get().flip();
   this->removeDelete();
