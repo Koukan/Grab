@@ -8,7 +8,7 @@ Callback::Callback(void(*function)(UserData&))
 }
 
 template <typename UserData>
-Callback::Callback(void(*function)(UserData&), UserData *data)
+Callback::Callback(void(*function)(UserData&), UserData &data)
 	: _callback(new Callback_Impl_Function_UserData<UserData>(function, data))
 {
 }
@@ -41,7 +41,7 @@ Callback::Callback(InstanceClass *instance, void(InstanceClass::*function)(UserD
 
 template <class InstanceClass, typename UserData>
 Callback::Callback(InstanceClass *instance, void(InstanceClass::*function)(UserData&),
-		   UserData *data)
+		   UserData &data)
 	: _callback(new Callback_Impl_Method_UserData<InstanceClass, UserData>
 		(instance, function, data))
 {
@@ -56,7 +56,7 @@ Callback::Callback(void(*function)(UserData1&, UserData2&))
 
 template <typename UserData1, typename UserData2>
 Callback::Callback(void(*function)(UserData1&, UserData2&),
-		   UserData1 *data1, UserData2 *data2)
+		   UserData1 &data1, UserData2 &data2)
 	: _callback(new Callback_Impl_Function_UserData2<UserData1, UserData2>
 		(function, data1, data2))
 {
@@ -73,7 +73,7 @@ Callback::Callback(InstanceClass *instance,
 template <class InstanceClass, typename UserData1, typename UserData2>
 Callback::Callback(InstanceClass *instance,
 		   void (InstanceClass::*function)(UserData1&, UserData2&),
-		   UserData1 *data1, UserData2 *data2)
+		   UserData1 &data1, UserData2 &data2)
 	: _callback(new Callback_Impl_Method_UserData2<InstanceClass, UserData1, UserData2>
 		(instance, function, data1, data2))
 {
@@ -95,7 +95,7 @@ void		Callback::callInstance(InstanceClass *instance)
 }
 
 template <typename UserData>
-void		Callback::call(UserData *data)
+void		Callback::call(UserData &data)
 {
   #if defined (DEBUG)
   if (!dynamic_cast<Callback_Impl_UserData<UserData>*>(_callback))
@@ -111,7 +111,7 @@ void		Callback::call(UserData *data)
 
 template <typename InstanceClass, typename UserData>
 #include <iostream>
-void		Callback::callInstance(InstanceClass *instance, UserData *data)
+void		Callback::callInstance(InstanceClass *instance, UserData &data)
 {
   #if defined (DEBUG)
   if (!dynamic_cast<Callback_Impl_Method_UserData<InstanceClass, UserData>*>(_callback))
@@ -128,7 +128,7 @@ void		Callback::callInstance(InstanceClass *instance, UserData *data)
 }
 
 template <typename UserData1, typename UserData2>
-void		Callback::call(UserData1 *data1, UserData2 *data2)
+void		Callback::call(UserData1 &data1, UserData2 &data2)
 {
   #if defined (DEBUG)
   if (!dynamic_cast<Callback_Impl_UserData2<UserData1, UserData2>*>(_callback))

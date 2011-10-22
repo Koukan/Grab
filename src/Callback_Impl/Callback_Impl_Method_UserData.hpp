@@ -12,7 +12,7 @@ class Callback_Impl_Method_UserData : public Callback_Impl, public Callback_Impl
     Callback_Impl_Method_UserData(InstanceClass *instance,
 		    void (InstanceClass::*function)(UserData&));
     Callback_Impl_Method_UserData(InstanceClass *instance,
-		    void (InstanceClass::*function)(UserData&), UserData *data);
+		    void (InstanceClass::*function)(UserData&), UserData &data);
     virtual ~Callback_Impl_Method_UserData();
     virtual void	call();
 

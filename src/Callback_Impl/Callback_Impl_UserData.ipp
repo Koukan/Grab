@@ -5,8 +5,8 @@ Callback_Impl_UserData<UserData>::Callback_Impl_UserData()
 }
 
 template <typename UserData>
-Callback_Impl_UserData<UserData>::Callback_Impl_UserData(UserData *data)
-	: _data(data)
+Callback_Impl_UserData<UserData>::Callback_Impl_UserData(UserData &data)
+	: _data(&data)
 {
 }
 
@@ -18,10 +18,10 @@ Callback_Impl_UserData<UserData>::~Callback_Impl_UserData()
 }
 
 template <typename UserData>
-void		Callback_Impl_UserData<UserData>::setData(UserData *data)
+void		Callback_Impl_UserData<UserData>::setData(UserData &data)
 {
   _mem = _data;
-  _data = data;
+  _data = &data;
 }
 
 template <typename UserData>

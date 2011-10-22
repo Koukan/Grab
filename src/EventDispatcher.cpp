@@ -80,7 +80,7 @@ void		EventDispatcher::dispatchTimed(void)
       {
         for (std::list<Callback*>::iterator callbacks = callback->second.begin(); callbacks != callback->second.end(); callbacks++)
       	{
-		(*callbacks)->call(it->second);
+		(*callbacks)->call(*it->second);
       	}
       }
       delete it->second;
@@ -88,3 +88,4 @@ void		EventDispatcher::dispatchTimed(void)
     }
   }
 }
+

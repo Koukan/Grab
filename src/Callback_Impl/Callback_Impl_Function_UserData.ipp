@@ -7,7 +7,7 @@ Callback_Impl_Function_UserData<UserData>::Callback_Impl_Function_UserData(
 
 template <typename UserData>
 Callback_Impl_Function_UserData<UserData>::Callback_Impl_Function_UserData(
-	void (*function)(UserData&), UserData *data)
+	void (*function)(UserData&), UserData &data)
 	: Callback_Impl_UserData<UserData>(data), _func(function)
 {
 }

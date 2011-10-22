@@ -9,7 +9,7 @@ Callback_Impl_Function_UserData2(
 template <typename UserData1, typename UserData2>
 Callback_Impl_Function_UserData2<UserData1, UserData2>::
 Callback_Impl_Function_UserData2(
-	void (*function)(UserData1&, UserData2&), UserData1 *data1, UserData2 *data2)
+	void (*function)(UserData1&, UserData2&), UserData1 &data1, UserData2 &data2)
 	: Callback_Impl_UserData2<UserData1, UserData2>(data1, data2), _func(function)
 {
 }

@@ -25,7 +25,7 @@ template <class InstanceClass, typename UserData>
 Callback_Impl_Method_UserData<InstanceClass, UserData>::
 	Callback_Impl_Method_UserData(
 	InstanceClass *instance, void (InstanceClass::*function)(UserData&),
-	UserData *data)
+	UserData &data)
 	: Callback_Impl_UserData<UserData>(data),
 	  Callback_Impl_Instance<InstanceClass>(instance), _func(function)
 {

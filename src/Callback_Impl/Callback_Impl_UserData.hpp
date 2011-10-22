@@ -7,9 +7,9 @@ template <typename UserData>
 class Callback_Impl_UserData
 {
   public:
-    Callback_Impl_UserData(UserData *data);
+    Callback_Impl_UserData(UserData &data);
     virtual ~Callback_Impl_UserData();
-    void		setData(UserData *data);
+    void		setData(UserData &data);
     void		clearData();
 
   protected:

@@ -9,7 +9,7 @@ class Callback_Impl_Function_UserData2 : public Callback_Impl_UserData2<UserData
   public:
     Callback_Impl_Function_UserData2(void (*function)(UserData1&, UserData2&));
     Callback_Impl_Function_UserData2(void (*function)(UserData1&, UserData2&),
-		    		    UserData1 *data1, UserData2 *data2);
+		    		    UserData1 &data1, UserData2 &data2);
     virtual ~Callback_Impl_Function_UserData2();
     virtual void	call();
 

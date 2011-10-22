@@ -8,7 +8,7 @@ class Callback_Impl_Function_UserData : public Callback_Impl, public Callback_Im
 {
   public:
     Callback_Impl_Function_UserData(void (*function)(UserData&));
-    Callback_Impl_Function_UserData(void (*function)(UserData&), UserData *data);
+    Callback_Impl_Function_UserData(void (*function)(UserData&), UserData &data);
     virtual ~Callback_Impl_Function_UserData();
     virtual void	call();
 
