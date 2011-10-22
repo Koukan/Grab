@@ -42,7 +42,7 @@ void		GameStateManager::removeState(const std::string &name)
 
 GameState	&GameStateManager::getCurrentState()
 {
-  return *_currentStates.front();
+  return *_currentStates.back();
 }
 
 void		GameStateManager::addDelete(GameState *state)
@@ -69,11 +69,11 @@ bool		GameStateManager::push(const std::string &name, bool changed,
   {
     if (changed && !_currentStates.empty())
     {
-      _currentStates.front()->onChange();
-      _currentStates.front()->pause(paused);
+      _currentStates.back()->onChange();
+      _currentStates.back()->pause(paused);
     }
-    _currentStates.push_front(*it);
-	(*it)->onResume();
+    _currentStates.push_back(*it);
+    (*it)->onResume();
     (*it)->play();
     _loadedStates.erase(it);
     return true;
@@ -84,10 +84,10 @@ bool		GameStateManager::push(const std::string &name, bool changed,
     GameState	*state = lit->second->newInstance();
     if (changed && !_currentStates.empty())
     {
-      _currentStates.front()->onChange();
-      _currentStates.front()->pause(paused);
+      _currentStates.back()->onChange();
+      _currentStates.back()->pause(paused);
     }
-    _currentStates.push_front(state);
+    _currentStates.push_back(state);
     state->onStart();
     return true;
   }
@@ -100,20 +100,20 @@ void		GameStateManager::pop(bool changed, bool del)
   {
     if (del)
     {
-      _currentStates.front()->onEnd();
-      addDelete(_currentStates.front());
+      _currentStates.back()->onEnd();
+      addDelete(_currentStates.back());
     }
     else
     {
-      _currentStates.front()->onChange();
-      _currentStates.front()->pause();
-      _loadedStates.push_back(_currentStates.front());
+      _currentStates.back()->onChange();
+      _currentStates.back()->pause();
+      _loadedStates.push_back(_currentStates.back());
     }
-    _currentStates.pop_front();
+    _currentStates.pop_back();
     if (changed && !_currentStates.empty())
     {
-      _currentStates.front()->onResume();
-      _currentStates.front()->play();
+      _currentStates.back()->onResume();
+      _currentStates.back()->play();
     }
   }
 }

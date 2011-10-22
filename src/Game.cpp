@@ -3,6 +3,7 @@
 #include "PhysicManager.hpp"
 #include "Clock.hpp"
 #include "Loading.hpp"
+#include "AudioManager.hpp"
 
 Game::Game() : _quit(false), _sound_output(44100)
 {
@@ -21,6 +22,7 @@ void		Game::init(const std::string &name)
   this->loadState<Loading>("Loading");
   this->changeState("Loading");
   PhysicManager::get();
+  srand(0);
 }
 
 void		Game::exec()
@@ -76,10 +78,12 @@ void		Game::update(int elapsedTime)
   GameState::Pause			paused;
 
   RendererManager::get().clear();
+  int i = 0;
   for (std::list<GameState*>::iterator it = _currentStates.begin();
  	  it != _currentStates.end();)
   {
-    state = *it++;
+    state = *it;
+	it++;
     paused = state->getPaused();
     if ((paused & GameState::NODRAW) == GameState::NODRAW || !paused)
     {
@@ -87,6 +91,7 @@ void		Game::update(int elapsedTime)
       state->update(elapsedTime);
     }
     this->updateManager(*state, elapsedTime);
+  i++;
   }
   RendererManager::get().flip();
   this->removeDelete();
@@ -95,5 +100,5 @@ void		Game::update(int elapsedTime)
 void		Game::handleInput(const CL_InputEvent &event, const CL_InputState &state)
 {
   if (!_currentStates.empty())
-     _currentStates.front()->handleInput(event, state);
+     _currentStates.back()->handleInput(event, state);
 }
