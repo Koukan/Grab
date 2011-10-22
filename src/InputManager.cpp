@@ -5,14 +5,14 @@ InputManager::InputManager()
 
 InputManager::~InputManager()
 {
-  this->flushCallbacks();
+  this->flushInput();
 }
 
 void		InputManager::handleInput(const CL_InputEvent &event, const CL_InputState &state)
 {
   InputMap::iterator res = _inputCallbacks.find(event.type);
 
-  if (res ==  _inputCallbacks.end())
+  if (res == _inputCallbacks.end())
     return ;
   for (std::list<CallbackElem*>::iterator it = (*res).second.begin();
 		  it != (*res).second.end(); it++)
@@ -22,6 +22,11 @@ void		InputManager::handleInput(const CL_InputEvent &event, const CL_InputState 
      && ((*it)->key == event.id || (*it)->key == -1))
     {
       (*it)->callback.invoke(event);
+	  if (_flush == true)
+	  {
+	    _flush = false;
+	    return ;
+	  }
     }
   }
 }
@@ -56,13 +61,15 @@ void		InputManager::unmapInput(CL_InputEvent::Type eventType, CL_InputDevice::Ty
   }
 }
 
-void		InputManager::flushCallbacks()
+void		InputManager::flushInput()
 {
-	for (InputMap::iterator map = _inputCallbacks.begin();
-			map != _inputCallbacks.end(); map++)
-	{
-		for (std::list<CallbackElem*>::iterator it = (*map).second.begin();
-				it != (*map).second.end() ; it++)
-			delete (*it);
-	}
+  std::list<CallbackElem*>::iterator	it;
+
+  for (InputMap::iterator map = _inputCallbacks.begin(); map != _inputCallbacks.end(); map++)
+  {
+    for (it = map->second.begin(); it != map->second.end() ; it++)
+      delete (*it);
+  }
+  _inputCallbacks.clear();
+  _flush = true;
 }

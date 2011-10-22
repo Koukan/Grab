@@ -15,6 +15,9 @@ PhysicManager::~PhysicManager()
 
 void		PhysicManager::update(GameState &state, int elapsedTime)
 {
+  if ((state.getPaused() & GameState::DRAW) == GameState::DRAW)
+    return ;
+
   collisionGroupsMap const				&collisionGroups = state.getCollisionGroups();
   groupsMap const					&groups = state.getGroups();
   groupsMap::const_iterator				itGroups,temp;
@@ -40,7 +43,6 @@ void		PhysicManager::update(GameState &state, int elapsedTime)
 	}
       }
     }
-  
     for (itGroups = groups.begin(); itGroups != groups.end(); ++itGroups)
     {
       if ((*itGroups).second->getPhysic())

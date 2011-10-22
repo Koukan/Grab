@@ -4,7 +4,7 @@
 #include "Callback_Impl_Instance.hpp"
 
 template <class InstanceClass>
-class Callback_Impl_Method : public Callback_Impl_Instance<InstanceClass>
+class Callback_Impl_Method : public Callback_Impl, public Callback_Impl_Instance<InstanceClass>
 {
   public:
     Callback_Impl_Method(void (InstanceClass::*function)());

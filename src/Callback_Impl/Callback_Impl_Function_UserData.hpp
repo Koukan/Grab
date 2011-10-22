@@ -4,7 +4,7 @@
 #include "Callback_Impl_UserData.hpp"
 
 template <typename UserData>
-class Callback_Impl_Function_UserData : public Callback_Impl_UserData<UserData>
+class Callback_Impl_Function_UserData : public Callback_Impl, public Callback_Impl_UserData<UserData>
 {
   public:
     Callback_Impl_Function_UserData(void (*function)(UserData&));

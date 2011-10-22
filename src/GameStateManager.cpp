@@ -73,9 +73,9 @@ bool		GameStateManager::push(const std::string &name, bool changed,
       _currentStates.front()->pause(paused);
     }
     _currentStates.push_front(*it);
-    _loadedStates.erase(it);
-    (*it)->onResume();
+	(*it)->onResume();
     (*it)->play();
+    _loadedStates.erase(it);
     return true;
   }
   instanceMap::iterator		lit = _keeper.find(name);

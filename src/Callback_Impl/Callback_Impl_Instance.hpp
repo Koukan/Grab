@@ -4,7 +4,7 @@
 #include "Callback_Impl.hpp"
 
 template <class InstanceClass>
-class Callback_Impl_Instance : public virtual Callback_Impl
+class Callback_Impl_Instance
 {
   public:
     Callback_Impl_Instance(InstanceClass *instance = 0);

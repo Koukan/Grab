@@ -18,20 +18,21 @@ struct	CallbackElem
 
 typedef std::map<CL_InputEvent::Type, std::list<CallbackElem*> > InputMap;
 
-class InputManager 
+class InputManager
 {
 public:
 	InputManager();
 	~InputManager();
     void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
-    void		registerInputCallback(CL_InputEvent::Type eventType, 
+    void		registerInputCallback(CL_InputEvent::Type eventType,
 		    	CL_Callback_v1<const CL_InputEvent &>  callback,
 			CL_InputDevice::Type inputType = CL_InputDevice::unknown, int key = -1);
 	void		unmapInput(CL_InputEvent::Type eventType, CL_InputDevice::Type inputType = CL_InputDevice::unknown, int key = -1);
-	void		flushCallbacks();
+	void		flushInput();
 
 private:
-	InputMap _inputCallbacks;
+	InputMap	_inputCallbacks;
+	bool		_flush;
 };
 
 
