@@ -43,7 +43,7 @@ template <class InstanceClass, typename UserData>
 void		Callback_Impl_Method_UserData<InstanceClass, UserData>::call(void)
 {
   #if defined(DEBUG)
-  if (this->_data1 || this->_data2)
+  if (!this->_data1 || !this->_data2)
     throw std::exception();
   #endif
   (this->_data1->*_func)(*(this->_data2));

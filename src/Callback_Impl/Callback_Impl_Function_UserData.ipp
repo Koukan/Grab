@@ -21,7 +21,7 @@ template <typename UserData>
 void		Callback_Impl_Function_UserData<UserData>::call()
 {
   #if defined(DEBUG)
-  if (this->_data)
+  if (!this->_data1)
     throw std::exception();
   #endif
   (*_func)(*(this->_data1));

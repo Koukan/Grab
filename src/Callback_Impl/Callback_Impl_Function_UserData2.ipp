@@ -23,8 +23,9 @@ Callback_Impl_Function_UserData2<UserData1, UserData2>::
 template <typename UserData1, typename UserData2>
 void		Callback_Impl_Function_UserData2<UserData1, UserData2>::call()
 {
-  if (this->_data1 && this->_data2)
-    (*_func)(*(this->_data1), *(this->_data2));
-  else
+  #if defined(DEBUG)
+  if (!this->_data1 || !this->_data2)
     throw std::exception();
+  #endif
+  (*_func)(*(this->_data1), *(this->_data2));
 }
