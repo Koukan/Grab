@@ -38,7 +38,7 @@ void		PhysicManager::update(GameState &state, int elapsedTime)
           for (it2 = itGroups->second->getObjects().begin(); it2 != itGroups->second->getObjects().end(); it2++)
           {
 	    if ((static_cast<PhysicObject*>(*it1))->collide(*(static_cast<PhysicObject*>(*it2))))
-	      itCol->second->callInstance(*it1, *it2);
+	      itCol->second->call(*it1, *it2);
           }
 	}
       }

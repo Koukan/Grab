@@ -21,14 +21,9 @@ class EventDispatcher
     void	pushEvent(Event *event, int ms);
     void	registerEvent(std::string const &type, void (*function)(Event &));
     template <class InstanceClass>
-    void	registerEvent(std::string const &type, InstanceClass *instance,
-		 	      void (InstanceClass::*method)(Event &))
-  {
-    _registeredEvents[type].push_back(new Callback(instance, method));
-  }
-
-
-    void	removeEvent(std::string type);
+    void	registerEvent(std::string const &type, InstanceClass &instance,
+		 	      void (InstanceClass::*method)(Event &));
+    void	removeEvent(std::string const &type);
 
   private:
     void	dispatch();
@@ -39,5 +34,7 @@ class EventDispatcher
     std::list<timedPair>				_timedEvents;
     Clock						_clock;
 };
+
+#include "EventDispatcher.ipp"
 
 #endif		/* _EVENTDISPATCHER_ */

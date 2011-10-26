@@ -27,7 +27,7 @@ public:
     void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
     template <typename T>
     void		registerInputCallback(CL_InputEvent::Type eventType,
-		    	T *instance, void (T::*method)(const CL_InputEvent &event),
+		    	T &instance, void (T::*method)(const CL_InputEvent &event),
 			CL_InputDevice::Type inputType = CL_InputDevice::unknown, int key = -1);
 	void		unmapInput(CL_InputEvent::Type eventType, CL_InputDevice::Type inputType = CL_InputDevice::unknown, int key = -1);
 	void		flushInput();

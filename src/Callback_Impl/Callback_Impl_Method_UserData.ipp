@@ -1,36 +1,37 @@
-#include <iostream>
 template <class InstanceClass, typename UserData>
-Callback_Impl_Method_UserData<InstanceClass, UserData>::
-	Callback_Impl_Method_UserData(
+Callback_Impl_Method_UserData<InstanceClass, UserData>::Callback_Impl_Method_UserData(
 	void (InstanceClass::*function)(UserData&))
-	: Callback_Impl_UserData<UserData>(),
-	  Callback_Impl_Instance<InstanceClass>(), _func(function)
+	: Callback_Impl_UserData2<InstanceClass, UserData>(), _func(function)
 {
+  #if defined(DEBUG)
   if (function == 0)
     throw std::exception();
+  #endif
 }
 
 template <class InstanceClass, typename UserData>
 Callback_Impl_Method_UserData<InstanceClass, UserData>::
 	Callback_Impl_Method_UserData(
-	InstanceClass *instance, void (InstanceClass::*function)(UserData&))
-	: Callback_Impl_UserData<UserData>(),
-	  Callback_Impl_Instance<InstanceClass>(instance), _func(function)
+	InstanceClass &instance, void (InstanceClass::*function)(UserData&))
+	: Callback_Impl_UserData2<InstanceClass, UserData>(instance), _func(function)
 {
+  #if defined(DEBUG)
   if (function == 0)
     throw std::exception();
+  #endif
 }
 
 template <class InstanceClass, typename UserData>
 Callback_Impl_Method_UserData<InstanceClass, UserData>::
 	Callback_Impl_Method_UserData(
-	InstanceClass *instance, void (InstanceClass::*function)(UserData&),
+	InstanceClass &instance, void (InstanceClass::*function)(UserData&),
 	UserData &data)
-	: Callback_Impl_UserData<UserData>(data),
-	  Callback_Impl_Instance<InstanceClass>(instance), _func(function)
+	: Callback_Impl_UserData2<InstanceClass, UserData>(instance, data), _func(function)
 {
+  #if defined(DEBUG)
   if (function == 0)
     throw std::exception();
+  #endif
 }
 
 template <class InstanceClass, typename UserData>
@@ -41,8 +42,15 @@ Callback_Impl_Method_UserData<InstanceClass, UserData>::~Callback_Impl_Method_Us
 template <class InstanceClass, typename UserData>
 void		Callback_Impl_Method_UserData<InstanceClass, UserData>::call(void)
 {
-  if (this->_data && this->_instance)
-    (this->_instance->*_func)(*(this->_data));
-  else
+  #if defined(DEBUG)
+  if (this->_data1 || this->_data2)
     throw std::exception();
+  #endif
+  (this->_data1->*_func)(*(this->_data2));
+}
+
+template <class InstanceClass, typename UserData>
+void		Callback_Impl_Method_UserData<InstanceClass, UserData>::setData(UserData &data)
+{
+  this->_data2 = &data;
 }

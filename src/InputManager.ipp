@@ -1,8 +1,8 @@
 template <typename T>
 void		InputManager::registerInputCallback(CL_InputEvent::Type eventType,
-		T *instance, void (T::*method)(const CL_InputEvent &event), CL_InputDevice::Type inputType, int key)
+		T &instance, void (T::*method)(const CL_InputEvent &event), CL_InputDevice::Type inputType, int key)
 {
-  if (!instance || !method)
+  if (!method)
     return ;
   CallbackElem	*tmp = new CallbackElem();
   tmp->eventType = eventType;

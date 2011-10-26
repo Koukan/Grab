@@ -7,7 +7,6 @@
 #include "Callback_Impl_Function_UserData.hpp"
 #include "Callback_Impl_Method_UserData.hpp"
 #include "Callback_Impl_Function_UserData2.hpp"
-#include "Callback_Impl_Method_UserData2.hpp"
 
 class Callback
 {
@@ -17,7 +16,7 @@ class Callback
     template <class InstanceClass>
     Callback(void(InstanceClass::*function)());
     template <class InstanceClass>
-    Callback(InstanceClass *instance, void(InstanceClass::*function)());
+    Callback(InstanceClass &instance, void(InstanceClass::*function)());
     // 1 argument
     template <typename UserData>
     Callback(void(*function)(UserData&));
@@ -26,32 +25,30 @@ class Callback
     template <class InstanceClass, typename UserData>
     Callback(void(InstanceClass::*function)(UserData&));
     template <class InstanceClass, typename UserData>
-    Callback(InstanceClass *instance, void(InstanceClass::*function)(UserData&));
+    Callback(InstanceClass &instance, void(InstanceClass::*function)(UserData&));
     template <class InstanceClass, typename UserData>
-    Callback(InstanceClass *instance, void(InstanceClass::*function)(UserData&), UserData &data);
+    Callback(InstanceClass &instance, void(InstanceClass::*function)(UserData&),
+	     UserData &data);
     // 2 arguments
     template <typename UserData1, typename UserData2>
     Callback(void(*function)(UserData1&, UserData2&));
     template <typename UserData1, typename UserData2>
     Callback(void(*function)(UserData1&, UserData2&),
 	     UserData1 &data1, UserData2 &data2);
-    template <class InstanceClass, typename UserData1, typename UserData2>
-    Callback(InstanceClass *instance,
-	     void(InstanceClass::*function)(UserData1&, UserData2&));
-    template <class InstanceClass, typename UserData1, typename UserData2>
-    Callback(InstanceClass *instance,
-	     void (InstanceClass::*function)(UserData1&, UserData2&),
-	     UserData1 &data1, UserData2 &data2);
+    // end constructor
+
     virtual ~Callback();
     void		call();
-    template <typename InstanceClass>
-    void		callInstance(InstanceClass *instance);
-    template <typename UserData>
+    template <typename UserData /* or Instance */>
     void		call(UserData &data);
-    template <typename InstanceClass, typename UserData>
-    void		callInstance(InstanceClass *instance, UserData &data);
-    template <typename UserData1, typename UserData2>
+    template <typename UserData1 /* or Instance */, typename UserData2>
     void		call(UserData1 &data1, UserData2 &data2);
+
+    void		operator()();
+    template <typename UserData /* or Instance */>
+    void		operator()(UserData &data);
+    template <typename UserData1 /* or Instance */, typename UserData2>
+    void		operator()(UserData1 &data1, UserData2 &data2);
 
   protected:
     Callback();

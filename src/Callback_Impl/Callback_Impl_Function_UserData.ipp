@@ -20,8 +20,9 @@ Callback_Impl_Function_UserData<UserData>::~Callback_Impl_Function_UserData()
 template <typename UserData>
 void		Callback_Impl_Function_UserData<UserData>::call()
 {
+  #if defined(DEBUG)
   if (this->_data)
-    (*_func)(*(this->_data));
-  else
     throw std::exception();
+  #endif
+  (*_func)(*(this->_data1));
 }

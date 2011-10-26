@@ -42,12 +42,12 @@ void		EventDispatcher::registerEvent(std::string const &type,
   _registeredEvents[type].push_back(new Callback(function));
 }
 
-void		EventDispatcher::removeEvent(std::string type)
+void		EventDispatcher::removeEvent(std::string const &type)
 {
   _registeredEvents.erase(type);
 }
 
-void		EventDispatcher::dispatch(void)
+void		EventDispatcher::dispatch()
 {
   std::map<std::string, std::list<Callback*> >::iterator	it;
 
@@ -66,7 +66,7 @@ void		EventDispatcher::dispatch(void)
   }
 }
 
-void		EventDispatcher::dispatchTimed(void)
+void		EventDispatcher::dispatchTimed()
 {
   if (!_timedEvents.empty())
   {

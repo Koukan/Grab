@@ -15,3 +15,8 @@ void		Callback::call()
 {
   _callback->call();
 }
+
+void		Callback::operator ()()
+{
+  this->call();
+}
