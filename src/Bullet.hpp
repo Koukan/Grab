@@ -1,26 +1,17 @@
 #pragma once
 
 #include "PhysicObject.hpp"
-#include "bulletmlrunner.h"
 #include "Sprite.hpp"
 
-class Bullet : public BulletMLRunner, public PhysicObject
+class Bullet : public PhysicObject
 {
   public:
-    Bullet(BulletMLParser* state, CL_ResourceManager &resource);
+    Bullet(CL_ResourceManager &resource, std::string const &sprite, double x = 0, double y = 0,
+	   double direction = 0, double speed = 0);
     virtual ~Bullet();
-    virtual double	getBulletDirection();
-    virtual double	getAimDirection();
-    virtual double	getBulletSpeed();
-    virtual double	getDefaultSpeed();
-    virtual double	getRank();
-    virtual void	createSimpleBullet(double direction, double speed);
-    virtual void	createBullet(BulletMLState* state,
-		    		     double direction, double speed);
-    virtual int		getTurn();
-    virtual void	doVanish();
     virtual void	draw();
 
-  private:
-    Sprite		*_sprite;
+    double	_direction;
+    double	_speed;
+    Sprite	_sprite;
 };

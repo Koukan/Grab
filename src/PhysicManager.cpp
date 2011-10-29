@@ -21,12 +21,24 @@ void		PhysicManager::update(GameState &state, int elapsedTime)
   collisionGroupsMap const				&collisionGroups = state.getCollisionGroups();
   groupsMap const					&groups = state.getGroups();
   groupsMap::const_iterator				itGroups,temp;
-  collisionGroupsMap::const_iterator	itCol;
-  std::set<GameObject*>::const_iterator	it1, it2;
-  int time;
+  collisionGroupsMap::const_iterator			itCol;
+  std::set<GameObject*>::const_iterator			it1, it2;
+  int							time;
   for (; elapsedTime >= 0; elapsedTime -= CUTTIME)
   {
-	  time = ((elapsedTime / CUTTIME) > 0) ? CUTTIME : elapsedTime;
+    time = (((elapsedTime / CUTTIME) > 0) ? CUTTIME : elapsedTime) / 5;
+    for (itGroups = groups.begin(); itGroups != groups.end(); ++itGroups)
+    {
+      if ((*itGroups).second->getPhysic())
+      {
+	for (it1 = itGroups->second->getObjects().begin(); it1 != itGroups->second->getObjects().end();)
+	{
+	  it2 = it1++;
+	  static_cast<PhysicObject*>(*it2)->move(time);
+	}
+        itGroups->second->deleteObjects();
+      }
+    }
     for (itCol = collisionGroups.begin(); itCol != collisionGroups.end(); itCol++)
     {
       temp = groups.find(itCol->first.first);
@@ -42,18 +54,6 @@ void		PhysicManager::update(GameState &state, int elapsedTime)
           }
 	}
       }
-    }
-    for (itGroups = groups.begin(); itGroups != groups.end(); ++itGroups)
-    {
-      if ((*itGroups).second->getPhysic())
-      {
-		for (it2 = itGroups->second->getObjects().begin(); it2 != itGroups->second->getObjects().end(); ++it2)
-		{
-			(*it2)->setX((*it2)->getX() + (static_cast<PhysicObject*>(*it2))->getVx() * time / 5);
-			(*it2)->setY((*it2)->getY() + (static_cast<PhysicObject*>(*it2))->getVy() * time / 5);
-		}
-      itGroups->second->deleteObjects();
-	  }
     }
   }
 }

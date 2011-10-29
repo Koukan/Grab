@@ -20,6 +20,7 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/Sprite.cpp						\
 		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp		\
 		  $(DIR)/GameState.cpp						\
+		  $(DIR)/BulletCommand.cpp					\
 		  $(DIR)/Bullet.cpp
 
 OBJS		= $(SRCS:.cpp=.o)

@@ -2,7 +2,7 @@
 #include <list>
 #include "GameState.hpp"
 #include "AudioManager.hpp"
-#include "Bullet.hpp"
+#include "BulletCommand.hpp"
 #include "bulletmlparser.h"
 
 class Loading : public GameState
@@ -17,6 +17,6 @@ private:
 	void			escape(const CL_InputEvent &event);
 	void			click(const CL_InputEvent &event);
 
-	Bullet			*_bullet;
+	BulletCommand		*_bullet;
 	BulletMLParser		*_parser;
 };
