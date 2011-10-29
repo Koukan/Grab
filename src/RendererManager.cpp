@@ -14,7 +14,7 @@ RendererManager::~RendererManager(void)
 
 void	RendererManager::initGraphics(const std::string &name)
 {
-  _window = new CL_DisplayWindow(name, 632, 700, false, true);
+  _window = new CL_DisplayWindow(name, 1024, 768, false, true);
   _gc = _window->get_gc();
 }
 

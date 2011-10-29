@@ -8,7 +8,7 @@ BulletCommand::BulletCommand(BulletMLParser *parser, GameState &gstate,
 		std::string const &sprite,
 		double x, double y, double direction, double speed)
 	: BulletMLRunner(parser), Bullet(gstate, sprite, x, y, direction, speed),
-	  _turn(1), _state(gstate)
+	  _turn(0), _state(gstate)
 {
 }
 
@@ -16,7 +16,7 @@ BulletCommand::BulletCommand(BulletMLState *state, GameState &gstate,
 		std::string const &sprite,
 		double x, double y, double direction, double speed)
 	: BulletMLRunner(state), Bullet(gstate, sprite, x, y, direction, speed),
-	  _turn(1), _state(gstate)
+	  _turn(0), _state(gstate)
 {
 }
 
@@ -31,7 +31,7 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
-  return 1;
+  return 0;
 }
 
 double		BulletCommand::getBulletSpeed()
@@ -62,7 +62,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 
 int		BulletCommand::getTurn()
 {
-  return _turn++;
+  return static_cast<int>(_turn);
 }
 
 void		BulletCommand::doVanish()
@@ -111,6 +111,7 @@ double		BulletCommand::getBulletSpeedY()
 
 void		BulletCommand::move(int time)
 {
+  _turn += static_cast<double>(time) / 4;
   this->run();
   PhysicObject::move(time);
 }

@@ -33,6 +33,6 @@ class BulletCommand : public BulletMLRunner, public Bullet
     virtual void	move(int time);
 
   private:
-    int			_turn;
+    double		_turn;
     GameState		&_state;
 };
