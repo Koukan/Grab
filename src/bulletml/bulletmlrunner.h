@@ -30,12 +30,14 @@ public:
 	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
 	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }
 	DECLSPEC boost::shared_ptr<BulletMLParameter> getParameter() { return para_; }
+	DECLSPEC void setLabel(std::string const &label) { label_ = label; }
+	DECLSPEC std::string const &getLabel() const { return label_; }
 
 private:
-	BulletMLParser* bulletml_;
-	std::vector<BulletMLNode*> node_;
-	boost::shared_ptr<BulletMLParameter> para_;
-
+	BulletMLParser*				bulletml_;
+	std::vector<BulletMLNode*>		node_;
+	boost::shared_ptr<BulletMLParameter>	para_;
+	std::string				label_;
 };
 
 /// BulletML Çé¿çsÇ∑ÇÈÉNÉâÉX

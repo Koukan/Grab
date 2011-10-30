@@ -1,6 +1,6 @@
 #include "bulletmlparser.h"
 #include "bulletmlerror.h"
-
+#include <iostream>
 #include <map>
 
 namespace {
@@ -122,6 +122,7 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					if ((int)bulletMap_.size() <= id){
 						bulletMap_.resize(id+1, 0);}
 					bulletMap_[id] = elem;
+					elem->setLabel(val);
 				}
 				else if (name == BulletMLNode::action) {
 					if ((int)actionMap_.size() <= id){
@@ -154,5 +155,3 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 		}
 	}
 }
-
-	

@@ -1,23 +1,35 @@
 #include "BulletCommand.hpp"
 #include "Bullet.hpp"
+#include "bulletmlparser.h"
 
-inline double dtor(double x) { return x * M_PI / 180; }
-inline double rtod(double x) { return x * 180 / M_PI; }
+inline static double dtor(double x) { return x * M_PI / 180; }
+inline static double rtod(double x) { return x * 180 / M_PI; }
 
 BulletCommand::BulletCommand(BulletMLParser *parser, GameState &gstate,
-		std::string const &sprite,
+		BulletName const &info,
 		double x, double y, double direction, double speed)
-	: BulletMLRunner(parser), Bullet(gstate, sprite, x, y, direction, speed),
-	  _turn(0), _state(gstate)
+	: BulletMLRunner(parser), Bullet(x, y, direction, speed),
+	  _turn(0), _state(gstate), _resource(gstate.getBulletResource(info))
 {
+  this->setSprite(_state, _resource.commandSprite);
 }
 
 BulletCommand::BulletCommand(BulletMLState *state, GameState &gstate,
-		std::string const &sprite,
+		BulletName const &info,
 		double x, double y, double direction, double speed)
-	: BulletMLRunner(state), Bullet(gstate, sprite, x, y, direction, speed),
-	  _turn(0), _state(gstate)
+	: BulletMLRunner(state), Bullet(x, y, direction, speed),
+	  _turn(0), _state(gstate), _resource(gstate.getBulletResource(info))
 {
+  this->setSprite(_state, _resource.commandSprite);
+}
+
+BulletCommand::BulletCommand(BulletMLState *state, GameState &gstate,
+		BulletResource const &info,
+		double x, double y, double direction, double speed)
+	: BulletMLRunner(state), Bullet(x, y, direction, speed),
+	  _turn(0), _state(gstate), _resource(info)
+{
+  this->setSprite(_state, _resource.commandSprite);
 }
 
 BulletCommand::~BulletCommand()
@@ -51,13 +63,15 @@ double		BulletCommand::getRank()
 
 void		BulletCommand::createSimpleBullet(double direction, double speed)
 {
-  _state.addGameObject(new Bullet(_state, "shot", _x, _y, dtor(direction), speed), "shot", 5);
+  _state.addGameObject(new Bullet(_state, _resource.simpleSprite, _x, _y, dtor(direction), speed), _resource.simpleGroup);
 }
 
 void		BulletCommand::createBullet(BulletMLState* state,
 				  	    double direction, double speed)
 {
-  _state.addGameObject(new BulletCommand(state, _state, "bullet", _x, _y, direction, speed), "ship", 10);
+  BulletResource const	&resource = _state.getBulletResource(state->getLabel());
+
+  _state.addGameObject(new BulletCommand(state, _state, resource, _x, _y, direction, speed), resource.commandGroup);
 }
 
 int		BulletCommand::getTurn()
@@ -87,16 +101,14 @@ void		BulletCommand::doChangeSpeed(double speed)
 
 void		BulletCommand::doAccelX(double speedx)
 {
-  double	sy = getBulletSpeedY();
-  _direction = atan2(sy, speedx);
-  _speed = sqrt(speedx * speedx + sy * sy);
+  _direction = atan2(_vy, speedx);
+  _speed = sqrt(speedx * speedx + _vy * _vy);
 }
 
 void		BulletCommand::doAccelY(double speedy)
 {
-  double	sx = getBulletSpeedX();
-  _direction = atan2(speedy, sx);
-  _speed = sqrt(sx * sx + speedy * speedy);
+  _direction = atan2(speedy, _vx);
+  _speed = sqrt(_vx * _vx + speedy * speedy);
 }
 
 double		BulletCommand::getBulletSpeedX()

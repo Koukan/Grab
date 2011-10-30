@@ -323,7 +323,7 @@ void BulletMLRunnerImpl::runBullet() {
 */
 
 		BulletMLState* state = new BulletMLState(bulletml_, acts, parameters_);
-
+		state->setLabel(act_->getLabel());
 		runner_->createBullet(state, dir_, spd_);
 	}
 
