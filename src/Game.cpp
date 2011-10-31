@@ -89,7 +89,7 @@ void		Game::update(int elapsedTime)
       state->dispatchEvent();
       state->update(elapsedTime);
     }
-    this->updateManager(*state, elapsedTime);
+    this->ManagerManager::update(*state, elapsedTime);
   }
   RendererManager::get().flip();
   this->removeDelete();
