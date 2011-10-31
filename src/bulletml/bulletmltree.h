@@ -65,12 +65,15 @@ public:
     DECLSPEC BulletMLNode* next();
 
     virtual void dump();
+    void		setLabel(std::string const &label);
+    std::string const	&getLabel() const;
 
 protected:
-    Name name_;
-	Type type_;
-	int refID_;
-    std::auto_ptr<Number> val_;
+    Name			name_;
+    Type			type_;
+    int				refID_;
+    std::auto_ptr<Number>	val_;
+    std::string			label_;
 };
 
 

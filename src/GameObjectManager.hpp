@@ -49,8 +49,8 @@ class GameObjectManager
     bool	existingGroup(const std::string &group) const;
     bool	collisionGroups(const std::string &group1,
 		const std::string &group2, bool reverse = true) const;
-    void	addGroup(const std::string &group, int layer = 0);
-    void	addGameObject(GameObject *object, const std::string &group, int layer = 0);
+    void	addGroup(const std::string &group, int layer = 1);
+    void	addGameObject(GameObject *object, const std::string &group, int layer = 1);
     void	removeGameObject(GameObject *object);
     template <class InstanceClass>
     void	setCollisionGroups(const std::string &group1,

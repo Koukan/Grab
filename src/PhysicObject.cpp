@@ -11,22 +11,22 @@ PhysicObject::~PhysicObject(void)
 
 double PhysicObject::getVx() const
 {
-	return (this->_vx);
+  return (this->_vx);
 }
 
 double PhysicObject::getVy() const
 {
-	return (this->_vy);
+  return (this->_vy);
 }
 
 void PhysicObject::setVx(double vx)
 {
-	this->_vx = vx;
+  this->_vx = vx;
 }
 
 void PhysicObject::setVy(double vy)
 {
-	this->_vy = vy;
+  this->_vy = vy;
 }
 
 void	PhysicObject::move(int time)

@@ -5,10 +5,11 @@
 #include "InputManager.hpp"
 #include "GameObjectManager.hpp"
 #include "EventDispatcher.hpp"
+#include "ResourceManager.hpp"
 
 class Game;
 
-class GameState : public InputManager, public GameObjectManager, public CL_ResourceManager,
+class GameState : public InputManager, public GameObjectManager, public ResourceManager,
 		  public EventDispatcher
 {
 public:

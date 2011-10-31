@@ -21,7 +21,8 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp		\
 		  $(DIR)/GameState.cpp						\
 		  $(DIR)/BulletCommand.cpp					\
-		  $(DIR)/Bullet.cpp
+		  $(DIR)/Bullet.cpp						\
+		  $(DIR)/BulletResourceManager.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 
