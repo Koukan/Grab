@@ -11,7 +11,7 @@ class PhysicManager : public Manager, public Singleton<PhysicManager>
   public:
     PhysicManager();
     virtual ~PhysicManager();
-    virtual void		update(GameState &state, int elapsedTime);
+    virtual void	update(GameState &state, double elapsedTime);
 };
 
 #endif		/* _PHYSICMANAGER_ */

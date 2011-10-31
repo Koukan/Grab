@@ -29,7 +29,7 @@ void PhysicObject::setVy(double vy)
   this->_vy = vy;
 }
 
-void	PhysicObject::move(int time)
+void	PhysicObject::move(double time)
 {
   this->_x += this->_vx * time;
   this->_y += this->_vy * time;

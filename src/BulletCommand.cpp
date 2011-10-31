@@ -121,9 +121,9 @@ double		BulletCommand::getBulletSpeedY()
   return _speed * cos(_direction);
 }
 
-void		BulletCommand::move(int time)
+void		BulletCommand::move(double time)
 {
-  _turn += static_cast<double>(time) / 4;
+  _turn += time * 50;
   this->run();
   PhysicObject::move(time);
 }

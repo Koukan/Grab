@@ -10,7 +10,7 @@ Loading::Loading() : GameState("Loading")
 Loading::~Loading()
 {}
 
-void	Loading::escape(const CL_InputEvent &event)
+void	Loading::escape(const CL_InputEvent &)
 {
   Game::get().popState();
   Game::get().quit();
@@ -20,13 +20,21 @@ void	Loading::click(const CL_InputEvent &event)
 {
 }
 
-void	Loading::update(int elapseTime)
+void	Loading::update(int, int)
 {
+}
+
+void	Loading::slowTest(const CL_InputEvent &)
+{
+  std::cout << this->getSlow() << std::endl;
+  if (this->getSlow() == 1)
+    this->setSlow(0.5);
+  //else
+    //this->removeSlow();
 }
 
 void	Loading::onStart()
 {
-  Bullet		*test;
   this->load("resource/intro.xml");
   this->addGroup("ship", 10);
   this->addGroup("shot", 5);
@@ -38,6 +46,7 @@ void	Loading::onStart()
   _parser->build();
   _bullet = new BulletCommand(_parser, *this, "default", 512, 360);
   this->addGameObject(_bullet, "ship", 10);
-  this->registerInputCallback(CL_InputEvent::released, *this, &Loading::escape, CL_InputDevice::keyboard, CL_KEY_ESCAPE);
+  this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::escape, CL_InputDevice::keyboard, CL_KEY_ESCAPE);
+  this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::keyboard, CL_KEY_SPACE);
   this->registerInputCallback(CL_InputEvent::released, *this, &Loading::click, CL_InputDevice::pointer, CL_MOUSE_LEFT);
 }

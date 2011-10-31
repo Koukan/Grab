@@ -27,7 +27,7 @@ void		Game::init(const std::string &name)
 
 void		Game::exec()
 {
-  int		timeDifference = 0;
+  double	timeDifference = 0;
   Clock		clock;
 
   while (!_quit)
@@ -38,7 +38,7 @@ void		Game::exec()
     this->update(timeDifference);
     timeDifference = _mainLoopRate - clock.getElapsedTime();
     if (timeDifference > 0)
-      CL_System::sleep(timeDifference);
+      CL_System::sleep(static_cast<int>(timeDifference));
   }
 }
 
@@ -72,7 +72,7 @@ void		Game::initInput(void)
   }
 }
 
-void		Game::update(int elapsedTime)
+void		Game::update(double elapsedTime)
 {
   GameState				*state;
   GameState::Pause			paused;
@@ -86,10 +86,10 @@ void		Game::update(int elapsedTime)
     paused = state->getPaused();
     if ((paused & GameState::NODRAW) == GameState::NODRAW || !paused)
     {
-      state->dispatchEvent();
+      state->dispatchEvent(elapsedTime);
       state->update(elapsedTime);
     }
-    this->updateManager(*state, elapsedTime);
+    ManagerManager::update(*state, elapsedTime);
   }
   RendererManager::get().flip();
   this->removeDelete();

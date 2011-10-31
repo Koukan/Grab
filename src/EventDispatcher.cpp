@@ -3,16 +3,18 @@
 
 EventDispatcher::EventDispatcher()
 {
+  _slow = 1;
 }
 
 EventDispatcher::~EventDispatcher()
 {
 }
 
-void		EventDispatcher::dispatchEvent(void)
+void		EventDispatcher::dispatchEvent(double elapsedTime)
 {
+  _time += elapsedTime;
   dispatch();
-  dispatchTimed();
+  dispatchTimed(_timedEvents, _time);
 }
 
 void		EventDispatcher::pushEvent(Event *event)
@@ -20,20 +22,38 @@ void		EventDispatcher::pushEvent(Event *event)
   _events.push(event);
 }
 
-void		EventDispatcher::pushEvent(Event *event, int ms)
+void		EventDispatcher::pushEvent(Event *event, int ms, bool relatif)
 {
-  int		time = _clock.getElapsedTime() + ms;
+  unsigned int	time;
 
-  for (std::list<timedPair>::iterator it = _timedEvents.begin();
-	it != _timedEvents.end(); it++)
-  {
-    if (it->first > time)
+  //if (relatif)
+  //{
+    //time = _relativeTime + ms;
+    //for (std::list<timedPair>::iterator it = _timedRelativeEvents.begin();
+	 //it != _timedRelativeEvents.end(); it++)
+    //{
+      //if (it->first > time)
+      //{
+	//_timedRelativeEvents.insert(it, timedPair(time, event));
+	//return ;
+      //}
+    //}
+    //_timedRelativeEvents.push_back(timedPair(time, event));
+  //}
+  //else
+  //{
+    time = _time + ms;
+    for (std::list<timedPair>::iterator it = _timedEvents.begin();
+	 it != _timedEvents.end(); it++)
     {
-      _timedEvents.insert(it, timedPair(time, event));
-      return ;
+      if (it->first > time)
+      {
+        _timedEvents.insert(it, timedPair(time, event));
+        return ;
+      }
     }
-  }
-  _timedEvents.push_back(timedPair(time, event));
+    _timedEvents.push_back(timedPair(time, event));
+    //}
 }
 
 void		EventDispatcher::registerEvent(std::string const &type,
@@ -47,9 +67,45 @@ void		EventDispatcher::removeEvent(std::string const &type)
   _registeredEvents.erase(type);
 }
 
+void		EventDispatcher::removeSlow()
+{
+  _slowList.pop_front();
+  updateSlow();
+}
+
+void		EventDispatcher::setSlow(double slow)
+{
+  _slowList.push_back(slow);
+  updateSlow();
+}
+
+double		EventDispatcher::getSlow() const
+{
+  return _slow;
+}
+
+void		EventDispatcher::updateSlow()
+{
+  if (_slowList.empty())
+  {
+    _slow = 1;
+    return ;
+  }
+
+  double	slow = 1000;
+
+  for (std::list<double>::iterator it = _slowList.begin();
+       it != _slowList.end(); it++)
+  {
+    if (*it < slow)
+      slow = *it;
+  }
+  _slow = slow;
+}
+
 void		EventDispatcher::dispatch()
 {
-  std::map<std::string, std::list<Callback*> >::iterator	it;
+  eventMap::iterator	it;
 
   while (!_events.empty())
   {
@@ -66,25 +122,27 @@ void		EventDispatcher::dispatch()
   }
 }
 
-void		EventDispatcher::dispatchTimed()
+void		EventDispatcher::dispatchTimed(std::list<timedPair> &list,
+					       unsigned int time)
 {
-  if (!_timedEvents.empty())
+  if (!list.empty())
   {
-    std::list<timedPair>::iterator	it = _timedEvents.begin();
-    std::map<std::string, std::list<Callback*> >::iterator    callback;
-    int		time = _clock.getElapsedTime();
-    while (it != _timedEvents.end() && it->first < time)
+    std::list<timedPair>::iterator	it = list.begin();
+    eventMap::iterator			callback;
+
+    while (it != list.end() && it->first < time)
     {
       callback = _registeredEvents.find(it->second->getType());
       if (callback != _registeredEvents.end())
       {
-        for (std::list<Callback*>::iterator callbacks = callback->second.begin(); callbacks != callback->second.end(); callbacks++)
+        for (std::list<Callback*>::iterator callbacks = callback->second.begin();
+	     callbacks != callback->second.end(); callbacks++)
       	{
-		(*callbacks)->call(*it->second);
+	  (*callbacks)->call(*it->second);
       	}
       }
       delete it->second;
-      it = _timedEvents.erase(it);
+      it = list.erase(it);
     }
   }
 }

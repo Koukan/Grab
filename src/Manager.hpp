@@ -7,5 +7,5 @@ public:
 	Manager(void) {}
 	virtual ~Manager(void) {}
 
-	virtual void	update(GameState &state, int elapsedTime) = 0;
+	virtual void	update(GameState &state, double elapsedTime) = 0;
 };

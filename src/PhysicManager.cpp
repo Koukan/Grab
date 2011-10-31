@@ -13,20 +13,21 @@ PhysicManager::~PhysicManager()
 {
 }
 
-void		PhysicManager::update(GameState &state, int elapsedTime)
+void		PhysicManager::update(GameState &state, double elapsedTime)
 {
   if ((state.getPaused() & GameState::DRAW) == GameState::DRAW)
     return ;
 
-  collisionGroupsMap const				&collisionGroups = state.getCollisionGroups();
-  groupsMap const					&groups = state.getGroups();
-  groupsMap::const_iterator				itGroups,temp;
-  collisionGroupsMap::const_iterator			itCol;
-  std::set<GameObject*>::const_iterator			it1, it2;
-  int							time;
+  collisionGroupsMap const			&collisionGroups = state.getCollisionGroups();
+  groupsMap const				&groups = state.getGroups();
+  groupsMap::const_iterator			itGroups,temp;
+  collisionGroupsMap::const_iterator		itCol;
+  std::set<GameObject*>::const_iterator		it1, it2;
+  double					time;
+
   for (; elapsedTime >= 0; elapsedTime -= CUTTIME)
   {
-    time = (((elapsedTime / CUTTIME) > 0) ? CUTTIME : elapsedTime) / 5;
+    time = (((static_cast<int>(elapsedTime) / CUTTIME) > 0) ? CUTTIME : elapsedTime) / 1000;
     for (itGroups = groups.begin(); itGroups != groups.end(); ++itGroups)
     {
       if ((*itGroups).second->getPhysic())

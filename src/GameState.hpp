@@ -27,7 +27,7 @@ public:
   virtual void	onEnd();
   virtual void	onChange();
   virtual void	onResume();
-  virtual void	update(int elapseTime = 0);
+  virtual void	update(int elapseTime = 0, int relativeTime = 0);
   void		pause(Pause paused = ALL);
   void		play();
   Pause		getPaused();

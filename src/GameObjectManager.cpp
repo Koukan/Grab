@@ -4,7 +4,7 @@
 #include "GameObject.hpp"
 #include <iostream>
 
-Group::Group(int layer, bool physic)
+Group::Group(int layer, std::string const &timeEffectGroup, bool physic)
 	: _layer(layer), _physic(physic)
 {
 }
@@ -18,14 +18,19 @@ Group::~Group()
   }
 }
 
-bool		Group::getPhysic(void) const
+bool		Group::getPhysic() const
 {
   return this->_physic;
 }
 
-int		Group::getLayer(void) const
+int		Group::getLayer() const
 {
   return this->_layer;
+}
+
+double		Group::getTimeEffect() const
+{
+  return _timeEffectGroup->getTimeEffect();
 }
 
 gameObjectSet const	&Group::getObjects(void) const
@@ -38,10 +43,16 @@ void		Group::setLayer(int layer)
   this->_layer = layer;
 }
 
-void		Group::setFlags(int layer, bool physic)
+void		Group::setTimeEffect(std::string const &name)
+{
+}
+
+void		Group::setFlags(int layer, bool physic,
+				std::string const &timeEffectGroup)
 {
   this->_physic = physic;
   this->_layer = layer;
+  //this->_timeEffectGroup = ;
 }
 
 void		Group::addObject(GameObject *object)
@@ -60,7 +71,7 @@ void		Group::removeObject(GameObject *object)
   this->_objects.erase(object);
 }
 
-void		Group::draw(int) const
+void		Group::draw(double) const
 {
   if (this->_layer <= 0)
     return ;
@@ -76,7 +87,7 @@ void		Group::addDelete(GameObject *obj)
   this->_deletes.push(obj);
 }
 
-void		Group::deleteObjects(void)
+void		Group::deleteObjects()
 {
   while (!this->_deletes.empty())
   {
@@ -109,11 +120,12 @@ bool	GameObjectManager::collisionGroups(const std::string &group1,
 	  reverse && this->_collisionGroups.count(stringPair(group2, group1));
 }
 
-void	GameObjectManager::addGroup(const std::string &group, int layer)
+void	GameObjectManager::addGroup(const std::string &group, int layer,
+				    std::string const &timeEffectGroup)
 {
   if (this->_groups.count(group) == 0)
   {
-    Group	*groupe = new Group(layer);
+    Group	*groupe = new Group(layer, timeEffectGroup);
     this->_groups[group] = groupe;
     this->_display.insert(std::pair<int, Group*>(layer, groupe));
   }
@@ -134,13 +146,14 @@ void	GameObjectManager::removeGameObject(GameObject *object)
     object->getGroup()->removeObject(object);
 }
 
-void	GameObjectManager::setGroup(const std::string &name, int layer, bool physic)
+void	GameObjectManager::setGroup(const std::string &name, int layer,
+				    bool physic, std::string const &timeEffectGroup)
 {
-  addGroup(name, layer);
-  this->_groups[name]->setFlags(layer, physic);
+  addGroup(name, layer, timeEffectGroup);
+  this->_groups[name]->setFlags(layer, physic, timeEffectGroup);
 }
 
-void	GameObjectManager::drawGameObject(int elapseTime) const
+void	GameObjectManager::drawGameObject(double elapseTime) const
 {
   for (groupsDisplay::const_iterator it = _display.begin(); it != _display.end(); it++)
     it->second->draw(elapseTime);

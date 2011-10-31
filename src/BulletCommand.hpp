@@ -32,7 +32,7 @@ class BulletCommand : public BulletMLRunner, public Bullet
     virtual void	doAccelY(double speedy);
     virtual double	getBulletSpeedX();
     virtual double	getBulletSpeedY();
-    virtual void	move(int time);
+    virtual void	move(double time);
 
   private:
     double			_turn;
