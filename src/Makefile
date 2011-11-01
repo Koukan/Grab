@@ -23,7 +23,11 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/BulletCommand.cpp					\
 		  $(DIR)/Bullet.cpp						\
 		  $(DIR)/BulletResourceManager.cpp				\
-		  $(DIR)/TimeEffectManager.cpp
+		  $(DIR)/TimeEffectManager.cpp					\
+		  $(DIR)/PolyHitBox.cpp						\
+		  $(DIR)/CircleHitBox.cpp					\
+		  $(DIR)/HitBox.cpp						\
+		  $(DIR)/RectHitBox.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 
