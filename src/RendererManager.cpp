@@ -22,7 +22,7 @@ void	RendererManager::update(GameState &state, double elapsedTime)
 {
   if ((state.getPaused() & GameState::DRAW))
     return ;
-  state.drawGameObject(elapsedTime);
+  state.drawGameObject();
 }
 
 void			RendererManager::clear(void)

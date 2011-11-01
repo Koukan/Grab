@@ -86,7 +86,8 @@ void		Game::update(double elapsedTime)
     paused = state->getPaused();
     if (!(paused & GameState::PHYSIC))
     {
-      state->dispatchEvent(elapsedTime);
+      state->updateTime(elapsedTime);
+      state->dispatchEvent();
       state->update(elapsedTime);
     }
     this->ManagerManager::update(*state, elapsedTime);

@@ -1,18 +1,28 @@
 #include "TimeEffectManager.hpp"
 
 TimeEffectGroup::TimeEffectGroup()
-	: _timeEffect(1)
+	: _timeEffect(1), _time(0)
 {
 }
 
-double		TimeEffectGroup::getTimeEffect()
+void		TimeEffectGroup::updateTime(double time)
 {
-  return _timeEffect;
+  _time += time * _timeEffect;
 }
 
 void		TimeEffectGroup::setTimeEffect(double timeEffect)
 {
   _timeEffect = timeEffect;
+}
+
+double		TimeEffectGroup::getTime() const
+{
+  return _time;
+}
+
+double		TimeEffectGroup::getTimeEffect() const
+{
+  return _timeEffect;
 }
 
 TimeEffectManager::TimeEffectManager()
@@ -24,6 +34,24 @@ TimeEffectManager::~TimeEffectManager()
   for (std::map<std::string, TimeEffectGroup*>::iterator it = _timeEffectMap.begin();
 	it != _timeEffectMap.end(); it++)
     delete it->second;
+}
+
+void		TimeEffectManager::updateTime(double time)
+{
+  for (std::map<std::string, TimeEffectGroup*>::iterator it = _timeEffectMap.begin();
+       it != _timeEffectMap.end(); it++)
+    it->second->updateTime(time);
+}
+
+void		TimeEffectManager::setTimeEffect(std::string const &name,
+						 double timeEffect)
+{
+  this->getTimeEffectGroup(name)->setTimeEffect(timeEffect);
+}
+
+double		TimeEffectManager::getTime(std::string const &name)
+{
+  return this->getTimeEffectGroup(name)->getTime();
 }
 
 double		TimeEffectManager::getTimeEffect(std::string const &name)
@@ -40,10 +68,4 @@ TimeEffectGroup	*TimeEffectManager::getTimeEffectGroup(std::string const &name)
   TimeEffectGroup	*group = new TimeEffectGroup;
   _timeEffectMap[name] = group;
   return group;
-}
-
-void		TimeEffectManager::setTimeEffect(std::string const &name,
-						 double timeEffect)
-{
-  this->getTimeEffectGroup(name)->setTimeEffect(timeEffect);
 }

@@ -167,10 +167,10 @@ void	GameObjectManager::setGroup(const std::string &name, int layer,
   this->_groups[name]->setFlags(layer, physic, timeEffectGroup);
 }
 
-void	GameObjectManager::drawGameObject(double elapseTime) const
+void	GameObjectManager::drawGameObject() const
 {
   for (groupsDisplay::const_iterator it = _display.begin(); it != _display.end(); it++)
-    it->second->draw(elapseTime * it->second->getTimeEffect());
+    it->second->draw(it->second->getTimeEffectGroup()->getTime());
 }
 
 collisionGroupsMap const	&GameObjectManager::getCollisionGroups(void) const

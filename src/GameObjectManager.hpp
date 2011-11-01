@@ -66,7 +66,7 @@ class GameObjectManager : public TimeEffectManager
     void	addGameObject(GameObject *object, const std::string &group,
 		    	int layer = 1);
     void	removeGameObject(GameObject *object);
-    void	drawGameObject(double elapseTime) const;
+    void	drawGameObject() const;
 
     // setter
     template <class InstanceClass>
