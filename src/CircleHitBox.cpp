@@ -1,7 +1,7 @@
 #include "CircleHitBox.hpp"
 
 CircleHitBox::CircleHitBox(double x, double y, double ray)
-	: HitBox(x, y), _ray(ray)
+	: HitBox(x, y), _radius(ray)
 {
 }
 
@@ -9,16 +9,16 @@ CircleHitBox::~CircleHitBox(void)
 {
 }
 
-double CircleHitBox::getRay() const
+double CircleHitBox::getRadius() const
 {
-	return (this->_ray);
+	return (this->_radius);
 }
 
 bool CircleHitBox::collideCircle(CircleHitBox &circle)
 {
 	double distx = circle.getX() - this->_x;
 	double disty = circle.getY() - this->_y;
-	double dist = circle.getRay() + this->_ray;
+	double dist = circle.getRadius() + this->_radius;
 
 	return (distx * distx + disty * disty < dist * dist);
 }
