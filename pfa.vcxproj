@@ -107,6 +107,7 @@
     <ClCompile Include="src\RectHitBox.cpp" />
     <ClCompile Include="src\RendererManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\TimeEffectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Bullet.hpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\RendererManager.hpp" />
     <ClInclude Include="src\Singleton.hpp" />
     <ClInclude Include="src\Sprite.hpp" />
+    <ClInclude Include="src\TimeEffectManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\test.xml" />

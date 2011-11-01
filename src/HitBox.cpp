@@ -22,6 +22,16 @@ double HitBox::getY() const
 	return (this->_y);
 }
 
+void HitBox::setX(double x)
+{
+	this->_x = x;
+}
+
+void HitBox::setY(double y)
+{
+	this->_y = y;
+}
+
 bool HitBox::CircleCollideRect(CircleHitBox &circle, RectHitBox &rect)
 {
 	return (((circle.getX() - rect.getX()) * (circle.getX() - rect.getX()) +
