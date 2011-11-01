@@ -2,6 +2,10 @@
 #include "Bullet.hpp"
 #include "bulletmlparser.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 

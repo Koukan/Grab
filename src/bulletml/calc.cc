@@ -1580,7 +1580,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (yymsgp);
+        yyerror (const_cast<char *>(yymsgp));
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
