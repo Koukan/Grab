@@ -23,6 +23,7 @@ class RendererManager : public Manager, public Singleton<RendererManager>
     CL_DisplayWindow	*getWindow(void);
 
   protected:
+    CL_Window		*_window2;
     CL_DisplayWindow	*_window;
     CL_GraphicContext	_gc;
 

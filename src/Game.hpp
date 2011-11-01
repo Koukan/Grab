@@ -36,7 +36,6 @@ private:
   CL_SetupMikMod	_setup_mikmod;
   CL_SetupVorbis	_setup_vorbis;
   CL_SetupCore		_setupCore;
-  CL_SetupNetwork	_setupNetwork;
   CL_ConsoleLogger	_logger;
 };
 

@@ -32,7 +32,7 @@ RM		= rm -f
 
 CXXFLAGS	= -W -Wall -Wextra -g3 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml
 
-LDFLAGS		= `pkg-config --libs clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
+LDFLAGS		= `pkg-config --libs clanCore-2.3 clanGUI-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
 		  -lpthread -Lbulletml -lbulletml
 
 $(NAME)		: $(OBJS)

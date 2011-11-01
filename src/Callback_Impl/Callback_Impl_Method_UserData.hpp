@@ -5,7 +5,7 @@
 #include "Callback_Impl_UserData2.hpp"
 
 template <class InstanceClass, typename UserData>
-class Callback_Impl_Method_UserData : public Callback_Impl, public Callback_Impl_UserData2<InstanceClass, UserData>
+class Callback_Impl_Method_UserData : public Callback_Impl_UserData2<InstanceClass, UserData>, public Callback_Impl
 {
   public:
     Callback_Impl_Method_UserData(void (InstanceClass::*function)(UserData&));

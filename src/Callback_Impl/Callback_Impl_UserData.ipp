@@ -20,5 +20,6 @@ Callback_Impl_UserData<UserData>::~Callback_Impl_UserData()
 template <typename UserData>
 void		Callback_Impl_UserData<UserData>::setData(UserData &data)
 {
+  std::cout << "plop" << std::endl;
   _data1 = &data;
 }
