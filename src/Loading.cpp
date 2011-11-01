@@ -33,7 +33,6 @@ void	Loading::slowTest(const CL_InputEvent &event)
   }
   else
     this->setTimeEffect("default", this->getTimeEffect() + 0.1);
-  std::cout << this->getTimeEffect() << std::endl;
 }
 
 void	Loading::onStart()
