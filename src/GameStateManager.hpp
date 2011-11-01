@@ -13,16 +13,21 @@ public:
   GameStateManager();
   virtual ~GameStateManager();
   bool		pushState(const std::string &name,
-		  	  GameState::Pause paused = GameState::ALL);
+		  	GameState::Pause paused = GameState::ALL);
   bool		changeState(const std::string &name,
-			    GameState::Pause paused = GameState::ALL, bool del = true);
+			GameState::Pause paused = GameState::ALL, bool del = true);
   void		popState(bool del = true);
-  void		removeState(const std::string &name);
+
   template <class T>
   void		loadState(T &state);
   template <class T>
   void		loadState(const std::string &name);
+  void		removeState(const std::string &name);
+
+  //getter
   GameState	&getCurrentState();
+
+protected:
   void		addDelete(GameState *state);
   void		removeDelete();
 

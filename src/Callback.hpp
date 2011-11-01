@@ -55,6 +55,7 @@ class Callback
 
   private:
     Callback_Impl	*_callback;
+    bool		_instance;
 };
 
 #include "Callback.ipp"

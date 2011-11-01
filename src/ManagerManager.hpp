@@ -2,13 +2,13 @@
 #include <list>
 #include "Manager.hpp"
 
-class ManagerManager
+class ManagerManager : public Manager
 {
 public:
 	ManagerManager(void);
 	~ManagerManager(void);
 
-	void	updateManager(GameState &state, int elapsedTime);
+	void	update(GameState &state, double elapsedTime);
 	void	loadManager(Manager *manager);
 	void	unloadManager(Manager *manager);
 

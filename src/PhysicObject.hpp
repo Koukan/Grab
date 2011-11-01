@@ -10,7 +10,7 @@ public:
   virtual ~PhysicObject();
   virtual bool	collide(PhysicObject &);
   virtual void	draw() = 0;
-  virtual void	move(int time);
+  virtual void	move(double time);
   double	getVx() const;
   double	getVy() const;
   void		setVx(double);

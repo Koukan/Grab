@@ -11,11 +11,12 @@ public:
 	Loading();
 	~Loading();
 	virtual void	onStart();
-	virtual	void	update(int elapseTime = 0);
+	virtual	void	update(int elapseTime = 0, int relativeTime = 0);
 
 private:
 	void			escape(const CL_InputEvent &event);
 	void			click(const CL_InputEvent &event);
+	void			slowTest(const CL_InputEvent &event);
 
 	BulletCommand		*_bullet;
 	BulletMLParser		*_parser;

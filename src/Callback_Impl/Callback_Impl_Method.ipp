@@ -22,7 +22,7 @@ void		Callback_Impl_Method<InstanceClass>::call()
 {
   #if defined(DEBUG)
   if (!this->_data1)
-    throw std::execption();
+    throw std::exception();
   #endif
   (this->_data1->*_func)();
 }

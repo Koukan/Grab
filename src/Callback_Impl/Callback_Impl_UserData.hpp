@@ -6,7 +6,7 @@ class Callback_Impl_UserData
 {
   public:
     virtual ~Callback_Impl_UserData();
-    virtual void	setData(UserData &data);
+    void	setData(UserData &data);
 
   protected:
     Callback_Impl_UserData();

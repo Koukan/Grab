@@ -78,7 +78,11 @@ typedef OSClock<WinClock> Clock;
 class	UnixClock
 {
 public:
-	UnixClock(){}
+	UnixClock()
+	{
+	  gettimeofday(&_time, NULL);
+	  _begin = _time.tv_sec * 1000 + _time.tv_usec / 1000;
+	}
 	~UnixClock(){}
 	void	update()
 	{
@@ -101,6 +105,7 @@ public:
 
 private:
 	struct timeval	_time;
+	double		_begin;
 };
 
 typedef OSClock<UnixClock> Clock;
