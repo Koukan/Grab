@@ -7,7 +7,6 @@ class GameObject
 public:
 	GameObject(double x = 0, double y = 0, Group *group = 0);
 	virtual ~GameObject(void);
-	static void	operator delete(void *obj);
 
 	double		getX() const;
 	double		getY() const;

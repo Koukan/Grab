@@ -11,27 +11,17 @@ GameObject::~GameObject(void)
     _group->removeObject(this);
 }
 
-void		GameObject::operator delete(void *obj)
-{
-  GameObject	*object = static_cast<GameObject*>(obj);
-
-  if (!object->getGroup())
-    ::delete object;
-  else
-    object->getGroup()->addDelete(static_cast<GameObject*>(obj));
-}
-
-double		GameObject::getX(void) const
+double		GameObject::getX() const
 {
   return _x;
 }
 
-double		GameObject::getY(void) const
+double		GameObject::getY() const
 {
   return _y;
 }
 
-Group		*GameObject::getGroup(void) const
+Group		*GameObject::getGroup() const
 {
   return _group;
 }

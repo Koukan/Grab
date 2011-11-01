@@ -3,7 +3,6 @@
 
 EventDispatcher::EventDispatcher()
 {
-  _slow = 1;
 }
 
 EventDispatcher::~EventDispatcher()
@@ -22,26 +21,10 @@ void		EventDispatcher::pushEvent(Event *event)
   _events.push(event);
 }
 
-void		EventDispatcher::pushEvent(Event *event, int ms, bool relatif)
+void		EventDispatcher::pushEvent(Event *event, int ms)
 {
   unsigned int	time;
 
-  //if (relatif)
-  //{
-    //time = _relativeTime + ms;
-    //for (std::list<timedPair>::iterator it = _timedRelativeEvents.begin();
-	 //it != _timedRelativeEvents.end(); it++)
-    //{
-      //if (it->first > time)
-      //{
-	//_timedRelativeEvents.insert(it, timedPair(time, event));
-	//return ;
-      //}
-    //}
-    //_timedRelativeEvents.push_back(timedPair(time, event));
-  //}
-  //else
-  //{
     time = _time + ms;
     for (std::list<timedPair>::iterator it = _timedEvents.begin();
 	 it != _timedEvents.end(); it++)
@@ -53,7 +36,6 @@ void		EventDispatcher::pushEvent(Event *event, int ms, bool relatif)
       }
     }
     _timedEvents.push_back(timedPair(time, event));
-    //}
 }
 
 void		EventDispatcher::registerEvent(std::string const &type,
@@ -65,42 +47,6 @@ void		EventDispatcher::registerEvent(std::string const &type,
 void		EventDispatcher::removeEvent(std::string const &type)
 {
   _registeredEvents.erase(type);
-}
-
-void		EventDispatcher::removeSlow()
-{
-  _slowList.pop_front();
-  updateSlow();
-}
-
-void		EventDispatcher::setSlow(double slow)
-{
-  _slowList.push_back(slow);
-  updateSlow();
-}
-
-double		EventDispatcher::getSlow() const
-{
-  return _slow;
-}
-
-void		EventDispatcher::updateSlow()
-{
-  if (_slowList.empty())
-  {
-    _slow = 1;
-    return ;
-  }
-
-  double	slow = 1000;
-
-  for (std::list<double>::iterator it = _slowList.begin();
-       it != _slowList.end(); it++)
-  {
-    if (*it < slow)
-      slow = *it;
-  }
-  _slow = slow;
 }
 
 void		EventDispatcher::dispatch()
@@ -146,4 +92,3 @@ void		EventDispatcher::dispatchTimed(std::list<timedPair> &list,
     }
   }
 }
-

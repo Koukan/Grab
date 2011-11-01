@@ -24,13 +24,16 @@ void	Loading::update(int, int)
 {
 }
 
-void	Loading::slowTest(const CL_InputEvent &)
+void	Loading::slowTest(const CL_InputEvent &event)
 {
-  std::cout << this->getSlow() << std::endl;
-  if (this->getSlow() == 1)
-    this->setSlow(0.5);
-  //else
-    //this->removeSlow();
+  if (event.id == CL_MOUSE_WHEEL_DOWN)
+  {
+    double timeEffect = this->getTimeEffect() - 0.1;
+    this->setTimeEffect("default", (timeEffect < 0) ? 0 : timeEffect);
+  }
+  else
+    this->setTimeEffect("default", this->getTimeEffect() + 0.1);
+  std::cout << this->getTimeEffect() << std::endl;
 }
 
 void	Loading::onStart()
@@ -47,6 +50,7 @@ void	Loading::onStart()
   _bullet = new BulletCommand(_parser, *this, "default", 512, 360);
   this->addGameObject(_bullet, "ship", 10);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::escape, CL_InputDevice::keyboard, CL_KEY_ESCAPE);
-  this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::keyboard, CL_KEY_SPACE);
+  this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_UP);
+  this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_DOWN);
   this->registerInputCallback(CL_InputEvent::released, *this, &Loading::click, CL_InputDevice::pointer, CL_MOUSE_LEFT);
 }

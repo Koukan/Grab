@@ -2,10 +2,13 @@
 #include "PhysicObject.hpp"
 #include "DrawableObject.hpp"
 #include "GameObject.hpp"
+#include "GameState.hpp"
 #include <iostream>
 
-Group::Group(int layer, std::string const &timeEffectGroup, bool physic)
-	: _layer(layer), _physic(physic)
+Group::Group(GameState &state, int layer, std::string const &timeEffectGroup,
+	     bool physic)
+	: _gameState(state), _layer(layer), _physic(physic),
+	  _timeEffectGroup(state.getTimeEffectGroup(timeEffectGroup))
 {
 }
 
@@ -13,24 +16,29 @@ Group::~Group()
 {
   for (gameObjectSet::iterator it = this->_objects.begin();
 	it != this->_objects.end(); it++)
-  {
     delete *it;
-  }
 }
 
-bool		Group::getPhysic() const
+
+// getter
+bool			Group::getPhysic() const
 {
   return this->_physic;
 }
 
-int		Group::getLayer() const
+int			Group::getLayer() const
 {
   return this->_layer;
 }
 
-double		Group::getTimeEffect() const
+double			Group::getTimeEffect() const
 {
-  return _timeEffectGroup->getTimeEffect();
+  return this->_timeEffectGroup->getTimeEffect();
+}
+
+TimeEffectGroup		*Group::getTimeEffectGroup() const
+{
+  return this->_timeEffectGroup;
 }
 
 gameObjectSet const	&Group::getObjects(void) const
@@ -43,8 +51,19 @@ void		Group::setLayer(int layer)
   this->_layer = layer;
 }
 
-void		Group::setTimeEffect(std::string const &name)
+void		Group::setPhysic(bool physicable)
 {
+  this->_physic = physicable;
+}
+
+void		Group::setTimeEffect(double timeEffect)
+{
+  this->_timeEffectGroup->setTimeEffect(timeEffect);
+}
+
+void		Group::setTimeEffectGroup(std::string const &timeEffectGroup)
+{
+  this->_timeEffectGroup = _gameState.getTimeEffectGroup(timeEffectGroup);
 }
 
 void		Group::setFlags(int layer, bool physic,
@@ -52,7 +71,7 @@ void		Group::setFlags(int layer, bool physic,
 {
   this->_physic = physic;
   this->_layer = layer;
-  //this->_timeEffectGroup = ;
+  this->setTimeEffectGroup(timeEffectGroup);
 }
 
 void		Group::addObject(GameObject *object)
@@ -80,11 +99,6 @@ void		Group::draw(double) const
   {
     static_cast<DrawableObject*>(*it)->draw();
   }
-}
-
-void		Group::addDelete(GameObject *obj)
-{
-  this->_deletes.push(obj);
 }
 
 void		Group::deleteObjects()
@@ -125,7 +139,7 @@ void	GameObjectManager::addGroup(const std::string &group, int layer,
 {
   if (this->_groups.count(group) == 0)
   {
-    Group	*groupe = new Group(layer, timeEffectGroup);
+    Group *groupe = new Group(static_cast<GameState&>(*this), layer, timeEffectGroup);
     this->_groups[group] = groupe;
     this->_display.insert(std::pair<int, Group*>(layer, groupe));
   }

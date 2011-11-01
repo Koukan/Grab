@@ -84,7 +84,7 @@ void		Game::update(double elapsedTime)
     state = *it;
     it++;
     paused = state->getPaused();
-    if ((paused & GameState::NODRAW) == GameState::NODRAW || !paused)
+    if (!(paused & GameState::PHYSIC))
     {
       state->dispatchEvent(elapsedTime);
       state->update(elapsedTime);

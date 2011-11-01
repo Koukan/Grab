@@ -19,18 +19,14 @@ class EventDispatcher
     virtual ~EventDispatcher();
     void	dispatchEvent(double elapsedTime);
     void	pushEvent(Event *event);
-    void	pushEvent(Event *event, int ms, bool relatif = false);
+    void	pushEvent(Event *event, int ms);
     void	registerEvent(std::string const &type, void (*function)(Event &));
     template <class InstanceClass>
     void	registerEvent(std::string const &type, InstanceClass &instance,
 		 	      void (InstanceClass::*method)(Event &));
     void	removeEvent(std::string const &type);
-    void	removeSlow();
-    void	setSlow(double slow);
-    double	getSlow() const;
 
   private:
-    void	updateSlow();
     void	dispatch();
     void	dispatchTimed(std::list<timedPair> &list, unsigned int time);
 
@@ -40,8 +36,6 @@ class EventDispatcher
     std::list<timedPair>	_timedRelativeEvents;
     unsigned int		_time;
     unsigned int		_relativeTime;
-    double			_slow;
-    std::list<double>		_slowList;
 };
 
 #include "EventDispatcher.ipp"

@@ -20,7 +20,7 @@ void	RendererManager::initGraphics(const std::string &name)
 
 void	RendererManager::update(GameState &state, double elapsedTime)
 {
-  if ((state.getPaused() & GameState::NODRAW) == GameState::NODRAW)
+  if ((state.getPaused() & GameState::DRAW))
     return ;
   state.drawGameObject(elapsedTime);
 }

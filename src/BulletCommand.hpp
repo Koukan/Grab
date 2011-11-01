@@ -36,6 +36,7 @@ class BulletCommand : public BulletMLRunner, public Bullet
 
   private:
     double			_turn;
+    bool			_end;
     GameState			&_state;
     BulletResource const	&_resource;
 };

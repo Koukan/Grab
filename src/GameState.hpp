@@ -17,7 +17,7 @@ public:
   {
     NONE = 0,
     DRAW = 1,
-    NODRAW = 2,
+    PHYSIC = 2,
     ALL = 3
   };
 

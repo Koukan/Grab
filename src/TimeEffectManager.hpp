@@ -9,13 +9,10 @@ class TimeEffectGroup
   public:
    TimeEffectGroup();
    double		getTimeEffect();
-   void			setTimeEffect(double timeEffect);
-   void			removeTimeEffect();
+   void			setTimeEffect(double timeEffect = 1);
 
   private:
-   void			update(double timeEffect);
    double		_timeEffect;
-   std::list<double>	_timeEffectList;
 };
 
 class TimeEffectManager
@@ -23,9 +20,10 @@ class TimeEffectManager
   public:
     TimeEffectManager();
     ~TimeEffectManager();
-    TimeEffectGroup	*getTimeEffect(std::string const &name);
-    void		setTimeEffect(std::string const &name, double timeEffect);
-    void		removeTimeEffect(std::string const &name);
+    double		getTimeEffect(std::string const &name = "default");
+    TimeEffectGroup	*getTimeEffectGroup(std::string const &name = "default");
+    void		setTimeEffect(std::string const &name = "default",
+		    		      double timeEffect = 1);
 
   private:
     std::map<std::string, TimeEffectGroup*>	_timeEffectMap;
