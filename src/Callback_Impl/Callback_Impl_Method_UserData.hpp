@@ -15,7 +15,6 @@ class Callback_Impl_Method_UserData : public Callback_Impl_UserData2<InstanceCla
 		    void (InstanceClass::*function)(UserData&), UserData &data);
     virtual ~Callback_Impl_Method_UserData();
     virtual void	call();
-    virtual void	setData(UserData &data);
 
   private:
     void		(InstanceClass::*_func)(UserData&);

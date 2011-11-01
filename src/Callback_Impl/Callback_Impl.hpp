@@ -8,10 +8,7 @@ class Callback_Impl
 {
   public:
     virtual ~Callback_Impl(){}
-    virtual void	call(void)
-    {
-      	throw std::exception();
-    }
+    virtual void	call(void) = 0;
 
   protected:
     Callback_Impl(){}

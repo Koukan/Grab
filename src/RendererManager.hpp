@@ -16,7 +16,7 @@ class RendererManager : public Manager, public Singleton<RendererManager>
     RendererManager(void);
     ~RendererManager(void);
     void		initGraphics(const std::string &);
-    void		update(GameState &state, int elapsedTime);
+    void		update(GameState &state, double elapsedTime);
     void		clear();
     void		flip();
     CL_GraphicContext	&getGC(void);
@@ -30,4 +30,3 @@ class RendererManager : public Manager, public Singleton<RendererManager>
     CL_SetupDisplay 	_setup_display;
     CL_SetupGL		_setup_gl;
 };
-

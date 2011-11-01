@@ -1,12 +1,13 @@
 #include "PhysicObject.hpp"
 
-PhysicObject::PhysicObject(double x, double y) :
-  DrawableObject(x, y), _vx(0), _vy(0)
+PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy) :
+  DrawableObject(hitbox.getX(), hitbox.getY()), _vx(vx), _vy(vy), _hitBox(&hitbox)
 {
 }
 
 PhysicObject::~PhysicObject(void)
 {
+	delete this->_hitBox;
 }
 
 double PhysicObject::getVx() const
@@ -19,6 +20,11 @@ double PhysicObject::getVy() const
   return (this->_vy);
 }
 
+HitBox	&PhysicObject::getHitBox() const
+{
+	return (*this->_hitBox);
+}
+
 void PhysicObject::setVx(double vx)
 {
   this->_vx = vx;
@@ -29,7 +35,12 @@ void PhysicObject::setVy(double vy)
   this->_vy = vy;
 }
 
-void	PhysicObject::move(int time)
+void PhysicObject::setHitBox(HitBox &hitBox)
+{
+	this->_hitBox = &hitBox;
+}
+
+void	PhysicObject::move(double time)
 {
   this->_x += this->_vx * time;
   this->_y += this->_vy * time;
@@ -37,35 +48,9 @@ void	PhysicObject::move(int time)
 
 bool PhysicObject::collide(PhysicObject &obj)
 {
-  PhysicObject *mvt;
-  PhysicObject *other;
-
-  if (obj.getVx() != 0 || obj.getVy() != 0)
-    {
-      mvt = &obj;
-      other = this;
-    }
-  else
-    {
-      mvt = this;
-      other = &obj;
-    }
-  int x1 = (_x - 238) / 75 * 75;
-  int x2 = (mvt->getX() - 238) / 75 * 75;
-  int y1 = _y / 75 * 75;
-  int y2 = mvt->getY() / 75 * 75;
-
-  // if ((mvt->getVx() > 0 && x2 >= x1 + 75 / 2 && x2 <= x1 + 75 && y2 >= y1 && y2 <= y1 + 75)/* ||
-  //     (mvt->getVx() < 0 && x2 >= x1 && x2 <= x1 + 75 / 2 && y2 >= y1 && y2 <= y1 + 75) ||
-  //      (mvt->getVy() > 0 && x2 >= x1 && x2 <= x1 + 75 && y2 >= y1 && y2 <= y1 + 75 / 2) ||
-  //      (mvt->getVy() < 0 && x2 >= x1 && x2 <= x1 + 75 && y2 >= y1 + 75 / 2 && y2 <= y1 + 75)*/)
-  //   return true;
-
-
-   if (x2 >= x1 + 75 / 2 && x2 <= x1 + (75 / 3 * 2) &&
-    y2 >= y1 && y2 <= y1 + 75 / 3)
-    {
-      return true;
-    }
-  return false;
+	this->_hitBox->setX(this->_x);
+	this->_hitBox->setY(this->_y);
+	obj.getHitBox().setX(obj.getX());
+	obj.getHitBox().setY(obj.getY());
+	return (this->_hitBox->collide(obj.getHitBox()));
 }

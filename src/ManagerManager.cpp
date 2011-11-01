@@ -6,12 +6,12 @@ ManagerManager::ManagerManager()
 ManagerManager::~ManagerManager()
 {}
 
-void	ManagerManager::update(GameState &state, int elapsedTime)
+void	ManagerManager::update(GameState &state, double elapsedTime)
 {
-	for	(std::list<Manager*>::iterator it = _managers.begin(); it != _managers.end(); it++)
-	{
-	  (*it)->update(state, elapsedTime);
-	}
+  for (std::list<Manager*>::iterator it = _managers.begin(); it != _managers.end(); it++)
+  {
+    (*it)->update(state, elapsedTime);
+  }
 }
 
 void	ManagerManager::loadManager(Manager *manager)

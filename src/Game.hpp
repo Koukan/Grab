@@ -25,7 +25,7 @@ public:
 private:
   void		initInput(void);
   void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
-  void		update(int elapsedTime);
+  void		update(double elapsedTime);
 
   bool			_quit;
   CL_InputContext	_ic;

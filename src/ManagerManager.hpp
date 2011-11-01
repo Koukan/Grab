@@ -8,7 +8,7 @@ public:
 	ManagerManager(void);
 	~ManagerManager(void);
 
-	void	update(GameState &state, int elapsedTime);
+	void	update(GameState &state, double elapsedTime);
 	void	loadManager(Manager *manager);
 	void	unloadManager(Manager *manager);
 

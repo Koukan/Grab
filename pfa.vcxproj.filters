@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Fichiers sources">
@@ -18,6 +18,12 @@
     </Filter>
     <Filter Include="Fichiers d%27en-tête\Callback_impl">
       <UniqueIdentifier>{985d7bc4-715b-4d26-83f7-a3ae36315d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\bulletml">
+      <UniqueIdentifier>{19256aca-3641-4df5-9fb0-b14f6e4d0af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\bulletml">
+      <UniqueIdentifier>{2c4e2ea6-0d9f-4184-b796-9ebff694bbd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +70,66 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\formula-variables.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\bulletmltree.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\bulletmlrunnerimpl.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\bulletmlrunner.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\bulletmlparser.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\bulletmlparser-tinyxml.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\calc.cc">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\tinyxml\tinyxml.cpp">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\tinyxml\tinyxmlerror.cpp">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bulletml\tinyxml\tinyxmlparser.cpp">
+      <Filter>Fichiers sources\bulletml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameState.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bullet.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletCommand.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletResourceManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CircleHitBox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HitBox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PolyHitBox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RectHitBox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeEffectManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,6 +215,72 @@
     <ClInclude Include="src\Sprite.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="src\bulletml\auto_ptr_fix.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmltree.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlcommon.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlerror.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlparser-tinyxml.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlparser.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlrunner.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\bulletmlrunnerimpl.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\calc.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\formula-variables.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\formula.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\tree.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bulletml\tinyxml\tinyxml.h">
+      <Filter>Fichiers d%27en-tête\bulletml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bullet.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletCommand.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletResourceManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CircleHitBox.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HitBox.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PolyHitBox.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RectHitBox.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimeEffectManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Callback.ipp" />
@@ -157,5 +289,9 @@
     <None Include="src\Callback_Impl\Callback_Impl_Method_UserData.ipp" />
     <None Include="src\Callback_Impl\Callback_Impl_UserData.ipp" />
     <None Include="src\GameObjectManager.ipp" />
+    <None Include="src\bulletml\calc.yy">
+      <Filter>Fichiers sources</Filter>
+    </None>
+    <None Include="resource\test.xml" />
   </ItemGroup>
 </Project>

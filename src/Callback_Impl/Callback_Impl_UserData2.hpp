@@ -8,7 +8,7 @@ class Callback_Impl_UserData2 : public Callback_Impl_UserData<UserData1>
 {
   public:
     virtual ~Callback_Impl_UserData2();
-    void		setData(UserData1 &data1, UserData2 &data2);
+    void	setData(UserData1 &data1, UserData2 &data2);
 
   protected:
     Callback_Impl_UserData2();

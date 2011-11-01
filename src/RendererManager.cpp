@@ -27,11 +27,11 @@ void	RendererManager::initGraphics(const std::string &name)
 	_gc = _window2->get_display_window().get_gc();
 }
 
-void	RendererManager::update(GameState &state, int elapsedTime)
+void	RendererManager::update(GameState &state, double elapsedTime)
 {
-  if ((state.getPaused() & GameState::NODRAW) == GameState::NODRAW)
+  if ((state.getPaused() & GameState::DRAW))
     return ;
-  state.drawGameObject(elapsedTime);
+  state.drawGameObject();
 }
 
 void			RendererManager::clear(void)

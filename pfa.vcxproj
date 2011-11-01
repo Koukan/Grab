@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -40,7 +40,7 @@
     <IncludePath>.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\Environment;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,23 +73,59 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Bullet.cpp" />
+    <ClCompile Include="src\BulletCommand.cpp" />
+    <ClCompile Include="src\bulletml\bulletmlparser-tinyxml.cc" />
+    <ClCompile Include="src\bulletml\bulletmlparser.cc" />
+    <ClCompile Include="src\bulletml\bulletmlrunner.cc" />
+    <ClCompile Include="src\bulletml\bulletmlrunnerimpl.cc" />
+    <ClCompile Include="src\bulletml\bulletmltree.cc" />
+    <ClCompile Include="src\bulletml\calc.cc" />
+    <ClCompile Include="src\bulletml\formula-variables.cc" />
+    <ClCompile Include="src\bulletml\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="src\bulletml\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="src\bulletml\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="src\BulletResourceManager.cpp" />
     <ClCompile Include="src\Callback.cpp" />
     <ClCompile Include="src\Callback_Impl\Callback_Impl_Function.cpp" />
+    <ClCompile Include="src\CircleHitBox.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\EventDispatcher.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\GameObjectManager.cpp" />
+    <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\HitBox.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\Loading.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PhysicManager.cpp" />
     <ClCompile Include="src\PhysicObject.cpp" />
     <ClCompile Include="src\ManagerManager.cpp" />
+    <ClCompile Include="src\PolyHitBox.cpp" />
+    <ClCompile Include="src\RectHitBox.cpp" />
     <ClCompile Include="src\RendererManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\TimeEffectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Bullet.hpp" />
+    <ClInclude Include="src\BulletCommand.hpp" />
+    <ClInclude Include="src\bulletml\auto_ptr_fix.h" />
+    <ClInclude Include="src\bulletml\bulletmlcommon.h" />
+    <ClInclude Include="src\bulletml\bulletmlerror.h" />
+    <ClInclude Include="src\bulletml\bulletmlparser-tinyxml.h" />
+    <ClInclude Include="src\bulletml\bulletmlparser.h" />
+    <ClInclude Include="src\bulletml\bulletmlrunner.h" />
+    <ClInclude Include="src\bulletml\bulletmlrunnerimpl.h" />
+    <ClInclude Include="src\bulletml\bulletmltree.h" />
+    <ClInclude Include="src\bulletml\calc.h" />
+    <ClInclude Include="src\bulletml\formula-variables.h" />
+    <ClInclude Include="src\bulletml\formula.h" />
+    <ClInclude Include="src\bulletml\tinyxml\tinyxml.h" />
+    <ClInclude Include="src\bulletml\tree.h" />
+    <ClInclude Include="src\BulletResourceManager.hpp" />
     <ClInclude Include="src\Callback.hpp" />
     <ClInclude Include="src\Callback_Impl\Callback_Impl.hpp" />
     <ClInclude Include="src\Callback_Impl\Callback_Impl_Function.hpp" />
@@ -99,6 +135,7 @@
     <ClInclude Include="src\Callback_Impl\Callback_Impl_Method_UserData.hpp" />
     <ClInclude Include="src\Callback_Impl\Callback_Impl_Method_UserData2.hpp" />
     <ClInclude Include="src\Callback_Impl\Callback_Impl_UserData.hpp" />
+    <ClInclude Include="src\CircleHitBox.hpp" />
     <ClInclude Include="src\Clock.hpp" />
     <ClInclude Include="src\DrawableObject.hpp" />
     <ClInclude Include="src\Event.hpp" />
@@ -108,17 +145,24 @@
     <ClInclude Include="src\GameObjectManager.hpp" />
     <ClInclude Include="src\GameState.hpp" />
     <ClInclude Include="src\GameStateManager.hpp" />
+    <ClInclude Include="src\HitBox.hpp" />
     <ClInclude Include="src\InputManager.hpp" />
     <ClInclude Include="src\Loading.hpp" />
     <ClInclude Include="src\Manager.hpp" />
     <ClInclude Include="src\ManagerManager.hpp" />
     <ClInclude Include="src\NonCopyable.hpp" />
+    <ClInclude Include="src\PhysicManager.hpp" />
     <ClInclude Include="src\PhysicObject.hpp" />
+    <ClInclude Include="src\PolyHitBox.hpp" />
+    <ClInclude Include="src\RectHitBox.hpp" />
     <ClInclude Include="src\RendererManager.hpp" />
     <ClInclude Include="src\Singleton.hpp" />
     <ClInclude Include="src\Sprite.hpp" />
+    <ClInclude Include="src\TimeEffectManager.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource\test.xml" />
+    <None Include="src\bulletml\calc.yy" />
     <None Include="src\Callback.ipp" />
     <None Include="src\Callback_Impl\Callback_Impl_Function_UserData.ipp" />
     <None Include="src\Callback_Impl\Callback_Impl_Method.ipp" />

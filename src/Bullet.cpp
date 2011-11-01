@@ -1,7 +1,8 @@
 #include "Bullet.hpp"
+#include "RectHitBox.hpp"
 
 Bullet::Bullet(double x, double y, double direction, double speed)
-	: PhysicObject(x, y), _direction(direction), _speed(speed)
+	: PhysicObject(*new RectHitBox(x, y, 5, 5)), _direction(direction), _speed(speed)
 {
   _vx = speed * sin(direction);
   _vy = speed * cos(direction);
@@ -9,7 +10,7 @@ Bullet::Bullet(double x, double y, double direction, double speed)
 
 Bullet::Bullet(CL_ResourceManager &resource, std::string const & sprite,
 	       double x, double y, double direction, double speed)
-	: PhysicObject(x, y), _direction(direction), _speed(speed)
+	: PhysicObject(*new RectHitBox(x, y, 5, 5)), _direction(direction), _speed(speed)
 {
   _sprite = new Sprite(sprite, resource);
   _vx = speed * sin(direction);
