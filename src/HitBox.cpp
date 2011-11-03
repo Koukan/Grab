@@ -50,10 +50,12 @@ bool HitBox::CircleCollideRect(CircleHitBox &circle, RectHitBox &rect)
 
 bool HitBox::CircleCollidePoly(CircleHitBox &circle, PolyHitBox &poly)
 {
+	poly.getPoly().set_translation(poly.getX(), poly.getY());
 	return (false);
 }
 
 bool HitBox::RectCollidePoly(RectHitBox &rect, PolyHitBox &poly)
 {
+	poly.getPoly().set_translation(poly.getX(), poly.getY());
 	return (false);
 }
