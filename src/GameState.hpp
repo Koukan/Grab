@@ -6,11 +6,12 @@
 #include "GameObjectManager.hpp"
 #include "EventDispatcher.hpp"
 #include "ResourceManager.hpp"
+#include "GUIManager.hpp"
 
 class Game;
 
 class GameState : public InputManager, public GameObjectManager, public ResourceManager,
-		  public EventDispatcher
+		  public EventDispatcher, public GUIManager
 {
 public:
   enum Pause

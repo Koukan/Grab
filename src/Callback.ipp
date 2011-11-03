@@ -66,9 +66,14 @@ Callback::Callback(void(*function)(UserData1&, UserData2&),
 {
 }
 
+
 template <typename UserData>
 void		Callback::call(UserData &data)
-{
+{ 
+  #if defined (DEBUG)
+  if (!dynamic_cast<Callback_Impl_UserData<UserData>*>(_callback))
+    throw std::exception();
+  #endif
   Callback_Impl_UserData<UserData>	*callback =
   dynamic_cast<Callback_Impl_UserData<UserData>*>(_callback);
 

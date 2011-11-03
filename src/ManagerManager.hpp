@@ -6,7 +6,7 @@ class ManagerManager : public Manager
 {
 public:
 	ManagerManager(void);
-	~ManagerManager(void);
+	virtual ~ManagerManager(void);
 
 	void	update(GameState &state, double elapsedTime);
 	void	loadManager(Manager *manager);

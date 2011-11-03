@@ -16,10 +16,10 @@ public:
 	bool collideRect(RectHitBox &rect);
 	bool collidePoly(PolyHitBox &poly);
 
-	double getRay() const;
+	double getRadius() const;
 
 private:
 
-	double	_ray;
+	double	_radius;
 };
 
