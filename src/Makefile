@@ -27,7 +27,8 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/PolyHitBox.cpp						\
 		  $(DIR)/CircleHitBox.cpp					\
 		  $(DIR)/HitBox.cpp						\
-		  $(DIR)/RectHitBox.cpp
+		  $(DIR)/RectHitBox.cpp					\
+		  $(DIR)/GUIManager.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 

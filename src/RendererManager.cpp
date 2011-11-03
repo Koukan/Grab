@@ -14,10 +14,7 @@ RendererManager::~RendererManager(void)
 
 void	RendererManager::initGraphics(const std::string &name, int x, int y)
 {
-	//_window = new CL_DisplayWindow(name, 1024, 768, false, true);
-	//_gc = _window->get_gc();
 	_gui_manager = CL_GUIManager("resource/theme");
-	//_gui_manager.set_window_manager(_window_manager);
 	CL_GUITopLevelDescription desc;
 	desc.set_size(CL_Size(x, y), true);
 	desc.set_title(name);
@@ -40,8 +37,6 @@ void			RendererManager::clear()
 
 void			RendererManager::flip()
 {
-	//_window->flip(-1);
-	//_window2->get_display_window().flip(-1);
 	_window2->paint();
 }
 
@@ -59,7 +54,6 @@ CL_GUIManager		&RendererManager::getGUIManager()
 {
   return _gui_manager;
 }
-
 
 CL_GUIComponent		*RendererManager::getMainWindow()
 {
