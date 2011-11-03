@@ -22,6 +22,7 @@ void	RendererManager::initGraphics(const std::string &name, int x, int y)
 	desc.set_size(CL_Size(x, y), true);
 	desc.set_title(name);
 	_window2 = new CL_MainWindow(&_gui_manager, desc);
+	_window2->get_menubar()->set_visible(false);
 	_gc = _window2->get_gc();
 }
 
