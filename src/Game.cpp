@@ -16,7 +16,7 @@ Game::~Game()
 void		Game::init(const std::string &name)
 {
   cl_log_event("system", name + " started");
-  RendererManager::get().initGraphics(name);
+  RendererManager::get().initGraphics(name, 1024, 768);
   initInput();
   _mainLoopRate = 18;
   this->loadState<Loading>("Loading");

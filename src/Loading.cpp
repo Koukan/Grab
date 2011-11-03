@@ -1,3 +1,5 @@
+#include <ClanLib/gui.h>
+#include "RendererManager.hpp"
 #include "Loading.hpp"
 #include "Game.hpp"
 #include "bulletmlparser-tinyxml.h"
@@ -35,6 +37,11 @@ void	Loading::slowTest(const CL_InputEvent &event)
     this->setTimeEffect("default", this->getTimeEffect() + 0.1);
 }
 
+void	Loading::buttonClick()
+{
+  std::cout << "clicked" << std::endl;
+}
+
 void	Loading::onStart()
 {
   this->load("resource/intro.xml");
@@ -48,6 +55,16 @@ void	Loading::onStart()
   _parser->build();
   _bullet = new BulletCommand(_parser, *this, "default", 512, 360);
   this->addGameObject(_bullet, "ship", 10);
+
+  CL_PushButton *button1 = new CL_PushButton(RendererManager::get().getMainWindow());
+  button1->set_geometry(CL_Rect(100, 200, 200, 320));
+  button1->set_text("Okay!");
+  button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
+  CL_LineEdit *lineedit = new CL_LineEdit(RendererManager::get().getMainWindow());
+  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
+  lineedit = new CL_LineEdit(RendererManager::get().getMainWindow());
+  lineedit->set_geometry(CL_Rect(300, 310, 200, 220));
+
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::escape, CL_InputDevice::keyboard, CL_KEY_ESCAPE);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_UP);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_DOWN);

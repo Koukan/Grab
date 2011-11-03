@@ -8,7 +8,7 @@ class GameFont : public DrawableObject, public CL_Font_Freetype
 {
 public:
   GameFont(const CL_StringRef & resource_id, CL_ResourceManager &resources, double x = 0, double y = 0);
-  ~GameFont();
+  virtual ~GameFont();
 
   virtual void		draw();
   virtual void		draw(int x, int y);

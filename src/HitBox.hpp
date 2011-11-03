@@ -8,7 +8,7 @@ class HitBox
 {
 public:
 	HitBox(double x, double y);
-	~HitBox();
+	virtual ~HitBox();
 
 	double getX() const;
 	double getY() const;

@@ -17,6 +17,7 @@ private:
 	void			escape(const CL_InputEvent &event);
 	void			click(const CL_InputEvent &event);
 	void			slowTest(const CL_InputEvent &event);
+	void			buttonClick();
 
 	BulletCommand		*_bullet;
 	BulletMLParser		*_parser;
