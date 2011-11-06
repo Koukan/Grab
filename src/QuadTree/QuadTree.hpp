@@ -26,6 +26,9 @@ private:
 	Node	*findChild(Node *node, TreeElement &elem);
 	void	insertChild(Node *node, TreeElement &elem);
 	void	insertParent(TreeElement &elem);
-	void	eraseNode(Node *node);
+	void	insertOnTop(Node *node, TreeElement &elem);
+	Node	*eraseNode(Node *node);
+	bool	collideRect(TreeElement &elem, int x, int y, int width, int height);
+	void	collide(TreeElement &elem, Node *node);
 };
 

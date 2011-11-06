@@ -12,6 +12,7 @@ public:
 	virtual int getHeight() = 0;
 	virtual int getXCoord() = 0;
 	virtual int getYCoord() = 0;
+	virtual void collide(TreeElement &elem) = 0;
 
 	Node *getNode() const;
 	void setNode(Node *node);
