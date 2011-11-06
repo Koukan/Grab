@@ -27,8 +27,8 @@ bool RectHitBox::collideCircle(CircleHitBox &circle)
 
 bool RectHitBox::collideRect(RectHitBox &rect)
 {
-	return (rect.getX() >= this->_x - rect.getWidth() && rect.getX() < this->_x + this->_width &&
-		rect.getY() >= this->_y - rect.getHeight() && rect.getY() < this->_y + this->_height);
+	return (rect.getX() > this->_x - rect.getWidth() && rect.getX() < this->_x + this->_width &&
+		rect.getY() > this->_y - rect.getHeight() && rect.getY() < this->_y + this->_height);
 }
 
 bool RectHitBox::collidePoly(PolyHitBox &poly)
