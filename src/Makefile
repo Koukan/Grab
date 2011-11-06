@@ -16,6 +16,7 @@ SRCS		= $(DIR)/main.cpp						\
 		  $(DIR)/PhysicManager.cpp					\
 		  $(DIR)/ManagerManager.cpp					\
 		  $(DIR)/AudioManager.cpp					\
+		  $(DIR)/Sound.cpp						\
 		  $(DIR)/RendererManager.cpp					\
 		  $(DIR)/Sprite.cpp						\
 		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp		\

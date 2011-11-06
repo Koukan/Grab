@@ -7,6 +7,10 @@
 
 Loading::Loading() : GameState("Loading")
 {
+  //  AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
+  //AudioManager::get().play("intro", "test", "intro");
+
+  //AudioManager::get().setVolume("intro", "test", 1.0f);
 }
 
 Loading::~Loading()
