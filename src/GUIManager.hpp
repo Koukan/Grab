@@ -29,6 +29,8 @@ public:
 	  return (tmp);
 	}
 
+	void									setComponentVisibility(bool state);
+
 	CL_GUIComponent							*getGUIComponent(std::string const &name);
 	template <typename T>
 	T										*getGUIComponent(std::string const &name)
