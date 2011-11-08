@@ -27,3 +27,10 @@ CL_GUIComponent							*GUIManager::getGUIComponent(std::string const &name)
 	return ((it != _components.end()) ? (*it).second : 0);
 }
 
+void									GUIManager::setComponentVisibility(bool state)
+{
+  for (std::map<std::string, CL_GUIComponent*>::iterator it = _components.begin(); it != _components.end(); ++it)
+   {
+	  (*it).second->set_visible(state);
+   }
+}

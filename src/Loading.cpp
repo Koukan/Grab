@@ -40,6 +40,7 @@ void	Loading::slowTest(const CL_InputEvent &event)
 void	Loading::buttonClick()
 {
   std::cout << "clicked" << std::endl;
+  this->setComponentVisibility(false);
 }
 
 void	Loading::onStart()
