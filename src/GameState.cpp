@@ -25,7 +25,7 @@ void		GameState::onResume()
 {
 }
 
-void		GameState::update(int, int)
+void		GameState::update(double)
 {
 }
 

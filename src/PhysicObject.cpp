@@ -42,8 +42,7 @@ void PhysicObject::setHitBox(HitBox &hitBox)
 
 void	PhysicObject::move(double time)
 {
-  this->_x += this->_vx * time;
-  this->_y += this->_vy * time;
+	this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
 }
 
 bool PhysicObject::collide(PhysicObject &obj)

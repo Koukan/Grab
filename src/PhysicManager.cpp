@@ -15,7 +15,7 @@ PhysicManager::~PhysicManager()
 
 void		PhysicManager::update(GameState &state, double elapsedTime)
 {
-  if ((state.getPaused() & GameState::PHYSIC))
+  if (elapsedTime == 0)
     return ;
 
   collisionGroupsMap const	&collisionGroups = state.getCollisionGroups();

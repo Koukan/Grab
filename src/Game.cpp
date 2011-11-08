@@ -15,6 +15,11 @@ Game::~Game()
 
 void		Game::init(const std::string &name)
 {
+  #if defined (WIN32)
+  srand(GetTickCount());
+  #else
+  srand(time(NULL));
+  #endif
   cl_log_event("system", name + " started");
   RendererManager::get().initGraphics(name, 1024, 768);
   initInput();
@@ -22,7 +27,6 @@ void		Game::init(const std::string &name)
   this->loadState<Loading>("Loading");
   this->changeState("Loading");
   PhysicManager::get();
-  srand(0);
 }
 
 void		Game::exec()
@@ -75,7 +79,6 @@ void		Game::initInput(void)
 void		Game::update(double elapsedTime)
 {
   GameState				*state;
-  GameState::Pause			paused;
 
   RendererManager::get().clear();
   for (std::list<GameState*>::iterator it = _currentStates.begin();
@@ -83,13 +86,11 @@ void		Game::update(double elapsedTime)
   {
     state = *it;
     it++;
-    paused = state->getPaused();
-    if (!(paused & GameState::PHYSIC))
-    {
-      state->updateTime(elapsedTime);
-      state->dispatchEvent();
-      state->update(elapsedTime);
-    }
+    if ((state->getPaused() & GameState::PHYSIC))
+      elapsedTime = 0;
+    state->updateTime(elapsedTime);
+    state->dispatchEvent();
+    state->update(elapsedTime);
     this->ManagerManager::update(*state, elapsedTime);
   }
   RendererManager::get().flip();

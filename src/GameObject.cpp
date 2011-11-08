@@ -36,6 +36,12 @@ void		GameObject::setY(double y)
   _y = y;
 }
 
+void		GameObject::setPosition(double x, double y)
+{
+	_x = x;
+	_y = y;
+}
+
 void		GameObject::setGroup(Group *group)
 {
   _group = group;

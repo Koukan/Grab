@@ -2,34 +2,34 @@ NAME		=  ../Grab
 
 DIR		=  .
 
-SRCS		= $(DIR)/main.cpp						\
-		  $(DIR)/Game.cpp						\
-		  $(DIR)/GameStateManager.cpp					\
-		  $(DIR)/Callback.cpp						\
-		  $(DIR)/InputManager.cpp                                       \
-		  $(DIR)/Loading.cpp						\
-		  $(DIR)/Event.cpp						\
-		  $(DIR)/EventDispatcher.cpp					\
-		  $(DIR)/GameObject.cpp						\
-		  $(DIR)/GameObjectManager.cpp					\
-		  $(DIR)/PhysicObject.cpp					\
-		  $(DIR)/PhysicManager.cpp					\
-		  $(DIR)/ManagerManager.cpp					\
-		  $(DIR)/AudioManager.cpp					\
-		  $(DIR)/Sound.cpp						\
-		  $(DIR)/RendererManager.cpp					\
-		  $(DIR)/Sprite.cpp						\
-		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp		\
-		  $(DIR)/GameState.cpp						\
-		  $(DIR)/BulletCommand.cpp					\
-		  $(DIR)/Bullet.cpp						\
-		  $(DIR)/BulletResourceManager.cpp				\
-		  $(DIR)/TimeEffectManager.cpp					\
-		  $(DIR)/PolyHitBox.cpp						\
-		  $(DIR)/CircleHitBox.cpp					\
-		  $(DIR)/HitBox.cpp						\
-		  $(DIR)/RectHitBox.cpp					\
-		  $(DIR)/GUIManager.cpp
+SRCS		= $(DIR)/main.cpp								\
+		  $(DIR)/Game.cpp									\
+		  $(DIR)/GameStateManager.cpp						\
+		  $(DIR)/Callback.cpp								\
+		  $(DIR)/InputManager.cpp							\
+		  $(DIR)/Loading.cpp								\
+		  $(DIR)/Event.cpp									\
+		  $(DIR)/EventDispatcher.cpp						\
+		  $(DIR)/GameObject.cpp								\
+		  $(DIR)/GameObjectManager.cpp						\
+		  $(DIR)/PhysicObject.cpp							\
+		  $(DIR)/PhysicManager.cpp							\
+		  $(DIR)/ManagerManager.cpp							\
+		  $(DIR)/AudioManager.cpp							\
+		  $(DIR)/RendererManager.cpp						\
+		  $(DIR)/Sprite.cpp									\
+		  $(DIR)/Callback_Impl/Callback_Impl_Function.cpp	\
+		  $(DIR)/GameState.cpp								\
+		  $(DIR)/BulletCommand.cpp							\
+		  $(DIR)/Bullet.cpp									\
+		  $(DIR)/BulletResourceManager.cpp					\
+		  $(DIR)/TimeEffectManager.cpp						\
+		  $(DIR)/PolyHitBox.cpp								\
+		  $(DIR)/CircleHitBox.cpp							\
+		  $(DIR)/HitBox.cpp									\
+		  $(DIR)/RectHitBox.cpp								\
+		  $(DIR)/spark/src/spk_all.cpp						\
+		  $(DIR)/spark/src/spk_gl_all.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 
@@ -37,10 +37,10 @@ CC		= g++
 
 RM		= rm -f
 
-CXXFLAGS	= -DDEBUG -W -Wall -Wextra -g3 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml
+CXXFLAGS	= -O2 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I spark/include
 
 LDFLAGS		= `pkg-config --libs clanCore-2.3 clanGUI-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
-		  -lpthread -Lbulletml -lbulletml
+		  -lpthread -Lbulletml -lbulletml -lGL -lGLU
 
 $(NAME)		: $(OBJS)
 		make -C bulletml

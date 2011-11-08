@@ -11,7 +11,7 @@ public:
 	Loading();
 	~Loading();
 	virtual void	onStart();
-	virtual	void	update(int elapseTime = 0, int relativeTime = 0);
+	virtual	void	update(double elapseTime = 0);
 
 private:
 	void			escape(const CL_InputEvent &event);

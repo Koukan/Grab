@@ -31,6 +31,9 @@ class RendererManager : public Manager, public Singleton<RendererManager>
 
     CL_MainWindow			*_window2;
     CL_DisplayWindow		*_window;
-    CL_GraphicContext		_gc;
-    CL_GUIManager 			_gui_manager;
+    CL_GraphicContext	_gc;
+   //CL_GUIWindowManagerSystem 	_window_manager;
+    CL_GUIManager 				_gui_manager;
+    static int								width;
+    static int								height;
 };
