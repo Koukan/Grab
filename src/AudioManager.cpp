@@ -2,9 +2,11 @@
 #include <ClanLib/vorbis.h>
 #include <ClanLib/mikmod.h>
 #include "AudioManager.hpp"
+#include "Game.hpp"
 
 AudioManager::AudioManager()
 {
+  Game::get().loadManager(this);
 }
 
 AudioManager::~AudioManager()
@@ -33,38 +35,127 @@ void AudioManager::load(std::string const &name, CL_ResourceManager *manager)
     _sounds[name] = sound;
 }
 
-void AudioManager::play(std::string const &name, bool loop)
+void AudioManager::play(std::string const &name, std::string const &groupName, std::string const &id, bool loop, bool duplicate)
 {
-  std::map<std::string, CL_SoundBuffer_Session>::iterator it_session = _sessions.find(name);
+  std::map<std::string, Sound *> &group = _groups[groupName];
+  std::map<std::string, Sound *>::iterator it = group.find(name);
 
-  if (it_session != _sessions.end())
+  if (!duplicate && it != group.end())
     {
-      it_session->second.set_looping(loop);
-      it_session->second.play();
+      it->second->set_looping(loop);
+      this->playSound(*(it->second));
     }
   else
     {
-      std::map<std::string, CL_SoundBuffer *>::const_iterator it_sound = _sounds.find(name);
-
+      std::map<std::string, CL_SoundBuffer *>::iterator it_sound = _sounds.find(name);
       if (it_sound != _sounds.end())
 	{
-	  _sessions[name] = it_sound->second->prepare();
-	  _sessions[name].set_looping(loop);
-	  _sessions[name].play();
+	  Sound *sound = new Sound(it_sound->second->prepare(), id, groupName);
+	  _sessions.push_back(sound);
+	  sound->set_looping(loop);
+	  this->playSound(*sound);
+	  group[id] = sound;
 	}
     }
 }
 
-void AudioManager::stop(std::string const &name)
+void AudioManager::setVolume(std::string const &name, std::string const &groupName,
+			     float volume)
 {
-  std::map<std::string, CL_SoundBuffer_Session>::iterator it = _sessions.find(name);
+   std::map<std::string, std::map<std::string, Sound *>>::iterator group = _groups.find(groupName);
 
-  if (it != _sessions.end())
+   if (group != _groups.end())
+     {
+       std::map<std::string, Sound *>::iterator it = group->second.find(name);
+
+       if (it != group->second.end())
+	 {
+	   it->second->set_volume(volume);
+	 }
+     }
+}
+
+void AudioManager::stop(std::string const &name, std::string const &groupName)
+{
+  std::map<std::string, std::map<std::string, Sound *>>::iterator group = _groups.find(groupName);
+
+  if (group != _groups.end())
+  {
+    std::map<std::string, Sound *>::iterator sound = group->second.find(name);
+
+    if (sound != group->second.end())
+      this->stopSound(*(sound->second));
+  }
+}
+
+void AudioManager::update(GameState &, double)
+{
+  std::list<Sound *>::iterator it = _sessions.begin();
+
+  for (;it != _sessions.end(); ++it)
     {
-      it->second.stop();
+      if (!(*it)->is_playing() && !(*it)->isPaused())
+	{
+	  std::map<std::string, Sound *>::iterator it2 = _groups[(*it)->getGroup()].find((*it)->getName());
+
+#if defined (DEBUG)
+	  if (it2 == _groups[(*it)->getGroup()].end())
+	    throw std::exception();
+#endif
+	  _groups[(*it)->getGroup()].erase(it2);
+	  delete *it;
+	  it = _sessions.erase(it);
+	}
+    }
+ }
+
+void AudioManager::stopGroup(std::string const &groupName)
+{
+  std::map<std::string, std::map<std::string, Sound *>>::iterator group = _groups.find(groupName);
+
+    if (group != _groups.end())
+      {
+	std::map<std::string, Sound *>::iterator sound = group->second.begin();
+
+	for (; sound != group->second.end(); ++sound)
+	  this->stopSound(*(sound->second));
+      }
+}
+
+void AudioManager::stopSound(Sound &sound)
+{
+  sound.stop();
+  sound.setPaused(true);
+}
+
+void AudioManager::playSound(Sound &sound)
+{
+  sound.play();
+  sound.setPaused(false);
+}
+
+void AudioManager::playGroup(std::string const &groupName)
+{
+  std::map<std::string, std::map<std::string, Sound *>>::iterator group = _groups.find(groupName);
+
+  if (group != _groups.end())
+    {
+      std::map<std::string, Sound *>::iterator sound = group->second.begin();
+
+      for (; sound != group->second.end(); ++sound)
+	this->playSound(*(sound->second));
     }
 }
 
-void AudioManager::update(GameState &, int)
+void AudioManager::setGroupVolume(std::string const &groupName, float volume)
 {
+  std::map<std::string, std::map<std::string, Sound *>>::iterator group = _groups.find(groupName);
+
+  if (group != _groups.end())
+    {
+      std::map<std::string, Sound *>::iterator sound = group->second.begin();
+
+      for (; sound != group->second.end(); ++sound)
+	sound->second->set_volume(volume);
+    }
 }

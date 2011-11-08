@@ -7,6 +7,10 @@
 
 Loading::Loading() : GameState("Loading")
 {
+  //  AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
+  //AudioManager::get().play("intro", "test", "intro");
+
+  //AudioManager::get().setVolume("intro", "test", 1.0f);
 }
 
 Loading::~Loading()
@@ -68,4 +72,8 @@ void	Loading::onStart()
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_UP);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_DOWN);
   this->registerInputCallback(CL_InputEvent::released, *this, &Loading::click, CL_InputDevice::pointer, CL_MOUSE_LEFT);
+
+  this->addGroup("poly1", 12);
+  this->addGroup("poly2", 11);
+
 }

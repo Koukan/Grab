@@ -25,6 +25,12 @@
     <Filter Include="Fichiers sources\bulletml">
       <UniqueIdentifier>{2c4e2ea6-0d9f-4184-b796-9ebff694bbd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\QuadTree">
+      <UniqueIdentifier>{bdf18339-2c84-4868-8d16-4ae0c65d82cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\QuadTree">
+      <UniqueIdentifier>{3c2eb317-4d9c-4975-9bde-8f45daa3083c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Callback.cpp">
@@ -131,6 +137,18 @@
     </ClCompile>
     <ClCompile Include="src\TimeEffectManager.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUIManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QuadTree\QuadTree.cpp">
+      <Filter>Fichiers sources\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QuadTree\TreeElement.cpp">
+      <Filter>Fichiers sources\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QuadTree\Node.cpp">
+      <Filter>Fichiers sources\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +298,18 @@
     </ClInclude>
     <ClInclude Include="src\TimeEffectManager.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUIManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\QuadTree\QuadTree.hpp">
+      <Filter>Fichiers d%27en-tête\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\QuadTree\TreeElement.hpp">
+      <Filter>Fichiers d%27en-tête\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\QuadTree\Node.hpp">
+      <Filter>Fichiers d%27en-tête\QuadTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

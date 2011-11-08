@@ -96,6 +96,7 @@
     <ClCompile Include="src\GameObjectManager.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\GUIManager.cpp" />
     <ClCompile Include="src\HitBox.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\Loading.cpp" />
@@ -104,6 +105,9 @@
     <ClCompile Include="src\PhysicObject.cpp" />
     <ClCompile Include="src\ManagerManager.cpp" />
     <ClCompile Include="src\PolyHitBox.cpp" />
+    <ClCompile Include="src\QuadTree\Node.cpp" />
+    <ClCompile Include="src\QuadTree\QuadTree.cpp" />
+    <ClCompile Include="src\QuadTree\TreeElement.cpp" />
     <ClCompile Include="src\RectHitBox.cpp" />
     <ClCompile Include="src\RendererManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
@@ -145,6 +149,7 @@
     <ClInclude Include="src\GameObjectManager.hpp" />
     <ClInclude Include="src\GameState.hpp" />
     <ClInclude Include="src\GameStateManager.hpp" />
+    <ClInclude Include="src\GUIManager.hpp" />
     <ClInclude Include="src\HitBox.hpp" />
     <ClInclude Include="src\InputManager.hpp" />
     <ClInclude Include="src\Loading.hpp" />
@@ -154,6 +159,9 @@
     <ClInclude Include="src\PhysicManager.hpp" />
     <ClInclude Include="src\PhysicObject.hpp" />
     <ClInclude Include="src\PolyHitBox.hpp" />
+    <ClInclude Include="src\QuadTree\Node.hpp" />
+    <ClInclude Include="src\QuadTree\QuadTree.hpp" />
+    <ClInclude Include="src\QuadTree\TreeElement.hpp" />
     <ClInclude Include="src\RectHitBox.hpp" />
     <ClInclude Include="src\RendererManager.hpp" />
     <ClInclude Include="src\Singleton.hpp" />
