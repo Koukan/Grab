@@ -10,6 +10,7 @@
 #include "TimeEffectManager.hpp"
 #include "PhysicsSubscriber.hpp"
 #include "PhysicsSubscriber2.hpp"
+#include "QuadTree.hpp"
 
 class GameState;
 class GameObjectManager;
@@ -19,7 +20,7 @@ typedef std::set<GameObject*>	gameObjectSet;
 class Group
 {
   public:
-    Group(GameState &state, int layer, std::string const &timeEffectGroup,
+    Group(GameState &state, int layer, std::string const &timeEffectGroup, std::string const &name,
 	  bool physic = false);
     ~Group();
 
@@ -42,6 +43,9 @@ class Group
     double		getTimeEffect() const;
     TimeEffectGroup	*getTimeEffectGroup() const;
     gameObjectSet const	&getObjects() const;
+	QuadTree	&getQuadTree() const;
+	std::string const &getName() const;
+	GameState	&getState();
 
   private:
     GameState			&_gameState;
@@ -50,6 +54,8 @@ class Group
     TimeEffectGroup		*_timeEffectGroup;
     gameObjectSet		_objects;
     std::stack<GameObject*>	_deletes;
+	QuadTree		*_quadTree;
+	std::string		_name;
 };
 
 typedef std::pair<std::string, std::string>		stringPair;
@@ -83,11 +89,14 @@ class GameObjectManager : public TimeEffectManager
     bool			existingGroup(const std::string &group) const;
     bool			collisionGroups(const std::string &group1,
 				const std::string &group2, bool reverse = true) const;
+	void			addDeleteObject(GameObject *obj);
+	void			deleteObjects();
 
   protected:
     collisionGroupsMap		_collisionGroups;
     groupsMap			_groups;
     groupsDisplay		_display;
+	std::list<GameObject *> _deleteList;
 };
 
 #include "GameObjectManager.ipp"

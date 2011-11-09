@@ -1,9 +1,10 @@
 #include <iostream>
 #include "GameObject.hpp"
 #include "GameObjectManager.hpp"
+#include "GameState.hpp"
 
 GameObject::GameObject(double x, double y, Group *group)
-	: _x(x), _y(y), _group(group)
+	: _x(x), _y(y), _delete(false), _group(group)
 {}
 
 GameObject::~GameObject(void)
@@ -27,6 +28,10 @@ Group		*GameObject::getGroup() const
   return _group;
 }
 
+bool		GameObject::isDelete() const
+{
+	return (this->_delete);
+}
 void		GameObject::setX(double x)
 {
   _x = x;
@@ -46,4 +51,10 @@ void		GameObject::setPosition(double x, double y)
 void		GameObject::setGroup(Group *group)
 {
   _group = group;
+}
+
+void		GameObject::erase()
+{
+	this->_delete = true;
+	this->_group->getState().addDeleteObject(this);
 }

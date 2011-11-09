@@ -1,5 +1,4 @@
 #include "PhysicManager.hpp"
-#include "PhysicObject.hpp"
 #include "Game.hpp"
 
 #define	CUTTIME		100
@@ -35,6 +34,8 @@ void		PhysicManager::move(groupsMap const &groups, double time)
   std::set<GameObject*>::const_iterator		it1, it2;
   double					timeEffect;
 
+  if (!groups.size())
+	  return ;
   for (groupsMap::const_iterator itGroups = groups.begin();
 	itGroups != groups.end(); ++itGroups)
   {
@@ -44,11 +45,14 @@ void		PhysicManager::move(groupsMap const &groups, double time)
       for (it1 = itGroups->second->getObjects().begin();
 	   it1 != itGroups->second->getObjects().end();)
       {
-	it2 = it1++;
-	static_cast<PhysicObject*>(*it2)->move(timeEffect);
+		it2 = it1++;
+		static_cast<PhysicObject*>(*it2)->move(timeEffect);
+		if (!(*it2)->isDelete())
+			itGroups->second->getQuadTree().move(*static_cast<PhysicObject *>(*it2));
       }
     }
   }
+  groups.begin()->second->getState().deleteObjects();
 }
 
 void		PhysicManager::collide(groupsMap const &groups,
@@ -66,13 +70,14 @@ void		PhysicManager::collide(groupsMap const &groups,
       for (it1 = temp->second->getObjects().begin();
 	   it1 != temp->second->getObjects().end(); it1++)
       {
-	itGroups = groups.find(itCol->first.second);
-        for (it2 = itGroups->second->getObjects().begin();
-	     it2 != itGroups->second->getObjects().end(); it2++)
-        {
-	 /* if ((static_cast<PhysicObject*>(*it1))->collide(*(static_cast<PhysicObject*>(*it2))))
-	   itCol->second->call(*it1, *it2);*/
-        }
+		  itGroups = groups.find(itCol->first.second);
+		  itGroups->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1));
+   //     for (it2 = itGroups->second->getObjects().begin();
+	  //   it2 != itGroups->second->getObjects().end(); it2++)
+   //     {
+			//if ((static_cast<PhysicObject*>(*it1))->collide(*(static_cast<PhysicObject*>(*it2))))
+//				itCol->second->call(*it1, *it2);
+   //     }
       }
     }
   }

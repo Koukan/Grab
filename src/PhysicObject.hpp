@@ -2,13 +2,13 @@
 
 #include "DrawableObject.hpp"
 #include "HitBox.hpp"
+#include "QuadTree.hpp"
 
-class PhysicObject : public DrawableObject
+class PhysicObject : public DrawableObject, public TreeElement
 {
 public:
   PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0);
   virtual ~PhysicObject();
-  virtual bool	collide(PhysicObject &);
   virtual void	draw() {};
   virtual void	move(double time);
   double	getVx() const;
@@ -17,6 +17,12 @@ public:
   void		setVx(double);
   void		setVy(double);
   void		setHitBox(HitBox &hitBox);
+
+  int getWidthElement();
+  int getHeightElement();
+  int getXElement();
+  int getYElement();
+  void collide(TreeElement &elem);
 
 protected:
 	double	_vx;

@@ -4,6 +4,7 @@
 #include "Game.hpp"
 #include "bulletmlparser-tinyxml.h"
 #include "Bullet.hpp"
+#include "RectHitBox.hpp"
 
 Loading::Loading() : GameState("Loading")
 {
@@ -56,6 +57,23 @@ void	Loading::onStart()
   this->addBulletResource("weak", "shot", "shot", "ship", "shot");
   this->addBulletResource("dummybit", "weapon", "bullet", "ship", "shot");
   this->addBulletResource("pillarbit", "weapon", "shot", "ship", "shot");
+
+  // collisions Rect
+
+  PhysicObject *obj = new PhysicObject(*new RectHitBox(-500, -500, 1024 + 1000, 500));
+  this->addGameObject(obj, "walls");
+
+  obj = new PhysicObject(*new RectHitBox(-500, 768, 1024 + 1000, 500));
+  this->addGameObject(obj, "walls");
+
+  obj = new PhysicObject(*new RectHitBox(-500, 0, 500, 768));
+  this->addGameObject(obj, "walls");
+
+  obj = new PhysicObject(*new RectHitBox(1024, 0, 500, 768));
+  this->addGameObject(obj, "walls");
+
+  this->setCollisionGroups("shot", "walls", &Bullet::collideWall);
+
   _parser = new BulletMLParserTinyXML("resource/test.xml");
   _parser->build();
   _bullet = new BulletCommand(_parser, *this, "default", 512, 360);

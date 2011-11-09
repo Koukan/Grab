@@ -15,7 +15,7 @@ void		EventDispatcher::dispatchEvent()
   dispatch();
   for (timedEventMap::iterator it = _timedEvents.begin();
        it != _timedEvents.end(); it++)
-    dispatchTimed(it->second, it->first->getTime());
+    dispatchTimed(it->second, static_cast<unsigned int>(it->first->getTime()));
 }
 
 void		EventDispatcher::pushEvent(Event *event)

@@ -18,7 +18,7 @@ Callback::Callback(void(*function)(UserData&), UserData &data)
 template <class InstanceClass>
 Callback::Callback(void(InstanceClass::*function)())
 	: _callback(new Callback_Impl_Method<InstanceClass>(function)),
-	  _instance(false)
+	  _instance(true)
 {
 }
 
@@ -90,12 +90,13 @@ void		Callback::call(UserData1 &data1, UserData2 &data2)
   if (_instance)
   {
     Callback_Impl_UserData2<UserData2, UserData1>	*callback =
-    dynamic_cast<Callback_Impl_UserData2<UserData1, UserData2>*>(_callback);
-    if (callback)
-    {
+    dynamic_cast<Callback_Impl_UserData2<UserData2, UserData1>*>(_callback);
+//    if (callback)
+//    {
+//  std::cout << "plop" << std::endl;
       callback->setData(data2, data1);
       _callback->call();
-    }
+//    }
   }
   else
   {

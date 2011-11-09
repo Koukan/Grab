@@ -13,6 +13,7 @@ class Bullet : public PhysicObject
     virtual void	draw();
     void		setSprite(CL_ResourceManager &resource, std::string const &name);
     void		setSprite(Sprite *sprite);
+	void		collideWall(GameObject &obj);
 
   protected:
     double	_direction;

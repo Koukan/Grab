@@ -133,5 +133,5 @@ void		BulletCommand::move(double time)
   if (!this->_end)
     PhysicObject::move(time);
   else
-    delete this;
+	  this->erase();
 }

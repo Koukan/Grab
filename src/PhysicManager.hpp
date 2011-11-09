@@ -14,7 +14,7 @@ class PhysicManager : public Manager, public Singleton<PhysicManager>
     virtual void	update(GameState &state, double elapsedTime);
 
   private:
-    void		move(groupsMap const&, double);
+    void		move(groupsMap const &, double);
     void		collide(groupsMap const&, collisionGroupsMap const&);
 };
 

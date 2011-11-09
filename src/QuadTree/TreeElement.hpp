@@ -8,10 +8,10 @@ public:
 	TreeElement(void);
 	~TreeElement(void);
 
-	virtual int getWidth() = 0;
-	virtual int getHeight() = 0;
-	virtual int getXCoord() = 0;
-	virtual int getYCoord() = 0;
+	virtual int getWidthElement() = 0;
+	virtual int getHeightElement() = 0;
+	virtual int getXElement() = 0;
+	virtual int getYElement() = 0;
 	virtual void collide(TreeElement &elem) = 0;
 
 	Node *getNode() const;

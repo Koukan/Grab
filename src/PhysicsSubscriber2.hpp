@@ -19,9 +19,9 @@ class PhysicsSubscriber2 : public IPhysicsSubscriber
       T			*obj = dynamic_cast<T*>(&obj1);;
 
       if (obj)
-      	obj->*_func(obj2);
+      	(obj->*_func)(obj2);
       else
-	std::cout << "Callback physic fail" << std::endl;
+		std::cout << "Callback physic fail" << std::endl;
     }
 
   private:

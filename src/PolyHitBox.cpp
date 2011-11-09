@@ -9,10 +9,10 @@ PolyHitBox::PolyHitBox(double x, double y, std::vector<std::pair<double, double>
 	CL_Contour contour;
 	for (std::vector<std::pair<double, double> >::iterator it = points.begin(); it != points.end(); ++it)
 	{
-		contour.get_points().push_back(CL_Pointf(it->first, it->second));
+		contour.get_points().push_back(CL_Pointf(static_cast<float>(it->first), static_cast<float>(it->second)));
 	}
 	this->_poly->get_contours().push_back(contour);
-	this->_poly->set_translation(x, y);
+	this->_poly->set_translation(static_cast<float>(x), static_cast<float>(y));
 	this->_poly->calculate_radius();
 	this->_poly->calculate_sub_circles();
 }
@@ -39,12 +39,24 @@ bool PolyHitBox::collideRect(RectHitBox &rect)
 
 bool PolyHitBox::collidePoly(PolyHitBox &poly)
 {
-	this->_poly->set_translation(this->_x, this->_y);
-	poly.getPoly().set_translation(poly.getX(), poly.getY());
+	this->_poly->set_translation(static_cast<float>(this->_x), static_cast<float>(this->_y));
+	poly.getPoly().set_translation(static_cast<float>(poly.getX()), static_cast<float>(poly.getY()));
 	return (this->_poly->collide(poly.getPoly()));
 }
 
 bool PolyHitBox::collide(HitBox &hitbox)
 {
 	return (hitbox.collidePoly(*this));
+}
+
+int PolyHitBox::getWidth() const
+{
+	// a faire
+	return (10);
+}
+
+int PolyHitBox::getHeight() const
+{
+	// a faire
+	return (10);
 }

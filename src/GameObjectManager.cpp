@@ -5,10 +5,10 @@
 #include "GameState.hpp"
 #include <iostream>
 
-Group::Group(GameState &state, int layer, std::string const &timeEffectGroup,
+Group::Group(GameState &state, int layer, std::string const &timeEffectGroup, std::string const &name,
 	     bool physic)
 	: _gameState(state), _layer(layer), _physic(physic),
-	  _timeEffectGroup(state.getTimeEffectGroup(timeEffectGroup))
+	  _timeEffectGroup(state.getTimeEffectGroup(timeEffectGroup)), _quadTree(new QuadTree()), _name(name)
 {
 }
 
@@ -17,6 +17,7 @@ Group::~Group()
   for (gameObjectSet::iterator it = this->_objects.begin();
 	it != this->_objects.end(); it++)
     delete *it;
+  delete this->_quadTree;
 }
 
 
@@ -44,6 +45,21 @@ TimeEffectGroup		*Group::getTimeEffectGroup() const
 gameObjectSet const	&Group::getObjects(void) const
 {
   return this->_objects;
+}
+
+QuadTree	&Group::getQuadTree() const
+{
+	return (*this->_quadTree);
+}
+
+std::string const &Group::getName() const
+{
+	return (this->_name);
+}
+
+GameState	&Group::getState()
+{
+	return (this->_gameState);
 }
 
 void		Group::setLayer(int layer)
@@ -81,13 +97,15 @@ void		Group::addObject(GameObject *object)
     if (dynamic_cast<PhysicObject*>(object))
       this->_physic = true;
   }
+  if (this->_physic)
+	  this->_quadTree->push(*static_cast<PhysicObject *>(object));
   this->_objects.insert(object);
   object->setGroup(this);
 }
 
 void		Group::removeObject(GameObject *object)
 {
-  this->_objects.erase(object);
+	this->_objects.erase(object);
 }
 
 void		Group::draw(double) const
@@ -139,7 +157,7 @@ void	GameObjectManager::addGroup(const std::string &group, int layer,
 {
   if (this->_groups.count(group) == 0)
   {
-    Group *groupe = new Group(static_cast<GameState&>(*this), layer, timeEffectGroup);
+    Group *groupe = new Group(static_cast<GameState&>(*this), layer, timeEffectGroup, group);
     this->_groups[group] = groupe;
     this->_display.insert(std::pair<int, Group*>(layer, groupe));
   }
@@ -181,4 +199,17 @@ collisionGroupsMap const	&GameObjectManager::getCollisionGroups(void) const
 groupsMap const			&GameObjectManager::getGroups(void) const
 {
   return this->_groups;
+}
+void			GameObjectManager::addDeleteObject(GameObject *obj)
+{
+	this->_deleteList.push_front(obj);
+}
+
+void			GameObjectManager::deleteObjects()
+{
+	for (std::list<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end();)
+	{
+		delete *it;
+		it = this->_deleteList.erase(it);
+	}
 }

@@ -11,14 +11,17 @@ public:
 	RectHitBox(double x, double y, double width, double height);
 	~RectHitBox(void);
 
+	int getWidth() const;
+	int getHeight() const;
+
 	bool collide(HitBox &hitbox);
 
 	bool collideCircle(CircleHitBox &circle);
 	bool collideRect(RectHitBox &rect);
 	bool collidePoly(PolyHitBox &poly);
 
-	double getWidth() const;
-	double getHeight() const;
+	double getWidthRect() const;
+	double getHeightRect() const;
 
 private:
 	double	_width;

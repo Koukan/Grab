@@ -12,6 +12,9 @@ public:
 	PolyHitBox(double x, double y, std::vector<std::pair<double, double> > &points);
 	~PolyHitBox(void);
 
+	int getWidth() const;
+	int getHeight() const;
+
 	bool collide(HitBox &hitbox);
 
 	bool collideCircle(CircleHitBox &circle);

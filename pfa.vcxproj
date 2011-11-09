@@ -40,7 +40,7 @@
     <IncludePath>.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Development\Environment;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,7 +61,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -152,12 +152,15 @@
     <ClInclude Include="src\GUIManager.hpp" />
     <ClInclude Include="src\HitBox.hpp" />
     <ClInclude Include="src\InputManager.hpp" />
+    <ClInclude Include="src\IPhysicsSubscriber.hpp" />
     <ClInclude Include="src\Loading.hpp" />
     <ClInclude Include="src\Manager.hpp" />
     <ClInclude Include="src\ManagerManager.hpp" />
     <ClInclude Include="src\NonCopyable.hpp" />
     <ClInclude Include="src\PhysicManager.hpp" />
     <ClInclude Include="src\PhysicObject.hpp" />
+    <ClInclude Include="src\PhysicsSubscriber.hpp" />
+    <ClInclude Include="src\PhysicsSubscriber2.hpp" />
     <ClInclude Include="src\PolyHitBox.hpp" />
     <ClInclude Include="src\QuadTree\Node.hpp" />
     <ClInclude Include="src\QuadTree\QuadTree.hpp" />

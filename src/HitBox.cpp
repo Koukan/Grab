@@ -34,28 +34,31 @@ void HitBox::setY(double y)
 
 bool HitBox::CircleCollideRect(CircleHitBox &circle, RectHitBox &rect)
 {
-	return (((circle.getX() - rect.getX()) * (circle.getX() - rect.getX()) +
-		(circle.getY() - rect.getY()) * (circle.getY() - rect.getY()) < circle.getRadius() * circle.getRadius()) ||
-		((circle.getX() - (rect.getX() + rect.getWidth())) * (circle.getX() - (rect.getX() + rect.getWidth())) +
-		(circle.getY() - rect.getY()) * (circle.getY() - rect.getY()) < circle.getRadius() * circle.getRadius()) ||
-		((circle.getX() - (rect.getX() + rect.getWidth())) * (circle.getX() - (rect.getX() + rect.getWidth())) +
-		(circle.getY() - (rect.getY() + rect.getHeight())) * (circle.getY() - (rect.getY() + rect.getHeight())) < circle.getRadius() * circle.getRadius()) ||
-		((circle.getX() - rect.getX()) * (circle.getX() - rect.getX()) +
-		(circle.getY() - (rect.getY() + rect.getHeight())) * (circle.getY() - (rect.getY() + rect.getHeight())) < circle.getRadius() * circle.getRadius()) ||
-		(circle.getX() >= rect.getX() - circle.getRadius() && circle.getX() < rect.getX() + rect.getWidth() + circle.getRadius() &&
-		circle.getY() >= rect.getY() && circle.getY() < rect.getY() + rect.getHeight()) ||
-		(circle.getX() >= rect.getX() && circle.getX() < rect.getX() + rect.getWidth() &&
-		circle.getY() >= rect.getY() - circle.getRadius() && circle.getY() < rect.getY() + rect.getHeight() + circle.getRadius()));
+	double x = circle.getX() + circle.getRadius();
+	double y = circle.getY() + circle.getRadius();
+
+	return (((x - rect.getX()) * (x - rect.getX()) +
+		(y - rect.getY()) * (y - rect.getY()) < circle.getRadius() * circle.getRadius()) ||
+		((x - (rect.getX() + rect.getWidthRect())) * (x - (rect.getX() + rect.getWidthRect())) +
+		(y - rect.getY()) * (y - rect.getY()) < circle.getRadius() * circle.getRadius()) ||
+		((x - (rect.getX() + rect.getWidthRect())) * (x - (rect.getX() + rect.getWidthRect())) +
+		(y - (rect.getY() + rect.getHeightRect())) * (y - (rect.getY() + rect.getHeightRect())) < circle.getRadius() * circle.getRadius()) ||
+		((x - rect.getX()) * (x - rect.getX()) +
+		(y - (rect.getY() + rect.getHeightRect())) * (y - (rect.getY() + rect.getHeightRect())) < circle.getRadius() * circle.getRadius()) ||
+		(x >= rect.getX() - circle.getRadius() && x < rect.getX() + rect.getWidthRect() + circle.getRadius() &&
+		y >= rect.getY() && y < rect.getY() + rect.getHeightRect()) ||
+		(x >= rect.getX() && x < rect.getX() + rect.getWidthRect() &&
+		y >= rect.getY() - circle.getRadius() && y < rect.getY() + rect.getHeightRect() + circle.getRadius()));
 }
 
 bool HitBox::CircleCollidePoly(CircleHitBox &circle, PolyHitBox &poly)
 {
-	poly.getPoly().set_translation(poly.getX(), poly.getY());
+	poly.getPoly().set_translation(static_cast<float>(poly.getX()), static_cast<float>(poly.getY()));
 	return (false);
 }
 
 bool HitBox::RectCollidePoly(RectHitBox &rect, PolyHitBox &poly)
 {
-	poly.getPoly().set_translation(poly.getX(), poly.getY());
+	poly.getPoly().set_translation(static_cast<float>(poly.getX()), static_cast<float>(poly.getY()));
 	return (false);
 }

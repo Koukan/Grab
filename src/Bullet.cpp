@@ -25,7 +25,7 @@ Bullet::~Bullet()
 void		Bullet::draw()
 {
   if (_sprite)
-    _sprite->draw(this->_x, this->_y);
+    _sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y));
 }
 
 void		Bullet::setSprite(CL_ResourceManager &resource, std::string const &name)
@@ -36,4 +36,9 @@ void		Bullet::setSprite(CL_ResourceManager &resource, std::string const &name)
 void		Bullet::setSprite(Sprite *sprite)
 {
   _sprite = sprite;
+}
+
+void		Bullet::collideWall(GameObject &obj)
+{
+	this->erase();
 }

@@ -16,6 +16,9 @@ public:
 	void setX(double x);
 	void setY(double y);
 
+	virtual int getWidth() const = 0;
+	virtual int getHeight() const = 0;
+
 	virtual bool collide(HitBox &hitbox) = 0;
 
 	virtual bool collideCircle(CircleHitBox &circle) = 0;

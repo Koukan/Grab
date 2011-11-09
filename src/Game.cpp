@@ -90,7 +90,7 @@ void		Game::update(double elapsedTime)
       elapsedTime = 0;
     state->updateTime(elapsedTime);
     state->dispatchEvent();
-    state->update(elapsedTime);
+    state->update(static_cast<int>(elapsedTime));
     this->ManagerManager::update(*state, elapsedTime);
   }
   RendererManager::get().flip();

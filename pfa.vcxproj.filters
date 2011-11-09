@@ -311,6 +311,15 @@
     <ClInclude Include="src\QuadTree\Node.hpp">
       <Filter>Fichiers d%27en-tête\QuadTree</Filter>
     </ClInclude>
+    <ClInclude Include="src\IPhysicsSubscriber.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsSubscriber.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsSubscriber2.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Callback.ipp" />

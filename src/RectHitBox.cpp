@@ -10,12 +10,12 @@ RectHitBox::~RectHitBox(void)
 {
 }
 
-double RectHitBox::getWidth() const
+double RectHitBox::getWidthRect() const
 {
 	return (this->_width);
 }
 
-double RectHitBox::getHeight() const
+double RectHitBox::getHeightRect() const
 {
 	return (this->_height);
 }
@@ -27,8 +27,8 @@ bool RectHitBox::collideCircle(CircleHitBox &circle)
 
 bool RectHitBox::collideRect(RectHitBox &rect)
 {
-	return (rect.getX() > this->_x - rect.getWidth() && rect.getX() < this->_x + this->_width &&
-		rect.getY() > this->_y - rect.getHeight() && rect.getY() < this->_y + this->_height);
+	return (rect.getX() > this->_x - rect.getWidthRect() && rect.getX() < this->_x + this->_width &&
+		rect.getY() > this->_y - rect.getHeightRect() && rect.getY() < this->_y + this->_height);
 }
 
 bool RectHitBox::collidePoly(PolyHitBox &poly)
@@ -39,4 +39,14 @@ bool RectHitBox::collidePoly(PolyHitBox &poly)
 bool RectHitBox::collide(HitBox &hitbox)
 {
 	return (hitbox.collideRect(*this));
+}
+
+int RectHitBox::getWidth() const
+{
+	return (static_cast<int>(this->_width));
+}
+
+int RectHitBox::getHeight() const
+{
+	return (static_cast<int>(this->_height));
 }

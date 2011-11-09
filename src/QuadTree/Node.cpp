@@ -22,8 +22,8 @@ Node	**Node::getChilds()
 Node	*Node::getChild(TreeElement &elem)
 {
 	int size = this->_size / 2;
-	int x = (elem.getXCoord() - this->_x) / size;
-	int y = (elem.getYCoord() - this->_y) / size;
+	int x = (elem.getXElement() - this->_x) / size;
+	int y = (elem.getYElement() - this->_y) / size;
 	int i = x + y * 2;
 
 	return (this->_childs[i]);
@@ -32,8 +32,8 @@ Node	*Node::getChild(TreeElement &elem)
 int		Node::getChildPos(TreeElement &elem)
 {
 	int size = this->_size / 2;
-	int x = (elem.getXCoord() - this->_x) / size;
-	int y = (elem.getYCoord() - this->_y) / size;
+	int x = (elem.getXElement() - this->_x) / size;
+	int y = (elem.getYElement() - this->_y) / size;
 	int i = x + y * 2;
 
 	return (i);

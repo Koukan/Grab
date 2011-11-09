@@ -11,33 +11,33 @@ QuadTree::~QuadTree(void)
 {
 }
 
-bool	QuadTree::isInSquare(TreeElement &elem, int x, int y, int size)
+bool	QuadTree::isInSquare(TreeElement &elem, int x, int y, int size) const
 {
-	return (elem.getXCoord() >= x && elem.getXCoord() + elem.getWidth() <= x + size &&
-		elem.getYCoord() >= y && elem.getYCoord() + elem.getHeight() <= y + size);
+	return (elem.getXElement() >= x && elem.getXElement() + elem.getWidthElement() <= x + size &&
+		elem.getYElement() >= y && elem.getYElement() + elem.getHeightElement() <= y + size);
 }
 
-Node	*QuadTree::createNode(TreeElement &elem)
+Node	*QuadTree::createNode(TreeElement &elem) const
 {
 	int size = 1;
 
-	if (elem.getWidth() > elem.getHeight())
+	if (elem.getWidthElement() > elem.getHeightElement())
 	{
-		while (size < elem.getWidth())
+		while (size < elem.getWidthElement())
 			size = size << 1;
 	}
 	else
 	{
-		while (size < elem.getHeight())
+		while (size < elem.getHeightElement())
 			size = size << 1;
 	}
-	int x = elem.getXCoord() / size * size;
-	int y = elem.getYCoord() / size * size;
+	int x = elem.getXElement() / size * size;
+	int y = elem.getYElement() / size * size;
 	while (!this->isInSquare(elem, x, y, size))
 	{
 		size = size << 1;
-		x = elem.getXCoord() / size * size;
-		y = elem.getYCoord() / size * size;
+		x = elem.getXElement() / size * size;
+		y = elem.getYElement() / size * size;
 	}
 	Node *node = new Node(x, y, size);
 	node->getElements().insert(&elem);
@@ -45,7 +45,7 @@ Node	*QuadTree::createNode(TreeElement &elem)
 	return (node);
 }
 
-Node	*QuadTree::findChild(Node *node, TreeElement &elem)
+Node	*QuadTree::findChild(Node *node, TreeElement &elem) const
 {
 	Node *child = node->getChild(elem);
 
@@ -54,12 +54,14 @@ Node	*QuadTree::findChild(Node *node, TreeElement &elem)
 	return (0);
 }
 
-void	QuadTree::insertChild(Node *node, TreeElement &elem)
+void	QuadTree::insertChild(Node *node, TreeElement &elem) const
 {
 	Node **childs = node->getChilds();
 	int i = node->getChildPos(elem);
 
-	if (this->isInSquare(elem, (i % 2) * (node->getSize() / 2) + node->getX(), (i / 2) * (node->getSize() / 2) + node->getY(), node->getSize() / 2))
+	if (this->isInSquare(elem,
+		(i % 2) * (node->getSize() / 2) + node->getX(),
+		(i / 2) * (node->getSize() / 2) + node->getY(), node->getSize() / 2))
 	{
 		if (childs[i])
 		{
@@ -132,6 +134,8 @@ void	QuadTree::insertOnTop(Node *node, TreeElement &elem)
 
 void	QuadTree::push(TreeElement &elem)
 {
+	if (elem.getXElement() < 0 || elem.getYElement() < 0)
+		return ;
 	if (!this->_mainNode)
 	{
 		this->_mainNode = this->createNode(elem);
@@ -181,6 +185,8 @@ Node	*QuadTree::eraseNode(Node *node)
 
 void	QuadTree::pop(TreeElement &elem)
 {
+	if (elem.getXElement() < 0 || elem.getYElement() < 0)
+		return ;
 	Node *node = elem.getNode();
 	if (node)
 	{
@@ -207,14 +213,13 @@ void	QuadTree::pop(TreeElement &elem)
 
 void	QuadTree::move(TreeElement &elem)
 {
+	if (elem.getXElement() < 0 || elem.getYElement() < 0)
+		return ;
 	Node *node = elem.getNode();
-
 	if (node)
 	{
 		if (node->getElements().size() > 1)
-		{
 			node->getElements().erase(&elem);
-		}
 		else
 		{
 			int nbChilds = node->getNbChilds();
@@ -247,24 +252,24 @@ void	QuadTree::move(TreeElement &elem)
 	}
 }
 
-bool	QuadTree::collideRect(TreeElement &elem, int x, int y, int width, int height)
+bool	QuadTree::collideRect(TreeElement &elem, int x, int y, int width, int height) const
 {
-	return (elem.getXCoord() > x - elem.getWidth() && elem.getXCoord() < x + width &&
-		elem.getYCoord() > y - elem.getHeight() && elem.getYCoord() < y + height);
+	return (elem.getXElement() > x - elem.getWidthElement() && elem.getXElement() < x + width &&
+		elem.getYElement() > y - elem.getHeightElement() && elem.getYElement() < y + height);
 }
 
-void	QuadTree::collide(TreeElement &elem)
+void	QuadTree::collide(TreeElement &elem) const
 {
 	Node *node = this->_mainNode;
 	if (node && this->collideRect(elem, node->getX(), node->getY(), node->getSize(), node->getSize()))
 		this->collide(elem, node);
 }
 
-void	QuadTree::collide(TreeElement &elem, Node *currentNode)
+void	QuadTree::collide(TreeElement &elem, Node *currentNode) const
 {
 	for (Elements::const_iterator it = currentNode->getElements().begin(); it != currentNode->getElements().end(); ++it)
 	{
-		if (this->collideRect(elem, (*it)->getXCoord(), (*it)->getYCoord(), (*it)->getWidth(), (*it)->getHeight()))
+		if (this->collideRect(elem, (*it)->getXElement(), (*it)->getYElement(), (*it)->getWidthElement(), (*it)->getHeightElement()))
 		{
 			elem.collide(**it);
 		}
@@ -277,7 +282,7 @@ void	QuadTree::collide(TreeElement &elem, Node *currentNode)
 	}
 }
 
-void	QuadTree::display(std::string const &space)
+void	QuadTree::display(std::string const &space) const
 {
 	if (this->_mainNode)
 		this->display(this->_mainNode, space);
@@ -285,7 +290,7 @@ void	QuadTree::display(std::string const &space)
 		std::cout << space << "<vide>" << std::endl;
 }
 
-void	QuadTree::display(Node *node, std::string const &space)
+void	QuadTree::display(Node *node, std::string const &space) const
 {
 	if (!node)
 		return ;
@@ -293,8 +298,8 @@ void	QuadTree::display(Node *node, std::string const &space)
 	std::cout << space << "elements :" << std::endl;
 	for (Elements::const_iterator it = node->getElements().begin(); it != node->getElements().end(); ++it)
 	{
-		std::cout << space << " | x = " << (*it)->getXCoord() << " y = " << (*it)->getYCoord() <<
-			" width = " << (*it)->getWidth() << " height = " << (*it)->getHeight() << std::endl;
+		std::cout << space << " | x = " << (*it)->getXElement() << " y = " << (*it)->getYElement() <<
+			" width = " << (*it)->getWidthElement() << " height = " << (*it)->getHeightElement() << std::endl;
 	}
 	std::cout << space << "childs :" << std::endl;
 	for (int i = 0; i < 4; ++i)

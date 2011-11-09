@@ -10,6 +10,9 @@ public:
 	CircleHitBox(double x, double y, double range);
 	~CircleHitBox(void);
 
+	int getWidth() const;
+	int getHeight() const;
+
 	bool collide(HitBox &hitbox);
 
 	bool collideCircle(CircleHitBox &circle);
