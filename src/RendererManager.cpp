@@ -1,5 +1,5 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
+/*#include <GL/gl.h>
+#include <GL/glu.h>*/
 #include "RendererManager.hpp"
 #include "GameObjectManager.hpp"
 #include "DrawableObject.hpp"
@@ -28,9 +28,9 @@ void	RendererManager::initGraphics(const std::string &name, int x, int y)
 	_window2 = new CL_MainWindow(&_gui_manager, desc);
 	_window2->get_menubar()->set_visible(false);
 	_gc = _window2->get_gc();
-	glMatrixMode(GL_PROJECTION);
+	/*glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0,1,1,0);
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);*/
 }
 
 void	RendererManager::update(GameState &state, double elapsedTime)

@@ -1,16 +1,9 @@
-#include <SPK.h>
-#include <SPK_GL.h>
 #include <ClanLib/gui.h>
-#include <GL/glu.h>
 #include "RendererManager.hpp"
 #include "Loading.hpp"
 #include "Game.hpp"
 #include "bulletmlparser-tinyxml.h"
 #include "Bullet.hpp"
-
-SPK::System* gl_system;
-SPK::Model	*gl_model;
-double			gl_time;
 
 Loading::Loading() : GameState("Loading")
 {
@@ -35,14 +28,6 @@ void	Loading::click(const CL_InputEvent &event)
 
 void	Loading::update(double time)
 {
-	  using namespace SPK;
-	  using namespace SPK::GL;
-	  gl_system->update(time * 0.001);
-	  gl_system->render();
-	  gl_model->setParam(PARAM_RED,0.6f + 0.4f * sin(gl_time * 0.001));
-	  gl_model->setParam(PARAM_BLUE,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14 * 4 / 3));
-	  gl_model->setParam(PARAM_GREEN,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14  * 2 / 3));
-	  gl_time += time;
 }
 
 void	Loading::slowTest(const CL_InputEvent &event)
@@ -90,49 +75,4 @@ void	Loading::onStart()
 
   this->addGroup("poly1", 12);
   this->addGroup("poly2", 11);
-
-  using namespace SPK;
-  using namespace SPK::GL;
-  randomSeed = static_cast<unsigned int>(time(NULL));
-  gl_model = Model::create
-  (
-  FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,
-  FLAG_ALPHA
-  );
-  gl_model->setParam(PARAM_ALPHA,1.0f,0.0f);
-  gl_model->setLifeTime(1.0f,5.0f);
-  //glTranslatef(0.0f,0.0f,-1);
-  // Creates the zone
-  Sphere* source =Sphere::create();
-  source->setRadius(0.05);
-  // Creates the emitter
-  SphericEmitter* emitter = SphericEmitter::create();
-  emitter->setDirection (Vector3D(0, 1, 0));
-  emitter->setAngles(0,6.28);
-  emitter->setZone(source);
-  emitter->setForce(1.0f, 1.0f);
-  emitter->setTank(-1);
-  emitter->setFlow(40000);
-  GLPointRenderer* renderer = GLPointRenderer::create();
-  renderer->setType(SPK::POINT_CIRCLE);
-  GLPointRenderer::setPixelPerUnit(45.0f * 3.14159f / 180.f, 768);
-  renderer->setSize(5.0f);
-  renderer->setTextureBlending(GL_MODULATE);
-  renderer->enableRenderingHint(DEPTH_WRITE,false);
-  renderer->setBlending(BLENDING_ALPHA);
-  SPK::Group* group = SPK::Group::create(gl_model,40000);
-  group->addEmitter(emitter);
-  group->setRenderer(renderer);
-  group->setFriction(0.0f);
-  /*emitter = SphericEmitter::create();
-  emitter->setDirection (Vector3D(0, 1, 0));
-  emitter->setAngles(0,1);
-  emitter->setZone(source);
-  emitter->setForce(0.4f, 0.4f);
-  emitter->setTank(40000000);
-  emitter->setFlow(500);
-  group->addEmitter(emitter);*/
-  gl_system = System::create();
-  gl_system->addGroup(group);
-  gl_system->getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5,0.5, 0));
 }
