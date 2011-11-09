@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GameObjectManager.hpp"
+class GameObjectManager;
+class Group;
 
 class GameObject
 {

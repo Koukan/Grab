@@ -6,10 +6,12 @@
 #include <string>
 #include <stack>
 #include "Callback.hpp"
+#include "GameObject.hpp"
 #include "TimeEffectManager.hpp"
+#include "PhysicsSubscriber.hpp"
+#include "PhysicsSubscriber2.hpp"
 
 class GameState;
-class GameObject;
 class GameObjectManager;
 
 typedef std::set<GameObject*>	gameObjectSet;
@@ -50,10 +52,10 @@ class Group
     std::stack<GameObject*>	_deletes;
 };
 
-typedef std::pair<std::string, std::string>	stringPair;
-typedef	std::map<stringPair, Callback*>		collisionGroupsMap;
-typedef std::map<std::string, Group*>		groupsMap;
-typedef std::multimap<int, Group*>		groupsDisplay;
+typedef std::pair<std::string, std::string>		stringPair;
+typedef	std::map<stringPair, IPhysicsSubscriber*>	collisionGroupsMap;
+typedef std::map<std::string, Group*>			groupsMap;
+typedef std::multimap<int, Group*>			groupsDisplay;
 
 class GameObjectManager : public TimeEffectManager
 {

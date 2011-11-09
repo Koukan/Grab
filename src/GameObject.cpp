@@ -1,5 +1,6 @@
 #include <iostream>
 #include "GameObject.hpp"
+#include "GameObjectManager.hpp"
 
 GameObject::GameObject(double x, double y, Group *group)
 	: _x(x), _y(y), _group(group)
