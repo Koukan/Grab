@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>.\src\Callback_Impl;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
@@ -112,6 +112,7 @@
     <ClCompile Include="src\RendererManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\TimeEffectManager.cpp" />
+    <ClCompile Include="src\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Bullet.hpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\Singleton.hpp" />
     <ClInclude Include="src\Sprite.hpp" />
     <ClInclude Include="src\TimeEffectManager.hpp" />
+    <ClInclude Include="src\Wall.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\test.xml" />

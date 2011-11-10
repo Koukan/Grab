@@ -150,6 +150,9 @@
     <ClCompile Include="src\QuadTree\Node.cpp">
       <Filter>Fichiers sources\QuadTree</Filter>
     </ClCompile>
+    <ClCompile Include="src\Wall.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -318,6 +321,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="src\PhysicsSubscriber2.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wall.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,14 +21,16 @@ public:
 private:
 	Node *_mainNode;
 
+	int		findNodeNb(TreeElement &elem) const;
 	Node	*createNode(TreeElement &elem) const;
 	bool	isInSquare(TreeElement &elem, int x, int y, int size) const;
 	Node	*findChild(Node *node, TreeElement &elem) const;
 	void	insertChild(Node *node, TreeElement &elem) const;
-	void	insertParent(TreeElement &elem);
-	void	insertOnTop(Node *node, TreeElement &elem);
-	Node	*eraseNode(Node *node);
-	bool	collideRect(TreeElement &elem, int x, int y, int width, int height) const;
-	void	collide(TreeElement &elem, Node *node) const;
+	void	insertParent(TreeElement &elem, int nodeNb);
+	void	insertOnTop(Node *node, TreeElement &elem, int nodeNb);
+	Node	*eraseNode(Node *node, int nodeNb);
+	bool	collideRect(int x, int y, int width, int height, int x2, int y2, int width2, int height2) const;
+	void	collide(TreeElement &elem, int x, int y, int width, int height, Node *node) const;
+	bool	isInMiddle(TreeElement &elem) const;
 };
 

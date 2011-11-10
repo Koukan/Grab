@@ -68,17 +68,13 @@ void		PhysicManager::collide(groupsMap const &groups,
     if (temp != groups.end())
     {
       for (it1 = temp->second->getObjects().begin();
-	   it1 != temp->second->getObjects().end(); it1++)
+		  it1 != temp->second->getObjects().end() && !(*it1)->isDelete(); it1++)
       {
 		  itGroups = groups.find(itCol->first.second);
-		  itGroups->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1));
-   //     for (it2 = itGroups->second->getObjects().begin();
-	  //   it2 != itGroups->second->getObjects().end(); it2++)
-   //     {
-			//if ((static_cast<PhysicObject*>(*it1))->collide(*(static_cast<PhysicObject*>(*it2))))
-//				itCol->second->call(*it1, *it2);
-   //     }
+		  if (itGroups != groups.end())
+			  itGroups->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1));
       }
     }
   }
+  groups.begin()->second->getState().deleteObjects();
 }

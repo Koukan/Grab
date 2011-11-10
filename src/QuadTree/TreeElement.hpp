@@ -14,10 +14,20 @@ public:
 	virtual int getYElement() = 0;
 	virtual void collide(TreeElement &elem) = 0;
 
-	Node *getNode() const;
-	void setNode(Node *node);
+	Node		*getNode() const;
+	int			getNodeNb() const;
+	int			getXElementAbs();
+	int			getYElementAbs();
+
+	void		setNode(Node *node);
+	void		setNodeNb(int nb);
+	void		setXElementAbs();
+	void		setYElementAbs();
 
 private:
 	Node	*_node;
+	int		_nodeNb;
+	int		_absX;
+	int		_absY;
 };
 

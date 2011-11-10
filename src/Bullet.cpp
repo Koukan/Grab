@@ -37,8 +37,3 @@ void		Bullet::setSprite(Sprite *sprite)
 {
   _sprite = sprite;
 }
-
-void		Bullet::collideWall(GameObject &obj)
-{
-	this->erase();
-}

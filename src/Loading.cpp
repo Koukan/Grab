@@ -4,7 +4,7 @@
 #include "Game.hpp"
 #include "bulletmlparser-tinyxml.h"
 #include "Bullet.hpp"
-#include "RectHitBox.hpp"
+#include "Wall.hpp"
 
 Loading::Loading() : GameState("Loading")
 {
@@ -58,21 +58,20 @@ void	Loading::onStart()
   this->addBulletResource("dummybit", "weapon", "bullet", "ship", "shot");
   this->addBulletResource("pillarbit", "weapon", "shot", "ship", "shot");
 
-  // collisions Rect
+  /// collisions with Walls ///
 
-  PhysicObject *obj = new PhysicObject(*new RectHitBox(-500, -500, 1024 + 1000, 500));
-  this->addGameObject(obj, "walls");
+  this->addGroup("walls");
 
-  obj = new PhysicObject(*new RectHitBox(-500, 768, 1024 + 1000, 500));
-  this->addGameObject(obj, "walls");
+  double x = -50, y = -50, width = 1100, height = 820, wallWidth = 500;
+  new Wall(-wallWidth + x, -wallWidth + y, width + 2 * wallWidth, wallWidth, "walls");
+  new Wall(-wallWidth + x, y + height, width + 2 * wallWidth, wallWidth, "walls");
+  new Wall(-wallWidth + x, y, wallWidth, height, "walls");
+  new Wall(x + width, y, wallWidth, height, "walls");
 
-  obj = new PhysicObject(*new RectHitBox(-500, 0, 500, 768));
-  this->addGameObject(obj, "walls");
+  this->setCollisionGroups("walls", "shot", &Wall::collideBullet);
+  this->setCollisionGroups("walls", "ship", &Wall::collideBullet);
 
-  obj = new PhysicObject(*new RectHitBox(1024, 0, 500, 768));
-  this->addGameObject(obj, "walls");
-
-  this->setCollisionGroups("shot", "walls", &Bullet::collideWall);
+  /////////////////////////////
 
   _parser = new BulletMLParserTinyXML("resource/test.xml");
   _parser->build();

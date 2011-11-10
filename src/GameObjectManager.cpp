@@ -202,12 +202,12 @@ groupsMap const			&GameObjectManager::getGroups(void) const
 }
 void			GameObjectManager::addDeleteObject(GameObject *obj)
 {
-	this->_deleteList.push_front(obj);
+	this->_deleteList.insert(obj);
 }
 
 void			GameObjectManager::deleteObjects()
 {
-	for (std::list<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end();)
+	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end();)
 	{
 		delete *it;
 		it = this->_deleteList.erase(it);
