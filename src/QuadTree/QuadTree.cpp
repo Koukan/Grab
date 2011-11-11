@@ -418,6 +418,114 @@ void	QuadTree::collide(TreeElement &elem, int x, int y, int width, int height, N
 	}
 }
 
+void	QuadTree::collideElements(Elements &elems, Elements &elems2) const
+{
+	for (Elements::const_iterator it = elems.begin(); it != elems.end(); ++it)
+	{
+		for (Elements::const_iterator it2 = elems2.begin(); it2 != elems2.end(); ++it2)
+		{
+			if (this->collideRect((*it)->getXElement(), (*it)->getYElement(), (*it)->getWidthElement(), (*it)->getHeightElement(),
+				(*it2)->getXElement(), (*it2)->getYElement(), (*it2)->getWidthElement(), (*it2)->getHeightElement()))
+			(*it)->collide(**it2);
+		}
+	}
+}
+
+Node	*QuadTree::collideNode(Node *node, Node *node2) const
+{
+	int nbChilds = 0;
+	Node *checkpoint;
+
+	this->collideElements(node->getElements(), node2->getElements());
+	for (int i = 0; i < 4; ++i)
+	{
+		Node *child = node2->getChilds()[i];
+		if (child && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
+			child->getX(), child->getY(), child->getSize(), child->getSize()))
+		{
+			++nbChilds;
+			checkpoint = this->collideNode(node, child);
+		}
+	}
+	if (nbChilds == 1)
+		return (checkpoint);
+	return (node2);
+}
+
+void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree const &quadtree) const
+{
+	Node *checkpoint;
+	int nbChilds = 0;
+
+	this->collideElements(node->getElements(), quadtree._mainNode->getElements());
+	for (Node *tmp = node2; tmp; tmp = tmp->getParent())
+		this->collideElements(node->getElements(), tmp->getElements());
+	for (int i = 0; i < 4; ++i)
+	{
+		Node *child = node2->getChilds()[i];
+		if (child && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
+			child->getX(), child->getY(), child->getSize(), child->getSize()))
+		{
+			++nbChilds;
+			checkpoint = this->collideNode(node, child);
+		}
+	}
+	if (nbChilds == 1)
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			if (node->getChilds()[i])
+				this->collideNodes(node->getChilds()[i], checkpoint, quadtree);
+		}
+	}
+	else if (nbChilds > 1)
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			Node *child = node->getChilds()[i];
+			if (child && this->collideRect(node2->getX(), node2->getY(), node2->getSize(), node2->getSize(),
+			child->getX(), child->getY(), child->getSize(), child->getSize()))
+				this->collideNodes(child, node2, quadtree);
+		}
+	}
+}
+
+void	QuadTree::collideElementsNode(Elements &elems, Node *node) const
+{
+	this->collideElements(elems, node->getElements());
+	for (int i = 0; i < 4; ++i)
+	{
+		Node *child = node->getChilds()[i];
+		if (child)
+			this->collideElementsNode(elems, child);
+	}
+}
+
+void	QuadTree::collide(QuadTree const &quadTree) const
+{
+	Node *node;
+	Node *node2;
+
+	this->collideElements(this->_mainNode->getElements(), quadTree._mainNode->getElements());
+	for (int i = 0; i < 4; ++i)
+	{
+		node = this->_mainNode->getChilds()[i];
+		node2 = quadTree._mainNode->getChilds()[i];
+		if (node2)
+		{
+			this->collideElementsNode(this->_mainNode->getElements(), node2);
+			if (node && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
+				node2->getX(), node2->getY(), node2->getSize(), node2->getSize()))
+				this->collideNodes(node, node2, quadTree);
+		}
+	}
+}
+
+void	QuadTree::collide() const
+{
+	this->collide(*this);
+}
+
 void	QuadTree::display(std::string const &space) const
 {
 	Node *node = this->_mainNode;

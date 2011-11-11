@@ -1,8 +1,8 @@
 #include "Bullet.hpp"
-#include "RectHitBox.hpp"
+#include "CircleHitBox.hpp"
 
 Bullet::Bullet(double x, double y, double direction, double speed)
-	: PhysicObject(*new RectHitBox(x, y, 5, 5)), _direction(direction), _speed(speed)
+	: PhysicObject(*new CircleHitBox(x, y, 5)), _direction(direction), _speed(speed)
 {
   _vx = speed * sin(direction);
   _vy = speed * cos(direction);

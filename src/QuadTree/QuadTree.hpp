@@ -14,6 +14,8 @@ public:
 	void pop(TreeElement &elem);
 	void move(TreeElement &elem);
 	void collide(TreeElement &elem) const;
+	void collide(QuadTree const &quadTree) const;
+	void collide() const;
 
 	void display(Node *node, std::string const &space = "  ") const;
 	void display(std::string const &space = "  ") const;
@@ -21,6 +23,10 @@ public:
 private:
 	Node *_mainNode;
 
+	void	collideNodes(Node *node, Node *node2, QuadTree const &quadtree) const;
+	Node	*collideNode(Node *node, Node *node2) const;
+	void	collideElementsNode(Elements &elems, Node *node) const;
+	void	collideElements(Elements &elems, Elements &elems2) const;
 	int		findNodeNb(TreeElement &elem) const;
 	Node	*createNode(TreeElement &elem) const;
 	bool	isInSquare(TreeElement &elem, int x, int y, int size) const;
