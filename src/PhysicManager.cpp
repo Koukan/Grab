@@ -69,15 +69,10 @@ void		PhysicManager::collide(groupsMap const &groups,
     {
 		itGroups = groups.find(itCol->first.second);
 		if (itGroups != groups.end())
-			temp->second->getQuadTree().collide(itGroups->second->getQuadTree());
-	
-    //  for (it1 = temp->second->getObjects().begin();
-		  //it1 != temp->second->getObjects().end() && !(*it1)->isDelete(); it1++)
-    //  {
-		  //itGroups = groups.find(itCol->first.second);
-		  //if (itGroups != groups.end())
-			 // itGroups->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1));
-    //  }
+		{
+			temp->second->getQuadTree().collide(itGroups->second->getQuadTree(), QuadTree::LEFT);
+//			itGroups->second->getQuadTree().collide(temp->second->getQuadTree(), QuadTree::RIGHT);
+		}
 	}
   }
   groups.begin()->second->getState().deleteObjects();

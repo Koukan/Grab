@@ -300,16 +300,8 @@ bool	QuadTree::collideRect(int x, int y, int width, int height, int x2, int y2, 
 		y > y2 - height && y < y2 + height2);
 }
 
-void	QuadTree::collide(TreeElement &elem) const
+void	QuadTree::collideBranches(TreeElement &elem, QuadTree::callInfo call) const
 {
-	for (Elements::const_iterator it = this->_mainNode->getElements().begin(); it != this->_mainNode->getElements().end(); ++it)
-	{
-		if (this->collideRect(elem.getXElement(), elem.getYElement(), elem.getWidthElement(), elem.getHeightElement(),
-			(*it)->getXElement(), (*it)->getYElement(), (*it)->getWidthElement(), (*it)->getHeightElement()))
-		{
-			elem.collide(**it);
-		}
-	}
 	Node **node = this->_mainNode->getChilds();
 	if (node[0] && elem.getXElement() + elem.getWidthElement() > 0 && elem.getYElement() + elem.getHeightElement() > 0)
 	{
@@ -331,7 +323,7 @@ void	QuadTree::collide(TreeElement &elem) const
 		}
 		else
 			y = elem.getYElement();
-		this->collide(elem, x, y, width, height, node[0]);
+		this->collide(elem, x, y, width, height, node[0], call);
 	}
 	if (node[1] && elem.getXElement() < 0 && elem.getYElement() + elem.getHeightElement() > 0)
 	{
@@ -353,7 +345,7 @@ void	QuadTree::collide(TreeElement &elem) const
 		}
 		else
 			y = elem.getYElement();
-		this->collide(elem, x, y, width, height, node[1]);
+		this->collide(elem, x, y, width, height, node[1], call);
 	}
 	if (node[2] && elem.getXElement() + elem.getWidthElement() > 0 && elem.getYElement() < 0)
 	{
@@ -375,7 +367,7 @@ void	QuadTree::collide(TreeElement &elem) const
 		}
 		else
 			y = -elem.getYElement() - elem.getHeightElement();
-		this->collide(elem, x, y, width, height, node[2]);
+		this->collide(elem, x, y, width, height, node[2], call);
 	}
 	if (node[3] && elem.getXElement() < 0 && elem.getYElement() < 0)
 	{
@@ -397,28 +389,47 @@ void	QuadTree::collide(TreeElement &elem) const
 		}
 		else
 			y = -elem.getYElement() - elem.getHeightElement();
-		this->collide(elem, x, y, width, height, node[3]);
+		this->collide(elem, x, y, width, height, node[3], call);
 	}
 }
 
-void	QuadTree::collide(TreeElement &elem, int x, int y, int width, int height, Node *currentNode) const
+void	QuadTree::collide(TreeElement &elem, QuadTree::callInfo call) const
+{
+	for (Elements::const_iterator it = this->_mainNode->getElements().begin(); it != this->_mainNode->getElements().end(); ++it)
+	{
+		if (this->collideRect(elem.getXElement(), elem.getYElement(), elem.getWidthElement(), elem.getHeightElement(),
+			(*it)->getXElement(), (*it)->getYElement(), (*it)->getWidthElement(), (*it)->getHeightElement()))
+		{
+			if (call & QuadTree::RIGHT)
+				elem.collide(**it);
+			if (call & QuadTree::LEFT)
+				(*it)->collide(elem);
+		}
+	}
+	this->collideBranches(elem, call);
+}
+
+void	QuadTree::collide(TreeElement &elem, int x, int y, int width, int height, Node *currentNode, QuadTree::callInfo call) const
 {
 	for (Elements::const_iterator it = currentNode->getElements().begin(); it != currentNode->getElements().end(); ++it)
 	{
 		if (this->collideRect(x, y, width, height, (*it)->getXElementAbs(), (*it)->getYElementAbs(), (*it)->getWidthElement(), (*it)->getHeightElement()))
 		{
-			elem.collide(**it);
+			if (call & QuadTree::RIGHT)
+				elem.collide(**it);
+			if (call & QuadTree::LEFT)
+				(*it)->collide(elem);
 		}
 	}
 	for (int i = 0; i < 4; ++i)
 	{
 		Node *node = currentNode->getChilds()[i];
 		if (node && this->collideRect(x, y, width, height, node->getX(), node->getY(), node->getSize(), node->getSize()))
-			this->collide(elem, x, y, width, height, node);
+			this->collide(elem, x, y, width, height, node, call);
 	}
 }
 
-void	QuadTree::collideElements(Elements &elems, Elements &elems2) const
+void	QuadTree::collideElements(Elements &elems, Elements &elems2, QuadTree::callInfo call) const
 {
 	for (Elements::const_iterator it = elems.begin(); it != elems.end(); ++it)
 	{
@@ -426,17 +437,22 @@ void	QuadTree::collideElements(Elements &elems, Elements &elems2) const
 		{
 			if (this->collideRect((*it)->getXElement(), (*it)->getYElement(), (*it)->getWidthElement(), (*it)->getHeightElement(),
 				(*it2)->getXElement(), (*it2)->getYElement(), (*it2)->getWidthElement(), (*it2)->getHeightElement()))
-			(*it)->collide(**it2);
+			{
+				if (call & QuadTree::LEFT)
+					(*it)->collide(**it2);
+				if (call & QuadTree::RIGHT)
+					(*it2)->collide(**it);
+			}
 		}
 	}
 }
 
-Node	*QuadTree::collideNode(Node *node, Node *node2) const
+Node	*QuadTree::collideNode(Node *node, Node *node2, QuadTree::callInfo call) const
 {
 	int nbChilds = 0;
 	Node *checkpoint;
 
-	this->collideElements(node->getElements(), node2->getElements());
+	this->collideElements(node->getElements(), node2->getElements(), call);
 	for (int i = 0; i < 4; ++i)
 	{
 		Node *child = node2->getChilds()[i];
@@ -444,7 +460,7 @@ Node	*QuadTree::collideNode(Node *node, Node *node2) const
 			child->getX(), child->getY(), child->getSize(), child->getSize()))
 		{
 			++nbChilds;
-			checkpoint = this->collideNode(node, child);
+			checkpoint = this->collideNode(node, child, call);
 		}
 	}
 	if (nbChilds == 1)
@@ -452,14 +468,16 @@ Node	*QuadTree::collideNode(Node *node, Node *node2) const
 	return (node2);
 }
 
-void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree const &quadtree) const
+void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree::callInfo call) const
 {
 	Node *checkpoint;
 	int nbChilds = 0;
 
-	this->collideElements(node->getElements(), quadtree._mainNode->getElements());
-	for (Node *tmp = node2; tmp; tmp = tmp->getParent())
-		this->collideElements(node->getElements(), tmp->getElements());
+	if (!node->getElements().empty())
+	{
+		for (Node *tmp = node2; tmp; tmp = tmp->getParent())
+			this->collideElements(node->getElements(), tmp->getElements(), call);
+	}
 	for (int i = 0; i < 4; ++i)
 	{
 		Node *child = node2->getChilds()[i];
@@ -467,7 +485,7 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree const &quadtree) c
 			child->getX(), child->getY(), child->getSize(), child->getSize()))
 		{
 			++nbChilds;
-			checkpoint = this->collideNode(node, child);
+			checkpoint = this->collideNode(node, child, call);
 		}
 	}
 	if (nbChilds == 1)
@@ -475,55 +493,54 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree const &quadtree) c
 		for (int i = 0; i < 4; ++i)
 		{
 			if (node->getChilds()[i])
-				this->collideNodes(node->getChilds()[i], checkpoint, quadtree);
+				this->collideNodes(node->getChilds()[i], checkpoint, call);
 		}
 	}
-	else if (nbChilds > 1)
+	else
 	{
 		for (int i = 0; i < 4; ++i)
 		{
 			Node *child = node->getChilds()[i];
 			if (child && this->collideRect(node2->getX(), node2->getY(), node2->getSize(), node2->getSize(),
 			child->getX(), child->getY(), child->getSize(), child->getSize()))
-				this->collideNodes(child, node2, quadtree);
+				this->collideNodes(child, node2, call);
 		}
 	}
 }
 
-void	QuadTree::collideElementsNode(Elements &elems, Node *node) const
-{
-	this->collideElements(elems, node->getElements());
-	for (int i = 0; i < 4; ++i)
-	{
-		Node *child = node->getChilds()[i];
-		if (child)
-			this->collideElementsNode(elems, child);
-	}
-}
-
-void	QuadTree::collide(QuadTree const &quadTree) const
+void	QuadTree::collide(QuadTree const &quadTree, QuadTree::callInfo call) const
 {
 	Node *node;
 	Node *node2;
 
-	this->collideElements(this->_mainNode->getElements(), quadTree._mainNode->getElements());
+	if (call == QuadTree::ALL)
+	{
+		for (Elements::const_iterator it = this->_mainNode->getElements().begin();
+			it != this->_mainNode->getElements().end(); ++it)
+			quadTree.collideBranches(**it, QuadTree::ALL);
+	}
+	else
+	{
+		for (Elements::const_iterator it = this->_mainNode->getElements().begin();
+			it != this->_mainNode->getElements().end(); ++it)
+			quadTree.collide(**it, static_cast<QuadTree::callInfo>(QuadTree::ALL & (~call)));
+	}
+	for (Elements::const_iterator it = quadTree._mainNode->getElements().begin();
+		it != quadTree._mainNode->getElements().end(); ++it)
+		this->collide(**it, call);
 	for (int i = 0; i < 4; ++i)
 	{
 		node = this->_mainNode->getChilds()[i];
 		node2 = quadTree._mainNode->getChilds()[i];
-		if (node2)
-		{
-			this->collideElementsNode(this->_mainNode->getElements(), node2);
-			if (node && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
-				node2->getX(), node2->getY(), node2->getSize(), node2->getSize()))
-				this->collideNodes(node, node2, quadTree);
-		}
+		if (node && node2 && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
+			node2->getX(), node2->getY(), node2->getSize(), node2->getSize()))
+			this->collideNodes(node, node2, call);
 	}
 }
 
 void	QuadTree::collide() const
 {
-	this->collide(*this);
+	this->collide(*this, QuadTree::LEFT);
 }
 
 void	QuadTree::display(std::string const &space) const

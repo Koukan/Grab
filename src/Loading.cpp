@@ -63,6 +63,7 @@ void	Loading::onStart()
   this->addGroup("walls");
 
   double x = -50, y = -50, width = 1100, height = 820, wallWidth = 500;
+//  double x = 50, y = 50, width = 600, height = 600, wallWidth = 500;
   new Wall(-wallWidth + x, -wallWidth + y, width + 2 * wallWidth, wallWidth, "walls");
   new Wall(-wallWidth + x, y + height, width + 2 * wallWidth, wallWidth, "walls");
   new Wall(-wallWidth + x, y, wallWidth, height, "walls");
