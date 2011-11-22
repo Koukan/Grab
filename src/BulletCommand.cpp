@@ -9,33 +9,29 @@
 inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 
+BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
+		double x, double y, double direction, double speed)
+	: BulletMLRunner(gstate.getBulletParser(parser)), Bullet(x, y, direction, speed),
+	  _turn(0), _end(false), _state(gstate)
+{
+}
+
 BulletCommand::BulletCommand(BulletMLParser *parser, GameState &gstate,
-		BulletName const &info,
 		double x, double y, double direction, double speed)
 	: BulletMLRunner(parser), Bullet(x, y, direction, speed),
-	  _turn(0), _end(false), _state(gstate),
-	  _resource(gstate.getBulletResource(info))
+	  _turn(0), _end(false), _state(gstate)
 {
-  this->setSprite(_state, _resource.commandSprite);
 }
 
 BulletCommand::BulletCommand(BulletMLState *state, GameState &gstate,
-		BulletName const &info,
 		double x, double y, double direction, double speed)
 	: BulletMLRunner(state), Bullet(x, y, direction, speed),
-	  _turn(0), _end(false), _state(gstate),
-	  _resource(gstate.getBulletResource(info))
+	  _turn(0), _end(false), _state(gstate)
 {
-  this->setSprite(_state, _resource.commandSprite);
-}
-
-BulletCommand::BulletCommand(BulletMLState *state, GameState &gstate,
-		BulletResource const &info,
-		double x, double y, double direction, double speed)
-	: BulletMLRunner(state), Bullet(x, y, direction, speed),
-	  _turn(0), _end(false),_state(gstate), _resource(info)
-{
-  this->setSprite(_state, _resource.commandSprite);
+	if (!state->getSprite().empty())
+		this->setSprite(_state, state->getSprite());
+	this->_simpleSprite = state->getBulletSprite();
+	this->_simpleGroup = state->getBulletGroup();
 }
 
 BulletCommand::~BulletCommand()
@@ -69,15 +65,14 @@ double		BulletCommand::getRank()
 
 void		BulletCommand::createSimpleBullet(double direction, double speed)
 {
-  this->_state.addGameObject(new Bullet(_state, _resource.simpleSprite, _x, _y, dtor(direction), speed), _resource.simpleGroup);
+  this->_state.addGameObject(new Bullet(_state, this->_simpleSprite, _x, _y, dtor(direction), speed), this->_simpleGroup);
 }
 
 void		BulletCommand::createBullet(BulletMLState* state,
 				  	    double direction, double speed)
 {
-  BulletResource const	&resource = _state.getBulletResource(state->getLabel());
-
-  this->_state.addGameObject(new BulletCommand(state, _state, resource, _x, _y, direction, speed), resource.commandGroup);
+	this->_state.addGameObject(new BulletCommand(state, _state, _x, _y, direction, speed), state->getGroup());
+	delete state;
 }
 
 int		BulletCommand::getTurn()

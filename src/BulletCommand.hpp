@@ -9,11 +9,11 @@
 class BulletCommand : public BulletMLRunner, public Bullet
 {
   public:
-    BulletCommand(BulletMLParser* parser, GameState &gstate, BulletName const &info,
+    BulletCommand(std::string const &parser, GameState &gstate,
 		  double x = 0, double y = 0, double direction = 0, double speed = 0);
-    BulletCommand(BulletMLState* state, GameState &gstate, BulletName const &info,
+    BulletCommand(BulletMLParser* parser, GameState &gstate,
 		  double x = 0, double y = 0, double direction = 0, double speed = 0);
-    BulletCommand(BulletMLState* state, GameState &gstate, BulletResource const &info,
+    BulletCommand(BulletMLState* state, GameState &gstate,
 		  double x = 0, double y = 0, double direction = 0, double speed = 0);
     virtual ~BulletCommand();
     virtual double	getBulletDirection();
@@ -37,6 +37,7 @@ class BulletCommand : public BulletMLRunner, public Bullet
   private:
     double			_turn;
     bool			_end;
-    GameState			&_state;
-    BulletResource const	&_resource;
+    GameState		&_state;
+	std::string		_simpleSprite;
+	std::string		_simpleGroup;
 };

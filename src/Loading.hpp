@@ -20,5 +20,4 @@ private:
 	void			buttonClick();
 
 	BulletCommand		*_bullet;
-	BulletMLParser		*_parser;
 };

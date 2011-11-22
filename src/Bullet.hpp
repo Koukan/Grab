@@ -10,7 +10,7 @@ class Bullet : public PhysicObject
     Bullet(CL_ResourceManager &resource, std::string const &sprite,
 	   double x = 0, double y = 0, double direction = 0, double speed = 0);
     virtual ~Bullet();
-    virtual void	draw();
+    virtual void	draw(double elapseTime);
     void		setSprite(CL_ResourceManager &resource, std::string const &name);
     void		setSprite(Sprite *sprite);
 

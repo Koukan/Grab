@@ -9,11 +9,15 @@ Wall::Wall(double x, double y, double width, double height, std::string const &g
 }
 
 
-Wall::~Wall(void)
+Wall::~Wall()
 {
 }
 
 void	Wall::collideBullet(GameObject &obj)
 {
 	obj.erase();
+}
+
+void	Wall::draw(double)
+{
 }

@@ -13,7 +13,7 @@ Sprite::~Sprite(void)
 {
 }
 
-void Sprite::draw()
+void Sprite::draw(double)
 {
   this->CL_Sprite::update();
   this->CL_Sprite::draw(RendererManager::get().getGC(), static_cast<float>(this->_x), static_cast<float>(this->_y));

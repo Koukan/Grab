@@ -65,15 +65,31 @@ public:
     DECLSPEC BulletMLNode* next();
 
     virtual void dump();
-    void		setLabel(std::string const &label);
-    std::string const	&getLabel() const;
+
+	// setter
+	void setLabel(std::string const &label) { this->label_ = label; }
+	void setGroup(std::string const &group) { this->group_ = group; }
+	void setSprite(std::string const &sprite) { this->sprite_ = sprite; }
+	void setBulletGroup(std::string const &group) { this->bulletGroup_ = group; }
+	void setBulletSprite(std::string const &sprite) { this->bulletSprite_ = sprite; }
+
+	// getter
+	std::string const &getLabel() const { return this->label_; }
+	std::string const &getGroup() const { return this->group_; }
+	std::string const &getSprite() const { return this->sprite_; }
+	std::string const &getBulletGroup() const { return this->bulletGroup_; }
+	std::string const &getBulletSprite() const { return this->bulletSprite_; }
 
 protected:
-    Name			name_;
-    Type			type_;
-    int				refID_;
+    Name					name_;
+    Type					type_;
+    int						refID_;
     std::auto_ptr<Number>	val_;
-    std::string			label_;
+    std::string				label_;
+	std::string				group_;
+	std::string				sprite_;
+	std::string				bulletGroup_;
+	std::string				bulletSprite_;
 };
 
 

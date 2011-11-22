@@ -7,8 +7,9 @@ class Wall : public PhysicObject
 {
 public:
 	Wall(double x, double y, double width, double height, std::string const &groupName = "walls");
-	~Wall(void);
+	virtual ~Wall();
 
-	void	collideBullet(GameObject &);
+	void			collideBullet(GameObject &);
+	virtual void	draw(double);
 };
 

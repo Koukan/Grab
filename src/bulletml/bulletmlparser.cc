@@ -152,6 +152,17 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					topActions_.push_back(elem);
 				}
 			}
+			if (elem->getName() == BulletMLNode::bullet)
+			{
+				if (key == "group")
+					elem->setGroup(val);
+				else if (key == "sprite")
+					elem->setSprite(val);
+				else if (key == "simpleGroup")
+					elem->setBulletGroup(val);
+				else if (key == "simpleSprite")
+					elem->setBulletSprite(val);
+			}
 		}
 	}
 }

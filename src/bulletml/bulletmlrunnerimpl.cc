@@ -102,8 +102,6 @@ BulletMLRunnerImpl::BulletMLRunnerImpl(BulletMLState* state,
 		parameters_ = state->getParameter();
 	}
 
-	delete state;
-
 
 	for (std::vector<BulletMLNode*>::iterator ite = node_.begin(); ite != node_.end(); ++ite) {
 
@@ -323,7 +321,15 @@ void BulletMLRunnerImpl::runBullet() {
 */
 
 		BulletMLState* state = new BulletMLState(bulletml_, acts, parameters_);
+
+		// Add for Grab Project
 		state->setLabel(act_->getLabel());
+		state->setGroup(act_->getGroup());
+		state->setSprite(act_->getSprite());
+		state->setBulletGroup(act_->getBulletGroup());
+		state->setBulletSprite(act_->getBulletSprite());
+		// end add
+
 		runner_->createBullet(state, dir_, spd_);
 	}
 

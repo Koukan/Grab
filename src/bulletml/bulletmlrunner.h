@@ -30,14 +30,30 @@ public:
 	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
 	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }
 	DECLSPEC boost::shared_ptr<BulletMLParameter> getParameter() { return para_; }
-	DECLSPEC void setLabel(std::string const &label) { label_ = label; }
-	DECLSPEC std::string const &getLabel() const { return label_; }
+
+	// setter
+	DECLSPEC void setLabel(std::string const &label) { this->label_ = label; }
+	DECLSPEC void setGroup(std::string const &group) { this->group_ = group; }
+	DECLSPEC void setSprite(std::string const &sprite) { this->sprite_ = sprite; }
+	DECLSPEC void setBulletGroup(std::string const &group) { this->bulletGroup_ = group; }
+	DECLSPEC void setBulletSprite(std::string const &sprite) { this->bulletSprite_ = sprite; }
+
+	// getter
+	DECLSPEC std::string const &getLabel() const { return this->label_; }
+	DECLSPEC std::string const &getGroup() const { return this->group_; }
+	DECLSPEC std::string const &getSprite() const { return this->sprite_; }
+	DECLSPEC std::string const &getBulletGroup() const { return this->bulletGroup_; }
+	DECLSPEC std::string const &getBulletSprite() const { return this->bulletSprite_; }
 
 private:
-	BulletMLParser*				bulletml_;
-	std::vector<BulletMLNode*>		node_;
+	BulletMLParser*							bulletml_;
+	std::vector<BulletMLNode*>				node_;
 	boost::shared_ptr<BulletMLParameter>	para_;
-	std::string				label_;
+    std::string								label_;
+	std::string								group_;
+	std::string								sprite_;
+	std::string								bulletGroup_;
+	std::string								bulletSprite_;
 };
 
 /// BulletML Çé¿çsÇ∑ÇÈÉNÉâÉX

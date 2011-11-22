@@ -38,24 +38,24 @@ class Group
     void	setFlags(int layer, bool physic, std::string const &timeEffectGroup);
 
     //getter
-    bool		getPhysic() const;
-    int			getLayer() const;
-    double		getTimeEffect() const;
-    TimeEffectGroup	*getTimeEffectGroup() const;
+    bool				getPhysic() const;
+    int					getLayer() const;
+    double				getTimeEffect() const;
+    TimeEffectGroup		*getTimeEffectGroup() const;
     gameObjectSet const	&getObjects() const;
-	QuadTree	&getQuadTree() const;
-	std::string const &getName() const;
-	GameState	&getState();
+	QuadTree			&getQuadTree() const;
+	std::string const	&getName() const;
+	GameState			&getState();
 
   private:
-    GameState			&_gameState;
-    int				_layer;
-    bool			_physic;
-    TimeEffectGroup		*_timeEffectGroup;
-    gameObjectSet		_objects;
-    std::stack<GameObject*>	_deletes;
-	QuadTree		*_quadTree;
-	std::string		_name;
+    GameState					&_gameState;
+    int							_layer;
+    bool						_physic;
+    TimeEffectGroup				*_timeEffectGroup;
+    gameObjectSet				_objects;
+    std::stack<GameObject*>		_deletes;
+	QuadTree					*_quadTree;
+	std::string					_name;
 };
 
 typedef std::pair<std::string, std::string>		stringPair;
@@ -71,7 +71,7 @@ class GameObjectManager : public TimeEffectManager
 
     void	addGroup(const std::string &group, int layer = 1,
 		    	std::string const &timeEffectGroup = "default");
-    void	addGameObject(GameObject *object, const std::string &group,
+    void	addGameObject(GameObject *object, const std::string &group = "default",
 		    	int layer = 1);
     void	removeGameObject(GameObject *object);
     void	drawGameObject() const;

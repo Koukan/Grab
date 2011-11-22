@@ -24,27 +24,27 @@ Group::~Group()
 // getter
 bool			Group::getPhysic() const
 {
-  return this->_physic;
+	return this->_physic;
 }
 
 int			Group::getLayer() const
 {
-  return this->_layer;
+	return this->_layer;
 }
 
 double			Group::getTimeEffect() const
 {
-  return this->_timeEffectGroup->getTimeEffect();
+	return this->_timeEffectGroup->getTimeEffect();
 }
 
 TimeEffectGroup		*Group::getTimeEffectGroup() const
 {
-  return this->_timeEffectGroup;
+	return this->_timeEffectGroup;
 }
 
 gameObjectSet const	&Group::getObjects(void) const
 {
-  return this->_objects;
+	return this->_objects;
 }
 
 QuadTree	&Group::getQuadTree() const
@@ -64,30 +64,30 @@ GameState	&Group::getState()
 
 void		Group::setLayer(int layer)
 {
-  this->_layer = layer;
+	this->_layer = layer;
 }
 
 void		Group::setPhysic(bool physicable)
 {
-  this->_physic = physicable;
+	this->_physic = physicable;
 }
 
 void		Group::setTimeEffect(double timeEffect)
 {
-  this->_timeEffectGroup->setTimeEffect(timeEffect);
+	this->_timeEffectGroup->setTimeEffect(timeEffect);
 }
 
 void		Group::setTimeEffectGroup(std::string const &timeEffectGroup)
 {
-  this->_timeEffectGroup = _gameState.getTimeEffectGroup(timeEffectGroup);
+	this->_timeEffectGroup = _gameState.getTimeEffectGroup(timeEffectGroup);
 }
 
 void		Group::setFlags(int layer, bool physic,
 				std::string const &timeEffectGroup)
 {
-  this->_physic = physic;
-  this->_layer = layer;
-  this->setTimeEffectGroup(timeEffectGroup);
+	this->_physic = physic;
+	this->_layer = layer;
+	this->setTimeEffectGroup(timeEffectGroup);
 }
 
 void		Group::addObject(GameObject *object)
@@ -108,24 +108,27 @@ void		Group::removeObject(GameObject *object)
 	this->_objects.erase(object);
 }
 
-void		Group::draw(double) const
+void		Group::draw(double elapseTime) const
 {
-  if (this->_layer <= 0)
-    return ;
-  for (gameObjectSet::const_iterator it = this->_objects.begin();
-	it != this->_objects.end(); it++)
-  {
-    static_cast<DrawableObject*>(*it)->draw();
-  }
+	if (this->_layer <= 0)
+		return ;
+	gameObjectSet::const_iterator		it2;
+
+	for (gameObjectSet::const_iterator it = this->_objects.begin();
+			it != this->_objects.end();)
+	{
+		it2 = it++;
+		static_cast<DrawableObject*>(*it2)->draw(elapseTime);
+	}
 }
 
 void		Group::deleteObjects()
 {
-  while (!this->_deletes.empty())
-  {
-    ::delete this->_deletes.top();
-    this->_deletes.pop();
-  }
+	while (!this->_deletes.empty())
+	{
+		delete this->_deletes.top();
+		this->_deletes.pop();
+	}
 }
 
 GameObjectManager::GameObjectManager()
@@ -134,9 +137,9 @@ GameObjectManager::GameObjectManager()
 
 GameObjectManager::~GameObjectManager()
 {
-  for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
-	it != this->_collisionGroups.end(); it++)
-    delete it->second;
+	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
+			it != this->_collisionGroups.end(); it++)
+		delete it->second;
 }
 
 bool	GameObjectManager::existingGroup(const std::string &group) const
@@ -188,7 +191,7 @@ void	GameObjectManager::setGroup(const std::string &name, int layer,
 void	GameObjectManager::drawGameObject() const
 {
   for (groupsDisplay::const_iterator it = _display.begin(); it != _display.end(); it++)
-    it->second->draw(it->second->getTimeEffectGroup()->getTime());
+    it->second->draw(it->second->getTimeEffectGroup()->getElapseTime());
 }
 
 collisionGroupsMap const	&GameObjectManager::getCollisionGroups(void) const

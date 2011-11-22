@@ -7,6 +7,7 @@ TimeEffectGroup::TimeEffectGroup()
 
 void		TimeEffectGroup::updateTime(double time)
 {
+  _elapseTime = time * _timeEffect;
   _time += time * _timeEffect;
 }
 
@@ -18,6 +19,11 @@ void		TimeEffectGroup::setTimeEffect(double timeEffect)
 double		TimeEffectGroup::getTime() const
 {
   return _time;
+}
+
+double		TimeEffectGroup::getElapseTime() const
+{
+	return _elapseTime;
 }
 
 double		TimeEffectGroup::getTimeEffect() const
@@ -52,6 +58,11 @@ void		TimeEffectManager::setTimeEffect(std::string const &name,
 double		TimeEffectManager::getTime(std::string const &name)
 {
   return this->getTimeEffectGroup(name)->getTime();
+}
+
+double		TimeEffectManager::getElapseTime(std::string const &name)
+{
+	return this->getTimeEffectGroup(name)->getElapseTime();
 }
 
 double		TimeEffectManager::getTimeEffect(std::string const &name)

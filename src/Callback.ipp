@@ -91,12 +91,8 @@ void		Callback::call(UserData1 &data1, UserData2 &data2)
   {
     Callback_Impl_UserData2<UserData2, UserData1>	*callback =
     dynamic_cast<Callback_Impl_UserData2<UserData2, UserData1>*>(_callback);
-//    if (callback)
-//    {
-//  std::cout << "plop" << std::endl;
-      callback->setData(data2, data1);
-      _callback->call();
-//    }
+    callback->setData(data2, data1);
+    _callback->call();
   }
   else
   {

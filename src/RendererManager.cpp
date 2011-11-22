@@ -1,19 +1,16 @@
-/*#include <GL/gl.h>
-#include <GL/glu.h>*/
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "RendererManager.hpp"
 #include "GameObjectManager.hpp"
 #include "DrawableObject.hpp"
 #include "Game.hpp"
 
-int		RendererManager::width = 0;
-int		RendererManager::height = 0;
-
-RendererManager::RendererManager(void)
+RendererManager::RendererManager()
 {
-  Game::get().loadManager(this);
+	Game::get().loadManager(this);
 }
 
-RendererManager::~RendererManager(void)
+RendererManager::~RendererManager()
 {
 }
 
@@ -21,16 +18,16 @@ void	RendererManager::initGraphics(const std::string &name, int x, int y)
 {
 	_gui_manager = CL_GUIManager("resource/theme");
 	CL_GUITopLevelDescription desc;
-	RendererManager::width = x;
-	RendererManager::height = y;
+	this->_width = x;
+	this->_height = y;
 	desc.set_size(CL_Size(x, y), true);
 	desc.set_title(name);
 	_window2 = new CL_MainWindow(&_gui_manager, desc);
 	_window2->get_menubar()->set_visible(false);
 	_gc = _window2->get_gc();
-	/*glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0,1,1,0);
-	glMatrixMode(GL_MODELVIEW);*/
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void	RendererManager::update(GameState &state, double elapsedTime)
@@ -68,4 +65,14 @@ CL_GUIManager		&RendererManager::getGUIManager()
 CL_GUIComponent		*RendererManager::getMainWindow()
 {
 	return _window2;
+}
+
+int							RendererManager::getWidth() const
+{
+	return this->_width;
+}
+
+int							RendererManager::getHeight() const
+{
+	return this->_height;
 }

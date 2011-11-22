@@ -46,7 +46,8 @@ void PhysicObject::setHitBox(HitBox &hitBox)
 
 void	PhysicObject::move(double time)
 {
-	this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
+	if (_vx && _vy)
+		this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
 }
 
 int PhysicObject::getWidthElement()

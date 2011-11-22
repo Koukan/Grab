@@ -1,3 +1,4 @@
+#include <SPK_GL.h>
 #include <ClanLib/gui.h>
 #include "RendererManager.hpp"
 #include "Loading.hpp"
@@ -5,6 +6,11 @@
 #include "bulletmlparser-tinyxml.h"
 #include "Bullet.hpp"
 #include "Wall.hpp"
+#include "ParticleSystem.hpp"
+
+SPK::Model	*gl_model;
+double			gl_time;
+//SPK::System	*gl_system;
 
 Loading::Loading() : GameState("Loading")
 {
@@ -29,6 +35,14 @@ void	Loading::click(const CL_InputEvent &event)
 
 void	Loading::update(double time)
 {
+		using namespace SPK;
+		using namespace SPK::GL;
+	 /* gl_system->update(time * 0.001);
+	  gl_system->render();*/
+	  gl_model->setParam(PARAM_RED,0.6f + 0.4f * sin(gl_time * 0.001));
+	  gl_model->setParam(PARAM_BLUE,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14 * 4 / 3));
+	  gl_model->setParam(PARAM_GREEN,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14  * 2 / 3));
+	  gl_time += time;
 }
 
 void	Loading::slowTest(const CL_InputEvent &event)
@@ -53,14 +67,9 @@ void	Loading::onStart()
   this->load("resource/intro.xml");
   this->addGroup("ship", 10);
   this->addGroup("shot", 5);
-  this->addBulletResource("default", "bullet", "shot", "ship", "shot");
-  this->addBulletResource("weak", "shot", "shot", "ship", "shot");
-  this->addBulletResource("dummybit", "weapon", "bullet", "ship", "shot");
-  this->addBulletResource("pillarbit", "weapon", "shot", "ship", "shot");
-
-  /// collisions with Walls ///
-
   this->addGroup("walls");
+  this->addGroup("poly1", 12);
+  this->addGroup("poly2", 11);
 
   double x = -50, y = -50, width = 1100, height = 820, wallWidth = 500;
 //  double x = 50, y = 50, width = 600, height = 600, wallWidth = 500;
@@ -74,23 +83,72 @@ void	Loading::onStart()
 
   /////////////////////////////
 
-  _parser = new BulletMLParserTinyXML("resource/test.xml");
-  _parser->build();
-  _bullet = new BulletCommand(_parser, *this, "default", 512, 360);
-  this->addGameObject(_bullet, "ship", 10);
+  // bulletml test
+  this->addBulletParser("resource/test.xml", "Test");
+  _bullet = new BulletCommand("Test", *this, 512, 360);
+  this->addGameObject(_bullet, "ship");
+  // end bulletml test
 
+  // GUI
   CL_PushButton *button1 = this->create<CL_PushButton>("button1");
   button1->set_geometry(CL_Rect(100, 200, 200, 320));
   this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
   button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
   CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
   lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
+  // end GUI
 
+  // Input
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::escape, CL_InputDevice::keyboard, CL_KEY_ESCAPE);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_UP);
   this->registerInputCallback(CL_InputEvent::pressed, *this, &Loading::slowTest, CL_InputDevice::pointer, CL_MOUSE_WHEEL_DOWN);
   this->registerInputCallback(CL_InputEvent::released, *this, &Loading::click, CL_InputDevice::pointer, CL_MOUSE_LEFT);
+  // End Input
 
-  this->addGroup("poly1", 12);
-  this->addGroup("poly2", 11);
+  // Spark
+  using namespace SPK;
+  using namespace SPK::GL;
+  randomSeed = static_cast<unsigned int>(time(NULL));
+  gl_model = Model::create
+  (
+  FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,
+  FLAG_ALPHA
+  );
+  gl_model->setParam(PARAM_ALPHA,1.0f,0.0f);
+  gl_model->setLifeTime(1.0f,5.0f);
+  //glTranslatef(0.0f,0.0f,-1);
+  // Creates the zone
+  Sphere* source = Sphere::create();
+  source->setRadius(0.05);
+  // Creates the emitter
+  SphericEmitter* emitter = SphericEmitter::create();
+  emitter->setDirection (Vector3D(0, 1, 0));
+  emitter->setAngles(0, 6.28);
+  emitter->setZone(source);
+  emitter->setForce(1.0f, 1.0f);
+  emitter->setTank(-1);
+  emitter->setFlow(4000);
+  GLPointRenderer* renderer = GLPointRenderer::create();
+  GLPointRenderer::setPixelPerUnit(45.0f * 3.14159f / 180.f, 768);
+  renderer->setType(SPK::POINT_CIRCLE);
+  renderer->setSize(5.0f);
+  renderer->setTextureBlending(GL_MODULATE);
+  renderer->enableRenderingHint(DEPTH_WRITE,false);
+  renderer->setBlending(BLENDING_ALPHA);
+  emitter = SphericEmitter::create();
+  emitter->setDirection (Vector3D(0, 1, 0));
+  emitter->setAngles(0,1);
+  emitter->setZone(source);
+  emitter->setForce(0.4f, 0.4f);
+  emitter->setTank(40000000);
+  emitter->setFlow(500);
+  SPK::Group* group = SPK::Group::create(gl_model,40000);
+  group->setRenderer(renderer);
+  group->setFriction(2.0f);
+  group->addEmitter(emitter);
+  ParticleSystem		*system = new ParticleSystem(512, 384);
+  system->addGroup(group);
+  system->SPK::System::getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5,0.5, 0));
+  addGameObject(system, "particle");
+  // End Spark
 }

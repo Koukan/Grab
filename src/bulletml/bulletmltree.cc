@@ -118,13 +118,3 @@ void BulletMLNode::getAllChildrenVec(Name name, std::vector<BulletMLNode*>& outv
 	}
 }
 
-
-void			BulletMLNode::setLabel(std::string const &label)
-{
-  this->label_ = label;
-}
-
-std::string const	&BulletMLNode::getLabel() const
-{
-  return this->label_;
-}

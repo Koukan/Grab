@@ -28,8 +28,15 @@ SRCS		= $(DIR)/main.cpp								\
 		  $(DIR)/CircleHitBox.cpp							\
 		  $(DIR)/HitBox.cpp									\
 		  $(DIR)/RectHitBox.cpp								\
+		  $(DIR)/GUIManager.cpp								\
+		  $(DIR)/Sound.cpp									\
 		  $(DIR)/spark/src/spk_all.cpp						\
-		  $(DIR)/spark/src/spk_gl_all.cpp
+		  $(DIR)/spark/src/spk_gl_all.cpp					\
+		  $(DIR)/ParticleSystem.cpp							\
+		  $(DIR)/Wall.cpp									\
+		  $(DIR)/QuadTree/QuadTree.cpp						\
+		  $(DIR)/QuadTree/Node.cpp							\
+		  $(DIR)/QuadTree/TreeElement.cpp
 
 OBJS		= $(SRCS:.cpp=.o)
 
@@ -37,7 +44,7 @@ CC		= g++
 
 RM		= rm -f
 
-CXXFLAGS	= -O2 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I spark/include
+CXXFLAGS	= -g3 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I spark/include -I QuadTree
 
 LDFLAGS		= `pkg-config --libs clanCore-2.3 clanGUI-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
 		  -lpthread -Lbulletml -lbulletml -lGL -lGLU

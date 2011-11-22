@@ -10,7 +10,7 @@ public:
     GameObject(x, y){}
   virtual ~DrawableObject() {}
 
-  virtual void draw() = 0;
+  virtual void		draw(double elapseTime) = 0;
 };
 
 #endif		/* _DRAWABLEOBJECT_ */

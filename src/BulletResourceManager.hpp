@@ -2,48 +2,20 @@
 
 #include <string>
 #include <map>
+#include "bulletmlparser.h"
 
-typedef std::string	BulletName;
-
-struct	BulletResource
-{
-  BulletResource(std::string const &commandSprite, std::string const &simpleSprite,
-		 std::string const &commandGroup, std::string const &simpleGroup);
-  std::string		commandSprite;
-  std::string		simpleSprite;
-  std::string		commandGroup;
-  std::string		simpleGroup;
-};
-
-typedef std::map<BulletName, BulletResource*>	bulletResources;
+typedef std::map<std::string, BulletMLParser*>	bulletParsers;
 
 class BulletResourceManager
 {
   public:
     BulletResourceManager();
     virtual ~BulletResourceManager();
-    void		addBulletResource(BulletName const &name,
-		   	std::string const &commandSprite, std::string const &simpleSprite,
-			std::string const &commandGroup, std::string const &simpleGroup);
+	bool			addBulletParser(std::string const &path, std::string const &name);
 
-    //setter
-    void		setBulletCommandSprite(BulletName const &name,
-		    			std::string const &sprite);
-    void		setBulletSimpleSprite(BulletName const &name,
-		    		      std::string const &sprite);
-    void		setBulletCommandGroup(BulletName const &name,
-		    		       std::string const &group);
-    void		setBulletSimpleGroup(BulletName const &name,
-		    		       std::string const &group);
-
-
-    //getter
-    std::string const		&getBulletCommandSprite(BulletName const &name) const;
-    std::string const		&getBulletSimpleSprite(BulletName const &name) const;
-    std::string const		&getBulletCommandGroup(BulletName const &name) const;
-    std::string const		&getBulletSimpleGroup(BulletName const &name) const;
-    BulletResource const	&getBulletResource(BulletName const &name) const;
+	//getter
+	BulletMLParser	*getBulletParser(std::string const &name);
 
   private:
-    bulletResources		_resources;
+	bulletParsers	_parsers;
 };
