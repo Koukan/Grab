@@ -3,18 +3,17 @@
 #include "RendererManager.hpp"
 #include "Loading.hpp"
 #include "Game.hpp"
-#include "bulletmlparser-tinyxml.h"
 #include "Bullet.hpp"
 #include "Wall.hpp"
 #include "ParticleSystem.hpp"
 
-SPK::Model	*gl_model;
+SPK::Model		*gl_model;
 double			gl_time;
-//SPK::System	*gl_system;
+ParticleSystem		*gl_system;
 
 Loading::Loading() : GameState("Loading")
 {
-  //  AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
+  //AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
   //AudioManager::get().play("intro", "test", "intro");
 
   //AudioManager::get().setVolume("intro", "test", 1.0f);
@@ -70,6 +69,7 @@ void	Loading::onStart()
   this->addGroup("walls");
   this->addGroup("poly1", 12);
   this->addGroup("poly2", 11);
+  this->addGroup("particle", 20);
 
   double x = -50, y = -50, width = 1100, height = 820, wallWidth = 500;
 //  double x = 50, y = 50, width = 600, height = 600, wallWidth = 500;
@@ -108,7 +108,11 @@ void	Loading::onStart()
   // Spark
   using namespace SPK;
   using namespace SPK::GL;
+  #if defined (_WIN32)
+  randomSeed = static_cast<unsigned int>(78);
+  #else
   randomSeed = static_cast<unsigned int>(time(NULL));
+  #endif
   gl_model = Model::create
   (
   FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,
@@ -146,9 +150,9 @@ void	Loading::onStart()
   group->setRenderer(renderer);
   group->setFriction(2.0f);
   group->addEmitter(emitter);
-  ParticleSystem		*system = new ParticleSystem(512, 384);
-  system->addGroup(group);
-  system->SPK::System::getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5,0.5, 0));
-  addGameObject(system, "particle");
+  gl_system = new ParticleSystem(512, 384);
+  gl_system->addGroup(group);
+  gl_system->SPK::System::getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5,0.5, 0));
+  addGameObject(gl_system, "particle", 58);
   // End Spark
 }
