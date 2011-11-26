@@ -380,7 +380,7 @@ void BulletMLRunnerImpl::runRepeat() {
 }
 
 void BulletMLRunnerImpl::runFireRef() {
-	std::shared_ptr<Parameters> prevPara = parameters_;
+	bullet_shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));
@@ -388,7 +388,7 @@ void BulletMLRunnerImpl::runFireRef() {
 }
 
 void BulletMLRunnerImpl::runActionRef() {
-	std::shared_ptr<Parameters> prevPara = parameters_;
+	bullet_shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));
@@ -396,7 +396,7 @@ void BulletMLRunnerImpl::runActionRef() {
 }
 
 void BulletMLRunnerImpl::runBulletRef() {
-	std::shared_ptr<Parameters> prevPara = parameters_;
+	bullet_shared_ptr<Parameters> prevPara = parameters_;
 	parameters_.reset(getParameters());
 
 	refStack_.push(std::make_pair(act_, prevPara));

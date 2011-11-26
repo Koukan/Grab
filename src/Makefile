@@ -30,8 +30,8 @@ SRCS		= $(DIR)/main.cpp								\
 		  $(DIR)/RectHitBox.cpp								\
 		  $(DIR)/GUIManager.cpp								\
 		  $(DIR)/Sound.cpp									\
-		  $(DIR)/spark/src/spk_all.cpp						\
-		  $(DIR)/spark/src/spk_gl_all.cpp					\
+		  $(DIR)/SPARK/src/SPK_All.cpp						\
+		  $(DIR)/SPARK/src/SPK_GL_All.cpp					\
 		  $(DIR)/ParticleSystem.cpp							\
 		  $(DIR)/Wall.cpp									\
 		  $(DIR)/QuadTree/QuadTree.cpp						\
@@ -44,7 +44,7 @@ CC		= g++
 
 RM		= rm -f
 
-CXXFLAGS	= -g3 -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I spark/include -I QuadTree
+CXXFLAGS	= -g3 -std=c++0x -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I SPARK/include -I QuadTree
 
 LDFLAGS		= `pkg-config --libs clanCore-2.3 clanGUI-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
 		  -lpthread -Lbulletml -lbulletml -lGL -lGLU

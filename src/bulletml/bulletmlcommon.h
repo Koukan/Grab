@@ -7,5 +7,12 @@
 # define DECLSPEC
 #endif
 
-#endif // ! bulletmlcommon_h_
+#if defined (_WIN32)
+#include <memory>
+#define bullet_shared_ptr std::shared_ptr
+#else
+#include <tr1/memory>
+#define bullet_shared_ptr std::tr1::shared_ptr
+#endif
 
+#endif // ! bulletmlcommon_h_

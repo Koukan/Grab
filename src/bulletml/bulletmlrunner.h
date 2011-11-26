@@ -11,7 +11,6 @@
 #include "bulletmlcommon.h"
 
 #include <vector>
-#include <memory>
 
 class BulletMLParser;
 class BulletMLNode;
@@ -24,12 +23,12 @@ class BulletMLState {
 public:
 	DECLSPEC BulletMLState(BulletMLParser* bulletml,
 						   const std::vector<BulletMLNode*>& node,
-						   std::shared_ptr<BulletMLParameter> para)
+						   bullet_shared_ptr<BulletMLParameter> para)
 		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para) {}
 
 	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
 	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }
-	DECLSPEC std::shared_ptr<BulletMLParameter> getParameter() { return para_; }
+	DECLSPEC bullet_shared_ptr<BulletMLParameter> getParameter() { return para_; }
 
 	// setter
 	DECLSPEC void setLabel(std::string const &label) { this->label_ = label; }
@@ -48,7 +47,7 @@ public:
 private:
 	BulletMLParser*							bulletml_;
 	std::vector<BulletMLNode*>				node_;
-	std::shared_ptr<BulletMLParameter>		para_;
+	bullet_shared_ptr<BulletMLParameter>	para_;
     std::string								label_;
 	std::string								group_;
 	std::string								sprite_;
