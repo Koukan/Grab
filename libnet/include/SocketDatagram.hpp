@@ -16,13 +16,18 @@ public:
 	SocketDatagram();
 	~SocketDatagram();
 
-	int	setup(InetAddr &addr, int protocol = IPPROTO_UDP);
-	int	connect(InetAddr &addr);
+	int	setup(InetAddr const &addr, bool bind = true, int protocol = IPPROTO_UDP);
+	int	connect(InetAddr const &addr);
+
+	int	join(InetAddr const &addr);
+	int	leave(InetAddr const &addr);
+	int	setTTLMulticast(uint32_t value, InetAddr const &addr);
+
 	virtual int	send(Packet &packet, int flags = 0);
 	virtual int	recv(Packet &packet, int flags = 0);
 
 private:
-	int	bind(InetAddr &addr);
+	int	bind(InetAddr const &addr);
 };
 
 #endif /* HandleDATAGRAM_HPP_ */

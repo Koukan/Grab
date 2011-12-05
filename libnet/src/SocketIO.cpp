@@ -27,7 +27,7 @@ int	SocketIO::sendmsg(Packet &packet, size_t, InetAddr *addr, int flags)
   WSAMSG	msg;
   DWORD		ret;
 
-  msg.name = (addr) ? addr->operator sockaddr *() : 0;
+ // msg.name = (addr) ? addr->operator sockaddr const *() : 0;
   msg.namelen = (addr) ? addr->getSize() : 0;
   msg.dwFlags = 0;
   msg.lpBuffers = reinterpret_cast<LPWSABUF>(&buffer);
@@ -41,7 +41,7 @@ int	SocketIO::sendmsg(Packet &packet, size_t, InetAddr *addr, int flags)
 #else
   struct msghdr	msg;
 
-  msg.msg_name = (addr) ? addr->operator sockaddr *() : 0;
+  //msg.msg_name = (addr) ? addr->operator sockaddr const *() : 0;
   msg.msg_namelen = (addr) ? addr->getSize() : 0;
   msg.msg_flags = 0;
   msg.msg_iov = &buffer;

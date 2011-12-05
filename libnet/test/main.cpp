@@ -38,7 +38,7 @@ public:
 		test << std::string("\n");
 		std::cout << test.size() << std::endl;
 		this->handleOutputPacket(test);
-		return 0;
+		return 1;
 	}
 
 	virtual int handleTimeout()

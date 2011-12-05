@@ -26,7 +26,7 @@ public:
 		_reactor->removeHandler(_connector);
 	}
 
-	int		setup(InetAddr &addr, Reactor &reactor, bool nonBlocking = true)
+	int		setup(InetAddr const &addr, Reactor &reactor, bool nonBlocking = true)
 	{
 		_reactor = &reactor;
 		int ret = _connector.setup(addr);

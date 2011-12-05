@@ -28,13 +28,19 @@ public:
 	std::string const &	getHost(int flags = 0, bool refresh = false) const;
 	Family		getFamily() const;
 	socklen_t	getSize() const;
-	operator	sockaddr*();
+
+	bool		isAnyAddr() const;
+	bool		isMulticast() const;
+	bool		isLoopback() const;
+
+	operator	sockaddr const *() const;
 	bool operator<(InetAddr const & other) const;
 	bool operator==(InetAddr const & other) const;
+	bool operator!=(InetAddr const & other) const;
+
 
 private:
 	int			initAddr(std::string const &host, std::string const &port, int family = AF_UNSPEC, int flags = 0);
-	int			initAddr(std::string const &port, int family = AF_UNSPEC, int flags = 0);
 
 	mutable std::string	host_;
 	struct sockaddr_storage	addr_;

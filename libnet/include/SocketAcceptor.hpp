@@ -17,12 +17,12 @@ public:
 	SocketAcceptor();
 	~SocketAcceptor();
 
-	int		setup(InetAddr &addr, bool reuseAddr = true,  int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
+	int		setup(InetAddr const &addr, bool reuseAddr = true,  int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
 	int		accept(SocketStream &stream, InetAddr *src = 0, size_t timeout = 0);
 
 private:
 	Handle	accept(InetAddr *src = 0);
-	int		bind(InetAddr &addr);
+	int		bind(InetAddr const &addr);
 	int 	listen();
 };
 

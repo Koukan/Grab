@@ -14,7 +14,7 @@
 class Socket
 {
 public:
-	int	open(InetAddr &addr, int type, int protocol);
+	int	open(InetAddr const &addr, int type, int protocol);
 	int	close();
 
 	int	setNonBlocking(bool flag);

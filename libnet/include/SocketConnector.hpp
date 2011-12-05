@@ -16,8 +16,8 @@ public:
 	SocketConnector();
 	~SocketConnector();
 
-	int		setup(InetAddr &addr, int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
-	int		connect(SocketStream &stream, InetAddr &addr, size_t timeout = 0);
+	int		setup(InetAddr const &addr, int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
+	int		connect(SocketStream &stream, InetAddr const &addr, size_t timeout = 0);
 
 private:
 };

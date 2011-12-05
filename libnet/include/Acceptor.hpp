@@ -27,7 +27,7 @@ public:
 	  _reactor->removeHandler(acceptor);
 	}
 
-	int		setup(InetAddr &addr, Reactor &reactor)
+	int		setup(InetAddr const &addr, Reactor &reactor)
 	{
 		_reactor = &reactor;
 		int ret = acceptor.setup(addr);

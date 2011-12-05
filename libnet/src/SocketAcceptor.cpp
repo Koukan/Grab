@@ -15,7 +15,7 @@ SocketAcceptor::~SocketAcceptor()
 {
 }
 
-int		SocketAcceptor::setup(InetAddr &addr, bool reuseAddr, int type, int protocol)
+int		SocketAcceptor::setup(InetAddr const &addr, bool reuseAddr, int type, int protocol)
 {
   if (_handle != INVALID_HANDLE)
 	this->close();
@@ -32,7 +32,7 @@ int		SocketAcceptor::setup(InetAddr &addr, bool reuseAddr, int type, int protoco
   return ret;
 }
 
-int		SocketAcceptor::bind(InetAddr &addr)
+int		SocketAcceptor::bind(InetAddr const &addr)
 {
   return (::bind(_handle, addr, addr.getSize()));
 }
