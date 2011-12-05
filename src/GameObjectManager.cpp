@@ -210,9 +210,12 @@ void			GameObjectManager::addDeleteObject(GameObject *obj)
 
 void			GameObjectManager::deleteObjects()
 {
+	std::set<GameObject *>::iterator	tmp;
+
 	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end();)
 	{
-		delete *it;
-		it = this->_deleteList.erase(it);
+		tmp = it++;
+		delete *tmp;
+		this->_deleteList.erase(tmp);
 	}
 }

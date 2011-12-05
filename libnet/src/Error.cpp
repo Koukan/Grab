@@ -1,0 +1,33 @@
+/*
+ * Error.cpp
+ *
+ *  Created on: Nov 10, 2011
+ *      Author: snap
+ */
+
+#include <iostream>
+#include "network.h"
+
+#if defined (__unix__)
+#	include <string.h>
+#endif
+
+std::string		getLastError()
+{
+	char	buffer[1024];
+#if defined (_WIN32)
+    if (::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
+                           NULL, errno, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)(buffer), 0, NULL) == 0)
+            return "Unknown error";
+    else
+            return buffer;
+    //::LocalFree(buf);
+#else
+	return ::strerror_r(errno, buffer, 1024);
+#endif
+}
+
+void			printLastError()
+{
+  std::cerr << getLastError() << std::endl;
+}
