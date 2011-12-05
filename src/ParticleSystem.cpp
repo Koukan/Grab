@@ -34,14 +34,14 @@ void				ParticleSystem::setPosition(double x, double y)
 	{
 		for (lit = (*it)->getEmitters().begin(); lit != (*it)->getEmitters().end(); lit++)
 		{
-			(*lit)->getZone()->setPosition(SPK::Vector3D(rx, ry, 0));
+			(*lit)->getZone()->setPosition(SPK::Vector3D(static_cast<float>(rx), static_cast<float>(ry), 0));
 		}
 	}
 }
 
 void				ParticleSystem::draw(double elapseTime)
 {
-	if (this->update(elapseTime * 0.001))
+	if (this->update(static_cast<float>(elapseTime * 0.001)))
 	  this->render();
 	else
 		delete this;

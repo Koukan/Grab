@@ -10,8 +10,8 @@ BulletMLRunner::BulletMLRunner(BulletMLParser* bulletml) {
 		std::vector<BulletMLNode*> act;
 		act.push_back(acts[i]);
 		BulletMLState* state =
-			new BulletMLState(bulletml, act,
-							  bullet_shared_ptr<BulletMLParameter>());
+        new BulletMLState(bulletml, act,
+		bullet_shared_ptr<BulletMLParameter>());
 		impl_.push_back(makeImpl(state));
 	}
 }

@@ -3,7 +3,6 @@
 #include "GameState.hpp"
 #include "AudioManager.hpp"
 #include "BulletCommand.hpp"
-#include "bulletmlparser.h"
 
 class Loading : public GameState
 {

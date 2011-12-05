@@ -1,6 +1,6 @@
 #include <SPK_GL.h>
 #include <ClanLib/gui.h>
-#include "RendererManager.hpp"
+//#include "RendererManager.hpp"
 #include "Loading.hpp"
 #include "Game.hpp"
 #include "Bullet.hpp"
@@ -15,7 +15,6 @@ Loading::Loading() : GameState("Loading")
 {
   //AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
   //AudioManager::get().play("intro", "test", "intro");
-
   //AudioManager::get().setVolume("intro", "test", 1.0f);
 }
 
@@ -36,8 +35,8 @@ void	Loading::update(double time)
 {
 		using namespace SPK;
 		using namespace SPK::GL;
-	 /* gl_system->update(time * 0.001);
-	  gl_system->render();*/
+	  //gl_system->update(time * 0.001);
+	  //gl_system->render();
 	  gl_model->setParam(PARAM_RED,0.6f + 0.4f * sin(gl_time * 0.001));
 	  gl_model->setParam(PARAM_BLUE,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14 * 4 / 3));
 	  gl_model->setParam(PARAM_GREEN,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14  * 2 / 3));
@@ -90,12 +89,12 @@ void	Loading::onStart()
   // end bulletml test
 
   // GUI
-  CL_PushButton *button1 = this->create<CL_PushButton>("button1");
+  /*CL_PushButton *button1 = this->create<CL_PushButton>("button1");
   button1->set_geometry(CL_Rect(100, 200, 200, 320));
   this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
   button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
   CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
-  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
+  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));*/
   // end GUI
 
   // Input
@@ -109,7 +108,7 @@ void	Loading::onStart()
   using namespace SPK;
   using namespace SPK::GL;
   #if defined (_WIN32)
-  randomSeed = static_cast<unsigned int>(78);
+  randomSeed = static_cast<unsigned int>(GetTickCount());
   #else
   randomSeed = static_cast<unsigned int>(time(NULL));
   #endif
@@ -137,6 +136,7 @@ void	Loading::onStart()
   renderer->setType(SPK::POINT_CIRCLE);
   renderer->setSize(5.0f);
   renderer->setTextureBlending(GL_MODULATE);
+  renderer->enableRenderingHint(DEPTH_TEST, false);
   renderer->enableRenderingHint(DEPTH_WRITE,false);
   renderer->setBlending(BLENDING_ALPHA);
   emitter = SphericEmitter::create();

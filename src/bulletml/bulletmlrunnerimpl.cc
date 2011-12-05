@@ -430,7 +430,7 @@ void BulletMLRunnerImpl::runChangeSpeed() {
 		spd = getNumberContents(spdNode) * (double)term
 			+ runner_->getBulletSpeed();
 	}
-	
+
 
 	calcChangeSpeed(spd, term);
 
@@ -568,4 +568,4 @@ BulletMLRunnerImpl::Parameters* BulletMLRunnerImpl::getParameters() {
 	return para;
 }
 
-	
+
