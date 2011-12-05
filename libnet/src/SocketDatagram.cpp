@@ -46,7 +46,7 @@ int		SocketDatagram::join(InetAddr const &addr)
 	struct sockaddr_storage const *tmp = (struct sockaddr_storage const *)addr.operator const sockaddr *();
 	request.gr_group = *tmp;
 	int level = (addr.getFamily() == InetAddr::IPV4) ? IPPROTO_IP : IPPROTO_IPV6;
-	return ::setsockopt(_handle, level, MCAST_JOIN_GROUP, &request, sizeof(request));
+	return ::setsockopt(_handle, level, MCAST_JOIN_GROUP, reinterpret_cast<char const*>(&request), sizeof(request));
 }
 
 int		SocketDatagram::leave(InetAddr const &addr)
@@ -59,7 +59,7 @@ int		SocketDatagram::leave(InetAddr const &addr)
 	struct sockaddr_storage const *tmp = (struct sockaddr_storage const *)addr.operator const sockaddr *();
 	request.gr_group = *tmp;
 	int level = (addr.getFamily() == InetAddr::IPV4) ? IPPROTO_IP : IPPROTO_IPV6;
-	return ::setsockopt(_handle, level, MCAST_LEAVE_GROUP, &request, sizeof(request));
+	return ::setsockopt(_handle, level, MCAST_LEAVE_GROUP, reinterpret_cast<char const*>(&request), sizeof(request));
 }
 
 int		SocketDatagram::setTTLMulticast(uint32_t value, InetAddr const &addr)
@@ -67,12 +67,12 @@ int		SocketDatagram::setTTLMulticast(uint32_t value, InetAddr const &addr)
 	if (addr.getFamily() == InetAddr::IPV4)
 	{
 		u_char	var = value;
-		return ::setsockopt(_handle, IPPROTO_IP, IP_MULTICAST_TTL, &var, sizeof(var));
+		return ::setsockopt(_handle, IPPROTO_IP, IP_MULTICAST_TTL, reinterpret_cast<char const*>(&var), sizeof(var));
 	}
 	else if (addr.getFamily() == InetAddr::IPV6)
 	{
 		int		var = value;
-		return ::setsockopt(_handle, IPPROTO_IPV6, IPV6_MULTICAST_HOPS, &var, sizeof(var));
+		return ::setsockopt(_handle, IPPROTO_IPV6, IPV6_MULTICAST_HOPS, reinterpret_cast<char const*>(&var), sizeof(var));
 	}
 	else
 	  return -1;

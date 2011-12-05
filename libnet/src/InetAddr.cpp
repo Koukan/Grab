@@ -142,7 +142,7 @@ bool				InetAddr::isMulticast() const
 	if (addr_.ss_family == AF_INET)
 		return IN_MULTICAST(ntohl((reinterpret_cast<struct sockaddr_in const *>(&addr_))->sin_addr.s_addr));
 	else if (addr_.ss_family == AF_INET6)
-		return IN6_IS_ADDR_MULTICAST(&((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_addr));
+		return IN6_IS_ADDR_MULTICAST(&((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_addr)) != 0;
 	else
 		return false;
 }
@@ -152,7 +152,7 @@ bool				InetAddr::isLoopback() const
 	if (addr_.ss_family == AF_INET)
 		return ((reinterpret_cast<struct sockaddr_in const *>(&addr_))->sin_addr.s_addr == INADDR_LOOPBACK);
 	else if (addr_.ss_family == AF_INET6)
-		return IN6_IS_ADDR_LOOPBACK(&((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_addr));
+		return IN6_IS_ADDR_LOOPBACK(&((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_addr)) != 0;
 	else
 		return false;
 }
