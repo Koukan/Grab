@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{758A30BC-8DE5-4A89-8E83-9EB16416AFF0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libnet</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>.\include;$(IncludePath)</IncludePath>
+    <OutDir>lib\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>.\include;$(IncludePath)</IncludePath>
+    <OutDir>lib\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Acceptor.hpp" />
+    <ClInclude Include="include\Clock.hpp" />
+    <ClInclude Include="include\Connector.hpp" />
+    <ClInclude Include="include\Converter.hpp" />
+    <ClInclude Include="include\DataBlock.hpp" />
+    <ClInclude Include="include\EpollPolicy.hpp" />
+    <ClInclude Include="include\InetAddr.hpp" />
+    <ClInclude Include="include\IOVec.hpp" />
+    <ClInclude Include="include\NetHandler.hpp" />
+    <ClInclude Include="include\network.h" />
+    <ClInclude Include="include\Packet.hpp" />
+    <ClInclude Include="include\PacketHandler.hpp" />
+    <ClInclude Include="include\PollPolicy.hpp" />
+    <ClInclude Include="include\Reactor.hpp" />
+    <ClInclude Include="include\Service.hpp" />
+    <ClInclude Include="include\SetupNetwork.hpp" />
+    <ClInclude Include="include\Socket.hpp" />
+    <ClInclude Include="include\SocketAcceptor.hpp" />
+    <ClInclude Include="include\SocketConnector.hpp" />
+    <ClInclude Include="include\SocketDatagram.hpp" />
+    <ClInclude Include="include\SocketIO.hpp" />
+    <ClInclude Include="include\SocketStream.hpp" />
+    <ClInclude Include="include\UdpPacketHandler.hpp" />
+    <ClInclude Include="include\WFMOPolicy.hpp" />
+    <ClInclude Include="include\SyncPolicy.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\DataBlock.cpp" />
+    <ClCompile Include="src\EpollPolicy.cpp" />
+    <ClCompile Include="src\Error.cpp" />
+    <ClCompile Include="src\InetAddr.cpp" />
+    <ClCompile Include="src\IOVec.cpp" />
+    <ClCompile Include="src\NetHandler.cpp" />
+    <ClCompile Include="src\Packet.cpp" />
+    <ClCompile Include="src\PacketHandler.cpp" />
+    <ClCompile Include="src\PollPolicy.cpp" />
+    <ClCompile Include="src\Reactor.cpp" />
+    <ClCompile Include="src\SetupNetwork.cpp" />
+    <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\SocketAcceptor.cpp" />
+    <ClCompile Include="src\SocketConnector.cpp" />
+    <ClCompile Include="src\SocketDatagram.cpp" />
+    <ClCompile Include="src\SocketIO.cpp" />
+    <ClCompile Include="src\SocketStream.cpp" />
+    <ClCompile Include="src\UdpPacketHandler.cpp" />
+    <ClCompile Include="src\WFMOPolicy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram11.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
