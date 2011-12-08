@@ -12,6 +12,8 @@
 #include "PacketHandler.hpp"
 #include <iostream>
 
+using namespace Net;
+
 typedef EpollPolicy Policy;
 
 class	Client : public PacketHandler<>

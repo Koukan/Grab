@@ -1,12 +1,15 @@
 #pragma once
 
+#if defined (_WIN32)
+
 #include <map>
 #include <queue>
 #include "Reactor.hpp"
 #include "NetHandler.hpp"
 
-#if defined (_WIN32)
-class WFMOPolicy : public Reactor
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ WFMOPolicy : public Reactor
 {
 public:
 	WFMOPolicy(void);
@@ -32,4 +35,7 @@ private:
 	SocketMap						_map;
 	std::queue<size_t>				_emptySlot;
 };
+
+NET_END_NAMESPACE
+
 #endif

@@ -11,6 +11,8 @@
 #	include <poll.h>
 #endif
 
+NET_USE_NAMESPACE
+
 PollPolicy::pollpolicydata::pollpolicydata()
 {}
 

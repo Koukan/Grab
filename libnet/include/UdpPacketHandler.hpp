@@ -11,7 +11,9 @@
 #include "PacketHandler.hpp"
 #include "SocketDatagram.hpp"
 
-class UdpPacketHandler: public PacketHandler<SocketDatagram>
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ UdpPacketHandler: public PacketHandler<SocketDatagram>
 {
 public:
 	UdpPacketHandler();
@@ -19,5 +21,7 @@ public:
 
 	virtual int handleInput(Socket &);
 };
+
+NET_END_NAMESPACE
 
 #endif /* UDPPACKETHANDLER_H_ */

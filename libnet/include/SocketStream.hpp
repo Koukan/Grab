@@ -5,12 +5,14 @@
  *      Author: snap
  */
 
-#ifndef HandleSTREAM_HPP_
-#define HandleSTREAM_HPP_
+#ifndef SOCKETSTREAM_HPP_
+#define SOCKETSTREAM_HPP_
 
 #include "SocketIO.hpp"
 
-class SocketStream : public SocketIO
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ SocketStream : public SocketIO
 {
 public:
 	SocketStream();
@@ -19,4 +21,7 @@ public:
 	int		shutdown(int flags = SHUT_RDWR);
 
 };
-#endif /* HandleSTREAM_HPP_ */
+
+NET_END_NAMESPACE
+
+#endif /* SOCKETSTREAM_HPP_ */

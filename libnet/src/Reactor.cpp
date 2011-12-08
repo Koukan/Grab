@@ -10,6 +10,8 @@
 #include "Reactor.hpp"
 #include "NetHandler.hpp"
 
+NET_USE_NAMESPACE
+
 bool Reactor::schedulingdata::operator<(schedulingdata const &other) const
 {
 	return this->timeout < other.timeout;

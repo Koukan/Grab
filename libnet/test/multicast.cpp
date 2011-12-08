@@ -13,6 +13,8 @@
 #include "UdpPacketHandler.hpp"
 #include <iostream>
 
+using namespace Net;
+
 typedef EpollPolicy Policy;
 
 class	Client : public UdpPacketHandler

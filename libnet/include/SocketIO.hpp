@@ -11,7 +11,9 @@
 #include "Socket.hpp"
 #include "Packet.hpp"
 
-class SocketIO : public Socket
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ SocketIO : public Socket
 {
 public:
 	SocketIO();
@@ -24,5 +26,7 @@ public:
 	virtual	int	send(Packet &packet, int flags = 0);
 	virtual int	recv(Packet &packet, int flags = 0);
 };
+
+NET_END_NAMESPACE
 
 #endif /* HandleIO_HPP_ */

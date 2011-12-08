@@ -5,7 +5,9 @@
 #include <stdint.h>
 #include <string>
 #include <time.h>
+#include "NetDef.hpp"
 
+NET_BEGIN_NAMESPACE
 
 template <typename OSPolicy>
 class OSClock
@@ -132,7 +134,7 @@ public:
 	~UnixClock(){}
 	void	update()
 	{
-	  ::gettimeofday(&_time, 0);
+	  gettimeofday(&_time, 0);
 	}
 	double	getElapsedTime(OSClock<UnixClock> &clock)
 	{
@@ -143,7 +145,7 @@ public:
 
 		if (clock.isPaused())
 			return (0);
-		::gettimeofday(&tmp, 0);
+		gettimeofday(&tmp, 0);
 		time1 = tmp.tv_sec * 1000 + tmp.tv_usec / 1000;
 		time2 = _time.tv_sec * 1000 + _time.tv_usec / 1000;
 		return (time1 - time2);
@@ -153,7 +155,7 @@ public:
 	{
 		struct timeval	tmp;
 
-		::gettimeofday(&tmp, 0);
+		gettimeofday(&tmp, 0);
 		return (tmp.tv_sec * 1000 + tmp.tv_usec / 1000);
 	}
 
@@ -178,5 +180,7 @@ private:
 typedef OSClock<UnixClock> Clock;
 
 #endif
+
+NET_END_NAMESPACE
 
 #endif /* _CLOCK_ */

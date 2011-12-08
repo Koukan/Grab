@@ -7,7 +7,8 @@
 
 #include "UdpPacketHandler.hpp"
 
-#include <iostream>
+NET_USE_NAMESPACE
+
 UdpPacketHandler::UdpPacketHandler()
 {
 }

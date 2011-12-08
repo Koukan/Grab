@@ -4,10 +4,12 @@
 #include <set>
 #include <string>
 #include <cstring>
+#include "NetDef.hpp"
 #include "Packet.hpp"
 #include "Service.hpp"
 
-#include <iostream>
+NET_BEGIN_NAMESPACE
+
 template<typename IOType = SocketStream>
 class PacketHandler : public Service<IOType>
 {
@@ -132,12 +134,12 @@ public:
 		_enableWhitelist = enable;
 	}
 
-	void	addAddr(InetAddr &addr)
+	void	addAddr(InetAddr const &addr)
 	{
 		_whitelist.insert(addr);
 	}
 
-	void	removeAddr(InetAddr &addr)
+	void	removeAddr(InetAddr const &addr)
 	{
 		_whitelist.erase(addr);
 	}
@@ -157,3 +159,4 @@ protected:
 	std::list<Packet*>	_outputPacket;
 };
 
+NET_END_NAMESPACE

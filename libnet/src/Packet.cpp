@@ -9,6 +9,8 @@
 #include <cstring>
 #include "Packet.hpp"
 
+NET_USE_NAMESPACE
+
 Packet::Packet(size_t size) : _rindex(0), _windex(0), _size(0)
 {
 	_data = new DataBlock(size);

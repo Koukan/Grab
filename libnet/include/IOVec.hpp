@@ -8,11 +8,14 @@
 #ifndef IOVEC_HPP_
 #define IOVEC_HPP_
 
+#include "NetDef.hpp"
 #include "network.h"
 #include <string>
 #include <vector>
 
-class IOVec
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ IOVec
 {
 public:
 	IOVec();
@@ -27,5 +30,7 @@ private:
 	std::vector<struct iovec>	_vec;
 
 };
+
+NET_END_NAMESPACE
 
 #endif /* IOVEC_HPP_ */

@@ -8,6 +8,8 @@
 #include <iostream>
 #include "IOVec.hpp"
 
+NET_USE_NAMESPACE
+
 IOVec::IOVec()
 {
 

@@ -6,11 +6,14 @@
  */
 
 #include <iostream>
+#include "NetDef.hpp"
 #include "network.h"
 
 #if defined (__unix__)
 #	include <string.h>
 #endif
+
+NET_BEGIN_NAMESPACE
 
 std::string		getLastError()
 {
@@ -31,3 +34,5 @@ void			printLastError()
 {
   std::cerr << getLastError() << std::endl;
 }
+
+NET_END_NAMESPACE

@@ -5,12 +5,14 @@
  *      Author: snap
  */
 
-#ifndef HandleCONNECTOR_HPP_
-#define HandleCONNECTOR_HPP_
+#ifndef SOCKETCONNECTOR_HPP_
+#define SOCKETCONNECTOR_HPP_
 
 #include "SocketStream.hpp"
 
-class SocketConnector : public Socket
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ SocketConnector : public Socket
 {
 public:
 	SocketConnector();
@@ -21,5 +23,7 @@ public:
 
 private:
 };
+
+NET_END_NAMESPACE
 
 #endif /* HandleCONNECTOR_HPP_ */

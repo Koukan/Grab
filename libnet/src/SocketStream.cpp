@@ -7,6 +7,8 @@
 
 #include "SocketStream.hpp"
 
+NET_USE_NAMESPACE
+
 SocketStream::SocketStream()
 {
 }

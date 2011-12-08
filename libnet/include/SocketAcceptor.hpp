@@ -5,13 +5,15 @@
  *      Author: snap
  */
 
-#ifndef HandleACCEPTOR_HPP_
-#define HandleACCEPTOR_HPP_
+#ifndef SOCKETACCEPTOR_HPP_
+#define SOCKETACCEPTOR_HPP_
 
 #include "Socket.hpp"
 #include "SocketStream.hpp"
 
-class SocketAcceptor : public Socket
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ SocketAcceptor : public Socket
 {
 public:
 	SocketAcceptor();
@@ -26,4 +28,6 @@ private:
 	int 	listen();
 };
 
-#endif /* HandleACCEPTOR_HPP_ */
+NET_END_NAMESPACE
+
+#endif /* SOCKETACCEPTOR_HPP_ */

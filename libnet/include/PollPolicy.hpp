@@ -10,11 +10,14 @@
 
 #include <map>
 #include <queue>
+#include "NetDef.hpp"
 #include "network.h"
 #include "Reactor.hpp"
 #include "NetHandler.hpp"
 
-class PollPolicy : public Reactor
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ PollPolicy : public Reactor
 {
 public:
 
@@ -36,11 +39,15 @@ private:
 	};
 
 	typedef std::map<Handle, pollpolicydata> HandleMap;
+
+
 	size_t						_size;
-	struct pollfd				*_fds;
+	::pollfd					*_fds;
 
 	HandleMap					_handles;
 	std::queue<size_t>			_emptySlot;
 };
+
+NET_END_NAMESPACE
 
 #endif /* POLLPOLICY_HPP_ */

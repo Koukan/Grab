@@ -14,6 +14,8 @@
 #include "InetAddr.hpp"
 #include "SocketAcceptor.hpp"
 
+NET_BEGIN_NAMESPACE
+
 template<typename Service, typename AcceptPolicy = SocketAcceptor>
 class	Acceptor : public NetHandler
 {
@@ -55,4 +57,7 @@ private:
 	AcceptPolicy acceptor;
 	Reactor *_reactor;
 };
+
+NET_END_NAMESPACE
+
 #endif /* ACCEPTOR_HPP_ */

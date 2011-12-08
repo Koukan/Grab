@@ -12,6 +12,8 @@
 #include "network.h"
 #include "EpollPolicy.hpp"
 
+NET_USE_NAMESPACE
+
 EpollPolicy::EpollPolicy()
 {
   _epollfd = epoll_create(1);

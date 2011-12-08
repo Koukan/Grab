@@ -7,6 +7,8 @@
 
 #include "Socket.hpp"
 
+NET_USE_NAMESPACE
+
 Socket::Socket() : _handle(INVALID_HANDLE), _local(0), _remote(0), _blocking(true)
 {
 }

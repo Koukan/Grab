@@ -7,6 +7,8 @@
 
 #include "SocketAcceptor.hpp"
 
+NET_USE_NAMESPACE
+
 SocketAcceptor::SocketAcceptor()
 {
 }

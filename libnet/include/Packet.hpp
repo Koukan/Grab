@@ -8,10 +8,13 @@
 #ifndef PACKET_HPP_
 #define PACKET_HPP_
 
+#include "NetDef.hpp"
 #include "InetAddr.hpp"
 #include "DataBlock.hpp"
 
-class Packet
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ Packet
 {
 public:
 	Packet(size_t size);
@@ -75,5 +78,7 @@ protected:
 	DataBlock		*_data;
 	InetAddr		_addr;
 };
+
+NET_END_NAMESPACE
 
 #endif /* PACKET_HPP_ */

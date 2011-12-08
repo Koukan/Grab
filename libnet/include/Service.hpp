@@ -8,9 +8,12 @@
 #ifndef SERVICE_HPP_
 #define SERVICE_HPP_
 
+#include "NetDef.hpp"
 #include "Reactor.hpp"
 #include "NetHandler.hpp"
 #include "SocketStream.hpp"
+
+NET_BEGIN_NAMESPACE
 
 template<typename IOType = SocketStream>
 class Service : public NetHandler, public IOType
@@ -43,5 +46,7 @@ protected:
 private:
 	int		_flags;
 };
+
+NET_END_NAMESPACE
 
 #endif /* SERVICE_HPP_ */

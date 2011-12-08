@@ -1,6 +1,8 @@
 #include "network.h"
 #include "SetupNetwork.hpp"
 
+NET_USE_NAMESPACE
+
 #if defined (_WIN32)
 SetupNetwork::SetupNetwork()
 {

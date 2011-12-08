@@ -1,10 +1,13 @@
 #ifndef _INETADDR_
 #define _INETADDR_
 
+#include "NetDef.hpp"
 #include "network.h"
 #include <string>
 
-class InetAddr
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ InetAddr
 {
 public:
 	enum Family
@@ -47,5 +50,6 @@ private:
 	socklen_t		len_;
 };
 
+NET_END_NAMESPACE
 
 #endif /* _INETADDR_ */

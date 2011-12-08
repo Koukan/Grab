@@ -13,6 +13,9 @@
 
 #include <string>
 #include <sstream>
+#include "NetDef.hpp"
+
+NET_BEGIN_NAMESPACE
 
 class Converter
 {
@@ -35,5 +38,6 @@ public:
 	}
 };
 
+NET_END_NAMESPACE
 
 #endif /* _CONVERTER_ */

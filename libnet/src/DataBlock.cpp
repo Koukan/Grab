@@ -7,6 +7,8 @@
 
 #include "DataBlock.hpp"
 
+NET_USE_NAMESPACE
+
 DataBlock::DataBlock()
 {}
 

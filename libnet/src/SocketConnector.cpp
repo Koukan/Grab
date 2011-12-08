@@ -7,6 +7,8 @@
 
 #include "SocketConnector.hpp"
 
+NET_USE_NAMESPACE
+
 SocketConnector::SocketConnector()
 {
 }

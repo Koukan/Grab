@@ -14,6 +14,8 @@
 #include "NetHandler.hpp"
 #include "Reactor.hpp"
 
+NET_BEGIN_NAMESPACE
+
 template<typename Service, typename ConnectPolicy = SocketConnector>
 class Connector : public NetHandler
 {
@@ -67,5 +69,7 @@ private:
 	Service	*_service;
 	ConnectPolicy _connector;
 };
+
+NET_END_NAMESPACE
 
 #endif /* CONNECTOR_HPP_ */

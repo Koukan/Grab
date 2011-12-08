@@ -8,10 +8,13 @@
 #ifndef NETHANDLER_HPP_
 #define NETHANDLER_HPP_
 
+#include "NetDef.hpp"
 #include "network.h"
 #include <Socket.hpp>
 
-class NetHandler
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ NetHandler
 {
 public:
 	NetHandler();
@@ -24,5 +27,7 @@ public:
 
 private:
 };
+
+NET_END_NAMESPACE
 
 #endif /* NETHANDLER_HPP_ */

@@ -7,6 +7,8 @@
 
 #include "NetHandler.hpp"
 
+NET_USE_NAMESPACE
+
 NetHandler::NetHandler()
 {}
 

@@ -66,8 +66,8 @@ struct	iovec
 
 #define BACKLOG	10
 
-#include <string>
-std::string		getLastError();
-void			printLastError();
+typedef struct pollfd pollfd;
+
+#include "Error.hpp"
 
 #endif /* _NETWORK_ */

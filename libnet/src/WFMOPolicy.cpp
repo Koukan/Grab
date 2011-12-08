@@ -1,6 +1,9 @@
+#if defined (_WIN32)
+
 #include "WFMOPolicy.hpp"
 
-#if defined (_WIN32)
+NET_USE_NAMESPACE
+
 WFMOPolicy::WFMOPolicy() : _size(0)
 {
 	for	(int i = 0; i < MAXIMUM_WAIT_OBJECTS; ++i)

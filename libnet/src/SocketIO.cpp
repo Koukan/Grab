@@ -7,6 +7,8 @@
 
 #include "SocketIO.hpp"
 
+NET_USE_NAMESPACE
+
 SocketIO::SocketIO()
 {
 

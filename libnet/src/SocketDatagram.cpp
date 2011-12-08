@@ -7,6 +7,8 @@
 
 #include "SocketDatagram.hpp"
 
+NET_USE_NAMESPACE
+
 SocketDatagram::SocketDatagram()
 {
 }

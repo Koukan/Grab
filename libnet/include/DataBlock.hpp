@@ -8,9 +8,12 @@
 #ifndef DATABLOCK_HPP_
 #define DATABLOCK_HPP_
 
+#include "NetDef.hpp"
 #include "network.h"
 
-class DataBlock
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ DataBlock
 {
 public:
 	DataBlock();
@@ -29,5 +32,7 @@ private:
 	bool			_allocated;
 	size_t			_refcnt;
 };
+
+NET_END_NAMESPACE
 
 #endif /* DATABLOCK_HPP_ */

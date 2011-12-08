@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+NET_USE_NAMESPACE
+
 InetAddr::InetAddr(Family family)
 {
 	addr_.ss_family = family;

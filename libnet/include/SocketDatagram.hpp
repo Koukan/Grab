@@ -5,12 +5,14 @@
  *      Author: snap
  */
 
-#ifndef HandleDATAGRAM_HPP_
-#define HandleDATAGRAM_HPP_
+#ifndef SOCKETDATAGRAM_HPP_
+#define SOCKETDATAGRAM_HPP_
 
 #include "SocketIO.hpp"
 
-class SocketDatagram: public SocketIO
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ SocketDatagram: public SocketIO
 {
 public:
 	SocketDatagram();
@@ -30,4 +32,6 @@ private:
 	int	bind(InetAddr const &addr);
 };
 
-#endif /* HandleDATAGRAM_HPP_ */
+NET_END_NAMESPACE
+
+#endif /* SOCKETDATAGRAM_HPP_ */

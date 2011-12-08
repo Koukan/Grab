@@ -5,13 +5,16 @@
  *      Author: snap
  */
 
-#ifndef Handle_HPP_
-#define Handle_HPP_
+#ifndef SOCKET_HPP_
+#define SOCKET_HPP_
 
+#include "NetDef.hpp"
 #include "network.h"
 #include "InetAddr.hpp"
 
-class Socket
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ Socket
 {
 public:
 	int	open(InetAddr const &addr, int type, int protocol);
@@ -38,4 +41,6 @@ private:
 	bool				_blocking;
 };
 
-#endif /* Handle_HPP_ */
+NET_END_NAMESPACE
+
+#endif /* SOCKET_HPP_ */

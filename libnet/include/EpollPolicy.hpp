@@ -8,12 +8,16 @@
 #ifndef EPOLLPOLICY_HPP_
 #define EPOLLPOLICY_HPP_
 
+#if defined (__linux__)
 #include <map>
+#include "NetDef.hpp"
 #include "network.h"
 #include "Reactor.hpp"
 #include "NetHandler.hpp"
 
-class EpollPolicy : public Reactor
+NET_BEGIN_NAMESPACE
+
+class NET_DLLREQ EpollPolicy : public Reactor
 {
 public:
 	EpollPolicy();
@@ -33,5 +37,9 @@ private:
 	int		_epollfd;
 	std::map<Handle, epollpolicydata>	_handlers;
 };
+
+NET_END_NAMESPACE
+
+#endif
 
 #endif /* EPOLLPOLICY_HPP_ */

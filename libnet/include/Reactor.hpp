@@ -10,13 +10,17 @@
 
 #include <set>
 #include <map>
+
+#include "NetDef.hpp"
 #include "network.h"
 #include "Socket.hpp"
 #include "Clock.hpp"
 
+NET_BEGIN_NAMESPACE
+
 class NetHandler;
 
-class Reactor
+class NET_DLLREQ Reactor
 {
 public:
 	Reactor();
@@ -55,5 +59,7 @@ protected:
 	std::set<schedulingdata>	_listTimeout;
 	mapTimeout		_mapHandler;
 };
+
+NET_END_NAMESPACE
 
 #endif /* REACTOR_HPP_ */
