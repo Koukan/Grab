@@ -19,8 +19,8 @@ int	main(int /*ac*/, char**av)
   chdir(path.substr(0, path.rfind('/')).c_str());
   try
   {
-    Game::get().init("Grab : The Power of the Lost Grapple");
-    Game::get().exec();
+	Game::get().init();
+    Game::get().update(0);
     return 0;
   }
   catch (CL_Exception &e)

@@ -13,7 +13,7 @@ Game::~Game()
 {
 }
 
-void		Game::init(const std::string &name)
+/*void		Game::init(const std::string &name)
 {
   #if defined (WIN32)
   srand(GetTickCount());
@@ -27,10 +27,11 @@ void		Game::init(const std::string &name)
   this->loadState<Loading>("Loading");
   this->changeState("Loading");
   PhysicManager::get();
-}
+}*/
 
-void		Game::exec()
+/*void		Game::exec()
 {
+  this->update();
   double	timeDifference = 0;
   Clock		clock;
 
@@ -44,7 +45,7 @@ void		Game::exec()
     if (timeDifference > 0)
       CL_System::sleep(static_cast<int>(timeDifference));
   }
-}
+}*/
 
 void		Game::quit()
 {
@@ -76,7 +77,7 @@ void		Game::initInput(void)
   }
 }
 
-void		Game::update(double elapsedTime)
+/*void		Game::update(double elapsedTime)
 {
   GameState				*state;
 
@@ -91,11 +92,11 @@ void		Game::update(double elapsedTime)
     state->updateTime(elapsedTime);
     state->dispatchEvent();
     state->update(static_cast<int>(elapsedTime));
-    this->ManagerManager::update(*state, elapsedTime);
+    this->ModuleManager::update(*state, elapsedTime);
   }
   RendererManager::get().flip();
   this->removeDelete();
-}
+}*/
 
 void		Game::handleInput(const CL_InputEvent &event, const CL_InputState &state)
 {

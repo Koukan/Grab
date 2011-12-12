@@ -4,6 +4,8 @@ DIR		=  .
 
 SRCS		= $(DIR)/main.cpp								\
 		  $(DIR)/Game.cpp									\
+		  $(DIR)/Module.cpp									\
+		  $(DIR)/ModuleManager.cpp                          \
 		  $(DIR)/GameStateManager.cpp						\
 		  $(DIR)/Callback.cpp								\
 		  $(DIR)/InputManager.cpp							\
@@ -47,7 +49,7 @@ RM		= rm -f
 CXXFLAGS	= -O2 -std=c++0x -pipe `pkg-config --cflags clanCore-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` -I Callback_Impl -I bulletml -I SPARK/include -I QuadTree
 
 LDFLAGS		= `pkg-config --libs clanCore-2.3 clanGUI-2.3 clanNetwork-2.3 clanDisplay-2.3 clanGL-2.3 clanGL1-2.3 clanApp-2.3 clanMikMod-2.3 clanSound-2.3 clanVorbis-2.3` \
-		  -lpthread -Lbulletml -lbulletml -lGL -lGLU
+		  -lpthread -Lbulletml -lbulletml -lGL -lGLU -ldl
 
 $(NAME)		: $(OBJS)
 		make -C bulletml

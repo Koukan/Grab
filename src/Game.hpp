@@ -11,21 +11,18 @@
 #include <ClanLib/vorbis.h>
 #include <ClanLib/mikmod.h>
 #include "GameStateManager.hpp"
-#include "ManagerManager.hpp"
+#include "ModuleManager.hpp"
 
-class Game : public Singleton<Game>, public GameStateManager, public ManagerManager
+class Game : public Singleton<Game>, public GameStateManager, public ModuleManager
 {
 public:
   Game();
   virtual ~Game();
-  void		init(const std::string &name = "Grab : The Power of the Lost Grapple");
-  void		exec();
   void		quit();
 
 private:
   void		initInput(void);
   void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
-  void		update(double elapsedTime);
 
   bool			_quit;
   CL_InputContext	_ic;

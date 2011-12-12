@@ -1,4 +1,5 @@
-NAME		=  libnet.a
+NAMESTATIC		=  libnet.a
+NAMEDYNAMIC		=  libnet.so
 
 DIR		=  ./src
 
@@ -31,21 +32,25 @@ AR		= ar r
 
 RANLIB		= ranlib
 
-CXXFLAGS	= -W -Wall -Wextra -O2 -pipe -I include/
+CXXFLAGS	= -W -Wall -Wextra -O2 -pipe -fPIC -I include/
 
 LDFLAGS		= 
 
-$(NAME)		: $(OBJS)
-		$(AR) $(NAME) $(OBJS)
-	        $(RANLIB) $(NAME)
+$(NAMESTATIC)		: $(OBJS)
+					$(AR) $(NAMESTATIC) $(OBJS)
+					$(RANLIB) $(NAMESTATIC)
 
-all		: $(NAME)
+$(NAMEDYNAMIC)		: $(OBJS)
+					$(CC) $(OBJS) -shared -o $(NAMEDYNAMIC)
+
+all		: $(NAMESTATIC) $(NAMEDYNAMIC)
 
 clean		:
 		$(RM) $(OBJS)
 
 fclean		: clean
-		$(RM) $(NAME)
+		$(RM) $(NAMESTATIC)
+		$(RM) $(NAMEDYNAMIC)
 
 re		: fclean all
 

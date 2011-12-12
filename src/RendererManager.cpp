@@ -11,7 +11,6 @@
 
 RendererManager::RendererManager()
 {
-	Game::get().loadManager(this);
 }
 
 RendererManager::~RendererManager()

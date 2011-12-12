@@ -5,7 +5,6 @@
 
 PhysicManager::PhysicManager()
 {
-	Game::get().loadManager(this);
 }
 
 PhysicManager::~PhysicManager()

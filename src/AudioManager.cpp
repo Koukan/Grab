@@ -6,7 +6,6 @@
 
 AudioManager::AudioManager()
 {
-  Game::get().loadManager(this);
 }
 
 AudioManager::~AudioManager()
