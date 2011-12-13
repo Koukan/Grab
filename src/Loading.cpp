@@ -23,8 +23,8 @@ Loading::~Loading()
 
 void	Loading::escape(const CL_InputEvent &)
 {
-  Game::get().popState();
-  Game::get().quit();
+  	GameStateManager::get().popState();
+  	Game::get().quit();
 }
 
 void	Loading::click(const CL_InputEvent &event)
@@ -89,12 +89,12 @@ void	Loading::onStart()
   // end bulletml test
 
   // GUI
-  /*CL_PushButton *button1 = this->create<CL_PushButton>("button1");
+  CL_PushButton *button1 = this->create<CL_PushButton>("button1");
   button1->set_geometry(CL_Rect(100, 200, 200, 320));
   this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
   button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
   CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
-  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));*/
+  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
   // end GUI
 
   // Input

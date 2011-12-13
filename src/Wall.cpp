@@ -1,11 +1,11 @@
 #include "Wall.hpp"
 #include "RectHitBox.hpp"
-#include "Game.hpp"
+#include "GameStateManager.hpp"
 
 Wall::Wall(double x, double y, double width, double height, std::string const &groupName)
 	: PhysicObject(*new RectHitBox(x, y, width, height))
 {
-	Game::get().getCurrentState().addGameObject(this, groupName);
+	GameStateManager::get().getCurrentState().addGameObject(this, groupName);
 }
 
 

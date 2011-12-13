@@ -15,18 +15,18 @@
 class GameState;
 class GameObjectManager;
 
-typedef std::set<GameObject*>	gameObjectSet;
-
 class Group
 {
   public:
+	typedef std::set<GameObject*>	gameObjectSet;
+
     Group(GameState &state, int layer, std::string const &timeEffectGroup, std::string const &name,
 	  bool physic = false);
     ~Group();
 
     void	addObject(GameObject *object);
     void	removeObject(GameObject *object);
-    void	draw(double elapseTime) const;
+    //void	draw(double elapseTime) const;
     void	addDelete(GameObject *object);
     void	deleteObjects();
 
@@ -58,14 +58,15 @@ class Group
 	std::string					_name;
 };
 
-typedef std::pair<std::string, std::string>		stringPair;
+typedef std::pair<std::string, std::string>			stringPair;
 typedef	std::map<stringPair, IPhysicsSubscriber*>	collisionGroupsMap;
-typedef std::map<std::string, Group*>			groupsMap;
-typedef std::multimap<int, Group*>			groupsDisplay;
+typedef std::map<std::string, Group*>				groupsMap;
 
 class GameObjectManager : public TimeEffectManager
 {
   public:
+	typedef std::multimap<int, Group*>	groupsDisplay;
+
     GameObjectManager();
     virtual ~GameObjectManager();
 
@@ -74,7 +75,7 @@ class GameObjectManager : public TimeEffectManager
     void	addGameObject(GameObject *object, const std::string &group = "default",
 		    	int layer = 1);
     void	removeGameObject(GameObject *object);
-    void	drawGameObject() const;
+    //void	drawGameObject() const;
 
     // setter
     template <class InstanceClass>
@@ -85,18 +86,19 @@ class GameObjectManager : public TimeEffectManager
 
     // getter
     collisionGroupsMap const	&getCollisionGroups() const;
-    groupsMap const		&getGroups() const;
-    bool			existingGroup(const std::string &group) const;
-    bool			collisionGroups(const std::string &group1,
-				const std::string &group2, bool reverse = true) const;
-	void			addDeleteObject(GameObject *obj);
-	void			deleteObjects();
+    groupsMap const				&getGroups() const;
+    bool						existingGroup(const std::string &group) const;
+    bool						collisionGroups(const std::string &group1,
+    							const std::string &group2, bool reverse = true) const;
+	void						addDeleteObject(GameObject *obj);
+	void						deleteObjects();
+	groupsDisplay const			&getDisplayObjects() const;
 
   protected:
-    collisionGroupsMap		_collisionGroups;
-    groupsMap			_groups;
-    groupsDisplay		_display;
-	std::set<GameObject *> _deleteList;
+    collisionGroupsMap			_collisionGroups;
+    groupsMap					_groups;
+    groupsDisplay				_display;
+	std::set<GameObject*>		_deleteList;
 };
 
 #include "GameObjectManager.ipp"

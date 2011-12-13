@@ -4,24 +4,24 @@
 #include <ClanLib/display.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/gui.h>
-#include "GameState.hpp"
-#include "Manager.hpp"
+#include "GameStateObserver.hpp"
 #include "Singleton.hpp"
 
 class GameObjectManager;
 
-class RendererManager : public Manager, public Singleton<RendererManager>
+class RendererManager : public GameStateObserver, public Singleton<RendererManager>
 {
   public:
     RendererManager();
     virtual ~RendererManager();
-    void		initGraphics(const std::string &, int x = 1024, int y = 768);
-    void		update(GameState &state, double elapsedTime);
-    void		clear();
-    void		flip();
+    virtual void		init();
+    virtual void		update(double elapsedTime);
+	virtual void		destroy();
+    void				clear();
+    void				flip();
     CL_GraphicContext	&getGC();
-    CL_DisplayWindow		*getWindow();
-    CL_GUIManager			&getGUIManager();
+    CL_DisplayWindow	*getWindow();
+    CL_GUIManager		&getGUIManager();
     CL_GUIComponent		*getMainWindow();
     int					getWidth() const;
     int					getHeight() const;

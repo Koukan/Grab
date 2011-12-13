@@ -13,21 +13,20 @@ Game::~Game()
 {
 }
 
-/*void		Game::init(const std::string &name)
+void		Game::init()
 {
   #if defined (WIN32)
   srand(GetTickCount());
   #else
   srand(time(NULL));
   #endif
-  cl_log_event("system", name + " started");
-  RendererManager::get().initGraphics(name, 1024, 768);
-  initInput();
-  _mainLoopRate = 18;
-  this->loadState<Loading>("Loading");
-  this->changeState("Loading");
-  PhysicManager::get();
-}*/
+  ModuleManager::init();
+  cl_log_event("system", "Grab: The Power of the Lost Grapple started");
+  this->initInput();
+  GameStateManager::get().loadState<Loading>("Loading");
+  GameStateManager::get().changeState("Loading");
+  new PhysicManager;
+}
 
 /*void		Game::exec()
 {
@@ -49,7 +48,7 @@ Game::~Game()
 
 void		Game::quit()
 {
-  _quit = true;
+	this->destroy();
 }
 
 void		Game::initInput(void)
@@ -100,6 +99,6 @@ void		Game::initInput(void)
 
 void		Game::handleInput(const CL_InputEvent &event, const CL_InputState &state)
 {
-  if (!_currentStates.empty())
-     _currentStates.back()->handleInput(event, state);
+  //if (!_currentStates.empty())
+     //_currentStates.back()->handleInput(event, state);
 }

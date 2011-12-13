@@ -13,20 +13,21 @@
 #include "GameStateManager.hpp"
 #include "ModuleManager.hpp"
 
-class Game : public Singleton<Game>, public GameStateManager, public ModuleManager
+class Game : public Singleton<Game>, public ModuleManager
 {
 public:
   Game();
   virtual ~Game();
+  void		init();
   void		quit();
 
 private:
   void		initInput(void);
   void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
 
-  bool			_quit;
+  bool				_quit;
   CL_InputContext	_ic;
-  int			_mainLoopRate;
+  int				_mainLoopRate;
 
   CL_SoundOutput	_sound_output;
   CL_SetupSound		_setup_sound;

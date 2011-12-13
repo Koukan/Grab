@@ -11,18 +11,18 @@ public:
   virtual ~PhysicObject();
   virtual void	draw() {};
   virtual void	move(double time);
-  double	getVx() const;
-  double	getVy() const;
-  HitBox	&getHitBox() const;
-  void		setVx(double);
-  void		setVy(double);
-  void		setHitBox(HitBox &hitBox);
+  double		getVx() const;
+  double		getVy() const;
+  HitBox		&getHitBox() const;
+  void			setVx(double);
+  void			setVy(double);
+  void			setHitBox(HitBox &hitBox);
 
-  int getWidthElement();
-  int getHeightElement();
-  int getXElement();
-  int getYElement();
-  void collide(TreeElement &elem);
+  int			getWidthElement();
+  int			getHeightElement();
+  int			getXElement();
+  int			getYElement();
+  void			collide(TreeElement &elem);
 
 protected:
 	double	_vx;

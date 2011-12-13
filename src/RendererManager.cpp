@@ -5,48 +5,74 @@
 #include <GL/glu.h>
 #include <ClanLib/gl.h>
 #include "RendererManager.hpp"
-#include "GameObjectManager.hpp"
+#include "GameStateManager.hpp"
 #include "DrawableObject.hpp"
 #include "Game.hpp"
 
-RendererManager::RendererManager()
+RendererManager::RendererManager() : GameStateObserver("RendererManager")
 {
+	this->_targetRate = 20;
+	Game::get().loadModule(*this);
 }
 
 RendererManager::~RendererManager()
 {
 }
 
-void	RendererManager::initGraphics(const std::string &name, int x, int y)
+void				RendererManager::init()
 {
 	_gui_manager = CL_GUIManager("resource/theme");
 	CL_GUITopLevelDescription desc;
-	this->_width = x;
-	this->_height = y;
-	desc.set_size(CL_Size(x, y), true);
-	desc.set_title(name);
-	_window2 = new CL_MainWindow(&_gui_manager, desc);
-	_window2->get_menubar()->set_visible(false);
-	_gc = _window2->get_gc();
+	this->_width = 1024;
+	this->_height = 768;
+	desc.set_size(CL_Size(this->_width, this->_height), true);
+	desc.set_title("Grab: The Power of the Lost Grapple");
+	this->_window2 = new CL_MainWindow(&this->_gui_manager, desc);
+	this->_window2->get_menubar()->set_visible(false);
+	this->_gc = this->_window2->get_gc();
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, 1, 1, 0);
 	glMatrixMode(GL_MODELVIEW);
 
 }
 
-void	RendererManager::update(GameState &state, double elapsedTime)
+void				RendererManager::update(double elapsedTime)
 {
-  if ((state.getPaused() & GameState::DRAW))
-    return ;
-  state.drawGameObject();
+	GameObjectManager::groupsDisplay::const_iterator	lit;
+	Group::gameObjectSet::const_iterator				oit;
+	double												time;
+
+	this->clear();
+	for (std::list<GameState*>::const_iterator it = this->_glist.begin();
+		 it != this->_glist.end(); it++)
+	{
+		GameObjectManager::groupsDisplay const	&groups = (*it)->getDisplayObjects();
+		for (lit = groups.begin(); lit != groups.end(); lit++)
+		{
+			if (lit->second->getLayer() >= 0)
+			{
+				time = lit->second->getTimeEffectGroup()->getElapseTime();
+				Group::gameObjectSet const	&objects = lit->second->getObjects();
+				for (oit = objects.begin(); oit != objects.end(); oit++)
+				{
+					static_cast<DrawableObject*>(*oit)->draw(time);
+				}
+			}
+		}
+	}
+	this->flip();
 }
 
-void			RendererManager::clear()
+void				RendererManager::destroy()
+{
+}
+
+void				RendererManager::clear()
 {
 	_gc.clear();
 }
 
-void			RendererManager::flip()
+void				RendererManager::flip()
 {
 	_window2->paint();
 }
@@ -71,12 +97,12 @@ CL_GUIComponent		*RendererManager::getMainWindow()
 	return _window2;
 }
 
-int							RendererManager::getWidth() const
+int					RendererManager::getWidth() const
 {
 	return this->_width;
 }
 
-int							RendererManager::getHeight() const
+int					RendererManager::getHeight() const
 {
 	return this->_height;
 }

@@ -3,8 +3,7 @@
 
 #include <list>
 #include <string>
-
-class Observer;
+#include "Observer.hpp"
 
 template <typename Arg>
 class Observable
@@ -14,9 +13,9 @@ public:
 	{}
 
 	void			registerObserver(Observer<Arg> &observer)
-	{	
-  		std::list<Observer<Arg> *>::iterator it =
-    	find(_observers.begin(), _observers.end(), &observer);
+	{
+  		typename std::list<Observer<Arg> *>::iterator it =
+    	std::find(_observers.begin(), _observers.end(), &observer);
   		if (it == _observers.end())
     		_observers.push_back(&observer);
 	}
@@ -31,8 +30,8 @@ protected:
    	{}
 
 	void			notify(Arg &arg)
-	{	
-  		for (std::list<Observer<Arg> *>::iterator it = _observers.begin();
+	{
+  		for (typename std::list<Observer<Arg> *>::iterator it = _observers.begin();
 		  it != _observers.end(); ++it)
   		{
     		(*it)->notified(*this, arg);

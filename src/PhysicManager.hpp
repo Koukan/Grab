@@ -3,19 +3,21 @@
 
 #include "GameState.hpp"
 #include "PhysicObject.hpp"
-#include "Manager.hpp"
+#include "GameStateObserver.hpp"
 #include "Singleton.hpp"
 
-class PhysicManager : public Manager, public Singleton<PhysicManager>
+class PhysicManager : public GameStateObserver
 {
   public:
     PhysicManager();
     virtual ~PhysicManager();
-    virtual void	update(GameState &state, double elapsedTime);
+	virtual void	init();
+    virtual void	update(double elapsedTime);
+	virtual void	destroy();
 
   private:
-    void		move(groupsMap const &, double);
-    void		collide(groupsMap const&, collisionGroupsMap const&);
+    void			move(groupsMap const &, double);
+    void			collide(groupsMap const&, collisionGroupsMap const&);
 };
 
 #endif		/* _PHYSICMANAGER_ */

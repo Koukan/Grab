@@ -36,6 +36,7 @@ SRCS		= $(DIR)/main.cpp								\
 		  $(DIR)/SPARK/src/SPK_GL_All.cpp					\
 		  $(DIR)/ParticleSystem.cpp							\
 		  $(DIR)/Wall.cpp									\
+		  $(DIR)/GameStateObserver.cpp						\
 		  $(DIR)/QuadTree/QuadTree.cpp						\
 		  $(DIR)/QuadTree/Node.cpp							\
 		  $(DIR)/QuadTree/TreeElement.cpp

@@ -1,6 +1,7 @@
 #include "PhysicObject.hpp"
 #include "Game.hpp"
 #include "Callback.hpp"
+#include "GameStateManager.hpp"
 
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy) :
   DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _hitBox(&hitbox)
@@ -73,15 +74,15 @@ int PhysicObject::getYElement()
 void PhysicObject::collide(TreeElement &elem)
 {
 	PhysicObject &obj = static_cast<PhysicObject &>(elem);
-	
+
 	this->_hitBox->setX(this->_x);
 	this->_hitBox->setY(this->_y);
 	obj.getHitBox().setX(obj.getX());
 	obj.getHitBox().setY(obj.getY());
 	if (this->_hitBox->collide(obj.getHitBox()))
 	{
-		collisionGroupsMap::const_iterator it = Game::get().getCurrentState().getCollisionGroups().find(stringPair(this->_group->getName(), obj.getGroup()->getName()));
-		if (it != Game::get().getCurrentState().getCollisionGroups().end())
+		collisionGroupsMap::const_iterator it = GameStateManager::get().getCurrentState().getCollisionGroups().find(stringPair(this->_group->getName(), obj.getGroup()->getName()));
+		if (it != GameStateManager::get().getCurrentState().getCollisionGroups().end())
 			(*it->second)(static_cast<GameObject &>(*this), static_cast<GameObject &>(obj));
 	}
 }
