@@ -25,8 +25,10 @@ std::string		getLastError()
     else
             return buffer;
     //::LocalFree(buf);
-#else
+#elif defined(__linux__)
 	return ::strerror_r(errno, buffer, 1024);
+#else
+	return buffer;	
 #endif
 }
 

@@ -36,6 +36,7 @@ CXXFLAGS	= -W -Wall -Wextra -O2 -pipe -fPIC -I include/
 
 LDFLAGS		= 
 
+
 $(NAMESTATIC)		: $(OBJS)
 					$(AR) $(NAMESTATIC) $(OBJS)
 					$(RANLIB) $(NAMESTATIC)

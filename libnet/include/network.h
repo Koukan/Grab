@@ -15,8 +15,8 @@ typedef	char	sockopt;
 #	include <sys/uio.h>
 #	include <arpa/inet.h>
 #	include <netdb.h>
+#	include <netinet/in.h>
 #	include <signal.h>
-#	include <stropts.h>
 #	include <fcntl.h>
 #	include <errno.h>
 #	define	ioctlsocket	fcntl
@@ -56,7 +56,9 @@ typedef int	socklen_t;
 
 #ifndef	UIO_MAXIOV
 #  define UIO_MAXIOV 1024
+#endif
 
+#if defined(_WIN32)
 struct	iovec
 {
 	u_long		iov_len;
