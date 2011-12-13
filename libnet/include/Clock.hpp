@@ -54,6 +54,11 @@ public:
 		return OSPolicy::getTimeInStr();
 	}
 
+	static void			sleep(int ms)
+	{
+		return OSPolicy::sleep(ms);
+	}
+
 private:
 	bool						_paused;
 	OSPolicy					_platform;
@@ -101,17 +106,22 @@ public:
 	}
 
 	static std::string getTimeInStr()
-  {
-    time_t rawtime = time(0);
-	char buffer[26];
+  	{
+    	time_t rawtime = time(0);
+		char buffer[26];
 
-    ctime_s(buffer, 26, &rawtime);
-	std::string str(buffer);
+    	ctime_s(buffer, 26, &rawtime);
+		std::string str(buffer);
 
-    if (!str.empty())
-      str.resize(str.size() - 1);
-    return (str);
-  }
+    	if (!str.empty())
+      		str.resize(str.size() - 1);
+    	return (str);
+  	}
+
+	static void		sleep(int ms)
+	{
+		::Sleep(ms);
+	}
 
 private:
 	DWORD	_time;
@@ -160,17 +170,22 @@ public:
 	}
 
 	static std::string getTimeInStr()
-  {
-    time_t rawtime = time(0);
-	char buffer[26];
+  	{
+    	time_t rawtime = time(0);
+		char buffer[26];
 
-    ctime_r(&rawtime, buffer);
-	std::string str(buffer);
+    	ctime_r(&rawtime, buffer);
+		std::string str(buffer);
 
-    if (!str.empty())
-      str.resize(str.size() - 1);
-    return (str);
-  }
+    	if (!str.empty())
+      	str.resize(str.size() - 1);
+    	return (str);
+  	}
+
+	static void		sleep(int ms)
+	{
+		::usleep(ms * 1000);
+	}
 
 private:
 	struct timeval	_time;

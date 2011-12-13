@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <exception>
 #include "ModuleManager.hpp"
-#include "Clock.hpp"
+#include "../libnet/include/Clock.hpp"
 
 ModuleManager::ModuleManager() : Module("ModuleManager"), _stop(false)
 {
@@ -61,7 +61,7 @@ void    ModuleManager::unloadModule(std::string const &name)
 
 void    ModuleManager::update(double)
 {
-  Clock		clock;
+  Net::Clock		clock;
   double	towait;
   double	diff;
   Module	*module;
@@ -87,7 +87,7 @@ void    ModuleManager::update(double)
 	    		towait = module->_lastUpdate;
 		}
     }
-    usleep((towait < 0) ? 100 : towait);
+	Net::Clock::sleep((towait < 0) ? 100 : towait);
   }
 }
 
