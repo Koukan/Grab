@@ -81,6 +81,8 @@ void    ModuleManager::update(double)
        	 	if (module->_lastUpdate <= 0)
 	  		{
 				module->update(module->_targetRate - module->_lastUpdate);
+				if (_stop)
+					break ;
 	   			module->_lastUpdate += module->_targetRate;
  	  		}
 	  		if (towait == -1 || module->_lastUpdate < towait)

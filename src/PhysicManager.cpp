@@ -5,7 +5,7 @@
 
 PhysicManager::PhysicManager() : GameStateObserver("PhysicManager")
 {
-	this->_targetRate = 50;
+	this->_targetRate = 20;
 	Game::get().loadModule(*this);
 }
 

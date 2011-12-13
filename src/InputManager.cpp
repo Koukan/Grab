@@ -1,7 +1,11 @@
+#include "Game.hpp"
+#include "GameStateManager.hpp"
+#include "RendererManager.hpp"
 #include "InputManager.hpp"
 
 InputManager::InputManager() : _flush(false)
-{}
+{
+}
 
 InputManager::~InputManager()
 {
@@ -64,3 +68,4 @@ void		InputManager::flushInput()
   _inputCallbacks.clear();
   _flush = true;
 }
+

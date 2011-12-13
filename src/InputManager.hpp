@@ -8,17 +8,6 @@
 #include <ClanLib/gl.h>
 #include "Callback.hpp"
 
-struct	CallbackElem
-{
-  public:
-	CL_InputEvent::Type	eventType;
-	Callback		*callback;
-	CL_InputDevice::Type	inputType;
-	int			key;
-};
-
-typedef std::map<CL_InputEvent::Type, std::list<CallbackElem*> > InputMap;
-
 class InputManager
 {
 public:
@@ -33,6 +22,19 @@ public:
 	void		flushInput();
 
 private:
+
+	struct	CallbackElem
+	{
+ 	 public:
+		CL_InputEvent::Type	eventType;
+		Callback		*callback;
+		CL_InputDevice::Type	inputType;
+		int			key;
+	};
+
+	typedef std::map<CL_InputEvent::Type, std::list<CallbackElem*> > InputMap;
+
+
 	bool		_flush;
 	InputMap	_inputCallbacks;
 };

@@ -22,12 +22,7 @@ public:
   void		quit();
 
 private:
-  void		initInput(void);
-  void		handleInput(const CL_InputEvent &event, const CL_InputState &state);
-
-  bool				_quit;
-  CL_InputContext	_ic;
-  int				_mainLoopRate;
+  bool		_quit;
 
   CL_SoundOutput	_sound_output;
   CL_SetupSound		_setup_sound;
