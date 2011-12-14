@@ -33,7 +33,6 @@ void				RendererManager::init()
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, 1, 1, 0);
 	glMatrixMode(GL_MODELVIEW);
-
 }
 
 void				RendererManager::update(double elapsedTime)

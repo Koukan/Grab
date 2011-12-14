@@ -33,14 +33,12 @@ void	Loading::click(const CL_InputEvent &event)
 
 void	Loading::update(double time)
 {
-		using namespace SPK;
-		using namespace SPK::GL;
-	  //gl_system->update(time * 0.001);
-	  //gl_system->render();
-	  gl_model->setParam(PARAM_RED,0.6f + 0.4f * sin(gl_time * 0.001));
-	  gl_model->setParam(PARAM_BLUE,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14 * 4 / 3));
-	  gl_model->setParam(PARAM_GREEN,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14  * 2 / 3));
-	  gl_time += time;
+	using namespace SPK;
+	using namespace SPK::GL;
+	gl_model->setParam(PARAM_RED,0.6f + 0.4f * sin(gl_time * 0.001));
+	gl_model->setParam(PARAM_BLUE,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14 * 4 / 3));
+	gl_model->setParam(PARAM_GREEN,0.6f + 0.4f * sin(gl_time * 0.001 + 3.14  * 2 / 3));
+	gl_time += time;
 }
 
 void	Loading::slowTest(const CL_InputEvent &event)
@@ -56,7 +54,6 @@ void	Loading::slowTest(const CL_InputEvent &event)
 
 void	Loading::buttonClick()
 {
-  std::cout << "clicked" << std::endl;
   this->setComponentVisibility(false);
 }
 
@@ -71,7 +68,6 @@ void	Loading::onStart()
   this->addGroup("particle", 20);
 
   double x = -50, y = -50, width = 1100, height = 820, wallWidth = 500;
-//  double x = 50, y = 50, width = 600, height = 600, wallWidth = 500;
   new Wall(-wallWidth + x, -wallWidth + y, width + 2 * wallWidth, wallWidth, "walls");
   new Wall(-wallWidth + x, y + height, width + 2 * wallWidth, wallWidth, "walls");
   new Wall(-wallWidth + x, y, wallWidth, height, "walls");
@@ -89,12 +85,12 @@ void	Loading::onStart()
   // end bulletml test
 
   // GUI
-  CL_PushButton *button1 = this->create<CL_PushButton>("button1");
-  button1->set_geometry(CL_Rect(100, 200, 200, 320));
-  this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
-  button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
-  CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
-  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
+  //CL_PushButton *button1 = this->create<CL_PushButton>("button1");
+  //button1->set_geometry(CL_Rect(100, 200, 200, 320));
+  //this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
+  //button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
+  //CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
+  //lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
   // end GUI
 
   // Input
@@ -114,8 +110,8 @@ void	Loading::onStart()
   #endif
   gl_model = Model::create
   (
-  FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,
-  FLAG_ALPHA
+  	FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA,
+  	FLAG_ALPHA
   );
   gl_model->setParam(PARAM_ALPHA,1.0f,0.0f);
   gl_model->setLifeTime(1.0f,5.0f);
@@ -125,7 +121,7 @@ void	Loading::onStart()
   source->setRadius(0.05);
   // Creates the emitter
   SphericEmitter* emitter = SphericEmitter::create();
-  emitter->setDirection (Vector3D(0, 1, 0));
+  emitter->setDirection(Vector3D(0, 1, 0));
   emitter->setAngles(0, 6.28);
   emitter->setZone(source);
   emitter->setForce(1.0f, 1.0f);
@@ -137,7 +133,7 @@ void	Loading::onStart()
   renderer->setSize(5.0f);
   renderer->setTextureBlending(GL_MODULATE);
   renderer->enableRenderingHint(DEPTH_TEST, false);
-  renderer->enableRenderingHint(DEPTH_WRITE,false);
+  renderer->enableRenderingHint(DEPTH_WRITE, false);
   renderer->setBlending(BLENDING_ALPHA);
   emitter = SphericEmitter::create();
   emitter->setDirection (Vector3D(0, 1, 0));
@@ -146,13 +142,13 @@ void	Loading::onStart()
   emitter->setForce(0.4f, 0.4f);
   emitter->setTank(40000000);
   emitter->setFlow(500);
-  SPK::Group* group = SPK::Group::create(gl_model,40000);
+  SPK::Group* group = SPK::Group::create(gl_model, 40000);
   group->setRenderer(renderer);
   group->setFriction(2.0f);
   group->addEmitter(emitter);
   gl_system = new ParticleSystem(512, 384);
   gl_system->addGroup(group);
-  gl_system->SPK::System::getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5,0.5, 0));
-  addGameObject(gl_system, "particle", 58);
+  gl_system->SPK::System::getGroup(0)->getEmitter(0)->getZone()->setPosition(Vector3D(0.5, 0.5, 0));
+  addGameObject(gl_system, "particle", 10);
   // End Spark
 }
