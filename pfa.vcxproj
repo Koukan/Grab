@@ -37,10 +37,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>.\src\Callback_Impl;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>.\src\SPARK\include;.\src\Callback_Impl;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath);C:\Development\Environment\ClanLib\Lib\Win32</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>.\src\SPARK\include;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath);C:\Development\Environment\ClanLib\Lib\Win32</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -51,9 +53,13 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Development\Environment\ClanLib\Lib;C:\Development\Environment\ClanLib\Lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib-static-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\Environment\ClanLib\Lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib-static-mt.lib;clanApp-static-mt.lib;clanCore-static-mt.lib;clanDisplay-static-mt.lib;clanGL-static-mt.lib</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -68,11 +74,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Development\Environment\ClanLib\Lib;C:\Development\Environment\ClanLib\Lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib-static-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AudioManager.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\BulletCommand.cpp" />
     <ClCompile Include="src\bulletml\bulletmlparser-tinyxml.cc" />
@@ -96,25 +106,33 @@
     <ClCompile Include="src\GameObjectManager.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\GameStateObserver.cpp" />
     <ClCompile Include="src\GUIManager.cpp" />
     <ClCompile Include="src\HitBox.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\InputModule.cpp" />
     <ClCompile Include="src\Loading.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Module.cpp" />
+    <ClCompile Include="src\ModuleManager.cpp" />
+    <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\PhysicManager.cpp" />
     <ClCompile Include="src\PhysicObject.cpp" />
-    <ClCompile Include="src\ManagerManager.cpp" />
     <ClCompile Include="src\PolyHitBox.cpp" />
     <ClCompile Include="src\QuadTree\Node.cpp" />
     <ClCompile Include="src\QuadTree\QuadTree.cpp" />
     <ClCompile Include="src\QuadTree\TreeElement.cpp" />
     <ClCompile Include="src\RectHitBox.cpp" />
     <ClCompile Include="src\RendererManager.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\SPARK\src\SPK_All.cpp" />
+    <ClCompile Include="src\SPARK\src\SPK_GL_All.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\TimeEffectManager.cpp" />
     <ClCompile Include="src\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AudioManager.hpp" />
     <ClInclude Include="src\Bullet.hpp" />
     <ClInclude Include="src\BulletCommand.hpp" />
     <ClInclude Include="src\bulletml\auto_ptr_fix.h" />
@@ -150,14 +168,18 @@
     <ClInclude Include="src\GameObjectManager.hpp" />
     <ClInclude Include="src\GameState.hpp" />
     <ClInclude Include="src\GameStateManager.hpp" />
+    <ClInclude Include="src\GameStateObserver.hpp" />
     <ClInclude Include="src\GUIManager.hpp" />
     <ClInclude Include="src\HitBox.hpp" />
     <ClInclude Include="src\InputManager.hpp" />
+    <ClInclude Include="src\InputModule.hpp" />
     <ClInclude Include="src\IPhysicsSubscriber.hpp" />
     <ClInclude Include="src\Loading.hpp" />
     <ClInclude Include="src\Manager.hpp" />
-    <ClInclude Include="src\ManagerManager.hpp" />
+    <ClInclude Include="src\Module.hpp" />
+    <ClInclude Include="src\ModuleManager.hpp" />
     <ClInclude Include="src\NonCopyable.hpp" />
+    <ClInclude Include="src\ParticleSystem.hpp" />
     <ClInclude Include="src\PhysicManager.hpp" />
     <ClInclude Include="src\PhysicObject.hpp" />
     <ClInclude Include="src\PhysicsSubscriber.hpp" />
@@ -169,6 +191,7 @@
     <ClInclude Include="src\RectHitBox.hpp" />
     <ClInclude Include="src\RendererManager.hpp" />
     <ClInclude Include="src\Singleton.hpp" />
+    <ClInclude Include="src\Sound.hpp" />
     <ClInclude Include="src\Sprite.hpp" />
     <ClInclude Include="src\TimeEffectManager.hpp" />
     <ClInclude Include="src\Wall.hpp" />
@@ -182,6 +205,7 @@
     <None Include="src\Callback_Impl\Callback_Impl_Method_UserData.ipp" />
     <None Include="src\Callback_Impl\Callback_Impl_UserData.ipp" />
     <None Include="src\GameObjectManager.ipp" />
+    <None Include="src\ParticleSystem.ipp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

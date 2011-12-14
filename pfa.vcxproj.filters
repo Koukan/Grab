@@ -72,9 +72,6 @@
     <ClCompile Include="src\PhysicObject.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\ManagerManager.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -153,6 +150,33 @@
     <ClCompile Include="src\Wall.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleSystem.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SPARK\src\SPK_All.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SPARK\src\SPK_GL_All.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Module.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModuleManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputModule.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameStateObserver.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -225,9 +249,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="src\Manager.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ManagerManager.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="src\DrawableObject.hpp">
@@ -326,17 +347,53 @@
     <ClInclude Include="src\Wall.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="src\ParticleSystem.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sound.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Module.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleManager.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputModule.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameStateObserver.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Callback.ipp" />
-    <None Include="src\Callback_Impl\Callback_Impl_Function_UserData.ipp" />
-    <None Include="src\Callback_Impl\Callback_Impl_Method.ipp" />
-    <None Include="src\Callback_Impl\Callback_Impl_Method_UserData.ipp" />
-    <None Include="src\Callback_Impl\Callback_Impl_UserData.ipp" />
-    <None Include="src\GameObjectManager.ipp" />
     <None Include="src\bulletml\calc.yy">
       <Filter>Fichiers sources</Filter>
     </None>
     <None Include="resource\test.xml" />
+    <None Include="src\ParticleSystem.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\Callback.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\Callback_Impl\Callback_Impl_Function_UserData.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\Callback_Impl\Callback_Impl_Method.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\Callback_Impl\Callback_Impl_Method_UserData.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\Callback_Impl\Callback_Impl_UserData.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
+    <None Include="src\GameObjectManager.ipp">
+      <Filter>Fichiers sources\Callback_impl</Filter>
+    </None>
   </ItemGroup>
 </Project>
