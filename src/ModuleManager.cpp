@@ -84,12 +84,14 @@ void    ModuleManager::update(double)
 				if (_stop)
 					break ;
 	   			module->_lastUpdate += module->_targetRate;
+				if (module->_lastUpdate < 0)
+					module->_lastUpdate = 0;
  	  		}
 	  		if (towait == -1 || module->_lastUpdate < towait)
 	    		towait = module->_lastUpdate;
 		}
     }
-	Net::Clock::sleep((towait < 0) ? 100 : towait);
+	Net::Clock::sleep((towait < 0) ? 10 : towait);
   }
 }
 
