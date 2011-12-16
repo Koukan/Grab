@@ -1,6 +1,5 @@
 #include <SPK_GL.h>
 #include <ClanLib/gui.h>
-//#include "RendererManager.hpp"
 #include "Loading.hpp"
 #include "Game.hpp"
 #include "Bullet.hpp"
@@ -9,7 +8,7 @@
 
 SPK::Model		*gl_model;
 double			gl_time;
-ParticleSystem		*gl_system;
+ParticleSystem	*gl_system;
 
 Loading::Loading() : GameState("Loading")
 {
@@ -85,12 +84,12 @@ void	Loading::onStart()
   // end bulletml test
 
   // GUI
-  //CL_PushButton *button1 = this->create<CL_PushButton>("button1");
-  //button1->set_geometry(CL_Rect(100, 200, 200, 320));
-  //this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
-  //button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
-  //CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
-  //lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
+  CL_PushButton *button1 = this->create<CL_PushButton>("button1");
+  button1->set_geometry(CL_Rect(100, 200, 200, 320));
+  this->getGUIComponent<CL_PushButton>("button1")->set_text("Okay!");
+  button1->func_clicked() = CL_Callback_v0(this, &Loading::buttonClick);
+  CL_LineEdit *lineedit =  this->create<CL_LineEdit>("lineedit");
+  lineedit->set_geometry(CL_Rect(100, 100, 200, 120));
   // end GUI
 
   // Input
@@ -115,7 +114,7 @@ void	Loading::onStart()
   );
   gl_model->setParam(PARAM_ALPHA,1.0f,0.0f);
   gl_model->setLifeTime(1.0f,5.0f);
-  //glTranslatef(0.0f,0.0f,-1);
+  glTranslatef(0.0f,0.0f,-1);
   // Creates the zone
   Sphere* source = Sphere::create();
   source->setRadius(0.05);
@@ -124,7 +123,7 @@ void	Loading::onStart()
   emitter->setDirection(Vector3D(0, 1, 0));
   emitter->setAngles(0, 6.28);
   emitter->setZone(source);
-  emitter->setForce(1.0f, 1.0f);
+  emitter->setForce(10.0f, 10.0f);
   emitter->setTank(-1);
   emitter->setFlow(4000);
   GLPointRenderer* renderer = GLPointRenderer::create();

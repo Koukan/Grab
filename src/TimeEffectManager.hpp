@@ -37,10 +37,10 @@ class TimeEffectManager
 		    		      double timeEffect = 1);
 
     // getter
-    double					getTime(std::string const &name = "default");
-    double					getElapseTime(std::string const &name = "default");
-    double					getTimeEffect(std::string const &name = "default");
-    TimeEffectGroup	*getTimeEffectGroup(std::string const &name = "default");
+    double				getTime(std::string const &name = "default");
+    double				getElapseTime(std::string const &name = "default");
+    double				getTimeEffect(std::string const &name = "default");
+    TimeEffectGroup		*getTimeEffectGroup(std::string const &name = "default");
 
   private:
     std::map<std::string, TimeEffectGroup*>	_timeEffectMap;

@@ -50,7 +50,7 @@ void				RendererManager::update(double elapsedTime)
 		{
 			if (lit->second->getLayer() >= 0)
 			{
-				time = lit->second->getTimeEffectGroup()->getElapseTime();
+				time = lit->second->getTimeEffect() * elapsedTime;
 				Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)
 				{
