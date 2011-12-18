@@ -9,24 +9,24 @@ class Singleton : private NonCopyable
     public:
         static T        *getInstance()
         {
-            if (_singleton == NULL)
+            if (_singleton == 0)
               _singleton = new T;
             return (static_cast<T*>(_singleton));
         }
 
         static T        &get()
         {
-            if (_singleton == NULL)
+            if (_singleton == 0)
               _singleton = new T;
             return *(static_cast<T*>(_singleton));
         }
 
         static void     kill()
         {
-            if (_singleton != NULL)
-            {
+            if (_singleton != 0)
+			{
                 delete _singleton;
-                _singleton = NULL;
+                _singleton = 0;
             }
         }
 
@@ -38,6 +38,6 @@ class Singleton : private NonCopyable
         static T    	*_singleton;
 };
 
-template <typename T> T		*Singleton<T>::_singleton = NULL;
+template <typename T> T		*Singleton<T>::_singleton = 0;
 
 #endif /* _SINGLETON_ */
