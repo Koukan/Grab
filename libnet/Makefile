@@ -17,6 +17,7 @@ SRCS		= $(DIR)/InetAddr.cpp			\
 				$(DIR)/Reactor.cpp			\
 				$(DIR)/PollPolicy.cpp		\
 				$(DIR)/EpollPolicy.cpp		\
+				$(DIR)/KqueuePolicy.cpp		\
 				$(DIR)/Packet.cpp			\
 				$(DIR)/DataBlock.cpp		\
 				$(DIR)/UdpPacketHandler.cpp	\

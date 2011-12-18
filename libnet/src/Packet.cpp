@@ -20,7 +20,6 @@ Packet::Packet(DataBlock &data, size_t size) : _rindex(0), _windex(0), _size(siz
 {
   _data = &data;
   data.seize();
-  this->_size = _size;
 }
 
 Packet::Packet(Packet const &other)

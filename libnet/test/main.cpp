@@ -3,23 +3,21 @@
 #include "SocketAcceptor.hpp"
 #include "IOVec.hpp"
 #include "Reactor.hpp"
-#include "PollPolicy.hpp"
-#include "EpollPolicy.hpp"
-#include "WFMOPolicy.hpp"
 #include "NetHandler.hpp"
 #include "Acceptor.hpp"
 #include "Connector.hpp"
 #include "PacketHandler.hpp"
+#include "SyncPolicy.hpp"
 #include <iostream>
 
 using namespace Net;
 
-typedef EpollPolicy Policy;
+typedef DefaultSyncPolicy Policy;
 
 class	Client : public PacketHandler<>
 {
 public:
-	Client() : PacketHandler(1500, "\n")
+	Client() : PacketHandler<>(1500, "\n")
 	{
 	}
 
@@ -33,12 +31,14 @@ public:
 
 	virtual int handleInputPacket(Packet &input)
 	{
+		std::string	str;
+		input >> str;
 		Packet	test(2048);
-		test << std::string("je teste");
-		test << true;
-		test << 256;
-		test << std::string("\n");
-		std::cout << test.size() << std::endl;
+		test << str;
+		//test << true;
+		//test << 256;
+		test << "\n";
+		std::cout << str << std::endl;
 		this->handleOutputPacket(test);
 		return 1;
 	}

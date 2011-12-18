@@ -28,7 +28,7 @@ std::string		getLastError()
 #elif defined(__linux__)
 	return ::strerror_r(errno, buffer, 1024);
 #else
-	return buffer;	
+	return strerror(errno);	
 #endif
 }
 
