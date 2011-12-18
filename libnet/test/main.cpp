@@ -8,11 +8,13 @@
 #include "Connector.hpp"
 #include "PacketHandler.hpp"
 #include "SyncPolicy.hpp"
+#include "TSS.hpp"
 #include <iostream>
 
 using namespace Net;
 
 typedef DefaultSyncPolicy Policy;
+
 
 class	Client : public PacketHandler<>
 {
@@ -27,6 +29,7 @@ public:
 	  InetAddr addr;
 	  std::cout << this->getRemoteAddr(addr) << std::endl;
 	  std::cout << addr.getHost() << addr.getHost() << std::endl;
+	  this->setNonBlocking(true);
 	}
 
 	virtual int handleInputPacket(Packet &input)
@@ -52,6 +55,7 @@ public:
 private:
 };
 
+TSS<Client>		testtss;
 
 int  main(int ac, char **av)
 {
@@ -62,6 +66,8 @@ int  main(int ac, char **av)
   Acceptor<Client>		acceptor;
 
   acceptor.setup(test, *reactor);
+  testtss = new Client();
+  testtss->handleTimeout();
   /*Connector<Client>		client;
   client.setup(test, *reactor);*/
   return  reactor->waitForEvent();

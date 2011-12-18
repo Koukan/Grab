@@ -17,33 +17,41 @@ public:
 	{
 		this->update();
 	}
+
 	virtual ~OSClock(){}
+
 	void	play()
 	{
 		_paused = false;
 		this->update();
 	}
+
 	void	pause()
 	{
 	  _paused = true;
 	}
+
 	void	update()
 	{
 	  _platform.update();
 	}
+
 	void	reset()
 	{
 	  _paused = false;
 	  this->update();
 	}
+
 	double	getElapsedTime()
 	{
 	  return _platform.getElapsedTime(*this);
 	}
+
 	bool	isPaused()
 	{
 	  return _paused;
 	}
+
 	static uint64_t getMsSinceEpoch()
 	{
 		return OSPolicy::getMsSinceEpoch();
@@ -74,9 +82,7 @@ class	WinClock
 {
 public:
 	WinClock()
-	{
-		this->update();
-	}
+	{}
 
 	~WinClock(){}
 
@@ -137,15 +143,15 @@ class	UnixClock
 {
 public:
 	UnixClock()
-	{
-	  this->update();
-	  _begin = _time.tv_sec * 1000 + _time.tv_usec / 1000;
-	}
+	{}
+
 	~UnixClock(){}
+
 	void	update()
 	{
 	  gettimeofday(&_time, 0);
 	}
+
 	double	getElapsedTime(OSClock<UnixClock> &clock)
 	{
 	   struct timeval	tmp;
@@ -189,7 +195,6 @@ public:
 
 private:
 	struct timeval	_time;
-	double		_begin;
 };
 
 typedef OSClock<UnixClock> Clock;
