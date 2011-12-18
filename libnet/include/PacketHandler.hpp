@@ -27,6 +27,8 @@ public:
 
 	virtual	int	handleInput(Socket &)
 	{
+		do
+		{
 		  int	ret = this->recv(*_inpacket);
 		  if (ret > 0)
 		  {
@@ -66,32 +68,41 @@ public:
 			  }
 		  }
 		  if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
-			return 0;
+			return 1;
 		  return ret;
+		}
+		while (!this->isBlocking());
+	   return 0;
 	}
 
 	virtual	int	handleOutput(Socket &)
 	{
-	  if (!_outputPacket.empty())
-	  {
-		  Packet	&top = *_outputPacket.front();
-		  int	ret = this->send(top);
-		  if (ret <= 0)
-		  {
-			printLastError();
-			return ret;
-		  }
-		  if (top.isConsumned())
-		  {
-			  top.release();
-			  delete &top;
-			  _outputPacket.pop_front();
-		  }
-		  return ret;
-	  }
-	  else
+		int ret = 0;
+		Packet	*top;
+
+		while (!_outputPacket.empty())
+		{
+			  top = _outputPacket.front();
+			  ret = this->send(*top);
+			  if (ret <= 0)
+			  {
+				  if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+					  return 1;
+				  printLastError();
+				  return ret;
+			  }
+			  if (top->isConsumned())
+			  {
+				  top->release();
+				  delete top;
+				  _outputPacket.pop_front();
+			  }
+			  if (this->isBlocking())
+				return ret;
+		 }
+	  if (_outputPacket.empty())
 		this->_reactor->registerHandler(*this, *this, Reactor::READ);
-	  return 0;
+	  return ret;
 	}
 
 	virtual int	handleClose(Socket &socket)

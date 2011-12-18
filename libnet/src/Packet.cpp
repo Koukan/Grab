@@ -42,7 +42,7 @@ Packet::~Packet()
 	this->release();
 }
 
-Packet	*Packet::clone() const
+Packet	*Packet::clone()
 {
 	if (!_data)
 	  return 0;

@@ -67,7 +67,7 @@ int		EpollPolicy::waitForEvent(int timeout)
 	  return 0;
 	for	(i = 0; i < ret; ++i)
 	{
-		data = (epollpolicydata *)ev[i].data.ptr;
+		data = static_cast<epollpolicydata *>(ev[i].data.ptr);
 		if (ev[i].events & EPOLLHUP)
 			data->handler->handleClose(*(data->socket));
 		else

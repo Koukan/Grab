@@ -22,7 +22,7 @@ public:
 	Packet(Packet const &other);
 	virtual ~Packet();
 
-	Packet	*clone() const;
+	Packet	*clone();
 	Packet	*duplicate() const;
 	void	release();
 	size_t	size() const;

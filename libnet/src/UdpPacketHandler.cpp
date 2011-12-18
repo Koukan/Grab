@@ -19,19 +19,26 @@ UdpPacketHandler::~UdpPacketHandler()
 
 int UdpPacketHandler::handleInput(Socket &)
 {
- 	int	ret = this->recv(*_inpacket);
-	if (ret > 0)
+	do
 	{
-		 _inpacket->wr_ptr(0);
-		 Packet	packet(*_inpacket);
-		 packet.setSize(ret);
-		  if (_enableWhitelist)
-		  {
-			if (_whitelist.find(_inpacket->getAddr()) != _whitelist.end())
-			  this->handleInputPacket(packet);
-		  }
-		  else
-			 this->handleInputPacket(packet);
+		int	ret = this->recv(*_inpacket);
+		if (ret > 0)
+		{
+			_inpacket->wr_ptr(0);
+			Packet	packet(*_inpacket);
+			packet.setSize(ret);
+			if (_enableWhitelist)
+			{
+				if (_whitelist.find(_inpacket->getAddr()) != _whitelist.end())
+					this->handleInputPacket(packet);
+			}
+			else
+				this->handleInputPacket(packet);
+		}
+		else if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+			return 1;
+		return ret;
 	}
-	return ret;
+	while (!this->isBlocking());
+	return 0;
 }
