@@ -46,5 +46,6 @@ private:
 	bool	collideRect(int x, int y, int width, int height, int x2, int y2, int width2, int height2) const;
 	void	collide(TreeElement &elem, int x, int y, int width, int height, Node *node, QuadTree::callInfo call) const;
 	bool	isInMiddle(TreeElement &elem) const;
+	void	deleteNodes(Node *node);
 };
 

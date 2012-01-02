@@ -41,7 +41,7 @@
     <LibraryPath>$(LibraryPath);C:\Development\Environment\ClanLib\Lib\Win32</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>.\src\SPARK\include;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
+    <IncludePath>.\common;.\src\SPARK\include;C:\Development\Environment;.\src\QuadTree;.\src\bulletml;.\src\Callback_Impl;C:\Development\Environment\ClanLib\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);C:\Development\Environment\ClanLib\Lib\Win32</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

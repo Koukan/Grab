@@ -1,4 +1,5 @@
 #include <SPK_GL.h>
+#undef GL_TEXTURE_3D
 #include <ClanLib/gui.h>
 #include "Loading.hpp"
 #include "Game.hpp"

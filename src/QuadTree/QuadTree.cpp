@@ -9,6 +9,21 @@ QuadTree::QuadTree(void)
 
 QuadTree::~QuadTree(void)
 {
+	if (this->_mainNode)
+		this->deleteNodes(this->_mainNode);
+}
+
+void	QuadTree::deleteNodes(Node *node)
+{
+	Node *tmpNode;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		tmpNode = node->getChilds()[i];
+		if (tmpNode)
+			this->deleteNodes(tmpNode);
+	}
+	delete node;
 }
 
 bool	QuadTree::isInSquare(TreeElement &elem, int x, int y, int size) const
