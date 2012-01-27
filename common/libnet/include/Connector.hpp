@@ -16,7 +16,7 @@
 
 NET_BEGIN_NAMESPACE
 
-template<typename Service, typename ConnectPolicy = SocketConnector>
+template<typename UserService, typename ConnectPolicy = SocketConnector>
 class Connector : public NetHandler
 {
 public:
@@ -35,16 +35,16 @@ public:
 		int ret = _connector.setup(addr);
 		if (ret != -1)
 		{
-		   _service = new Service();
+		   _service = new UserService();
 		   _service->setReactor(reactor);
 		   if (nonBlocking)
 			 _connector.setNonBlocking(nonBlocking);
-		   int con = _connector.connect(*_service, addr);
+		   int con = _connector.connect(_service->getIOHandler(), addr);
 		   if (con == -1 && ( errno == EWOULDBLOCK  || errno == EINPROGRESS))
 			_reactor->registerHandler(_connector, *this, Reactor::WRITE);
 		   else if (con != -1)
 		   {
-			_reactor->registerHandler(*_service, *_service, _service->getReactorFlags());
+			_reactor->registerHandler(_service->getIOHandler(), *_service, _service->getReactorFlags());
 			_service->init();
 		   }
 		   if (!nonBlocking)
@@ -58,17 +58,17 @@ public:
 	  InetAddr	tmp;
 	  if (_connector.getRemoteAddr(tmp) != -1)
 	  {
-		_service->setHandle(_connector.getHandle());
-		_reactor->registerHandler(*_service, *_service, _service->getReactorFlags());
+		_service->getIOHandler().setHandle(_connector.getHandle());
+		_reactor->registerHandler(_service->getIOHandler(), *_service, _service->getReactorFlags());
 		_service->init();
 	  }
 	  return 1;
 	}
 
 private:
-	Reactor *_reactor;
-	Service	*_service;
-	ConnectPolicy _connector;
+	Reactor 		*_reactor;
+	UserService		*_service;
+	ConnectPolicy 	_connector;
 };
 
 NET_END_NAMESPACE

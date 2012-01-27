@@ -42,6 +42,7 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}SocketStream.hpp
 	${NET_INCLUDE_DIR}SyncPolicy.hpp
 	${NET_INCLUDE_DIR}UdpPacketHandler.hpp
+	${NET_INCLUDE_DIR}SizeHeaderPacketHandler.hpp
 	${NET_INCLUDE_DIR}WFMOPolicy.hpp
 	${NET_INCLUDE_DIR}network.h
 )

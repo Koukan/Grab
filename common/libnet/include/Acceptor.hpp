@@ -13,10 +13,11 @@
 #include "NetHandler.hpp"
 #include "InetAddr.hpp"
 #include "SocketAcceptor.hpp"
+#include "Service.hpp"
 
 NET_BEGIN_NAMESPACE
 
-template<typename Service, typename AcceptPolicy = SocketAcceptor>
+template<typename UserService, typename AcceptPolicy = SocketAcceptor>
 class	Acceptor : public NetHandler
 {
 public:
@@ -40,12 +41,12 @@ public:
 
 	virtual	int	handleInput(Socket &)
 	{
-	  Service	*stream = new Service();
-	  int	ret = acceptor.accept(*stream, 0);
+	  UserService	*stream = new UserService();
+	  int	ret = acceptor.accept(stream->getIOHandler(), 0);
 	  if (ret != -1)
 	  {
 		stream->setReactor(*_reactor);
-		_reactor->registerHandler(*stream, *stream, stream->getReactorFlags());
+		_reactor->registerHandler(stream->getIOHandler(), *stream, stream->getReactorFlags());
 		stream->init();
 	  }
 	  else

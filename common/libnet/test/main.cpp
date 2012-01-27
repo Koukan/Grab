@@ -1,19 +1,7 @@
-#include "SetupNetwork.hpp"
-#include "InetAddr.hpp"
-#include "SocketAcceptor.hpp"
-#include "IOVec.hpp"
-#include "Reactor.hpp"
-#include "NetHandler.hpp"
-#include "Acceptor.hpp"
-#include "Connector.hpp"
-#include "PacketHandler.hpp"
-#include "SyncPolicy.hpp"
-#include "TSS.hpp"
+#include "Net.hpp"
 #include <iostream>
 
 using namespace Net;
-
-typedef DefaultSyncPolicy Policy;
 
 
 class	Client : public PacketHandler<>
@@ -27,9 +15,9 @@ public:
 	{
 	  _reactor->scheduleTimer(*this, 3000, true);
 	  InetAddr addr;
-	  std::cout << this->getRemoteAddr(addr) << std::endl;
+	  std::cout << _iohandler.getRemoteAddr(addr) << std::endl;
 	  std::cout << addr.getHost() << addr.getHost() << std::endl;
-	  this->setNonBlocking(true);
+	  //this->setNonBlocking(true);
 	}
 
 	virtual int handleInputPacket(Packet &input)
@@ -62,7 +50,7 @@ int  main(int ac, char **av)
   SetupNetwork  		init;
   InetAddr				test("4500");
   InetAddr				tmp("0.0.0.0", "7800");
-  Reactor				*reactor = new Policy();
+  Reactor				*reactor = new DefaultSyncPolicy();
   Acceptor<Client>		acceptor;
 
   acceptor.setup(test, *reactor);
