@@ -3,6 +3,7 @@
 #include <direct.h>
 #define chdir _chdir
 #endif
+#include <exception>
 
 int		main(int ac, char **av)
 {
@@ -18,10 +19,10 @@ int		main(int ac, char **av)
 		ret = Server::get().init();
     return (ret) ? 0 : 1;
   }
-  catch (...)
-  {
-	std::cerr << "Unhandled Exception" << std::endl;
-    return 1;
-  }
+  catch (std::exception const &e)
+    {
+      std::cerr << "Unhandled Exception" << e.what() << std::endl;
+      return 1;
+    }
   return 0;
 }

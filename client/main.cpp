@@ -11,7 +11,7 @@ int	main(int /*ac*/, char**av)
   chdir(path.substr(0, path.rfind('/')).c_str());
   try
   {
-	Game::get().init();
+    Game::get().init();
     Game::get().update(0);
     return 0;
   }
