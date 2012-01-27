@@ -22,7 +22,7 @@ void SFMLFontProvider::addFont(std::string const &fontName, std::string const &f
     }
 }
 
-Font	*SFMLFontProvider::getFont(std::string const &fontName) const
+CoreFont	*SFMLFontProvider::getFont(std::string const &fontName) const
 {
   FontMap::const_iterator it = this->_fonts.find(fontName);
 

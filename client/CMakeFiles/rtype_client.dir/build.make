@@ -72,55 +72,32 @@ CMakeFiles/rtype_client.dir/main.cpp.o.provides: CMakeFiles/rtype_client.dir/mai
 
 CMakeFiles/rtype_client.dir/main.cpp.o.provides.build: CMakeFiles/rtype_client.dir/main.cpp.o
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.o: CMakeFiles/rtype_client.dir/flags.make
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.o: SFMLFont.cpp
+CMakeFiles/rtype_client.dir/GameFont.cpp.o: CMakeFiles/rtype_client.dir/flags.make
+CMakeFiles/rtype_client.dir/GameFont.cpp.o: GameFont.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/SFMLFont.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/SFMLFont.cpp.o -c /home/taing_l/projets/pfa/client/SFMLFont.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GameFont.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GameFont.cpp.o -c /home/taing_l/projets/pfa/client/GameFont.cpp
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rtype_client.dir/SFMLFont.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -E /home/taing_l/projets/pfa/client/SFMLFont.cpp > CMakeFiles/rtype_client.dir/SFMLFont.cpp.i
+CMakeFiles/rtype_client.dir/GameFont.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rtype_client.dir/GameFont.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -E /home/taing_l/projets/pfa/client/GameFont.cpp > CMakeFiles/rtype_client.dir/GameFont.cpp.i
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rtype_client.dir/SFMLFont.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -S /home/taing_l/projets/pfa/client/SFMLFont.cpp -o CMakeFiles/rtype_client.dir/SFMLFont.cpp.s
+CMakeFiles/rtype_client.dir/GameFont.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rtype_client.dir/GameFont.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -S /home/taing_l/projets/pfa/client/GameFont.cpp -o CMakeFiles/rtype_client.dir/GameFont.cpp.s
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.requires:
-.PHONY : CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.requires
+CMakeFiles/rtype_client.dir/GameFont.cpp.o.requires:
+.PHONY : CMakeFiles/rtype_client.dir/GameFont.cpp.o.requires
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.provides: CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.requires
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.provides.build
-.PHONY : CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.provides
+CMakeFiles/rtype_client.dir/GameFont.cpp.o.provides: CMakeFiles/rtype_client.dir/GameFont.cpp.o.requires
+	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/GameFont.cpp.o.provides.build
+.PHONY : CMakeFiles/rtype_client.dir/GameFont.cpp.o.provides
 
-CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.provides.build: CMakeFiles/rtype_client.dir/SFMLFont.cpp.o
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o: CMakeFiles/rtype_client.dir/flags.make
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o: SFMLFontProvider.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o -c /home/taing_l/projets/pfa/client/SFMLFontProvider.cpp
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -E /home/taing_l/projets/pfa/client/SFMLFontProvider.cpp > CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.i
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -S /home/taing_l/projets/pfa/client/SFMLFontProvider.cpp -o CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.s
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.requires:
-.PHONY : CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.requires
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.provides: CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.requires
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.provides.build
-.PHONY : CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.provides
-
-CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.provides.build: CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o
+CMakeFiles/rtype_client.dir/GameFont.cpp.o.provides.build: CMakeFiles/rtype_client.dir/GameFont.cpp.o
 
 CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o: ConcreteObject.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o -c /home/taing_l/projets/pfa/client/ConcreteObject.cpp
 
@@ -143,7 +120,7 @@ CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o.provides.build: CMakeFiles/rtyp
 
 CMakeFiles/rtype_client.dir/Game.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/Game.cpp.o: Game.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/Game.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/Game.cpp.o -c /home/taing_l/projets/pfa/client/Game.cpp
 
@@ -166,7 +143,7 @@ CMakeFiles/rtype_client.dir/Game.cpp.o.provides.build: CMakeFiles/rtype_client.d
 
 CMakeFiles/rtype_client.dir/GameButton.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GameButton.cpp.o: GameButton.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GameButton.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GameButton.cpp.o -c /home/taing_l/projets/pfa/client/GameButton.cpp
 
@@ -189,7 +166,7 @@ CMakeFiles/rtype_client.dir/GameButton.cpp.o.provides.build: CMakeFiles/rtype_cl
 
 CMakeFiles/rtype_client.dir/GameListCommand.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GameListCommand.cpp.o: GameListCommand.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GameListCommand.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GameListCommand.cpp.o -c /home/taing_l/projets/pfa/client/GameListCommand.cpp
 
@@ -212,7 +189,7 @@ CMakeFiles/rtype_client.dir/GameListCommand.cpp.o.provides.build: CMakeFiles/rty
 
 CMakeFiles/rtype_client.dir/GSInGame.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSInGame.cpp.o: GSInGame.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSInGame.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSInGame.cpp.o -c /home/taing_l/projets/pfa/client/GSInGame.cpp
 
@@ -235,7 +212,7 @@ CMakeFiles/rtype_client.dir/GSInGame.cpp.o.provides.build: CMakeFiles/rtype_clie
 
 CMakeFiles/rtype_client.dir/GSJoinGame.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSJoinGame.cpp.o: GSJoinGame.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSJoinGame.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSJoinGame.cpp.o -c /home/taing_l/projets/pfa/client/GSJoinGame.cpp
 
@@ -258,7 +235,7 @@ CMakeFiles/rtype_client.dir/GSJoinGame.cpp.o.provides.build: CMakeFiles/rtype_cl
 
 CMakeFiles/rtype_client.dir/GSLoading.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSLoading.cpp.o: GSLoading.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSLoading.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSLoading.cpp.o -c /home/taing_l/projets/pfa/client/GSLoading.cpp
 
@@ -281,7 +258,7 @@ CMakeFiles/rtype_client.dir/GSLoading.cpp.o.provides.build: CMakeFiles/rtype_cli
 
 CMakeFiles/rtype_client.dir/GSOptions.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSOptions.cpp.o: GSOptions.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_11)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSOptions.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSOptions.cpp.o -c /home/taing_l/projets/pfa/client/GSOptions.cpp
 
@@ -304,7 +281,7 @@ CMakeFiles/rtype_client.dir/GSOptions.cpp.o.provides.build: CMakeFiles/rtype_cli
 
 CMakeFiles/rtype_client.dir/GSPauseMenu.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSPauseMenu.cpp.o: GSPauseMenu.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_12)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSPauseMenu.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSPauseMenu.cpp.o -c /home/taing_l/projets/pfa/client/GSPauseMenu.cpp
 
@@ -327,7 +304,7 @@ CMakeFiles/rtype_client.dir/GSPauseMenu.cpp.o.provides.build: CMakeFiles/rtype_c
 
 CMakeFiles/rtype_client.dir/GSPreload.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSPreload.cpp.o: GSPreload.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_13)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSPreload.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSPreload.cpp.o -c /home/taing_l/projets/pfa/client/GSPreload.cpp
 
@@ -350,7 +327,7 @@ CMakeFiles/rtype_client.dir/GSPreload.cpp.o.provides.build: CMakeFiles/rtype_cli
 
 CMakeFiles/rtype_client.dir/GSMainMenu.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSMainMenu.cpp.o: GSMainMenu.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_14)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_13)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSMainMenu.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSMainMenu.cpp.o -c /home/taing_l/projets/pfa/client/GSMainMenu.cpp
 
@@ -373,7 +350,7 @@ CMakeFiles/rtype_client.dir/GSMainMenu.cpp.o.provides.build: CMakeFiles/rtype_cl
 
 CMakeFiles/rtype_client.dir/GSCreateMenu.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/GSCreateMenu.cpp.o: GSCreateMenu.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_15)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_14)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/GSCreateMenu.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/GSCreateMenu.cpp.o -c /home/taing_l/projets/pfa/client/GSCreateMenu.cpp
 
@@ -396,7 +373,7 @@ CMakeFiles/rtype_client.dir/GSCreateMenu.cpp.o.provides.build: CMakeFiles/rtype_
 
 CMakeFiles/rtype_client.dir/InputModule.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/InputModule.cpp.o: InputModule.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_16)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_15)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/InputModule.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/InputModule.cpp.o -c /home/taing_l/projets/pfa/client/InputModule.cpp
 
@@ -419,7 +396,7 @@ CMakeFiles/rtype_client.dir/InputModule.cpp.o.provides.build: CMakeFiles/rtype_c
 
 CMakeFiles/rtype_client.dir/NetworkModule.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/NetworkModule.cpp.o: NetworkModule.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_17)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_16)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/NetworkModule.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/NetworkModule.cpp.o -c /home/taing_l/projets/pfa/client/NetworkModule.cpp
 
@@ -442,7 +419,7 @@ CMakeFiles/rtype_client.dir/NetworkModule.cpp.o.provides.build: CMakeFiles/rtype
 
 CMakeFiles/rtype_client.dir/PacketCommand.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/PacketCommand.cpp.o: PacketCommand.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_18)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_17)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/PacketCommand.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/PacketCommand.cpp.o -c /home/taing_l/projets/pfa/client/PacketCommand.cpp
 
@@ -465,7 +442,7 @@ CMakeFiles/rtype_client.dir/PacketCommand.cpp.o.provides.build: CMakeFiles/rtype
 
 CMakeFiles/rtype_client.dir/RendererManager.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/RendererManager.cpp.o: RendererManager.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_19)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_18)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/RendererManager.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/RendererManager.cpp.o -c /home/taing_l/projets/pfa/client/RendererManager.cpp
 
@@ -488,7 +465,7 @@ CMakeFiles/rtype_client.dir/RendererManager.cpp.o.provides.build: CMakeFiles/rty
 
 CMakeFiles/rtype_client.dir/home/taing_l/projets/pfa/common/Resources.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/home/taing_l/projets/pfa/common/Resources.cpp.o: /home/taing_l/projets/pfa/common/Resources.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_20)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_19)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/home/taing_l/projets/pfa/common/Resources.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/home/taing_l/projets/pfa/common/Resources.cpp.o -c /home/taing_l/projets/pfa/common/Resources.cpp
 
@@ -511,7 +488,7 @@ CMakeFiles/rtype_client.dir/home/taing_l/projets/pfa/common/Resources.cpp.o.prov
 
 CMakeFiles/rtype_client.dir/Rules.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/Rules.cpp.o: Rules.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_21)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_20)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/Rules.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/Rules.cpp.o -c /home/taing_l/projets/pfa/client/Rules.cpp
 
@@ -534,7 +511,7 @@ CMakeFiles/rtype_client.dir/Rules.cpp.o.provides.build: CMakeFiles/rtype_client.
 
 CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o: ScrollingSprite.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_22)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_21)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o -c /home/taing_l/projets/pfa/client/ScrollingSprite.cpp
 
@@ -557,7 +534,7 @@ CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o.provides.build: CMakeFiles/rty
 
 CMakeFiles/rtype_client.dir/Server.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/Server.cpp.o: Server.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_23)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_22)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/Server.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/Server.cpp.o -c /home/taing_l/projets/pfa/client/Server.cpp
 
@@ -578,55 +555,9 @@ CMakeFiles/rtype_client.dir/Server.cpp.o.provides: CMakeFiles/rtype_client.dir/S
 
 CMakeFiles/rtype_client.dir/Server.cpp.o.provides.build: CMakeFiles/rtype_client.dir/Server.cpp.o
 
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o: CMakeFiles/rtype_client.dir/flags.make
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o: SFMLSprite.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_24)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o -c /home/taing_l/projets/pfa/client/SFMLSprite.cpp
-
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rtype_client.dir/SFMLSprite.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -E /home/taing_l/projets/pfa/client/SFMLSprite.cpp > CMakeFiles/rtype_client.dir/SFMLSprite.cpp.i
-
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rtype_client.dir/SFMLSprite.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -S /home/taing_l/projets/pfa/client/SFMLSprite.cpp -o CMakeFiles/rtype_client.dir/SFMLSprite.cpp.s
-
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.requires:
-.PHONY : CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.requires
-
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.provides: CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.requires
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.provides.build
-.PHONY : CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.provides
-
-CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.provides.build: CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o: CMakeFiles/rtype_client.dir/flags.make
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o: SFMLSpriteProvider.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_25)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o -c /home/taing_l/projets/pfa/client/SFMLSpriteProvider.cpp
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -E /home/taing_l/projets/pfa/client/SFMLSpriteProvider.cpp > CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.i
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -S /home/taing_l/projets/pfa/client/SFMLSpriteProvider.cpp -o CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.s
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.requires:
-.PHONY : CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.requires
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.provides: CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.requires
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.provides.build
-.PHONY : CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.provides
-
-CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.provides.build: CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o
-
 CMakeFiles/rtype_client.dir/UdpHandler.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/UdpHandler.cpp.o: UdpHandler.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_26)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_23)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/UdpHandler.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/UdpHandler.cpp.o -c /home/taing_l/projets/pfa/client/UdpHandler.cpp
 
@@ -649,7 +580,7 @@ CMakeFiles/rtype_client.dir/UdpHandler.cpp.o.provides.build: CMakeFiles/rtype_cl
 
 CMakeFiles/rtype_client.dir/Wall.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/Wall.cpp.o: Wall.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_27)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_24)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/Wall.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/Wall.cpp.o -c /home/taing_l/projets/pfa/client/Wall.cpp
 
@@ -672,7 +603,7 @@ CMakeFiles/rtype_client.dir/Wall.cpp.o.provides.build: CMakeFiles/rtype_client.d
 
 CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o: gui/GUILabel.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_28)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_25)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o -c /home/taing_l/projets/pfa/client/gui/GUILabel.cpp
 
@@ -695,7 +626,7 @@ CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o.provides.build: CMakeFiles/rtype_
 
 CMakeFiles/rtype_client.dir/gui/GUIVLayout.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/gui/GUIVLayout.cpp.o: gui/GUIVLayout.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_29)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_26)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/gui/GUIVLayout.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/gui/GUIVLayout.cpp.o -c /home/taing_l/projets/pfa/client/gui/GUIVLayout.cpp
 
@@ -718,7 +649,7 @@ CMakeFiles/rtype_client.dir/gui/GUIVLayout.cpp.o.provides.build: CMakeFiles/rtyp
 
 CMakeFiles/rtype_client.dir/gui/GUIHLayout.cpp.o: CMakeFiles/rtype_client.dir/flags.make
 CMakeFiles/rtype_client.dir/gui/GUIHLayout.cpp.o: gui/GUIHLayout.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_30)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/taing_l/projets/pfa/client/CMakeFiles $(CMAKE_PROGRESS_27)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/rtype_client.dir/gui/GUIHLayout.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -std=c++0x -W -Wall -g3 -o CMakeFiles/rtype_client.dir/gui/GUIHLayout.cpp.o -c /home/taing_l/projets/pfa/client/gui/GUIHLayout.cpp
 
@@ -742,8 +673,7 @@ CMakeFiles/rtype_client.dir/gui/GUIHLayout.cpp.o.provides.build: CMakeFiles/rtyp
 # Object files for target rtype_client
 rtype_client_OBJECTS = \
 "CMakeFiles/rtype_client.dir/main.cpp.o" \
-"CMakeFiles/rtype_client.dir/SFMLFont.cpp.o" \
-"CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o" \
+"CMakeFiles/rtype_client.dir/GameFont.cpp.o" \
 "CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o" \
 "CMakeFiles/rtype_client.dir/Game.cpp.o" \
 "CMakeFiles/rtype_client.dir/GameButton.cpp.o" \
@@ -764,8 +694,6 @@ rtype_client_OBJECTS = \
 "CMakeFiles/rtype_client.dir/Rules.cpp.o" \
 "CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o" \
 "CMakeFiles/rtype_client.dir/Server.cpp.o" \
-"CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o" \
-"CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o" \
 "CMakeFiles/rtype_client.dir/UdpHandler.cpp.o" \
 "CMakeFiles/rtype_client.dir/Wall.cpp.o" \
 "CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o" \
@@ -776,8 +704,7 @@ rtype_client_OBJECTS = \
 rtype_client_EXTERNAL_OBJECTS =
 
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/main.cpp.o
-/home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/SFMLFont.cpp.o
-/home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o
+/home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/GameFont.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/Game.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/GameButton.cpp.o
@@ -798,8 +725,6 @@ rtype_client_EXTERNAL_OBJECTS =
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/Rules.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/Server.cpp.o
-/home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o
-/home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/UdpHandler.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/Wall.cpp.o
 /home/taing_l/projets/pfa/rtype_client: CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o
@@ -817,8 +742,7 @@ CMakeFiles/rtype_client.dir/build: /home/taing_l/projets/pfa/rtype_client
 .PHONY : CMakeFiles/rtype_client.dir/build
 
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/main.cpp.o.requires
-CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/SFMLFont.cpp.o.requires
-CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o.requires
+CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/GameFont.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/Game.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/GameButton.cpp.o.requires
@@ -839,8 +763,6 @@ CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/home/taing_l/p
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/Rules.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/Server.cpp.o.requires
-CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o.requires
-CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/UdpHandler.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/Wall.cpp.o.requires
 CMakeFiles/rtype_client.dir/requires: CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o.requires

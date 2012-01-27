@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GSJoinGame.hpp"
-#include "SFMLSpriteProvider.hpp"
-#include "SFMLFontProvider.hpp"
+//#include "SFMLSpriteProvider.hpp"
+//#include "SFMLFontProvider.hpp"
 #include "GUIButton.hpp"
 #include "GUIList.hpp"
 #include "GUIVLayout.hpp"
@@ -28,8 +28,8 @@ GSJoinGame::~GSJoinGame()
 void	GSJoinGame::onStart()
 {
   // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
+  //  this->addProvider(*(new SFMLSpriteProvider));
+  //  this->addProvider(*(new SFMLFontProvider));
 
   // load xml
   this->load("resources/intro.xml");
@@ -40,7 +40,7 @@ void	GSJoinGame::onStart()
       CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
 	  //CommandDispatcher::get().pushCommand(*(new GameCommand("Spawn")));
       CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
-      
+
       this->_hlayout = new GUIHLayout(300, 768 / 2, 0, 0, 50);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_hlayout);
       this->_vlayout = new GUIVLayout(0, 0, 300, 700, 20, 0, 8, "up arrow", "down arrow");

@@ -46,7 +46,7 @@ Sprite			*ResourceManager::getSprite(std::string const &name) const
   return 0;
 }
 
-Font			*ResourceManager::getFont(std::string const &name) const
+CoreFont		*ResourceManager::getFont(std::string const &name) const
 {
   ProviderMap::const_iterator it;
 

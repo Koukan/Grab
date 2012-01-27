@@ -16,7 +16,7 @@ class ResourceManager : public BulletResourceManager, public XMLProvider
 	void			load(std::string const &path);
 	void			addProvider(XMLProvider &provider);
 	Sprite			*getSprite(std::string const &name) const;
-	Font			*getFont(std::string const &name) const;
+	CoreFont		*getFont(std::string const &name) const;
 
   template <typename T>
   struct			Method

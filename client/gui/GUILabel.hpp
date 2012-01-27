@@ -20,5 +20,5 @@ public:
 
 private:
   Sprite *_sprite;
-  Font *_font;
+  CoreFont *_font;
 };

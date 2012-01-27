@@ -11,7 +11,7 @@ public:
   ~SFMLFontProvider();
 
   virtual void	addFont(std::string const &fontName, std::string const &fontFile, std::string const &fontSize);
-  virtual Font	*getFont(std::string const &fontName) const;
+  virtual CoreFont	*getFont(std::string const &fontName) const;
 
   typedef std::map<std::string const, SFMLFont *>	FontMap;
 

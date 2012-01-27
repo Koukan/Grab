@@ -1,7 +1,6 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/rtype_client.dir/main.cpp.o"
-  "CMakeFiles/rtype_client.dir/SFMLFont.cpp.o"
-  "CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o"
+  "CMakeFiles/rtype_client.dir/GameFont.cpp.o"
   "CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o"
   "CMakeFiles/rtype_client.dir/Game.cpp.o"
   "CMakeFiles/rtype_client.dir/GameButton.cpp.o"
@@ -22,8 +21,6 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/rtype_client.dir/Rules.cpp.o"
   "CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o"
   "CMakeFiles/rtype_client.dir/Server.cpp.o"
-  "CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o"
-  "CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o"
   "CMakeFiles/rtype_client.dir/UdpHandler.cpp.o"
   "CMakeFiles/rtype_client.dir/Wall.cpp.o"
   "CMakeFiles/rtype_client.dir/gui/GUILabel.cpp.o"

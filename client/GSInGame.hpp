@@ -66,8 +66,8 @@ private:
 	uint16_t	_idPlayer;
 	int		_nbPlayers;
 	std::vector<uint32_t> _scores;
-	std::vector<Font*>    _scoreFonts;
-	std::vector<Font*>    _nameFonts;
+	std::vector<CoreFont*>    _scoreFonts;
+	std::vector<CoreFont*>    _nameFonts;
 	PhysicObject	*_ship;
 	uint32_t	_rangeBegin;
 	uint32_t	_rangeEnd;

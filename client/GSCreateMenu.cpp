@@ -1,8 +1,8 @@
 #include <sstream>
 #include "CommandDispatcher.hpp"
 #include "GSCreateMenu.hpp"
-#include "SFMLSpriteProvider.hpp"
-#include "SFMLFontProvider.hpp"
+//#include "SFMLSpriteProvider.hpp"
+//#include "SFMLFontProvider.hpp"
 #include "GUIButton.hpp"
 #include "GUILabel.hpp"
 #include "GUIList.hpp"
@@ -58,8 +58,8 @@ void	GSCreateMenu::nbPlayerList(std::string const &nb)
 void	GSCreateMenu::onStart()
 {
   // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
+  //  this->addProvider(*(new SFMLSpriteProvider));
+  //  this->addProvider(*(new SFMLFontProvider));
 
   // load xml
   this->load("resources/intro.xml");

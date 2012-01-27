@@ -401,6 +401,30 @@ GameButton.cpp.s:
 	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/GameButton.cpp.s
 .PHONY : GameButton.cpp.s
 
+GameFont.o: GameFont.cpp.o
+.PHONY : GameFont.o
+
+# target to build an object file
+GameFont.cpp.o:
+	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/GameFont.cpp.o
+.PHONY : GameFont.cpp.o
+
+GameFont.i: GameFont.cpp.i
+.PHONY : GameFont.i
+
+# target to preprocess a source file
+GameFont.cpp.i:
+	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/GameFont.cpp.i
+.PHONY : GameFont.cpp.i
+
+GameFont.s: GameFont.cpp.s
+.PHONY : GameFont.s
+
+# target to generate assembly for a file
+GameFont.cpp.s:
+	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/GameFont.cpp.s
+.PHONY : GameFont.cpp.s
+
 GameListCommand.o: GameListCommand.cpp.o
 .PHONY : GameListCommand.o
 
@@ -544,102 +568,6 @@ Rules.s: Rules.cpp.s
 Rules.cpp.s:
 	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/Rules.cpp.s
 .PHONY : Rules.cpp.s
-
-SFMLFont.o: SFMLFont.cpp.o
-.PHONY : SFMLFont.o
-
-# target to build an object file
-SFMLFont.cpp.o:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFont.cpp.o
-.PHONY : SFMLFont.cpp.o
-
-SFMLFont.i: SFMLFont.cpp.i
-.PHONY : SFMLFont.i
-
-# target to preprocess a source file
-SFMLFont.cpp.i:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFont.cpp.i
-.PHONY : SFMLFont.cpp.i
-
-SFMLFont.s: SFMLFont.cpp.s
-.PHONY : SFMLFont.s
-
-# target to generate assembly for a file
-SFMLFont.cpp.s:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFont.cpp.s
-.PHONY : SFMLFont.cpp.s
-
-SFMLFontProvider.o: SFMLFontProvider.cpp.o
-.PHONY : SFMLFontProvider.o
-
-# target to build an object file
-SFMLFontProvider.cpp.o:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o
-.PHONY : SFMLFontProvider.cpp.o
-
-SFMLFontProvider.i: SFMLFontProvider.cpp.i
-.PHONY : SFMLFontProvider.i
-
-# target to preprocess a source file
-SFMLFontProvider.cpp.i:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.i
-.PHONY : SFMLFontProvider.cpp.i
-
-SFMLFontProvider.s: SFMLFontProvider.cpp.s
-.PHONY : SFMLFontProvider.s
-
-# target to generate assembly for a file
-SFMLFontProvider.cpp.s:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.s
-.PHONY : SFMLFontProvider.cpp.s
-
-SFMLSprite.o: SFMLSprite.cpp.o
-.PHONY : SFMLSprite.o
-
-# target to build an object file
-SFMLSprite.cpp.o:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o
-.PHONY : SFMLSprite.cpp.o
-
-SFMLSprite.i: SFMLSprite.cpp.i
-.PHONY : SFMLSprite.i
-
-# target to preprocess a source file
-SFMLSprite.cpp.i:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSprite.cpp.i
-.PHONY : SFMLSprite.cpp.i
-
-SFMLSprite.s: SFMLSprite.cpp.s
-.PHONY : SFMLSprite.s
-
-# target to generate assembly for a file
-SFMLSprite.cpp.s:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSprite.cpp.s
-.PHONY : SFMLSprite.cpp.s
-
-SFMLSpriteProvider.o: SFMLSpriteProvider.cpp.o
-.PHONY : SFMLSpriteProvider.o
-
-# target to build an object file
-SFMLSpriteProvider.cpp.o:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o
-.PHONY : SFMLSpriteProvider.cpp.o
-
-SFMLSpriteProvider.i: SFMLSpriteProvider.cpp.i
-.PHONY : SFMLSpriteProvider.i
-
-# target to preprocess a source file
-SFMLSpriteProvider.cpp.i:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.i
-.PHONY : SFMLSpriteProvider.cpp.i
-
-SFMLSpriteProvider.s: SFMLSpriteProvider.cpp.s
-.PHONY : SFMLSpriteProvider.s
-
-# target to generate assembly for a file
-SFMLSpriteProvider.cpp.s:
-	$(MAKE) -f CMakeFiles/rtype_client.dir/build.make CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.s
-.PHONY : SFMLSpriteProvider.cpp.s
 
 ScrollingSprite.o: ScrollingSprite.cpp.o
 .PHONY : ScrollingSprite.o
@@ -901,6 +829,9 @@ help:
 	@echo "... GameButton.o"
 	@echo "... GameButton.i"
 	@echo "... GameButton.s"
+	@echo "... GameFont.o"
+	@echo "... GameFont.i"
+	@echo "... GameFont.s"
 	@echo "... GameListCommand.o"
 	@echo "... GameListCommand.i"
 	@echo "... GameListCommand.s"
@@ -919,18 +850,6 @@ help:
 	@echo "... Rules.o"
 	@echo "... Rules.i"
 	@echo "... Rules.s"
-	@echo "... SFMLFont.o"
-	@echo "... SFMLFont.i"
-	@echo "... SFMLFont.s"
-	@echo "... SFMLFontProvider.o"
-	@echo "... SFMLFontProvider.i"
-	@echo "... SFMLFontProvider.s"
-	@echo "... SFMLSprite.o"
-	@echo "... SFMLSprite.i"
-	@echo "... SFMLSprite.s"
-	@echo "... SFMLSpriteProvider.o"
-	@echo "... SFMLSpriteProvider.i"
-	@echo "... SFMLSpriteProvider.s"
 	@echo "... ScrollingSprite.o"
 	@echo "... ScrollingSprite.i"
 	@echo "... ScrollingSprite.s"

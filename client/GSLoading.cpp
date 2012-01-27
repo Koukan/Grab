@@ -3,8 +3,8 @@
 #include "Game.hpp"
 #include "Bullet.hpp"
 #include "Wall.hpp"
-#include "SFMLSpriteProvider.hpp"
-#include "SFMLFontProvider.hpp"
+//#include "SFMLSpriteProvider.hpp"
+//#include "SFMLFontProvider.hpp"
 #include "GUIButton.hpp"
 #include "GUIList.hpp"
 #include "GUIVLayout.hpp"
@@ -75,8 +75,8 @@ void	GSLoading::errorFullGameCommand(Command const &)
 
 void	GSLoading::onStart()
 {
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
+  // this->addProvider(*(new SFMLSpriteProvider));
+  //  this->addProvider(*(new SFMLFontProvider));
   this->load("resources/intro.xml");
   this->load("resources/player.xml");
   this->load("resources/enemies.xml");
@@ -90,7 +90,7 @@ void	GSLoading::onStart()
   test->setY(360);
   this->addGameObject(test, "gui", 20);
 
-  Font *font = this->getFont("buttonFont");
+  CoreFont *font = this->getFont("buttonFont");
   font->setX(400);
   font->setY(350);
   font->setText("Loading");

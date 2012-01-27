@@ -94,12 +94,12 @@ public:
     this->GUIElement::unfocus();
   }
 
-  Font *getFont() const
+  CoreFont *getFont() const
   {
     return (this->_font);
   }
   
-  void setFont(Font *font)
+  void setFont(CoreFont *font)
   {
     this->_font = font;
   }
@@ -108,6 +108,6 @@ private:
   T *_instance;
   void (T::*_func)();
   ButtonSprite _sprite;
-  Font *_font;
+  CoreFont *_font;
   bool	_pressed;
 };

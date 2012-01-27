@@ -112,7 +112,7 @@ public:
 
 private:
   ButtonSprite				_sprite;
-  Font *				_font;
+  CoreFont *				_font;
   T *					_instance;
   void					(T::*_func)(std::string const &);
   unsigned int				_maxChar;

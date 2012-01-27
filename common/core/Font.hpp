@@ -3,17 +3,18 @@
 #include "DrawableObject.hpp"
 #include <string>
 
-class Font : public DrawableObject
+class CoreFont : public DrawableObject
 {
 public:
-  Font(){}
-  virtual ~Font(){}
+  CoreFont(double x, double y) : DrawableObject(x, y){}
+  virtual ~CoreFont(){}
   
   virtual void	draw(double /*elapsedTime*/ = 0){}
   virtual void	draw(int /*x*/, int /*y*/, double /*elapsedTime*/ = 0){}
-  virtual void	setText(std::string const & /*text*/) {}
+
+  virtual void	setText(std::string const & /*text*/){}
   virtual void	setColor(int, int, int) {}
   
-  virtual int	getWidth() {return 0;}
-  virtual int	getHeight() {return 0;}
+  virtual int	getWidth() const {return 0;}
+  virtual int	getHeight() const {return 0;}
 };

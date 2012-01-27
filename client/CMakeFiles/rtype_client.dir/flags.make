@@ -8,9 +8,7 @@ CXX_DEFINES =
 
 # Custom flags: CMakeFiles/rtype_client.dir/main.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 
-# Custom flags: CMakeFiles/rtype_client.dir/SFMLFont.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
-
-# Custom flags: CMakeFiles/rtype_client.dir/SFMLFontProvider.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
+# Custom flags: CMakeFiles/rtype_client.dir/GameFont.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 
 # Custom flags: CMakeFiles/rtype_client.dir/ConcreteObject.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 
@@ -51,10 +49,6 @@ CXX_DEFINES =
 # Custom flags: CMakeFiles/rtype_client.dir/ScrollingSprite.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 
 # Custom flags: CMakeFiles/rtype_client.dir/Server.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
-
-# Custom flags: CMakeFiles/rtype_client.dir/SFMLSprite.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
-
-# Custom flags: CMakeFiles/rtype_client.dir/SFMLSpriteProvider.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 
 # Custom flags: CMakeFiles/rtype_client.dir/UdpHandler.cpp.o_FLAGS = -std=c++0x -W -Wall -g3
 

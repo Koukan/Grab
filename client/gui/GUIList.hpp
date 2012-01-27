@@ -162,7 +162,7 @@ private:
   ButtonSprite				_leftArrow;
   ButtonSprite				_middleSprite;
   ButtonSprite				_rightArrow;
-  Font *				_font;
+  CoreFont *				_font;
   T *					_instance;
   void					(T::*_func)(std::string const &);
   std::list<std::string>		_labels;
