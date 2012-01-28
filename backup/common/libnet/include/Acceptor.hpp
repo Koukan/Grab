@@ -21,18 +21,20 @@ template<typename UserService, typename AcceptPolicy = SocketAcceptor>
 class	Acceptor : public NetHandler
 {
 public:
-	Acceptor() : _reactor(0)
+	Acceptor() : _reactor(0), _nonblocking(false)
 	{
 	}
 
 	~Acceptor()
 	{
-	  _reactor->removeHandler(acceptor);
+		if (_reactor)
+	  		_reactor->removeHandler(acceptor);
 	}
 
-	int		setup(InetAddr const &addr, Reactor &reactor)
+	int		setup(InetAddr const &addr, Reactor &reactor, bool nonblocking = true)
 	{
 		_reactor = &reactor;
+		_nonblocking = nonblocking;
 		int ret = acceptor.setup(addr);
 		if (ret != -1)
 		  _reactor->registerHandler(acceptor, *this, Reactor::ACCEPT);
@@ -42,7 +44,7 @@ public:
 	virtual	int	handleInput(Socket &)
 	{
 	  UserService	*stream = new UserService();
-	  int	ret = acceptor.accept(stream->getIOHandler(), 0);
+	  int	ret = acceptor.accept(stream->getIOHandler(), 0, _nonblocking);
 	  if (ret != -1)
 	  {
 		stream->setReactor(*_reactor);
@@ -57,6 +59,7 @@ public:
 private:
 	AcceptPolicy acceptor;
 	Reactor *_reactor;
+	bool	_nonblocking;
 };
 
 NET_END_NAMESPACE

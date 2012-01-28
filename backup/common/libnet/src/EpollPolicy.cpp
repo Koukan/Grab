@@ -36,7 +36,6 @@ int		EpollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
   ev.data.u64 = 0;
   ev.data.ptr = data;
   ev.events = 0;
-  //std::cout << socket.getHandle() << " read " << (mask & Reactor::READ) << " write "<< (mask & Reactor::WRITE) << std::endl;
   if (mask & Reactor::READ || mask & Reactor::ACCEPT)
 	  ev.events |= EPOLLIN;
   if (mask & Reactor::WRITE)
@@ -71,7 +70,6 @@ int		EpollPolicy::waitForEvent(int timeout)
 	for	(i = 0; i < ret; ++i)
 	{
 		data = static_cast<epollpolicydata *>(ev[i].data.ptr);
-		//std::cout << "epoll ret " << data->socket->getHandle() << " read " << ((ev[i].events & EPOLLIN)) << " write " << (ev[i].events & EPOLLOUT) << std::endl;
 		if (ev[i].events & EPOLLHUP)
 			data->handler->handleClose(*(data->socket));
 		else

@@ -73,13 +73,6 @@ int	PollPolicy::removeHandler(Socket &socket)
 	  return -1;
   size_t index = it->second.index;
   _fds[index].fd = INVALID_HANDLE;
-  /*if (index != _size - 1)*/
-  /*for (; _fds[index].fd == INVALID_HANDLE && _size > 0 && index == _size - 1; index--)
-  {
-	  if (_emptySlot.front() == index)
-		  _emptySlot.pop();
-	 _size--;
-  }*/
   _handles.erase(it);
 #if defined(_WIN32)
   size_t first = 0;
