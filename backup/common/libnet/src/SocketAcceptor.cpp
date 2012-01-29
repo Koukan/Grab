@@ -52,7 +52,7 @@ int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, bool nonblockin
 	  return (-1);
   stream.setHandle(sock);
 #if defined (__linux__)
-  stream._handle = nonblocking;
+  stream._blocking = !nonblocking;
 #else
   if (nonblocking)
 	stream.setNonBlocking(nonblocking);
