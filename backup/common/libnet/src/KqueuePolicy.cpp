@@ -27,6 +27,8 @@ KqueuePolicy::~KqueuePolicy()
   ::close(_kqueuefd);
 }
 
+#include <iostream>
+
 int		KqueuePolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
 {
   struct kevent ev[2];
@@ -74,23 +76,19 @@ int		KqueuePolicy::waitForEvent(int timeout)
 		return -1;
 	else if (ret == 0 && timeout == 0)
 	  return 0;
+	std::cout << ret << std::endl;
 	for	(i = 0; i < ret; ++i)
 	{
 		data = static_cast<kqueuepolicydata *>(ev[i].udata);
-		if (ev[i].flags & EV_EOF)
-			data->handler->handleClose(*(data->socket));
-		else
+		if (ev[i].filter == EVFILT_TIMER)
+			reinterpret_cast<NetHandler*>(data)->handleTimeout();
+		else if ((ev[i].filter == EVFILT_WRITE) && data->handler->handleOutput(*(data->socket)) <= 0)
 		{
-			if ((ev[i].filter == EVFILT_WRITE) && data->handler->handleOutput(*(data->socket)) <= 0)
-			{
-				data->handler->handleClose(*(data->socket));
-				continue ;
-			}
-			else if ((ev[i].filter & EVFILT_READ) && data->handler->handleInput(*(data->socket)) <= 0)
-				data->handler->handleClose(*(data->socket));
-			else if (ev[i].filter & EVFILT_TIMER)
-				static_cast<NetHandler*>(data)->handleTimeout();
+			data->handler->handleClose(*(data->socket));
+			continue ;
 		}
+		else if (ev[i].filter == EVFILT_READ && data->handler->handleInput(*(data->socket)) <= 0)
+			data->handler->handleClose(*(data->socket));
 	}
   }
   return 0;

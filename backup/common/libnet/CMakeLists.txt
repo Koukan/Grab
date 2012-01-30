@@ -99,7 +99,7 @@ set_source_files_properties (
   ${SRCS_NET}
   PROPERTIES
   COMPILE_FLAGS
-  "-DHAVE_EPOLL"
+  "-DHAVE_EPOLL -O2"
 )
 ENDIF(HAVE_EPOLL)
 
@@ -108,6 +108,6 @@ set_source_files_properties (
   ${SRCS_NET}
   PROPERTIES
   COMPILE_FLAGS
-  "-DHAVE_KQUEUE"
+  "-DHAVE_KQUEUE -O2"
 )
 ENDIF(HAVE_KQUEUE)

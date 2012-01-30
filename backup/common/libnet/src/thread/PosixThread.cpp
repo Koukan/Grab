@@ -57,6 +57,7 @@ bool		Thread::join(void **exit_value)
 
 bool		Thread::tryjoin(void **exit_value)
 {
+#if defined (__linux__)		
    bool		ret;
 
     if (_state != false)
@@ -68,6 +69,9 @@ bool		Thread::tryjoin(void **exit_value)
      }
    else
      return false;
+#else
+   return false;
+#endif
 }
 
 #endif

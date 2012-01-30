@@ -55,8 +55,7 @@ public:
 		if (this->_outputPacket.empty())
 			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
 		Packet		header(sizeof(uint16_t));
-		uint16_t size = ::htons(output.size());
-		header << size;
+		header << htons(output.size());
 		this->_outputPacket.push_back(header);
 		this->_outputPacket.push_back(output.duplicate());
 		return 0;
