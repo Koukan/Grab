@@ -1,3 +1,0 @@
-/home/taing_l/projets/pfa/common/libcore_build/CMakeFiles/core.dir
-/home/taing_l/projets/pfa/common/libnet_build/CMakeFiles/net.dir
-/home/taing_l/projets/pfa/server/CMakeFiles/rtype_server.dir

@@ -18,7 +18,7 @@ int	main(int /*ac*/, char**av)
   catch (std::exception &e)
   {
     std::cerr << "Unhandled Exception : " << e.what() << std::endl;
-	while (1);
+    //while (1);
     return 1;
   }
 }
