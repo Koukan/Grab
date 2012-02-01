@@ -26,6 +26,9 @@ public:
 	int		removeHandler(Socket &socket);
 	int		waitForEvent(int timeout);
 
+	int		scheduleTimer(NetHandler &handler, size_t delay, bool repeat = false);
+	int		cancelTimer(NetHandler &handler);
+
 private:
 	struct	kqueuepolicydata
 	{
@@ -34,7 +37,9 @@ private:
 	};
 
 	int		_kqueuefd;
+	size_t	_timerid;
 	std::map<Handle, kqueuepolicydata>	_handlers;
+	std::map<NetHandler*, size_t>   	_timers;
 };
 
 NET_END_NAMESPACE
