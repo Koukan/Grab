@@ -78,28 +78,19 @@ public:
 
 	virtual	int	handleOutput(Socket &sock)
 	{
-		int ret = this->_iohandler.sendPackets(_outputPacket);
-		//Packet	*top;
+		int ret = 1;
 
-		//while (!_outputPacket.empty())
-		//{
-		//top = _outputPacket.front();
-		//ret = this->_iohandler.sendPacket(*top);
-		//if (ret <= 0)
-		//{
-		//if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
-		//return 1;
-		//printLastError();
-		//return ret;
-		//}
-		//if (top->isConsumned())
-		//{
-		//delete top;
-		//_outputPacket.pop_front();
-		//}
-		//if (this->_iohandler.isBlocking())
-		//return ret;
-		//}
+		while (!_outputPacket.empty())
+		{
+			ret = this->_iohandler.sendPackets(_outputPacket);
+			if (ret <= 0)
+			{
+				if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+					return 1;
+				printLastError();
+				return ret;
+			}
+		}
 	  	if (_outputPacket.empty())
 			this->_reactor->registerHandler(sock, *this, Reactor::READ);
 	  	return ret;
