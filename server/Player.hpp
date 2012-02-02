@@ -7,7 +7,7 @@
 class Game;
 class Ship;
 
-class Player : public Net::PacketHandler<>
+class Player : public Net::SizeHeaderPacketHandler<>
 {
   public:
     Player();
@@ -28,6 +28,7 @@ class Player : public Net::PacketHandler<>
 
 	uint64_t			getLatency() const;
 	void				setLatency(uint64_t latency);
+	int					getRemoteAddr(Net::InetAddr &addr);
 
   private:
 	typedef std::list<std::pair<uint32_t, Net::Packet> >	packetsList;

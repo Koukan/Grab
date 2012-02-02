@@ -20,10 +20,10 @@ public:
 	~SocketAcceptor();
 
 	int		setup(InetAddr const &addr, bool reuseAddr = true,  int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
-	int		accept(SocketStream &stream, InetAddr *src = 0, size_t timeout = 0);
+	int		accept(SocketStream &stream, InetAddr *src = 0, bool nonblocking = false, size_t timeout = 0);
 
 private:
-	Handle	accept(InetAddr *src = 0);
+	Handle	accept(InetAddr *src, bool nonblocking);
 	int		bind(InetAddr const &addr);
 	int 	listen();
 };

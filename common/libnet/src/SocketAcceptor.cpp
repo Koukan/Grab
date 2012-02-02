@@ -31,6 +31,7 @@ int		SocketAcceptor::setup(InetAddr const &addr, bool reuseAddr, int type, int p
 	 return ret;
   if (type != SOCK_DGRAM)
 	  ret = this->listen();
+  this->setNonBlocking(true);
   return ret;
 }
 
@@ -44,26 +45,43 @@ int 	SocketAcceptor::listen()
   return (::listen(_handle, BACKLOG));
 }
 
-int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, size_t)
+int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, bool nonblocking, size_t)
 {
-  Handle	sock = this->accept(src);
+  Handle	sock = this->accept(src, nonblocking);
   if (sock == INVALID_HANDLE)
 	  return (-1);
   stream.setHandle(sock);
+#if defined (__linux__)
+  stream._blocking = !nonblocking;
+#else
+  if (nonblocking)
+	stream.setNonBlocking(nonblocking);
+#endif
   return (0);
 }
 
-Handle	SocketAcceptor::accept(InetAddr *src)
+Handle	SocketAcceptor::accept(InetAddr *src, bool nonblocking)
 {
+#if defined (__linux__)
+  int flags = (nonblocking) ? SOCK_NONBLOCK : 0;
+#endif
   if (src)
   {
 	struct sockaddr_storage	tmp;
-	socklen_t				size = sizeof(tmp);
-	Handle ret = ::accept(_handle, (sockaddr*)&tmp, &size);
+	socklen_t	size = sizeof(tmp);
+#if defined (__linux__)
+	Handle ret = ::accept4(_handle, reinterpret_cast<sockaddr*>(&tmp), &size, flags);
+#else
+	Handle ret = ::accept(_handle, reinterpret_cast<sockaddr*>(&tmp), &size);
+#endif
 	if (ret != INVALID_HANDLE)
-		*src = InetAddr((sockaddr&)tmp, size);
+		src->assign(reinterpret_cast<sockaddr&>(tmp), size);
 	return ret;
   }
   else
+#if defined (__linux__)
+  	return ::accept4(_handle, 0, 0, flags);
+#else
 	return ::accept(_handle, 0, 0);
+#endif
 }

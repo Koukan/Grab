@@ -19,14 +19,14 @@ void		NetworkModule::init()
 {
 	Net::InetAddr		addr(this->_port);
 
-	this->_reactor = new DefaultSyncPolicy;
+	this->_reactor = new Net::DefaultSyncPolicy;
 	if (this->_acceptor.setup(addr, *this->_reactor) < 0)
 	{
 		Net::printLastError();
 		return ;
 	}
 	this->_udp.setReactor(*this->_reactor);
-	if (_udp.setup(addr) != -1)
+	if (_udp.getIOHandler().setup(addr) != -1)
 		this->_udp.init();
 	else
 		Net::printLastError();

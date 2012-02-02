@@ -59,7 +59,7 @@ uint64_t Clock::getMsSinceEpoch()
 	GetSystemTimeAsFileTime(&ft);
 	li.LowPart  = ft.dwLowDateTime;
 	li.HighPart = ft.dwHighDateTime;
-	uint64_t ret = (li.QuadPart - EPOCHFILETIME) / 10000;
+	uint64_t ret = (li.QuadPart - EPOCHFILETIME) / 10;
 	return (ret);
 }
 

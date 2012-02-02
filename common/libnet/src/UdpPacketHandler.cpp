@@ -22,7 +22,7 @@ int UdpPacketHandler::handleInput(Socket &)
 	int	ret = 0;
 	do
 	{
-		ret = this->recvPacket(*_inpacket);
+		ret = this->_iohandler.recvPacket(*_inpacket);
 		if (ret > 0)
 		{
 			_inpacket->wr_ptr(0);
@@ -30,15 +30,16 @@ int UdpPacketHandler::handleInput(Socket &)
 			packet.setSize(ret);
 			if (_enableWhitelist)
 			{
-				if (_whitelist.find(_inpacket->getAddr()) != _whitelist.end())
-					this->handleInputPacket(packet);
+				if (_whitelist.find(_inpacket->getAddr()) != _whitelist.end() 
+								&& this->handleInputPacket(packet) <= 0)
+					return 0;
 			}
-			else
-				this->handleInputPacket(packet);
+			else if (this->handleInputPacket(packet) <= 0)
+				return 0;
 		}
 		else if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
 			return 1;
 	}
-	while (!this->isBlocking());
+	while (!this->_iohandler.isBlocking());
 	return ret;
 }

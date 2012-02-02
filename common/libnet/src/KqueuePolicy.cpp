@@ -19,6 +19,7 @@ NET_USE_NAMESPACE
 KqueuePolicy::KqueuePolicy()
 {
   _kqueuefd = kqueue();
+  _timerid = 0;
 }
 
 KqueuePolicy::~KqueuePolicy()
@@ -38,7 +39,10 @@ int		KqueuePolicy::registerHandler(Socket &socket, NetHandler &handler, int mask
   	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_READ, EV_ADD, 0, 0, data);
   if (mask & Reactor::WRITE)
   	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_WRITE, EV_ADD, 0, 0, data);
-  return ::kevent(_kqueuefd, ev, pos, 0, 0, 0);
+  if (pos == 1 && mask & Reactor::WRITE)
+		return ::kevent(_kqueuefd, &ev[1], pos, 0, 0, 0);
+ 	else
+  		return ::kevent(_kqueuefd, ev, pos, 0, 0, 0);
 }
 
 int		KqueuePolicy::removeHandler(Socket &socket)
@@ -58,7 +62,7 @@ int		KqueuePolicy::waitForEvent(int timeout)
 
   while	(_wait)
   {
-	time = this->handleTimers(timeout);
+	time = timeout;
   	if (time >= 0)
 	{
 	  timespec.tv_sec = time / 1000;
@@ -73,21 +77,43 @@ int		KqueuePolicy::waitForEvent(int timeout)
 	for	(i = 0; i < ret; ++i)
 	{
 		data = static_cast<kqueuepolicydata *>(ev[i].udata);
-		if (ev[i].flags & EV_EOF)
-			data->handler->handleClose(*(data->socket));
-		else
+		if (ev[i].filter == EVFILT_TIMER)
+			reinterpret_cast<NetHandler*>(data)->handleTimeout();
+		else if ((ev[i].filter == EVFILT_WRITE) && data->handler->handleOutput(*(data->socket)) <= 0)
 		{
-			if ((ev[i].filter == EVFILT_WRITE) && data->handler->handleOutput(*(data->socket)) <= 0)
-			{
-				data->handler->handleClose(*(data->socket));
-				continue ;
-			}
-			else if ((ev[i].filter & EVFILT_READ) && data->handler->handleInput(*(data->socket)) <= 0)
-				data->handler->handleClose(*(data->socket));
+			data->handler->handleClose(*(data->socket));
+			continue ;
 		}
+		else if (ev[i].filter == EVFILT_READ && data->handler->handleInput(*(data->socket)) <= 0)
+			data->handler->handleClose(*(data->socket));
 	}
   }
   return 0;
+}
+
+int		KqueuePolicy::scheduleTimer(NetHandler &handler, size_t delay, bool repeat)
+{
+	struct kevent ev;
+	
+	if (repeat)
+		EV_SET(&ev, _timerid, EVFILT_TIMER, EV_ADD | EV_ENABLE, 0, delay, &handler);
+	else
+		EV_SET(&ev, _timerid, EVFILT_TIMER, EV_ADD | EV_ENABLE | EV_ONESHOT, 0, delay, &handler);
+	_timers[&handler] = _timerid++;
+	return ::kevent(_kqueuefd, &ev, 1, 0, 0, 0);
+}
+
+int		KqueuePolicy::cancelTimer(NetHandler &handler)
+{
+	std::map<NetHandler*, size_t>::iterator it = _timers.find(&handler);
+
+	if (it != _timers.end())
+	{
+		struct kevent ev;
+		EV_SET(&ev, it->second, EVFILT_TIMER, EV_DELETE, 0, 0, 0);
+		return ::kevent(_kqueuefd, &ev, 1, 0, 0, 0);
+	}
+	return -1;
 }
 
 #endif

@@ -16,7 +16,6 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
-	this->setNonBlocking(true);
 }
 
 int			UdpHandler::handleInputPacket(Net::Packet &packet)

@@ -15,8 +15,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
-	this->setNonBlocking(true);
-	this->_reactor->registerHandler(*this, *this, Net::Reactor::READ);
+	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
 int			UdpHandler::handleInputPacket(Net::Packet &packet)

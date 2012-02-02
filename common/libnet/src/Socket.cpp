@@ -89,7 +89,6 @@ int Socket::getLocalAddr(InetAddr& addr) const
   return 0;
 }
 
-#include <iostream>
 int Socket::getRemoteAddr(InetAddr& addr) const
 {
   if (_remote)

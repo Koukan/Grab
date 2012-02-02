@@ -6,12 +6,16 @@
 #include "WFMOPolicy.hpp"
 #include "PollPolicy.hpp"
 
+NET_BEGIN_NAMESPACE
+
 #if defined(__linux__)
-#define DefaultSyncPolicy NET_NAMESPACE::EpollPolicy
+typedef EpollPolicy DefaultSyncPolicy;
 #elif defined(__FreeBSD__)
-#define DefaultSyncPolicy NET_NAMESPACE::KqueuePolicy
+typedef KqueuePolicy DefaultSyncPolicy;
 #elif defined(_WI2)
-#define DefaultSyncPolicy NET_NAMESPACE::WFMOPolicy
+typedef WFMOPolicy DefaultSyncPolicy;
 #else
-#define DefaultSyncPolicy NET_NAMESPACE::PollPolicy
+typedef PollPolicy DefaultSyncPolicy;
 #endif
+
+NET_END_NAMESPACE

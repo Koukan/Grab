@@ -10,22 +10,6 @@ static DWORD WINAPI		starter(void *arg)
   return (0);
 }
 
-Thread::Thread(IThreadSubscriber &func) :
-	   	_func(&func), _state(false)
-{}
-
-Thread::~Thread()
-{
-  if (_state)
-	this->cancel();
-  delete _func;
-}
-
-void       Thread::run()
-{
-  _func->call();
-}
-
 bool	Thread::start()
  {
    if (this->_state == false)

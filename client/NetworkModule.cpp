@@ -33,9 +33,9 @@ bool		NetworkModule::connect()
   }
   _addr = addr;
   Net::InetAddr     tmp(this->_port); 
-  this->_udp.close();
+  this->_udp.getIOHandler().close();
   this->_udp.setReactor(this->_reactor);
-  if (this->_udp.setup(tmp) != -1)
+  if (this->_udp.getIOHandler().setup(tmp) != -1)
     {
       this->_udp.init();
 	  this->_udp.addAddr(addr);

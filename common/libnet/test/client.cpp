@@ -1,20 +1,7 @@
-#include "SetupNetwork.hpp"
-#include "InetAddr.hpp"
-#include "SocketAcceptor.hpp"
-#include "IOVec.hpp"
-#include "Reactor.hpp"
-#include "PollPolicy.hpp"
-#include "EpollPolicy.hpp"
-#include "WFMOPolicy.hpp"
-#include "NetHandler.hpp"
-#include "Acceptor.hpp"
-#include "Connector.hpp"
-#include "PacketHandler.hpp"
+#include "Net.hpp"
 #include <iostream>
 
 using namespace Net;
-
-typedef EpollPolicy Policy;
 
 class	Client : public PacketHandler<>
 {
@@ -52,7 +39,7 @@ int  main(int ac, char **av)
 {
   SetupNetwork  		init;
   InetAddr				test("127.0.0.1", "25557");
-  Reactor				*reactor = new Policy();
+  Reactor				*reactor = new DefaultSyncPolicy();
 /*  Acceptor<Client>		acceptor;
 
   acceptor.setup(test, *reactor);*/

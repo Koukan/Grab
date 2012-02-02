@@ -29,8 +29,8 @@ public:
 	  _reactor->scheduleTimer(*this, 3000, true);
 	  InetAddr				test("224.0.102.129", "4096");
   	  std::cout << "addr " << test.getHost() << " is multicast : " << test.isMulticast() << std::endl;
-	  std::cout << this->join(test) << std::endl;
-	  std::cout << this->setTTLMulticast(3, test) << std::endl;
+	  std::cout << _iohandler.join(test) << std::endl;
+	  std::cout << _iohandler.setTTLMulticast(3, test) << std::endl;
 	  printLastError();
 	}
 
@@ -66,9 +66,9 @@ int  main(int ac, char **av)
   Reactor				*reactor = new Policy();
   Client				client;
 
-  std::cout << "setup " << client.setup(b) << std::endl;
+  std::cout << "setup " << client.getIOHandler().setup(b) << std::endl;
   client.setReactor(*reactor);
   client.init();
-  reactor->registerHandler(client, client, Reactor::READ);
+  reactor->registerHandler(client.getIOHandler(), client, Reactor::READ);
   return  reactor->waitForEvent();
 }

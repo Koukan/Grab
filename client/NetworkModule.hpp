@@ -51,7 +51,7 @@ class NetworkModule : public Module, public Singleton<NetworkModule>
 		void	(NetworkModule::*method)(Command const &);
 	};
 
-	DefaultSyncPolicy	    _reactor;
+	Net::DefaultSyncPolicy 	_reactor;
 	UdpHandler	       		_udp;	
 	Net::Connector<Server>	_connector;
 	std::string				_name;

@@ -4,7 +4,7 @@
 #include "Server.hpp"
 #include "NetworkModule.hpp"
 
-Player::Player() : Net::PacketHandler<>(4096, "", true),
+Player::Player() : Net::SizeHeaderPacketHandler<>(4096),
 		_id(0) , _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0)
 {
 }
@@ -19,7 +19,11 @@ Player::~Player()
 void		Player::init()
 {
 	NetworkModule::get().addUDPPlayer(*this);
-	this->setNonBlocking(true);
+}
+
+int			Player::getRemoteAddr(Net::InetAddr &addr)
+{
+	return this->_iohandler.getRemoteAddr(addr);
 }
 
 int			Player::handleInputPacket(Net::Packet &packet)

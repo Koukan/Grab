@@ -14,22 +14,6 @@ static void		*starter(void *arg)
 //{
 //return static_cast<bool>(pthread_equal(_tid, thread._tid));
 //}
-Thread::Thread(IThreadSubscriber &func) :
-	   	_func(&func), _state(false)
-{}
-
-Thread::~Thread()
-{
-  if (_state)
-	this->cancel();
-  delete _func;
-}
-
-void       Thread::run()
-{
-  _func->call();
-}
-
 
 bool	Thread::start()
  {
@@ -73,6 +57,7 @@ bool		Thread::join(void **exit_value)
 
 bool		Thread::tryjoin(void **exit_value)
 {
+#if defined (__linux__)		
    bool		ret;
 
     if (_state != false)
@@ -84,6 +69,9 @@ bool		Thread::tryjoin(void **exit_value)
      }
    else
      return false;
+#else
+   return false;
+#endif
 }
 
 #endif

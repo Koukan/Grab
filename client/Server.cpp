@@ -7,11 +7,10 @@
 #include "GameListCommand.hpp"
 #include "Command.hpp"
 
-Server::Server() : Net::PacketHandler<>(4096, "", true),
+Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
 		_name(""), _game(0)
 {
 	NetworkModule::get().setServer(this);
-	this->setNonBlocking(true);
 }
 
 Server::~Server()

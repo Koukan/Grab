@@ -24,7 +24,7 @@ DataBlock::DataBlock(char *buffer, size_t size) : _allocated(false)
 	this->assign(buffer, size);
 }
 
-DataBlock::	DataBlock(struct iovec &vec) : _allocated(false)
+DataBlock::DataBlock(struct iovec &vec) : _allocated(false)
 {
   this->_vec = vec;
   this->_refcnt = 1;
@@ -34,7 +34,6 @@ DataBlock::~DataBlock()
 {
 }
 
-#include <iostream>
 void	DataBlock::release()
 {
 	this->_refcnt--;

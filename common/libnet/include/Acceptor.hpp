@@ -13,25 +13,28 @@
 #include "NetHandler.hpp"
 #include "InetAddr.hpp"
 #include "SocketAcceptor.hpp"
+#include "Service.hpp"
 
 NET_BEGIN_NAMESPACE
 
-template<typename Service, typename AcceptPolicy = SocketAcceptor>
+template<typename UserService, typename AcceptPolicy = SocketAcceptor>
 class	Acceptor : public NetHandler
 {
 public:
-	Acceptor() : _reactor(0)
+	Acceptor() : _reactor(0), _nonblocking(false)
 	{
 	}
 
 	~Acceptor()
 	{
-	  _reactor->removeHandler(acceptor);
+		if (_reactor)
+	  		_reactor->removeHandler(acceptor);
 	}
 
-	int		setup(InetAddr const &addr, Reactor &reactor)
+	int		setup(InetAddr const &addr, Reactor &reactor, bool nonblocking = true)
 	{
 		_reactor = &reactor;
+		_nonblocking = nonblocking;
 		int ret = acceptor.setup(addr);
 		if (ret != -1)
 		  _reactor->registerHandler(acceptor, *this, Reactor::ACCEPT);
@@ -40,12 +43,12 @@ public:
 
 	virtual	int	handleInput(Socket &)
 	{
-	  Service	*stream = new Service();
-	  int	ret = acceptor.accept(*stream, 0);
+	  UserService	*stream = new UserService();
+	  int	ret = acceptor.accept(stream->getIOHandler(), 0, _nonblocking);
 	  if (ret != -1)
 	  {
 		stream->setReactor(*_reactor);
-		_reactor->registerHandler(*stream, *stream, stream->getReactorFlags());
+		_reactor->registerHandler(stream->getIOHandler(), *stream, stream->getReactorFlags());
 		stream->init();
 	  }
 	  else
@@ -56,6 +59,7 @@ public:
 private:
 	AcceptPolicy acceptor;
 	Reactor *_reactor;
+	bool	_nonblocking;
 };
 
 NET_END_NAMESPACE

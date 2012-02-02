@@ -39,6 +39,7 @@ protected:
 private:
 	int		setSockOpt(int level, int option_name, const sockopt *option_value, socklen_t option_len);
 	bool				_blocking;
+	friend class		SocketAcceptor;
 };
 
 NET_END_NAMESPACE

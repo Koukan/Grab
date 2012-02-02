@@ -37,6 +37,7 @@ public:
 	bool		isLoopback() const;
 
 	operator	sockaddr const *() const;
+	operator    sockaddr*();
 	bool operator<(InetAddr const & other) const;
 	bool operator==(InetAddr const & other) const;
 	bool operator!=(InetAddr const & other) const;

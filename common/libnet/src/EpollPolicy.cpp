@@ -7,10 +7,12 @@
 
 #if defined (HAVE_EPOLL)
 #include <sys/epoll.h>
+#include <sys/timerfd.h>
 #include <errno.h>
 #include <unistd.h>
 #include "network.h"
 #include "EpollPolicy.hpp"
+#include "TimerSocket.hpp"
 
 #include <iostream>
 NET_USE_NAMESPACE
@@ -36,7 +38,6 @@ int		EpollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
   ev.data.u64 = 0;
   ev.data.ptr = data;
   ev.events = 0;
-  //std::cout << socket.getHandle() << " read " << (mask & Reactor::READ) << " write "<< (mask & Reactor::WRITE) << std::endl;
   if (mask & Reactor::READ || mask & Reactor::ACCEPT)
 	  ev.events |= EPOLLIN;
   if (mask & Reactor::WRITE)
@@ -63,7 +64,7 @@ int		EpollPolicy::waitForEvent(int timeout)
 
   while	(_wait)
   {
-	ret = ::epoll_wait(_epollfd, ev, 50, this->handleTimers(timeout));
+	ret = ::epoll_wait(_epollfd, ev, 50, timeout);
 	if (ret == -1 && errno != EINTR)
 		return -1;
 	else if (ret == 0 && timeout == 0)
@@ -71,7 +72,6 @@ int		EpollPolicy::waitForEvent(int timeout)
 	for	(i = 0; i < ret; ++i)
 	{
 		data = static_cast<epollpolicydata *>(ev[i].data.ptr);
-		//std::cout << "epoll ret " << data->socket->getHandle() << " read " << ((ev[i].events & EPOLLIN)) << " write " << (ev[i].events & EPOLLOUT) << std::endl;
 		if (ev[i].events & EPOLLHUP)
 			data->handler->handleClose(*(data->socket));
 		else
@@ -87,6 +87,49 @@ int		EpollPolicy::waitForEvent(int timeout)
 	}
   }
   return 0;
+}
+
+int		EpollPolicy::handleInput(Socket &socket)
+{
+	uint64_t	cnt;
+	int ret = read(socket.getHandle(), &cnt, sizeof(cnt));
+	if (ret > 0)
+	{
+		TimerSocket &tmp = static_cast<TimerSocket&>(socket);
+		tmp.getNetHandler().handleTimeout();
+	}
+	return ret;
+}
+
+int     EpollPolicy::scheduleTimer(NetHandler &handler, size_t delay, bool repeat)
+{	
+	int	timerfd = timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK);
+   	if (timerfd < 0)
+		return -1;
+	struct itimerspec	timerspec;
+	timerspec.it_value.tv_sec = delay / 1000;
+	timerspec.it_value.tv_nsec = (delay % 1000) * 1000;
+	if (repeat)
+		timerspec.it_interval = timerspec.it_value;
+	if (timerfd_settime(timerfd, 0, &timerspec, 0) == -1)
+		return -1;
+	TimerSocket	*tmp = new TimerSocket(timerfd, handler);
+	this->registerHandler(*tmp, *this, Reactor::READ);
+	_timers[&handler] = tmp;
+	return 0;
+}
+
+int     EpollPolicy::cancelTimer(NetHandler &handler)
+{	
+	std::map<NetHandler*, Socket*>::iterator it = _timers.find(&handler);
+  	if (it != _timers.end())
+  	{
+		this->removeHandler(*it->second);
+		delete static_cast<TimerSocket*>(it->second);
+	  	_timers.erase(it);
+	  	return 0;
+  	}
+  	return -1;
 }
 
 #endif

@@ -164,6 +164,11 @@ InetAddr::operator sockaddr const *() const
   return reinterpret_cast<sockaddr const *>(&addr_);
 }
 
+InetAddr::operator sockaddr *()
+{
+  return reinterpret_cast<sockaddr *>(&addr_);
+}
+
 bool	InetAddr::operator<(InetAddr const &other) const
 {
 	return (::memcmp(&addr_, &other.addr_, len_) < 0);

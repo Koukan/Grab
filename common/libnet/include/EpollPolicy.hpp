@@ -16,7 +16,7 @@
 
 NET_BEGIN_NAMESPACE
 
-class NET_DLLREQ EpollPolicy : public Reactor
+class NET_DLLREQ EpollPolicy : public Reactor, public NetHandler
 {
 public:
 	EpollPolicy();
@@ -25,6 +25,10 @@ public:
 	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
 	int		removeHandler(Socket &socket);
 	int		waitForEvent(int timeout);
+	
+	int		handleInput(Socket &socket);
+	int		scheduleTimer(NetHandler &handler, size_t delay, bool repeat = false);
+	int		cancelTimer(NetHandler &handler);
 
 private:
 	struct	epollpolicydata
@@ -35,6 +39,7 @@ private:
 
 	int		_epollfd;
 	std::map<Handle, epollpolicydata>	_handlers;
+	std::map<NetHandler*, Socket*>   	_timers;
 };
 
 NET_END_NAMESPACE

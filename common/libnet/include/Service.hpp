@@ -15,8 +15,8 @@
 
 NET_BEGIN_NAMESPACE
 
-template<typename IOType = SocketStream>
-class Service : public NetHandler, public IOType
+template<typename IOHandler = SocketStream>
+class Service : public NetHandler
 {
 public:
 	Service(int flags = Reactor::READ) : _reactor(0), _flags(flags)
@@ -35,13 +35,19 @@ public:
 		_reactor = &reactor;
 	}
 
-	int		getReactorFlags()
+	int		getReactorFlags() const
 	{
 		return _flags;
 	}
 
+	IOHandler	&getIOHandler()
+	{
+		return _iohandler;
+	}
+
 protected:
-	Reactor	*_reactor;
+	Reactor		*_reactor;
+	IOHandler	_iohandler;
 
 private:
 	int		_flags;

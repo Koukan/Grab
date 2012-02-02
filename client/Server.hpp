@@ -5,7 +5,7 @@
 
 class Game;
 
-class Server : public Net::PacketHandler<>
+class Server : public Net::SizeHeaderPacketHandler<>
 {
   public:
     Server();
