@@ -22,7 +22,6 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}DataBlock.hpp
 	${NET_INCLUDE_DIR}EpollPolicy.hpp
 	${NET_INCLUDE_DIR}Error.hpp
-	${NET_INCLUDE_DIR}IOVec.hpp
 	${NET_INCLUDE_DIR}InetAddr.hpp
 	${NET_INCLUDE_DIR}KqueuePolicy.hpp
 	${NET_INCLUDE_DIR}Net.hpp
@@ -69,7 +68,6 @@ set(SRCS_NET
 	${NET_SRCS_DIR}DataBlock.cpp
 	${NET_SRCS_DIR}TimerSocket.cpp
 	${NET_SRCS_DIR}UdpPacketHandler.cpp
-	${NET_SRCS_DIR}IOVec.cpp
 	${NET_SRCS_DIR}Clock.cpp
 	${NET_MUTEX_SRCS_DIR}PosixMutex.cpp
 	${NET_MUTEX_SRCS_DIR}PosixThread.cpp

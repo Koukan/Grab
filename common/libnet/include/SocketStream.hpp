@@ -8,6 +8,7 @@
 #ifndef SOCKETSTREAM_HPP_
 #define SOCKETSTREAM_HPP_
 
+#include <string>
 #include "SocketIO.hpp"
 
 NET_BEGIN_NAMESPACE
@@ -19,6 +20,7 @@ public:
 	~SocketStream();
 
 	int		shutdown(int flags = SHUT_RDWR);
+	int		sendfile(std::string const &path);
 
 };
 

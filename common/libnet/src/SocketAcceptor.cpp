@@ -9,7 +9,7 @@
 
 NET_USE_NAMESPACE
 
-SocketAcceptor::SocketAcceptor()
+SocketAcceptor::SocketAcceptor() : _backlog(BACKLOG)
 {
 }
 
@@ -35,6 +35,11 @@ int		SocketAcceptor::setup(InetAddr const &addr, bool reuseAddr, int type, int p
   return ret;
 }
 
+void	SocketAcceptor::setBacklog(int backlog)
+{
+	_backlog = backlog;
+}
+
 int		SocketAcceptor::bind(InetAddr const &addr)
 {
   return (::bind(_handle, addr, addr.getSize()));
@@ -42,7 +47,7 @@ int		SocketAcceptor::bind(InetAddr const &addr)
 
 int 	SocketAcceptor::listen()
 {
-  return (::listen(_handle, BACKLOG));
+  return (::listen(_handle, _backlog));
 }
 
 int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, bool nonblocking, size_t)

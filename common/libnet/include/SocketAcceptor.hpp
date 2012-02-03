@@ -21,11 +21,14 @@ public:
 
 	int		setup(InetAddr const &addr, bool reuseAddr = true,  int type = SOCK_STREAM, int protocol = IPPROTO_TCP);
 	int		accept(SocketStream &stream, InetAddr *src = 0, bool nonblocking = false, size_t timeout = 0);
+	void	setBacklog(int backlog);
 
 private:
 	Handle	accept(InetAddr *src, bool nonblocking);
 	int		bind(InetAddr const &addr);
 	int 	listen();
+
+	int		_backlog;
 };
 
 NET_END_NAMESPACE

@@ -35,16 +35,16 @@ public:
 	{
 		_reactor = &reactor;
 		_nonblocking = nonblocking;
-		int ret = acceptor.setup(addr);
+		int ret = _acceptor.setup(addr);
 		if (ret != -1)
-		  _reactor->registerHandler(acceptor, *this, Reactor::ACCEPT);
+		  _reactor->registerHandler(_acceptor, *this, Reactor::ACCEPT);
 		return ret;
 	}
 
 	virtual	int	handleInput(Socket &)
 	{
 	  UserService	*stream = new UserService();
-	  int	ret = acceptor.accept(stream->getIOHandler(), 0, _nonblocking);
+	  int	ret = _acceptor.accept(stream->getIOHandler(), 0, _nonblocking);
 	  if (ret != -1)
 	  {
 		stream->setReactor(*_reactor);
@@ -56,8 +56,13 @@ public:
 	  return ret;
 	}
 
+	AcceptPolicy	&getAcceptorPolicy()
+	{
+		return _acceptor;
+	}
+
 private:
-	AcceptPolicy acceptor;
+	AcceptPolicy _acceptor;
 	Reactor *_reactor;
 	bool	_nonblocking;
 };
