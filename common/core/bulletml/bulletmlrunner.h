@@ -44,6 +44,10 @@ public:
 	DECLSPEC void setSimpleShape(std::string const &shape) { this->simpleShape_ = shape; }
 	DECLSPEC void setSimpleWidth(uint32_t val) { this->simpleWidth_ = val; }
 	DECLSPEC void setSimpleHeight(uint32_t val) { this->simpleHeight_ = val; }
+	DECLSPEC void setDamage(uint32_t val) { this->damage_ = val; }
+	DECLSPEC void setLife(uint32_t val) { this->life_ = val; }
+	DECLSPEC void setSimpleDamage(uint32_t val) { this->simpleDamage_ = val; }
+	DECLSPEC void setSimpleLife(uint32_t val) { this->simpleLife_ = val; }
 
 	// getter
 	DECLSPEC std::string const	&getLabel() const { return this->label_; }
@@ -59,6 +63,10 @@ public:
 	DECLSPEC uint32_t			getSimpleRadius() const { return this->simpleWidth_; }
 	DECLSPEC uint32_t			getSimpleWidth() const { return this->simpleWidth_; }
 	DECLSPEC uint32_t			getSimpleHeight() const { return this->simpleHeight_; }
+	DECLSPEC uint32_t			getDamage() const { return this->damage_; }
+	DECLSPEC uint32_t			getLife() const { return this->life_; }
+	DECLSPEC uint32_t			getSimpleDamage() const { return this->simpleDamage_; }
+	DECLSPEC uint32_t			getSimpleLife() const { return this->simpleLife_; }
 
 private:
 	BulletMLParser*							bulletml_;
@@ -75,6 +83,10 @@ private:
 	std::string								simpleShape_;
 	uint32_t								simpleWidth_;
 	uint32_t								simpleHeight_;
+	uint32_t								damage_;
+	uint32_t								life_;
+	uint32_t								simpleDamage_;
+	uint32_t								simpleLife_;
 };
 
 /// BulletML ‚ğÀs‚·‚éƒNƒ‰ƒX

@@ -186,6 +186,20 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 				else if (key == "height")
 					elem->setSimpleHeight(val);
 			}
+			else if (elem->getName() == BulletMLNode::life)
+			{
+				if (key == "value")
+					elem->setLife(val);
+				else if (key == "simple")
+					elem->setSimpleLife(val);
+			}
+			else if (elem->getName() == BulletMLNode::damage)
+			{
+				if (key == "value")
+					elem->setDamage(val);
+				else if (key == "simple")
+					elem->setSimpleDamage(val);
+			}
 		}
 	}
 }
