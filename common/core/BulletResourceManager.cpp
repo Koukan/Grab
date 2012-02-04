@@ -50,7 +50,6 @@ BulletMLParser		*BulletResourceManager::addBulletParser(std::string const &path,
 	{
 		BulletMLParserTinyXML	*parser = new BulletMLParserTinyXML(path);
 		parser->build();
-		std::cout << "Create " << name << std::endl;
 		parser->setResourceId(this->_id++);
 		parser->setResourceName(name);
 		parser->setResourceType(3);
@@ -78,6 +77,5 @@ Resource		*BulletResourceManager::getResource(std::string const &name) const
 
 void			BulletResourceManager::deleteResource(std::string const &name)
 {
-	std::cout << "Delete " << name << std::endl;
 	this->_parsers.erase(name);
 }
