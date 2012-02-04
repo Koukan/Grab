@@ -9,7 +9,7 @@
 template <typename T>
 class GUIList : public GUIElement {
 public:
-  GUIList(std::string const & font, ButtonSprite &left_arrow, ButtonSprite &right_arrow, int x, int y)
+  GUIList(std::string const & /*font */, ButtonSprite &left_arrow, ButtonSprite &right_arrow, int x, int y)
     : GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(0), _func(0), _focusElement(_elements.begin())

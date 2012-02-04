@@ -27,7 +27,7 @@ public:
 	DECLSPEC BulletMLState(BulletMLParser* bulletml,
 						   const std::vector<BulletMLNode*>& node,
 						   bullet_shared_ptr<BulletMLParameter> para)
-		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para) {}
+		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para), width_(1), height_(1) {}
 
 	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
 	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }
@@ -40,8 +40,8 @@ public:
 	DECLSPEC void setBulletGroup(std::string const &group) { this->bulletGroup_ = group; }
 	DECLSPEC void setBulletSprite(std::string const &sprite) { this->bulletSprite_ = sprite; }
 	DECLSPEC void setShape(std::string const &shape) { this->shape_ = shape; }
-	DECLSPEC void setWidth(uint32_t val) { this->width_ = val; }
-	DECLSPEC void setHeight(uint32_t val) { this->height_ = val; }
+	DECLSPEC void setWidth(uint32_t val) { this->width_ = (val) ? val : 1; }
+	DECLSPEC void setHeight(uint32_t val) { this->height_ = (val) ? val : 1; }
 	DECLSPEC void setSimpleShape(std::string const &shape) { this->simpleShape_ = shape; }
 	DECLSPEC void setSimpleWidth(uint32_t val) { this->simpleWidth_ = val; }
 	DECLSPEC void setSimpleHeight(uint32_t val) { this->simpleHeight_ = val; }
@@ -73,14 +73,14 @@ private:
 	BulletMLParser*							bulletml_;
 	std::vector<BulletMLNode*>				node_;
 	bullet_shared_ptr<BulletMLParameter>	para_;
+	uint32_t								width_;
+	uint32_t								height_;
     std::string								label_;
 	std::string								group_;
 	std::string								sprite_;
 	std::string								bulletGroup_;
 	std::string								bulletSprite_;
 	std::string								shape_;
-	uint32_t								width_;
-	uint32_t								height_;
 	std::string								simpleShape_;
 	uint32_t								simpleWidth_;
 	uint32_t								simpleHeight_;
