@@ -143,7 +143,7 @@ void GameLogic::createEnnemies(double elapseTime)
 
 	static int i = 0;
 	static int y = 0;
-	static int nbSalvos = 0;
+	static int nbSalvos = 11;
 
 	if (this->_elapseTime == 0)
 	{

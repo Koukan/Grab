@@ -160,8 +160,14 @@ include_directories (
 )
 
 find_package (Threads)
-add_subdirectory(../common/libnet ../common/libnet_build)
-add_subdirectory(../common/core ../common/libcore_build)
+
+IF(WIN32)
+	add_subdirectory(../common/libnet ../common/libnet_build_2)
+	add_subdirectory(../common/core ../common/libcore_build_2)
+ELSE(WIN32)
+	add_subdirectory(../common/libnet ../common/libnet_build)
+	add_subdirectory(../common/core ../common/libcore_build)
+ENDIF(WIN32)
 
 ###### linking net to core
 
