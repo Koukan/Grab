@@ -14,6 +14,8 @@
 
 NET_BEGIN_NAMESPACE
 
+class NetHandler;
+
 class NET_DLLREQ Socket
 {
 public:
@@ -27,10 +29,12 @@ public:
 	int getRemoteAddr(InetAddr &addr) const;
 	Handle	getHandle() const;
 	void	setHandle(Handle sock);
-
-protected:
+	NetHandler			*getNetHandler() const;
+	void				setNetHandler(NetHandler *handler);
 	Socket();
 	virtual ~Socket();
+
+protected:
 
 	Handle				_handle;
 	mutable InetAddr	*_local;
@@ -39,6 +43,7 @@ protected:
 private:
 	int		setSockOpt(int level, int option_name, const sockopt *option_value, socklen_t option_len);
 	bool				_blocking;
+	NetHandler			*_nethandler;
 	friend class		SocketAcceptor;
 };
 

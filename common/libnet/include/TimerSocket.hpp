@@ -1,10 +1,3 @@
-/*
- * Socket.hpp
- *
- *  Created on: Nov 3, 2011
- *      Author: snap
- */
-
 #ifndef TIMERSOCKET_HPP_
 #define TIMERSOCKET_HPP_
 
@@ -17,7 +10,7 @@ class NET_DLLREQ TimerSocket : public Socket
 {
 public:
 	TimerSocket(Handle handle, NetHandler &handler);
-	NetHandler			&getNetHandler();
+	NetHandler			&getTimeoutHandler();
 
 private:
 	NetHandler			&_nethandler;
@@ -26,3 +19,4 @@ private:
 NET_END_NAMESPACE
 
 #endif /* SOCKET_HPP_ */
+

@@ -6,7 +6,7 @@
 
 UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0)
 {
-	this->enableWhitelist(true);
+		this->enableWhitelist(true);
 }
 
 UdpHandler::~UdpHandler()

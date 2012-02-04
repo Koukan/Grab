@@ -30,15 +30,8 @@ public:
 	int		cancelTimer(NetHandler &handler);
 
 private:
-	struct	kqueuepolicydata
-	{
-		NetHandler	*handler;
-		Socket		*socket;
-	};
-
 	int		_kqueuefd;
 	size_t	_timerid;
-	std::map<Handle, kqueuepolicydata>	_handlers;
 	std::map<NetHandler*, size_t>   	_timers;
 };
 
