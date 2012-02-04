@@ -7,16 +7,18 @@
 Group::Group(GameState &state, std::string const &name, int layer,
 	     uint32_t begin, uint32_t end, bool physic)
 	: _gameState(state), _layer(layer), _physic(physic),
-	  _timeEffectGroup(state.getTimeEffectGroup("default")), _quadTree(new QuadTree()), _name(name), _beginId(begin), _endId(end), _currentId(begin)
+	  _timeEffectGroup(state.getTimeEffectGroup("default")), _name(name), _beginId(begin), _endId(end), _currentId(begin)
 {
 }
 
 Group::~Group()
 {
-  for (gameObjectSet::iterator it = this->_objects.begin();
-	it != this->_objects.end(); it++)
-    delete *it;
-  delete this->_quadTree;
+	for (gameObjectSet::iterator it = this->_objects.begin();
+		 it != this->_objects.end(); it++)
+	{
+		(*it)->setGroup(0);
+		delete *it;
+	}
 }
 
 // getter
@@ -45,9 +47,9 @@ Group::gameObjectSet const	&Group::getObjects() const
 	return this->_objects;
 }
 
-QuadTree					&Group::getQuadTree() const
+QuadTree					&Group::getQuadTree()
 {
-	return (*this->_quadTree);
+	return (this->_quadTree);
 }
 
 std::string const			&Group::getName() const
@@ -107,7 +109,7 @@ void		Group::addObject(GameObject *object)
       }
   }
   if (this->_physic)
-	  this->_quadTree->push(*static_cast<PhysicObject *>(object));
+	  this->_quadTree.push(*static_cast<PhysicObject *>(object));
   if (!object->getId())
   	object->setId(this->getId());
   this->_objects.insert(object);
@@ -245,15 +247,12 @@ void			GameObjectManager::addDeleteObject(GameObject *obj)
 
 void			GameObjectManager::deleteObjects()
 {
-	std::set<GameObject *>::iterator	tmp;
-
-	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end();)
+	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end(); it++)
 	{
-		tmp = it++;
-		this->_objects.erase((*tmp)->_id);
-		delete *tmp;
-		this->_deleteList.erase(tmp);
+		this->_objects.erase((*it)->_id);
+		delete *it;
 	}
+	this->_deleteList.clear();
 }
 
 GameObjectManager::groupsDisplay const	&GameObjectManager::getDisplayObjects() const

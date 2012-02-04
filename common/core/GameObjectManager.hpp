@@ -43,7 +43,7 @@ class Group
     double				getTimeEffect() const;
     TimeEffectGroup		*getTimeEffectGroup() const;
     gameObjectSet const	&getObjects() const;
-	QuadTree			&getQuadTree() const;
+	QuadTree			&getQuadTree();
 	std::string const	&getName() const;
 	GameState			&getState() const;
 	uint32_t			getId() const;
@@ -54,11 +54,11 @@ class Group
     bool						_physic;
     TimeEffectGroup				*_timeEffectGroup;
     gameObjectSet				_objects;
-	QuadTree					*_quadTree;
 	std::string					_name;
 	uint32_t					_beginId;
 	uint32_t					_endId;
 	mutable uint32_t			_currentId;
+	QuadTree					_quadTree;
 };
 
 class GameObjectManager : public TimeEffectManager
