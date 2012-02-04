@@ -74,7 +74,7 @@ set_source_files_properties (
   ${SRCS}
   PROPERTIES
   COMPILE_FLAGS
-  "-std=c++0x -W -Wall"
+  "-std=c++0x -W -Wall -Wextra"
 )
 ENDIF(WIN32)
 
