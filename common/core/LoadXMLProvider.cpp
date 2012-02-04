@@ -3,7 +3,7 @@
 
 
 LoadXMLProvider::LoadXMLProvider()
-	: XMLProvider("load")
+	: XMLProvider("load", 0)
 {
 }
 

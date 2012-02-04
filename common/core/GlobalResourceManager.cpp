@@ -7,13 +7,12 @@
 #include "LoadXMLProvider.hpp"
 #include "SpriteProvider.hpp"
 #include "FontProvider.hpp"
+#include "BulletResourceManager.hpp"
 
 GlobalResourceManager::GlobalResourceManager()
-  : XMLProvider("resources"), _spriteProvider(0), _fontProvider(0)
+  : XMLProvider("resources", 0), _spriteProvider(0), _fontProvider(0), _bulletProvider(0)
 {
-  this->addProvider(*this);
-  this->addProvider(this->_bulletProvider);
-  this->addProvider(*new LoadXMLProvider());
+	this->addProvider(*this);
 }
 
 GlobalResourceManager::~GlobalResourceManager()
@@ -27,6 +26,12 @@ GlobalResourceManager::~GlobalResourceManager()
 	}
 }
 
+void		GlobalResourceManager::init()
+{
+	this->addProvider(*new BulletResourceManager());
+	this->addProvider(*new LoadXMLProvider());
+}
+
 void		GlobalResourceManager::load(std::string const &path, ResourceManager &manager)
 {
 	if (!this->_document.LoadFile(path.c_str()))
@@ -36,24 +41,35 @@ void		GlobalResourceManager::load(std::string const &path, ResourceManager &mana
 
 void		GlobalResourceManager::addProvider(XMLProvider &provider)
 {
-	if (provider.getHandledTag() == "sprite")
+	if (provider.handledTag == "sprite")
 	{
 		if (!this->_spriteProvider)
 			this->_spriteProvider = static_cast<SpriteProvider*>(&provider);
 	}
-	else if (provider.getHandledTag() == "font")
+	else if (provider.handledTag == "font")
 	{
 		if (!this->_fontProvider)
 			this->_fontProvider = static_cast<FontProvider*>(&provider);
 	}
-	if (this->_providers.find(provider.getHandledTag()) == this->_providers.end())
-		this->_providers[provider.getHandledTag()] = &provider;
+	else if (provider.handledTag == "bulletml")
+	{
+		if (!this->_bulletProvider)
+			this->_bulletProvider = static_cast<BulletResourceManager*>(&provider);
+	}
+	if (this->_providers.find(provider.handledTag) == this->_providers.end())
+	{
+		this->_providers[provider.handledTag] = &provider;
+		if (provider.type != 0)
+			this->_ids[provider.type] = &provider;
+	}
 }
 
 BulletMLParser	*GlobalResourceManager::addBulletParser(std::string const &path,
-										std::string const &name)
+										std::string const &name, ResourceManager &manager)
 {
-	return this->_bulletProvider.addBulletParser(path, name);
+	if (this->_bulletProvider)
+		return this->_bulletProvider->addBulletParser(path, name, manager);
+	return 0;
 }
 
 XMLProvider	*GlobalResourceManager::getProvider(std::string const &name) const
@@ -61,6 +77,15 @@ XMLProvider	*GlobalResourceManager::getProvider(std::string const &name) const
 	ProviderMap::const_iterator	it = this->_providers.find(name);
 
 	if (it != this->_providers.end())
+		return it->second;
+	return 0;
+}
+
+XMLProvider	*GlobalResourceManager::getProvider(uint32_t type) const
+{
+	IdMap::const_iterator	it = this->_ids.find(type);
+
+	if (it != this->_ids.end())
 		return it->second;
 	return 0;
 }
@@ -81,17 +106,23 @@ CoreFont	*GlobalResourceManager::getFont(std::string const &name) const
 
 BulletMLParser	*GlobalResourceManager::getBulletParser(std::string const &name) const
 {
-	return static_cast<BulletMLParser*>(this->_bulletProvider.getResource(name));
-}
-
-Resource	*GlobalResourceManager::getResource(std::string const &) const
-{
+	if (this->_bulletProvider)
+		return static_cast<BulletMLParser*>(this->_bulletProvider->getResource(name));
 	return 0;
 }
 
 Resource	*GlobalResourceManager::getResource(std::string const &name, std::string const &providerName) const
 {
 	XMLProvider	*provider = this->getProvider(providerName);
+
+	if (provider)
+		return provider->getResource(name);
+	return 0;
+}
+
+Resource	*GlobalResourceManager::getResource(std::string const &name, uint32_t type) const
+{
+	XMLProvider	*provider = this->getProvider(type);
 
 	if (provider)
 		return provider->getResource(name);

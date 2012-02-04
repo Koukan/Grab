@@ -85,9 +85,7 @@ void		ResourceManager::addBulletParser(BulletMLParser &parser)
 void		ResourceManager::addBulletParser(std::string const &path,
 											 std::string const &name)
 {
-	BulletMLParser	*parser = GlobalResourceManager::get().addBulletParser(path, name);
-	if (parser)
-		this->addBulletParser(*parser);
+	GlobalResourceManager::get().addBulletParser(path, name, *this);
 }
 
 void		ResourceManager::addResource(Resource &resource)

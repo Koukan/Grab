@@ -3,7 +3,7 @@
 #include "Converter.hpp"
 
 SpriteProvider::SpriteProvider()
-  : XMLProvider("sprite")
+  : XMLProvider("sprite", 1)
 {
 }
 
@@ -27,17 +27,18 @@ void	SpriteProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 			sprite = this->addSprite(attrib->Value());
 			if (sprite)
 			{
-				sprite->setResourceType(1);
-				sprite->setResourceId(_id++);
-				sprite->setResourceName(attrib->Value());
-				sprite->setResourceProvider(this);
-				manager.addSprite(*sprite);
+				this->XMLProvider::addResource(attrib->Value(), *sprite, manager);
 				this->loadElement(static_cast<TiXmlElement*>(parent), sprite,
 						  methods, sizeof(methods) / sizeof(*methods));
 			}
 			break ;
 		}
 	}
+}
+
+void	SpriteProvider::addResource(Resource &resource, ResourceManager &manager)
+{
+	manager.addSprite(static_cast<Sprite&>(resource));
 }
 
 void	SpriteProvider::imageSprite(TiXmlElement *parent, Sprite *sprite)

@@ -16,9 +16,7 @@ class Resource
 
 	// setter
 	void				setResourceId(uint32_t id);
-	void				setResourceType(uint32_t id);
 	void				setResourceName(std::string const &name);
-	void				setResourceProvider(XMLProvider *provider);
 
 	// getter
 	uint32_t			getResourceId() const;
@@ -31,12 +29,10 @@ class Resource
 	uint32_t			getUse() const;
 
   private:
-	uint32_t			&_use;
-
-  protected:
-	uint32_t		_resourceId;
+	uint32_t		&_resourceId;
 	uint32_t		_resourceType;
 	XMLProvider		*_resourceProvider;
-	std::string		_resourceName;
-
+	std::string		&_resourceName;
+	uint32_t		&_use;
+	friend class	XMLProvider;
 };

@@ -41,6 +41,7 @@ void		Game::init()
   //cl_log_event("system", "Grab: The Power of the Lost Grapple started");
 
   // add Provider
+  GlobalResourceManager::get().init();
   GlobalResourceManager::get().addProvider(*new SFMLSpriteProvider);
   GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
 
