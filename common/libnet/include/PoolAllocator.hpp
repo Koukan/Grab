@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <list>
+#include <queue>
 #include "Singleton.hpp"
 #include "NetDef.hpp"
 
@@ -14,7 +14,7 @@ class NET_DLLREQ PoolAllocator : public Singleton<PoolAllocator>
 		void	deallocate(void *p, std::size_t size);
 
 	private:
-		std::vector<std::list<void*> >	_freed;
+		std::vector<std::queue<void*> >	_freed;
 };
 
 NET_END_NAMESPACE

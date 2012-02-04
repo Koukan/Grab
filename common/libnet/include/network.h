@@ -1,6 +1,7 @@
 #ifndef _NETWORK_
 #define _NETWORK_
 
+#include "NetDef.hpp"
 #if defined (_WIN32)
 #	include <winsock2.h>
 #	include <ws2tcpip.h>
@@ -30,7 +31,9 @@ typedef socklen_t	sockopt;
 
 #define htonll(x) ntohll(x)
 
+NET_BEGIN_NAMESPACE
 #define	Handle SOCKET
+NET_END_NAMESPACE
 
 # ifndef	INVALID_SOCKET
 #  define	INVALID_SOCKET -1
