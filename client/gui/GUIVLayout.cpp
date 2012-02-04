@@ -13,6 +13,8 @@ GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, int nbE
 
 GUIVLayout::~GUIVLayout()
 {
+	delete this->_upArrow;
+	delete this->_downArrow;
 }
 
 bool GUIVLayout::handleGUICommand(InputCommand const &command)

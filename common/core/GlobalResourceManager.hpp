@@ -18,7 +18,7 @@ class GlobalResourceManager : public XMLProvider, public Singleton<GlobalResourc
 	virtual ~GlobalResourceManager();
 	void			load(std::string const &path, ResourceManager &manager);
 	void			addProvider(XMLProvider &provider);
-	void			addBulletParser(std::string const &path, std::string const &name);
+	BulletMLParser	*addBulletParser(std::string const &path, std::string const &name);
 	XMLProvider		*getProvider(std::string const &name) const;
 	Sprite			*getSprite(std::string const &name) const;
 	CoreFont		*getFont(std::string const &name) const;

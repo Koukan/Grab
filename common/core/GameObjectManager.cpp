@@ -119,15 +119,6 @@ void		Group::removeObject(GameObject *object)
 	this->_objects.erase(object);
 }
 
-void		Group::deleteObjects()
-{
-	while (!this->_deletes.empty())
-	{
-		delete this->_deletes.top();
-		this->_deletes.pop();
-	}
-}
-
 GameObjectManager::GameObjectManager() : _id(0)
 {
 }

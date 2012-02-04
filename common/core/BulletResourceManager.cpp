@@ -35,13 +35,7 @@ void		BulletResourceManager::handleXML(TiXmlNode *parent, ResourceManager &manag
 	{
 		parser = addBulletParser(parserPath, parserName);
 		if (parser)
-		{
-			parser->setResourceId(this->_id++);
-			parser->setResourceName(parserName);
-			parser->setResourceType(3);
-			parser->setResourceProvider(this);
 			manager.addBulletParser(*parser);
-		}
 	}
 }
 
@@ -49,17 +43,19 @@ BulletMLParser		*BulletResourceManager::addBulletParser(std::string const &path,
 													std::string const &name)
 {
 	bulletParsers::iterator	it = _parsers.find(name);
-	BulletMLParser 			*mem_parser = 0;
 
 	if (it != _parsers.end())
-		mem_parser = it->second;
+		return it->second;
 	try
 	{
 		BulletMLParserTinyXML	*parser = new BulletMLParserTinyXML(path);
 		parser->build();
+		std::cout << "Create " << name << std::endl;
+		parser->setResourceId(this->_id++);
+		parser->setResourceName(name);
+		parser->setResourceType(3);
+		parser->setResourceProvider(this);
 		_parsers[name] = parser;
-		if (mem_parser)
-			delete mem_parser;
 		return parser;
 	}
 	catch (BulletMLError e)
@@ -82,5 +78,6 @@ Resource		*BulletResourceManager::getResource(std::string const &name) const
 
 void			BulletResourceManager::deleteResource(std::string const &name)
 {
+	std::cout << "Delete " << name << std::endl;
 	this->_parsers.erase(name);
 }

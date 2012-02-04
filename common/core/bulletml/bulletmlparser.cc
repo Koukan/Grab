@@ -63,7 +63,6 @@ void BulletMLParser::build() {
 
 Resource		*BulletMLParser::clone() const
 {
-	this->addUse();
 	return const_cast<BulletMLParser*>(this);
 }
 

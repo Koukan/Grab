@@ -50,11 +50,10 @@ void		GlobalResourceManager::addProvider(XMLProvider &provider)
 		this->_providers[provider.getHandledTag()] = &provider;
 }
 
-void		GlobalResourceManager::addBulletParser(std::string const &path,
+BulletMLParser	*GlobalResourceManager::addBulletParser(std::string const &path,
 										std::string const &name)
 {
-	this->_bulletProvider.addBulletParser(path, name);
-
+	return this->_bulletProvider.addBulletParser(path, name);
 }
 
 XMLProvider	*GlobalResourceManager::getProvider(std::string const &name) const

@@ -28,8 +28,6 @@ class Group
 
     void	addObject(GameObject *object);
     void	removeObject(GameObject *object);
-    void	addDelete(GameObject *object);
-    void	deleteObjects();
 
     //setter
     void	setLayer(int layer);
@@ -56,7 +54,6 @@ class Group
     bool						_physic;
     TimeEffectGroup				*_timeEffectGroup;
     gameObjectSet				_objects;
-    std::stack<GameObject*>		_deletes;
 	QuadTree					*_quadTree;
 	std::string					_name;
 	uint32_t					_beginId;
