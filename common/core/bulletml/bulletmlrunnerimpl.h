@@ -183,7 +183,6 @@ protected:
 
 protected:
 	BulletMLRunner* runner_;
-
 };
 
 #endif // ! BULLETRUNNER_IMPL_H_

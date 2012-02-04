@@ -14,6 +14,7 @@ BulletMLRunner::BulletMLRunner(BulletMLParser* bulletml) {
 		BulletMLState* state = new BulletMLState(bulletml, act,
 			bullet_shared_ptr<BulletMLParameter>());
 		impl_.push_back(makeImpl(state));
+		state_.push(state);
 	}
 }
 
@@ -24,6 +25,11 @@ BulletMLRunner::BulletMLRunner(BulletMLState* state) {
 BulletMLRunner::~BulletMLRunner() {
 	for (size_t i = 0; i < impl_.size(); i++) {
 		delete impl_[i];
+	}
+	while (!state_.empty())
+	{
+		delete state_.top();
+		state_.pop();
 	}
 }
 
