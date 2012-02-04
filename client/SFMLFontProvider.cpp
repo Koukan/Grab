@@ -1,4 +1,5 @@
 #include "SFMLFontProvider.hpp"
+#include <iostream>
 
 SFMLFontProvider::SFMLFontProvider()
 {
@@ -6,27 +7,34 @@ SFMLFontProvider::SFMLFontProvider()
 
 SFMLFontProvider::~SFMLFontProvider()
 {
-  for (FontMap::iterator it = this->_fonts.begin(); it != this->_fonts.end(); ++it)
-    delete it->second;
+	for (FontMap::iterator it = this->_fonts.begin(); it != this->_fonts.end(); ++it)
+		delete it->second;
 }
-
-void SFMLFontProvider::addFont(std::string const &fontName, std::string const &fontFile, std::string const &fontSize)
+CoreFont	*SFMLFontProvider::addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize)
 {
-  FontMap::const_iterator it = this->_fonts.find(fontName);
+	FontMap::const_iterator it = this->_fonts.find(fontName);
 
-  if (it == this->_fonts.end())
-    {
-      SFMLFont *font = new SFMLFont(fontFile, fontSize);
+	if (it == this->_fonts.end())
+	{
+		SFMLFont *font = new SFMLFont(fontFile, fontSize);
 
-      this->_fonts.insert(std::pair<std::string const, SFMLFont *>(fontName, font));
-    }
+		this->_fonts.insert(std::pair<std::string const, SFMLFont *>(fontName, font));
+		return font;
+	}
+	else
+		return it->second;
 }
 
-CoreFont	*SFMLFontProvider::getFont(std::string const &fontName) const
+Resource	*SFMLFontProvider::getResource(std::string const &fontName) const
 {
   FontMap::const_iterator it = this->_fonts.find(fontName);
 
   if (it != this->_fonts.end())
-    return (new SFMLFont(*(it->second)));
+    return (new SFMLFont(*it->second));
   return (0);
+}
+
+void		SFMLFontProvider::deleteResource(std::string const &name)
+{
+	this->_fonts.erase(name);
 }

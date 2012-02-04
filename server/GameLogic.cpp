@@ -13,12 +13,12 @@
 GameLogic::GameLogic(Game &game)
 	: GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
 {
-	addBulletParser("resource/BulletSimple.xml", "single");
-	addBulletParser("resource/BulletSinusoidal.xml", "sinusoidal");
-	addBulletParser("resource/BulletBomb.xml", "bomb");
-	addBulletParser("resource/BulletWall.xml", "wall");
-	addBulletParser("resource/BulletRandom.xml", "random");
-	addBulletParser("resource/BulletBossMetroid.xml", "bossMetroid");
+	addBulletParser("resources/BulletSimple.xml", "single");
+	addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
+	addBulletParser("resources/BulletBomb.xml", "bomb");
+	addBulletParser("resources/BulletWall.xml", "wall");
+	addBulletParser("resources/BulletRandom.xml", "random");
+	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
 
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);

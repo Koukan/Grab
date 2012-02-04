@@ -7,7 +7,7 @@ SpriteProvider::SpriteProvider()
 {
 }
 
-void	SpriteProvider::handleXML(TiXmlNode *parent)
+void	SpriteProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 {
 	static Method<Sprite*> const	methods[] = {
 	  {"image", &SpriteProvider::imageSprite},
@@ -23,11 +23,21 @@ void	SpriteProvider::handleXML(TiXmlNode *parent)
 	{
 		name = attrib->Name();
 		if (name == "name")
+		{
 			sprite = this->addSprite(attrib->Value());
-	}
-	if (sprite)
-		this->loadElement(static_cast<TiXmlElement*>(parent), sprite,
+			if (sprite)
+			{
+				sprite->setResourceType(1);
+				sprite->setResourceId(_id++);
+				sprite->setResourceName(attrib->Value());
+				sprite->setResourceProvider(this);
+				manager.addSprite(*sprite);
+				this->loadElement(static_cast<TiXmlElement*>(parent), sprite,
 						  methods, sizeof(methods) / sizeof(*methods));
+			}
+			break ;
+		}
+	}
 }
 
 void	SpriteProvider::imageSprite(TiXmlElement *parent, Sprite *sprite)

@@ -3,16 +3,20 @@
 #include <string>
 #include <map>
 #include "bulletmlparser.h"
+#include "XMLProvider.hpp"
 
-class BulletResourceManager
+class BulletResourceManager : public XMLProvider
 {
   public:
     BulletResourceManager();
     virtual ~BulletResourceManager();
-	bool			addBulletParser(std::string const &path, std::string const &name);
+	void				handleXML(TiXmlNode*, ResourceManager&);
+	BulletMLParser		*addBulletParser(std::string const &path, std::string const &name);
 
 	//getter
-	BulletMLParser	*getBulletParser(std::string const &name);
+	virtual Resource	*getResource(std::string const &name) const;
+
+	virtual void		deleteResource(std::string const &name);
 
   private:
 	typedef std::map<std::string, BulletMLParser*>	bulletParsers;

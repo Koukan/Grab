@@ -7,6 +7,8 @@ ConcreteObject::ConcreteObject(Sprite *sprite, HitBox &hitbox, double vx, double
 
 ConcreteObject::~ConcreteObject()
 {
+	if (this->_sprite)
+		delete this->_sprite;
 }
 
 void			ConcreteObject::draw(double time)

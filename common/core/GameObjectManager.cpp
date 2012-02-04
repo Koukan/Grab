@@ -135,7 +135,10 @@ GameObjectManager::GameObjectManager() : _id(0)
 GameObjectManager::~GameObjectManager()
 {
 	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
-			it != this->_collisionGroups.end(); it++)
+		 it != this->_collisionGroups.end(); it++)
+		delete it->second;
+	for (groupsMap::iterator it = this->_groups.begin();
+		 it != this->_groups.end(); it++)
 		delete it->second;
 }
 

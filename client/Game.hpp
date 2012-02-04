@@ -28,8 +28,8 @@ public:
   std::string const &getPort() const;
 
 private:
-  bool		_quit;
-  std::fstream _preferencesFile;
+  bool						_quit;
+  std::fstream				_preferencesFile;
   std::vector<std::string>	_preferences;
 };
 

@@ -15,6 +15,11 @@ SFMLSprite::~SFMLSprite()
 {
 }
 
+Resource	*SFMLSprite::clone() const
+{
+	return new SFMLSprite(*this);
+}
+
 void		SFMLSprite::update(double elapsedTime)
 {
 	if (this->_frameRate == -1 || elapsedTime == 0)

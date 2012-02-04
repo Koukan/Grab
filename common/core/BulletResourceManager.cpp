@@ -4,6 +4,7 @@
 #include "bulletmlerror.h"
 
 BulletResourceManager::BulletResourceManager()
+	: XMLProvider("bulletml")
 {
 }
 
@@ -14,7 +15,37 @@ BulletResourceManager::~BulletResourceManager()
 		delete it->second;
 }
 
-bool		BulletResourceManager::addBulletParser(std::string const &path,
+void		BulletResourceManager::handleXML(TiXmlNode *parent, ResourceManager &manager)
+{
+	std::string		name;
+	std::string		parserName;
+	std::string		parserPath;
+	BulletMLParser	*parser = 0;
+
+	for (TiXmlAttribute *attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute();
+		attrib != 0; attrib = attrib->Next())
+	{
+		name = attrib->Name();
+		if (name == "name")
+			parserName = attrib->Value();
+		else if (name == "file")
+			parserPath = attrib->Value();
+	}
+	if (!parserPath.empty() && !parserName.empty())
+	{
+		parser = addBulletParser(parserPath, parserName);
+		if (parser)
+		{
+			parser->setResourceId(this->_id++);
+			parser->setResourceName(parserName);
+			parser->setResourceType(3);
+			parser->setResourceProvider(this);
+			manager.addBulletParser(*parser);
+		}
+	}
+}
+
+BulletMLParser		*BulletResourceManager::addBulletParser(std::string const &path,
 													std::string const &name)
 {
 	bulletParsers::iterator	it = _parsers.find(name);
@@ -22,24 +53,24 @@ bool		BulletResourceManager::addBulletParser(std::string const &path,
 
 	if (it != _parsers.end())
 		mem_parser = it->second;
-	//try
-	//{
-		BulletMLParserTinyXML *parser = new BulletMLParserTinyXML(path);
+	try
+	{
+		BulletMLParserTinyXML	*parser = new BulletMLParserTinyXML(path);
 		parser->build();
 		_parsers[name] = parser;
 		if (mem_parser)
 			delete mem_parser;
-
-	//}
-	//catch (BulletMLError e)
-	//{
-		//std::cerr << "BulletML xml \"" << path << "\" don't exist or not valid" << std::endl;
-		//return false;
-	//}
-	return true;
+		return parser;
+	}
+	catch (BulletMLError e)
+	{
+		std::cerr << "BulletML xml \"" << path << "\" don't exist or not valid" << std::endl;
+		return 0;
+	}
+	return 0;
 }
 
-BulletMLParser		*BulletResourceManager::getBulletParser(std::string const &name)
+Resource		*BulletResourceManager::getResource(std::string const &name) const
 {
 	bulletParsers::const_iterator	it = _parsers.find(name);
 
@@ -47,4 +78,9 @@ BulletMLParser		*BulletResourceManager::getBulletParser(std::string const &name)
 		return it->second;
 	BulletMLError::doAssert("The parser " + name + " don't exist");
 	return 0;
+}
+
+void			BulletResourceManager::deleteResource(std::string const &name)
+{
+	this->_parsers.erase(name);
 }

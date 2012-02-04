@@ -2,26 +2,25 @@
 #include "RendererManager.hpp"
 #include <sstream>
 
-SFMLFont::SFMLFont(std::string const &fileName, std::string const &strsize)
+SFMLFont::SFMLFont(std::string const &fileName, unsigned int size)
   : _window(RendererManager::get().getWindow())
 {
-  this->_font.LoadFromFile(fileName);
-  this->_str.SetFont(this->_font);
-  if (strsize != "")
-    {
-      unsigned int size;
-      std::istringstream buffer(strsize);
-      buffer >> size;
-#if (SFML_VERSION_MAJOR == 2)
-	  this->_str.SetCharacterSize(size);
-#else
-      this->_str.SetSize(size);
-#endif
-    }
+	this->_font.LoadFromFile(fileName);
+	this->_str.SetFont(this->_font);
+	#if (SFML_VERSION_MAJOR == 2)
+		this->_str.SetCharacterSize(size);
+	#else
+		this->_str.SetSize(size);
+	#endif
 }
 
 SFMLFont::~SFMLFont()
 {
+}
+
+Resource	*SFMLFont::clone() const
+{
+	return new SFMLFont(*this);
 }
 
 void	SFMLFont::draw(double /*elapsedTime*/)

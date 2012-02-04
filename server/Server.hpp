@@ -13,5 +13,5 @@ class Server : public ModuleManager, public Singleton<Server>,
   public:
     Server();
     virtual ~Server();
-	bool			init(std::string const &port = "25557", size_t nbthread = NBTHREAD);
+	bool			initServer(std::string const &port = "25557", size_t nbthread = NBTHREAD);
 };

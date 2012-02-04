@@ -57,10 +57,6 @@ void	GSCreateMenu::nbPlayerList(std::string const &nb)
 
 void	GSCreateMenu::onStart()
 {
-  // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
-
   // load xml
   this->load("resources/intro.xml");
 

@@ -2,15 +2,10 @@
 
 #include "XMLProvider.hpp"
 
-class ResourceManager;
-
 class LoadXMLProvider : public XMLProvider
 {
   public:
-    LoadXMLProvider(ResourceManager &manager);
+    LoadXMLProvider();
     virtual ~LoadXMLProvider();
-	virtual void	handleXML(TiXmlNode *node);
-
-  private:
-	ResourceManager		&_manager;
+	virtual void		handleXML(TiXmlNode *, ResourceManager &);
 };

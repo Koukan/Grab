@@ -3,9 +3,9 @@
 
 ServerResourceManager::ServerResourceManager() : _id(1)
 {
-	for (int i = 0; i < Resource::SHOOT - Resource::SINGLE_MONSTER; ++i)
+	for (int i = 0; i < Resources::SHOOT - Resources::SINGLE_MONSTER; ++i)
 	{
-		this->_ids[Resource::monsters[i].sprite] = Resource::SINGLE_MONSTER + i;
+		this->_ids[Resources::monsters[i].sprite] = Resources::SINGLE_MONSTER + i;
 	}
 }
 

@@ -44,6 +44,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}GameState.hpp
 	${CORE_DIR}GameStateManager.hpp
 	${CORE_DIR}GameStateObserver.hpp
+	${CORE_DIR}GlobalResourceManager.hpp
 	${CORE_DIR}GUIManager.hpp
 	${CORE_DIR}GUILayout.hpp
 	${CORE_DIR}GUIElement.hpp
@@ -65,6 +66,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}PhysicsSubscriber2.hpp
 	${CORE_DIR}PolyHitBox.hpp
 	${CORE_DIR}RectHitBox.hpp
+	${CORE_DIR}Resource.hpp
 	${CORE_DIR}ResourceManager.hpp
 	${CORE_DIR}SharedLoader.hpp
 	${CORE_DIR}Sprite.hpp
@@ -92,6 +94,7 @@ set(SRCS_CORE
 	${CORE_DIR}GameState.cpp
 	${CORE_DIR}GameStateObserver.cpp
 	${CORE_DIR}FontProvider.cpp
+	${CORE_DIR}GlobalResourceManager.cpp
 	${CORE_DIR}GUIManager.cpp
 	${CORE_DIR}GUILayout.cpp
 	${CORE_DIR}GUIElement.cpp
@@ -107,6 +110,7 @@ set(SRCS_CORE
 	${CORE_DIR}PhysicObject.cpp
 	${CORE_DIR}PolyHitBox.cpp
 	${CORE_DIR}RectHitBox.cpp
+	${CORE_DIR}Resource.cpp
 	${CORE_DIR}SpriteProvider.cpp
 	${CORE_DIR}ResourceManager.cpp
 	${CORE_DIR}XMLProvider.cpp

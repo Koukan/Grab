@@ -14,9 +14,9 @@ int		main(int ac, char **av)
   {
 	bool		ret;
 	if (ac > 1)
-		ret = Server::get().init(av[1]);
+		ret = Server::get().initServer(av[1]);
 	else
-		ret = Server::get().init();
+		ret = Server::get().initServer();
     return (ret) ? 0 : 1;
   }
   catch (std::exception const &e)
