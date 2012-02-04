@@ -19,10 +19,10 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	GlobalResourceManager::get().init();
 	this->ModuleManager::init();
 	if (!this->ThreadPool::init(nbthread))
-	  {
+	{
 	    Logger::logger << "Can't init threads";
 	    return false;
-	  }
+	}
 	network.setPort(port);
 	this->loadModule(CommandDispatcher::get());
 	this->loadModule(network);
