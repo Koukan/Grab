@@ -19,39 +19,13 @@ set(SFML_LIBRARIES
 )
 ELSE(WIN32)
 set(TYPE "Unix")
-set(CLANLIB_INCLUDE_DIR "/usr/include/ClanLib-2.3")
-#set(SFML_LIBRARIES
-#	sfml-graphics
-#	sfml-window
-#	sfml-system
-#	dl
-#)
-set(CLANLIB_LIBRARIES
-	clan23GUI
-	clan23CSSLayout
-	clan23Network
-	clan23GL
-	Xrender
-	clan23GL1
-	GL
-	GLU
-	clan23Display
-	X11
-	png
-	jpeg
-	freetype
-	z
-	bz2
-	fontconfig
-	clan23App
-	clan23MikMod
-	mikmod
-	clan23Vorbis
-	clan23Sound
-	asound
-	clan23Core
+set(SFML_INCLUDE_DIR "/usr/include/SFML")
+set(SFML_LIBRARIES
+	sfml-graphics
+	sfml-window
+	sfml-system
+	dl
 )
-
 ENDIF(WIN32)
 #####
 
@@ -71,6 +45,8 @@ set(CORE_TINYXML_DIR "../common/core/tinyxml/")
 
 set(TARGET_NAME rtype_client)
 
+##	Font.cpp
+##	Font.hpp
 ##	AudioManager.cpp
 ##	AudioManager.hpp
 set(GUI_INCLUDE_DIR "gui")
@@ -81,8 +57,10 @@ set(INCLUDES_COMMON_DIR "../common/")
 set(SRCS
 	${INCLUDES_CORE}
 	main.cpp
-	GameFont.cpp
-	GameFont.hpp
+	SFMLFont.cpp
+	SFMLFont.hpp
+	SFMLFontProvider.cpp
+	SFMLFontProvider.hpp
 	ConcreteObject.cpp
 	ConcreteObject.hpp
 	Game.cpp
@@ -126,6 +104,10 @@ set(SRCS
 	ScrollingSprite.cpp
 	Server.cpp
 	Server.hpp
+	SFMLSprite.cpp
+	SFMLSprite.hpp
+	SFMLSpriteProvider.cpp
+	SFMLSpriteProvider.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	Wall.cpp
@@ -140,13 +122,6 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIVLayout.hpp
 	${GUI_SRC_DIR}/GUIHLayout.hpp
 )
-
-#	SFMLFontProvider.cpp
-#	SFMLFontProvider.hpp
-#	SFMLSprite.cpp
-#	SFMLSprite.hpp
-#	SFMLSpriteProvider.cpp
-#	SFMLSpriteProvider.hpp
 
 IF(WIN32)
 ELSE(WIN32)
@@ -175,7 +150,7 @@ add_executable(
 
 include_directories (
 	${INCLUDES_COMMON_DIR}
-	${CLANLIB_INCLUDE_DIR}
+	${SFML_INCLUDE_DIR}
 	${NET_INCLUDE_DIR}
 	${NET_MUTEX_INCLUDE_DIR}
 	${CORE_DIR}
@@ -195,7 +170,7 @@ add_subdirectory(../common/core ../common/libcore_build)
 
 target_link_libraries(
 	${TARGET_NAME}
-	${CLANLIB_LIBRARIES}
+	${SFML_LIBRARIES}
 	${CMAKE_THREAD_LIBS_INIT}
 	core
 	net

@@ -16,8 +16,12 @@ public:
 	virtual void	destroy();
 
 private:
-  void			treatInput(const CL_InputEvent &event, const CL_InputState &state);
+	void			translateFromSFML1_6(InputCommand &cmd) const;
+	//void			treatInput(const CL_InputEvent &event, const CL_InputState &state);
 
+#if (SFML_VERSION_MAJOR != 2)
+	std::map<sf::Key::Code, Keyboard::Key> _dict;
+#endif
 };
 
 

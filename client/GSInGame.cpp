@@ -6,8 +6,8 @@
 #include "Input.hpp"
 #include "ConcreteObject.hpp"
 #include "CommandDispatcher.hpp"
-//#include "SFMLSpriteProvider.hpp"
-//#include "SFMLFontProvider.hpp"
+#include "SFMLSpriteProvider.hpp"
+#include "SFMLFontProvider.hpp"
 #include "ScrollingSprite.hpp"
 #include "GameListCommand.hpp"
 #include "NetworkModule.hpp"
@@ -37,8 +37,8 @@ void		GSInGame::preload()
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
 
   // add providers
-  //  this->addProvider(*(new SFMLSpriteProvider));
-  //  this->addProvider(*(new SFMLFontProvider));
+  this->addProvider(*(new SFMLSpriteProvider));
+  this->addProvider(*(new SFMLFontProvider));
 
   // load xml
   this->load("resources/intro.xml");

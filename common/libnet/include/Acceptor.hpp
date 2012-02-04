@@ -28,7 +28,7 @@ public:
 	~Acceptor()
 	{
 		if (_reactor)
-	  		_reactor->removeHandler(acceptor);
+	  		_reactor->removeHandler(_acceptor);
 	}
 
 	int		setup(InetAddr const &addr, Reactor &reactor, bool nonblocking = true)

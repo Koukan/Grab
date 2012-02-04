@@ -9,7 +9,7 @@
 
 InputModule::InputModule() : Module("InputModule", 20)
 {
-  /*	#if (SFML_VERSION_MAJOR != 2)
+	#if (SFML_VERSION_MAJOR != 2)
 	_dict[sf::Key::A] = Keyboard::A;
 	_dict[sf::Key::B] = Keyboard::B;
 	_dict[sf::Key::C] = Keyboard::C;
@@ -112,8 +112,7 @@ InputModule::InputModule() : Module("InputModule", 20)
 	_dict[sf::Key::F15] = Keyboard::F15;
 	_dict[sf::Key::Pause] = Keyboard::Pause;
 	_dict[sf::Key::Count] = Keyboard::KeyCount;
-	#endif*/
-
+#endif
 }
 
 InputModule::~InputModule()
@@ -122,33 +121,11 @@ InputModule::~InputModule()
 
 void		InputModule::init()
 {
-  CL_InputContext ic = RendererManager::get().getWindow()->get_ic();
-  CL_InputDevice device;
-  if (ic.get_keyboard_count() >= 1)
-    {
-      device = ic.get_keyboard();
-      new CL_Slot(device.sig_key_down().connect(this, &InputModule::treatInput));
-      new CL_Slot(device.sig_key_up().connect(this, &InputModule::treatInput));
-    }
-  if (ic.get_mouse_count() >= 1)
-    {
-      new CL_Slot(ic.get_mouse().sig_pointer_move().connect(this, &InputModule::treatInput));
-      new CL_Slot(ic.get_mouse().sig_key_down().connect(this, &InputModule::treatInput));
-      new CL_Slot(ic.get_mouse().sig_key_up().connect(this, &InputModule::treatInput));
-    }
-  for (int i = 0; i < ic.get_joystick_count() && i < 5; i++)
-    {
-      device = ic.get_joystick(i);
-      new CL_Slot(device.sig_key_down().connect(this, &InputModule::treatInput));
-      new CL_Slot(device.sig_key_up().connect(this, &InputModule::treatInput));
-      new CL_Slot(device.sig_axis_move().connect(this, &InputModule::treatInput));
-    }
 }
 
 void		InputModule::update(double)
 {
-  CL_KeepAlive::process();
-  /* sf::Event  ev;
+ sf::Event  ev;
 
  sf::RenderWindow *ptr = RendererManager::get().getWindow();
  #if (SFML_VERSION_MAJOR == 2)
@@ -168,13 +145,9 @@ void		InputModule::update(double)
 	  tmp->Key.Code = this->_dict[ev.Key.Code];
 	#endif
  	CommandDispatcher::get().pushCommand(*tmp);
-	}*/
+ }
 }
 
 void        InputModule::destroy()
-{
-}
-
-void	    InputModule::treatInput(const CL_InputEvent &event, const CL_InputState &state)
 {
 }

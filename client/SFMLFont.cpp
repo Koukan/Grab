@@ -52,7 +52,7 @@ void	SFMLFont::setColor(int r, int g, int b)
   this->_str.SetColor(sf::Color(r, g, b));
 }
 
-int	SFMLFont::getWidth()
+int	SFMLFont::getWidth() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
 	return (this->_str.GetRect().Width);
@@ -61,7 +61,7 @@ int	SFMLFont::getWidth()
 	#endif
 }
 
-int	SFMLFont::getHeight()
+int	SFMLFont::getHeight() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
 	return (this->_str.GetRect().Height);

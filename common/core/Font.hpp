@@ -6,7 +6,7 @@
 class CoreFont : public DrawableObject
 {
 public:
-  CoreFont(double x, double y) : DrawableObject(x, y){}
+  CoreFont(double x = 0, double y = 0) : DrawableObject(x, y){}
   virtual ~CoreFont(){}
   
   virtual void	draw(double /*elapsedTime*/ = 0){}

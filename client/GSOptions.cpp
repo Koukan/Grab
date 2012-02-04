@@ -1,7 +1,7 @@
 #include "GSOptions.hpp"
 #include "GSCreateMenu.hpp"
-//#include "SFMLSpriteProvider.hpp"
-//#include "SFMLFontProvider.hpp"
+#include "SFMLSpriteProvider.hpp"
+#include "SFMLFontProvider.hpp"
 #include "GUIButton.hpp"
 #include "GUILabel.hpp"
 #include "GUIList.hpp"
@@ -24,8 +24,8 @@ GSOptions::~GSOptions()
 void	GSOptions::onStart()
 {
   // add providers
-  //  this->addProvider(*(new SFMLSpriteProvider));
-  //  this->addProvider(*(new SFMLFontProvider));
+  this->addProvider(*(new SFMLSpriteProvider));
+  this->addProvider(*(new SFMLFontProvider));
 
   // load xml
   this->load("resources/intro.xml");

@@ -5,7 +5,7 @@
 #include <string>
 #include "Font.hpp"
 
-class SFMLFont : public Font
+class SFMLFont : public CoreFont
 {
 public:
   SFMLFont(std::string const &fileName, std::string const &size);
@@ -16,8 +16,8 @@ public:
   virtual void	setText(std::string const & text);
   virtual void	setColor(int, int, int);
 
-  virtual int	getWidth();
-  virtual int	getHeight();
+  virtual int	getWidth() const;
+  virtual int	getHeight() const;
 
 private:
   #if (SFML_VERSION_MAJOR == 2)

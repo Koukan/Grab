@@ -1,6 +1,6 @@
 #include "GSPreload.hpp"
 #include "Game.hpp"
-//#include "SFMLSpriteProvider.hpp"
+#include "SFMLSpriteProvider.hpp"
 #include "ScrollingSprite.hpp"
 #include "GameStateManager.hpp"
 #include "GSMainMenu.hpp"
@@ -23,7 +23,7 @@ bool		GSPreload::handleCommand(Command const &)
 
 void	GSPreload::onStart()
 {
-  //  this->addProvider(*(new SFMLSpriteProvider));
+  this->addProvider(*(new SFMLSpriteProvider));
 
   this->load("resources/intro.xml");
 
