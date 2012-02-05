@@ -32,7 +32,7 @@ bool		NetworkModule::connect()
 	return (false);
   }
   _addr = addr;
-  Net::InetAddr     tmp(this->_port); 
+  Net::InetAddr     tmp("25557");
   this->_udp.getIOHandler().close();
   this->_udp.setReactor(this->_reactor);
   if (this->_udp.getIOHandler().setup(tmp) != -1)
@@ -204,6 +204,7 @@ std::string const	&NetworkModule::getIP() const
 void		NetworkModule::sendPacketUDP(Net::Packet &packet)
 {
 	packet.setDestination(_addr);
+	packet.getAddr().setPort(25558);
 	this->_udp.handleOutputPacket(packet);
 }
 

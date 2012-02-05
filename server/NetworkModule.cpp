@@ -26,6 +26,7 @@ void		NetworkModule::init()
 		return ;
 	}
 	this->_udp.setReactor(*this->_reactor);
+	addr.setPort(25558);
 	if (_udp.getIOHandler().setup(addr) != -1)
 		this->_udp.init();
 	else
