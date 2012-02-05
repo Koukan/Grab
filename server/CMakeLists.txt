@@ -95,7 +95,7 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 
 add_executable(
-	rtype_server
+	grab_server
 	${SRCS}
 )
 
@@ -117,7 +117,7 @@ include_directories (
 find_package (Threads)
 
 target_link_libraries(
-	rtype_server
+	grab_server
 	core
 	net
 	${CMAKE_THREAD_LIBS_INIT}

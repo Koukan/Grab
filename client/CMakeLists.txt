@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
 
-project(R-Type_Client)
+project(Grab_Client)
+set(TARGET_NAME grab_client)
 
 set(EXECUTABLE_OUTPUT_PATH ../)
 
@@ -43,10 +44,6 @@ set(CORE_BULLETML_DIR "../common/core/bulletml/")
 set(CORE_TINYXML_DIR "../common/core/tinyxml/")
 
 
-set(TARGET_NAME rtype_client)
-
-##	Font.cpp
-##	Font.hpp
 ##	AudioManager.cpp
 ##	AudioManager.hpp
 set(GUI_INCLUDE_DIR "gui")
