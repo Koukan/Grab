@@ -105,6 +105,8 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
   	msg.msg_control = 0;
   	msg.msg_controllen = 0;
   	int ret = ::sendmsg(_handle, &msg, flags);
+	if (ret < 0)
+		return -1;
 #endif
 	i = 0;
 	res = ret;
@@ -117,10 +119,7 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 			packets.pop_front();
 		}
 		else
-		{
-			(*it)->wr_ptr((*it)->getWindex() + buffers[i].iov_len - res);
-			++it;
-		}
+			(*it)->wr_ptr((*it)->getWindex() + res);
 		res -= buffers[i].iov_len;
 		++i;
 	}
