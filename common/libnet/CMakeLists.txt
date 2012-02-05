@@ -69,10 +69,10 @@ set(SRCS_NET
 	${NET_SRCS_DIR}TimerSocket.cpp
 	${NET_SRCS_DIR}UdpPacketHandler.cpp
 	${NET_SRCS_DIR}Clock.cpp
+	${NET_MUTEX_SRCS_DIR}Thread.cpp
 	${NET_MUTEX_SRCS_DIR}PosixMutex.cpp
 	${NET_MUTEX_SRCS_DIR}PosixThread.cpp
 	${NET_MUTEX_SRCS_DIR}PosixConditionVar.cpp
-	${NET_MUTEX_SRCS_DIR}Thread.cpp
 	${NET_MUTEX_SRCS_DIR}WinMutex.cpp
 	${NET_MUTEX_SRCS_DIR}WinThread.cpp
 	${NET_MUTEX_SRCS_DIR}WinConditionVar.cpp

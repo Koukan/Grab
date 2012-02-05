@@ -19,9 +19,7 @@ bool	Thread::start()
  {
    if (this->_state == false)
    {
-     this->_state = static_cast<bool>(!pthread_create(&_tid,
-			    0, &starter,
-			    static_cast<void*>(this)));
+     this->_state = pthread_create(&_tid,0, &starter, static_cast<void*>(this)) != -1;
    }
   return (this->_state);
 }
