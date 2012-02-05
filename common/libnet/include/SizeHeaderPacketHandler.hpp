@@ -56,7 +56,7 @@ public:
 			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
 		Packet		header(sizeof(uint16_t));
 		header << htons(output.size());
-		this->_outputPacket.push_back(&header);
+		this->_outputPacket.push_back(header.duplicate());
 		this->_outputPacket.push_back(output.duplicate());
 		return 0;
 	}

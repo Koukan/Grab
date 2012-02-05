@@ -1,3 +1,6 @@
 [submodule "resource"]
 	path = resources
 	url = git@koukan-server.com:resource
+[submodule "resources"]
+	path = resources
+	url = ssh://git@127.0.0.1/resource
