@@ -17,6 +17,28 @@ UdpPacketHandler::~UdpPacketHandler()
 {
 }
 
+
+int	UdpPacketHandler::handleOutput(Socket &sock)
+{
+	int ret = 1;
+
+	while (!_outputPacket.empty())
+	{
+		ret = this->_iohandler.sendPacket(*_outputPacket.front());
+		if (ret <= 0)
+		{
+			if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
+				return 1;
+			printLastError();
+			return ret;
+		}
+		_outputPacket.pop_front();
+	}
+  	if (_outputPacket.empty())
+		this->_reactor->registerHandler(sock, *this, Reactor::READ);
+  	return ret;
+}
+
 int UdpPacketHandler::handleInput(Socket &)
 {
 	int	ret = 0;
