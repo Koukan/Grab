@@ -117,7 +117,10 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 			packets.pop_front();
 		}
 		else
+		{
 			(*it)->wr_ptr((*it)->getWindex() + buffers[i].iov_len - res);
+			++it;
+		}
 		res -= buffers[i].iov_len;
 		++i;
 	}
