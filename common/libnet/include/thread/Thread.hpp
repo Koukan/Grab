@@ -28,15 +28,15 @@ class NET_DLLREQ	Thread
  Thread(IThreadSubscriber &func);
 
  template <typename Functor>
- Thread(Functor &functor) : _func(new ThreadFunctor<Functor>(functor))
+ Thread(Functor &functor) : _func(new ThreadFunctor<Functor>(functor)), _state(false)
  {}
 
  template <typename Functor, typename Arg>
- Thread(Functor &functor, Arg arg) : _func(new ThreadFunctorArg<Functor, Arg>(functor, arg))
+ Thread(Functor &functor, Arg arg) : _func(new ThreadFunctorArg<Functor, Arg>(functor, arg)), _state(false)
  {}
 
  template <typename Object>
- Thread(Object *obj, void (Object::*func)()) : _func(new ThreadMemberFunc<Object>(obj, func))
+ Thread(Object *obj, void (Object::*func)()) : _func(new ThreadMemberFunc<Object>(obj, func)), _state(false)
  {}
 
  ~Thread();
