@@ -69,7 +69,7 @@ public:
 				  }
 				 }
 			  }
-			  if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+			  if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
 				return 1;
 			}
 			while (!this->_iohandler.isBlocking());
@@ -85,7 +85,7 @@ public:
 			ret = this->_iohandler.sendPackets(_outputPacket);
 			if (ret <= 0)
 			{
-				if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+				if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
 					return 1;
 				printLastError();
 				return ret;
