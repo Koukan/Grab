@@ -20,6 +20,7 @@ public:
 	~UdpPacketHandler();
 
 	virtual int handleInput(Socket &);
+	virtual int handleOutput(Socket &);
 };
 
 NET_END_NAMESPACE
