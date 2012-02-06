@@ -38,6 +38,7 @@ bool		NetworkModule::connect()
   if (this->_udp.getIOHandler().setup(tmp) != -1)
     {
       this->_udp.init();
+	  addr.setPort(25558);
 	  this->_udp.addAddr(addr);
 	  //this->_udp.handleOutput(this->_udp);
       return (true);

@@ -111,7 +111,7 @@ Net::Packet const	*Player::getPacket(uint32_t id) const
 
 int		Player::connection(Net::Packet &packet)
 {
-	Net::Packet		answer(5);
+	Net::Packet		answer(1);
 
 	packet >> _name;
 	answer << static_cast<uint8_t>(TCP::ETABLISHED);

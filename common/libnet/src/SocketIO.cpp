@@ -89,15 +89,15 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 	res = ret;
 	for (it = packets.begin(); it != packets.end() && res > 0;)
 	{
-		if (buffers[i].iov_len - res <= 0)
+		res -= buffers[i].iov_len;
+		if (res >= 0)
 		{
 			delete (*it);
 			++it;
 			packets.pop_front();
 		}
 		else
-			(*it)->wr_ptr((*it)->getWindex() + res);
-		res -= buffers[i].iov_len;
+			(*it)->wr_ptr((*it)->getWindex() + (buffers[i].iov_len + res));
 		++i;
 	}
 	return ret;

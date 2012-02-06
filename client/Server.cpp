@@ -40,6 +40,7 @@ int			Server::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
+	std::cout << "incomming packet " << int(type) << std::endl;
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
 	{
 		return (this->*methods[type])(packet);
@@ -123,13 +124,10 @@ bool		Server::treatErrorPacket(Net::Packet &packet)
 		errText = errorTexts[err];
 	else
 		errText = "Unknown error";
-#if defined (_WIN32)
-  
+#if defined (_WIN32) 
 	MessageBox(NULL, errorTexts[err], TEXT("Error"), MB_OK);
-	std::cerr << errorTexts[err] << std::endl;
-#else
-	std::cerr << errorTexts[err] << std::endl;
 #endif
+	std::cerr << errorTexts[err] << std::endl;
 	CommandDispatcher::get().pushCommand(*(new Command("ErrorFullGame")));
 	return true;
 }

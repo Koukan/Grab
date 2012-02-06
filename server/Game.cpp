@@ -63,6 +63,7 @@ bool		Game::addPlayer(Player &player)
 		cmd->player = &player;
 		CommandDispatcher::get().pushCommand(*cmd);
 		player.setGame(*this);
+		//this->addReadyPlayer();
 		//this->broadcastStatus(player, 1);
 		return true;
 	}

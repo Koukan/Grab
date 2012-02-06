@@ -61,7 +61,7 @@ public:
 		header << tmp;
 		this->_outputPacket.push_back(header.duplicate());
 		this->_outputPacket.push_back(output.duplicate());
-		return 0;
+		return 1;
 	}
 
 private:

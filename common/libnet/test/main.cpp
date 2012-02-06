@@ -28,7 +28,7 @@ public:
 		test << str;
 		test << "\n";
 		std::cout << str << std::endl;
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 5; i++)
 	   	{
 			this->handleOutputPacket(test);
 		}
