@@ -54,20 +54,11 @@ int	SocketIO::sendPacket(Packet &packet, int flags, int packsize)
 int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 {
   	struct iovec	buffers[50];
-  	bool			needaddr = false;
-  	InetAddr		addr;
 	std::list<Packet*>::iterator it;
 
   	size_t	i = 0;
   	for (it = packets.begin(); it != packets.end() && i < 50; ++it)
   	{	
-		if (!needaddr && (*it)->getAddr().getPort() != 0)
-		{
-			addr = (*it)->getAddr();
-			needaddr = true;
-		}
-		else if (needaddr && (*it)->getAddr() != addr)
-			break;
 		buffers[i].iov_base = (*it)->wr_ptr();
 		buffers[i].iov_len = (*it)->size() - (*it)->getWindex();
   		++i;
@@ -77,28 +68,14 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 #if defined (_WIN32)
   	DWORD		ret = 0;
 
-  	if (needaddr)
-  	{
-  		WSAMSG	msg;
-
-  		msg.name = addr;
-  		msg.namelen = addr.getSize();
-  		msg.dwFlags = 0;
-  		msg.lpBuffers = reinterpret_cast<LPWSABUF>(buffers);
-  		msg.dwBufferCount = i;
-  		msg.Control.buf = 0;
-  		msg.Control.len = 0;
-  		res = ::WSASendMsg(_handle, &msg, flags, &ret, 0, 0);
-  }
-  else
   	res = ::WSASend(_handle, reinterpret_cast<LPWSABUF>(&buffers), i, &ret, flags, 0, 0);
   if (res == -1)
 	return -1;
 #else
 	struct msghdr	msg;
 
-  	msg.msg_name = (needaddr) ? addr: 0;
-  	msg.msg_namelen = (needaddr) ? addr.getSize() : 0;
+  	msg.msg_name = 0;
+  	msg.msg_namelen = 0;
   	msg.msg_flags = 0;
   	msg.msg_iov = buffers;
   	msg.msg_iovlen = i;

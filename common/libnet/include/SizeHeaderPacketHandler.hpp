@@ -25,26 +25,28 @@ public:
 		do
 		{
 			ret = this->_iohandler.recvPacket(*this->_inpacket, 0, (_left == 0) ? sizeof(_left) : _left);
-			if (ret > 0)
+			if (ret <= 0)
 			{
-				if (_left == 0)
-				{
-					(*this->_inpacket) >> _left;
-					return ret;
-				}
-				_left -= ret;
-				if (_left == 0)
-				{
-					Packet	packet(*this->_inpacket);
-					packet.setSize(this->_inpacket->getWindex() - sizeof(_left));
-					packet.rd_ptr(sizeof(_left));
-					if (this->handleInputPacket(packet) <= 0)
-						return -1;
-					this->_inpacket->reset();
-				}
-			}
-			else
+				if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
+					return 1;
 				printLastError();
+				return ret;
+			}
+			if (_left == 0)
+			{
+				(*this->_inpacket) >> _left;
+				continue ;
+			}
+			_left -= ret;
+			if (_left == 0)
+			{
+				Packet	packet(*this->_inpacket);
+				packet.setSize(this->_inpacket->getWindex() - sizeof(_left));
+				packet.rd_ptr(sizeof(_left));
+				if (this->handleInputPacket(packet) <= 0)
+					return -1;
+				this->_inpacket->reset();
+			}
 		}
 		while (!this->_iohandler.isBlocking());
 		return ret;
@@ -55,7 +57,8 @@ public:
 		if (this->_outputPacket.empty())
 			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
 		Packet		header(sizeof(uint16_t));
-		header << htons(output.size());
+		uint16_t tmp = output.size();
+		header << tmp;
 		this->_outputPacket.push_back(header.duplicate());
 		this->_outputPacket.push_back(output.duplicate());
 		return 0;

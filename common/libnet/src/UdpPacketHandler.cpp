@@ -29,7 +29,7 @@ int	UdpPacketHandler::handleOutput(Socket &sock)
 		{
 			if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
 				return 1;
-			printLastError();
+			//printLastError();
 			return ret;
 		}
 		_outputPacket.pop_front();
