@@ -59,8 +59,8 @@ public:
 		Packet		header(sizeof(uint16_t));
 		uint16_t tmp = output.size();
 		header << tmp;
-		this->_outputPacket.push_back(header.duplicate());
-		this->_outputPacket.push_back(output.duplicate());
+		this->_outputPacket.push_back(header);
+		this->_outputPacket.push_back(output);
 		return 1;
 	}
 

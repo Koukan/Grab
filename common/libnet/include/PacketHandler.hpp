@@ -87,7 +87,7 @@ public:
 			{
 				if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
 					return 1;
-				//printLastError();
+				printLastError();
 				return ret;
 			}
 		}
@@ -100,8 +100,6 @@ public:
 	{
 		this->_reactor->removeHandler(socket);
 		this->_iohandler.close();
-		for (std::list<Packet*>::iterator it = _outputPacket.begin(); it != _outputPacket.end(); ++it)
-			delete *it;
 		delete this;
 		return 0;
 	}
@@ -127,7 +125,7 @@ public:
 	{
 		if (_outputPacket.empty())
 			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
-		_outputPacket.push_back(output.duplicate());
+		_outputPacket.push_back(output);
 		return 0;
 	}
 
@@ -158,7 +156,7 @@ protected:
 	bool				_enableWhitelist;
 	std::set<InetAddr>	_whitelist;
 	DataBlock			_temp;
-	std::list<Packet*>	_outputPacket;
+	std::list<Packet>	_outputPacket;
 };
 
 NET_END_NAMESPACE
