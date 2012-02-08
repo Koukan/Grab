@@ -15,6 +15,7 @@ Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
 
 Server::~Server()
 {
+	NetworkModule::get().setServer(0);
 }
 
 int			Server::handleInputPacket(Net::Packet &packet)

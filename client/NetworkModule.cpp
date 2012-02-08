@@ -71,6 +71,8 @@ bool		NetworkModule::handleCommand(Command const &command)
 		/*must be completed */
 	};
 
+	if (!_server)
+		return true;
 	for (size_t i = 0;
 		 i < sizeof(methods) / sizeof(*methods); i++)
 	{
