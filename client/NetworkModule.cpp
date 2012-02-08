@@ -71,14 +71,13 @@ bool		NetworkModule::handleCommand(Command const &command)
 		/*must be completed */
 	};
 
-	if (!_server)
-		return true;
 	for (size_t i = 0;
 		 i < sizeof(methods) / sizeof(*methods); i++)
 	{
 		if (command.name == methods[i].name)
 		{
-			(this->*methods[i].method)(command);
+			if (_server)
+				(this->*methods[i].method)(command);
 			return true;
 		}
 	}
