@@ -33,10 +33,13 @@ int		KqueuePolicy::registerHandler(Socket &socket, NetHandler &handler, int mask
   int			pos = 0;
 
   socket.setNetHandler(&handler);
+  EV_SET(&ev[0], socket.getHandle(), EVFILT_READ, EV_DISABLE, 0, 0, 0);
+  EV_SET(&ev[1], socket.getHandle(), EVFILT_WRITE, EV_DISABLE, 0, 0, 0);
+  ::kevent(_kqueuefd, ev, 2, 0, 0, 0);
   if (mask & Reactor::READ || mask & Reactor::ACCEPT)
-  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_READ, EV_ADD, 0, 0, &socket);
+  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, &socket);
   if (mask & Reactor::WRITE)
-  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_WRITE, EV_ADD, 0, 0, &socket);
+  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, &socket);
   if (pos == 1 && mask & Reactor::WRITE)
 		return ::kevent(_kqueuefd, &ev[1], pos, 0, 0, 0);
  	else
@@ -81,7 +84,7 @@ int		KqueuePolicy::waitForEvent(int timeout)
 		}
 		socket = static_cast<Socket *>(ev[i].udata);
 		handler = socket->getNetHandler();
-		if ((ev[i].filter == EVFILT_WRITE) && handler->handleOutput(*socket) <= 0)
+		if (ev[i].filter == EVFILT_WRITE && handler->handleOutput(*socket) <= 0)
 		{
 			handler->handleClose(*socket);
 			continue ;
