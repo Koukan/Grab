@@ -32,13 +32,11 @@ int		KqueuePolicy::registerHandler(Socket &socket, NetHandler &handler, int mask
   struct kevent ev[2];
   int			pos = 0;
 
-  kqueuepolicydata	*data = &_handlers[socket.getHandle()];
-  data->handler = &handler;
-  data->socket = &socket;
+  socket.setNetHandler(&handler);
   if (mask & Reactor::READ || mask & Reactor::ACCEPT)
-  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_READ, EV_ADD, 0, 0, data);
+  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_READ, EV_ADD, 0, 0, &socket);
   if (mask & Reactor::WRITE)
-  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_WRITE, EV_ADD, 0, 0, data);
+  	EV_SET(&ev[pos++], socket.getHandle(), EVFILT_WRITE, EV_ADD, 0, 0, &socket);
   if (pos == 1 && mask & Reactor::WRITE)
 		return ::kevent(_kqueuefd, &ev[1], pos, 0, 0, 0);
  	else
@@ -47,7 +45,7 @@ int		KqueuePolicy::registerHandler(Socket &socket, NetHandler &handler, int mask
 
 int		KqueuePolicy::removeHandler(Socket &socket)
 {
-  _handlers.erase(socket.getHandle());
+  socket.setNetHandler(0);
   struct kevent ev;
   EV_SET(&ev, socket.getHandle(), 0, EV_DELETE, 0, 0, 0);
   return ::kevent(_kqueuefd, &ev, 1, 0, 0, 0);
@@ -55,10 +53,11 @@ int		KqueuePolicy::removeHandler(Socket &socket)
 
 int		KqueuePolicy::waitForEvent(int timeout)
 {
-  int					ret, i, time;
-  kqueuepolicydata		*data;
-  struct kevent			ev[50];
-  struct timespec 		timespec;
+  	int						ret, i, time;
+	Socket					*socket;
+	NetHandler				*handler;
+  	struct kevent			ev[50];
+  	struct timespec 		timespec;
 
   while	(_wait)
   {
@@ -66,8 +65,7 @@ int		KqueuePolicy::waitForEvent(int timeout)
   	if (time >= 0)
 	{
 	  timespec.tv_sec = time / 1000;
-	  time -= timespec.tv_sec * 1000;
-	  timespec.tv_nsec = time * 1000000;
+	  timespec.tv_nsec = (time % 1000) * 1000000;
 	}		
 	ret = ::kevent(_kqueuefd, 0, 0, ev, 50, (time < 0) ? 0 : &timespec);
 	if (ret == -1 && errno != EINTR)
@@ -76,16 +74,20 @@ int		KqueuePolicy::waitForEvent(int timeout)
 	  return 0;
 	for	(i = 0; i < ret; ++i)
 	{
-		data = static_cast<kqueuepolicydata *>(ev[i].udata);
 		if (ev[i].filter == EVFILT_TIMER)
-			reinterpret_cast<NetHandler*>(data)->handleTimeout();
-		else if ((ev[i].filter == EVFILT_WRITE) && data->handler->handleOutput(*(data->socket)) <= 0)
 		{
-			data->handler->handleClose(*(data->socket));
+			reinterpret_cast<NetHandler*>(ev[i].udata)->handleTimeout();
 			continue ;
 		}
-		else if (ev[i].filter == EVFILT_READ && data->handler->handleInput(*(data->socket)) <= 0)
-			data->handler->handleClose(*(data->socket));
+		socket = static_cast<Socket *>(ev[i].udata);
+		handler = socket->getNetHandler();
+		if ((ev[i].filter == EVFILT_WRITE) && handler->handleOutput(*socket) <= 0)
+		{
+			handler->handleClose(*socket);
+			continue ;
+		}
+		else if (ev[i].filter == EVFILT_READ && handler->handleInput(*socket) <= 0)
+			handler->handleClose(*socket);
 	}
   }
   return 0;
