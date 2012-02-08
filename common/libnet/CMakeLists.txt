@@ -40,7 +40,6 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}SocketIO.hpp
 	${NET_INCLUDE_DIR}SocketStream.hpp
 	${NET_INCLUDE_DIR}SyncPolicy.hpp
-	${NET_INCLUDE_DIR}TimerSocket.hpp
 	${NET_INCLUDE_DIR}UdpPacketHandler.hpp
 	${NET_INCLUDE_DIR}SizeHeaderPacketHandler.hpp
 	${NET_INCLUDE_DIR}WFMOPolicy.hpp
@@ -66,7 +65,6 @@ set(SRCS_NET
 	${NET_SRCS_DIR}WFMOPolicy.cpp
 	${NET_SRCS_DIR}Packet.cpp
 	${NET_SRCS_DIR}DataBlock.cpp
-	${NET_SRCS_DIR}TimerSocket.cpp
 	${NET_SRCS_DIR}UdpPacketHandler.cpp
 	${NET_SRCS_DIR}Clock.cpp
 	${NET_MUTEX_SRCS_DIR}Thread.cpp

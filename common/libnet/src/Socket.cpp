@@ -6,10 +6,11 @@
  */
 
 #include "Socket.hpp"
+#include "NetHandler.hpp"
 
 NET_USE_NAMESPACE
 
-Socket::Socket() : _handle(INVALID_HANDLE), _local(0), _remote(0), _blocking(true)
+Socket::Socket() : _handle(INVALID_HANDLE), _local(0), _remote(0), _blocking(true), _nethandler(0)
 {
 }
 
@@ -114,6 +115,16 @@ Handle	Socket::getHandle() const
 void	Socket::setHandle(Handle sock)
 {
   _handle = sock;
+}
+
+NetHandler          *Socket::getNetHandler() const
+{
+	return _nethandler;
+}
+
+void                Socket::setNetHandler(NetHandler *handler)
+{
+	_nethandler = handler;
 }
 
 int		Socket::setSockOpt(int level, int option_name, const sockopt *option_value, socklen_t option_len)

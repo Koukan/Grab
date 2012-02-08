@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include "network.h"
 #include "EpollPolicy.hpp"
-#include "TimerSocket.hpp"
 
 #include <iostream>
 NET_USE_NAMESPACE
@@ -30,36 +29,30 @@ EpollPolicy::~EpollPolicy()
 int		EpollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
 {
   struct epoll_event ev;
-  int	ret;
 
-  epollpolicydata	*data = &_handlers[socket.getHandle()];
-  data->handler = &handler;
-  data->socket = &socket;
+  int	mode = (socket.getNetHandler()) ? EPOLL_CTL_MOD : EPOLL_CTL_ADD;
+  socket.setNetHandler(&handler);
   ev.data.u64 = 0;
-  ev.data.ptr = data;
+  ev.data.ptr = &socket;
   ev.events = 0;
   if (mask & Reactor::READ || mask & Reactor::ACCEPT)
 	  ev.events |= EPOLLIN;
   if (mask & Reactor::WRITE)
 	  ev.events |= EPOLLOUT;
-  ret = ::epoll_ctl(_epollfd, EPOLL_CTL_MOD, socket.getHandle(), &ev);
-   if (ret == 0)
-     return 0;
-   if (ret == -1 && errno != ENOENT)
-     return -1;
-  return ::epoll_ctl(_epollfd, EPOLL_CTL_ADD, socket.getHandle(), &ev);
+  return ::epoll_ctl(_epollfd, mode, socket.getHandle(), &ev);
 }
 
 int		EpollPolicy::removeHandler(Socket &socket)
 {
-  _handlers.erase(socket.getHandle());
+  socket.setNetHandler(0);
   return ::epoll_ctl(_epollfd, EPOLL_CTL_DEL, socket.getHandle(), 0);
 }
 
 int		EpollPolicy::waitForEvent(int timeout)
 {
   int			ret, i;
-  epollpolicydata	*data;
+  Socket		*socket;
+  NetHandler	*handler;
   struct epoll_event	ev[50];
 
   while	(_wait)
@@ -71,18 +64,19 @@ int		EpollPolicy::waitForEvent(int timeout)
 	  return 0;
 	for	(i = 0; i < ret; ++i)
 	{
-		data = static_cast<epollpolicydata *>(ev[i].data.ptr);
+		socket = static_cast<Socket *>(ev[i].data.ptr);
+		handler = socket->getNetHandler();
 		if (ev[i].events & EPOLLHUP)
-			data->handler->handleClose(*(data->socket));
+			handler->handleClose(*socket);
 		else
 		{
-			if (ev[i].events & EPOLLOUT && data->handler->handleOutput(*(data->socket)) <= 0)
+			if (ev[i].events & EPOLLOUT && handler->handleOutput(*socket) <= 0)
 			{
-				data->handler->handleClose(*(data->socket));
+				handler->handleClose(*socket);
 				continue ;
 			}
-			if ((ev[i].events & EPOLLIN) && data->handler->handleInput(*(data->socket)) <= 0)
-				data->handler->handleClose(*(data->socket));
+			if ((ev[i].events & EPOLLIN) && handler->handleInput(*socket) <= 0)
+				handler->handleClose(*socket);
 		}
 	}
   }
@@ -95,8 +89,7 @@ int		EpollPolicy::handleInput(Socket &socket)
 	int ret = read(socket.getHandle(), &cnt, sizeof(cnt));
 	if (ret > 0)
 	{
-		TimerSocket &tmp = static_cast<TimerSocket&>(socket);
-		tmp.getNetHandler().handleTimeout();
+		socket.getNetHandler()->handleTimeout();
 	}
 	return ret;
 }
@@ -113,7 +106,9 @@ int     EpollPolicy::scheduleTimer(NetHandler &handler, size_t delay, bool repea
 		timerspec.it_interval = timerspec.it_value;
 	if (timerfd_settime(timerfd, 0, &timerspec, 0) == -1)
 		return -1;
-	TimerSocket	*tmp = new TimerSocket(timerfd, handler);
+	Socket	*tmp = new Socket();
+	tmp->setHandle(timerfd);
+	tmp->setNetHandler(&handler);
 	this->registerHandler(*tmp, *this, Reactor::READ);
 	_timers[&handler] = tmp;
 	return 0;
@@ -125,7 +120,7 @@ int     EpollPolicy::cancelTimer(NetHandler &handler)
   	if (it != _timers.end())
   	{
 		this->removeHandler(*it->second);
-		delete static_cast<TimerSocket*>(it->second);
+		delete it->second;
 	  	_timers.erase(it);
 	  	return 0;
   	}
