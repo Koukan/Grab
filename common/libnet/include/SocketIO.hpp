@@ -26,7 +26,7 @@ public:
 	virtual	int	sendPacket(Packet &packet, int flags = 0, int size = -1);
 	virtual int	recvPacket(Packet &packet, int flags = 0, int size = -1);
 
-	virtual int sendPackets(std::list<Packet*> &packets, int flags = 0);
+	virtual int sendPackets(std::list<Packet> &packets, int flags = 0);
 };
 
 NET_END_NAMESPACE

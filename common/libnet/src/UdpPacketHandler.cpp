@@ -24,12 +24,11 @@ int	UdpPacketHandler::handleOutput(Socket &sock)
 
 	while (!_outputPacket.empty())
 	{
-		ret = this->_iohandler.sendPacket(*_outputPacket.front());
+		ret = this->_iohandler.sendPacket(_outputPacket.front());
 		if (ret <= 0)
 		{
 			if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
 				return 1;
-			//printLastError();
 			return ret;
 		}
 		_outputPacket.pop_front();

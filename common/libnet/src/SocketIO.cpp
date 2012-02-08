@@ -51,16 +51,16 @@ int	SocketIO::sendPacket(Packet &packet, int flags, int packsize)
 	return ret;
 }
 
-int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
+int SocketIO::sendPackets(std::list<Packet> &packets, int flags)
 {
   	struct iovec	buffers[50];
-	std::list<Packet*>::iterator it;
+	std::list<Packet>::iterator it;
 
   	size_t	i = 0;
   	for (it = packets.begin(); it != packets.end() && i < 50; ++it)
   	{	
-		buffers[i].iov_base = (*it)->wr_ptr();
-		buffers[i].iov_len = (*it)->size() - (*it)->getWindex();
+		buffers[i].iov_base = (*it).wr_ptr();
+		buffers[i].iov_len = (*it).size() - (*it).getWindex();
   		++i;
   	}
 
@@ -92,12 +92,11 @@ int SocketIO::sendPackets(std::list<Packet*> &packets, int flags)
 		res -= buffers[i].iov_len;
 		if (res >= 0)
 		{
-			delete (*it);
 			++it;
 			packets.pop_front();
 		}
 		else
-			(*it)->wr_ptr((*it)->getWindex() + (buffers[i].iov_len + res));
+			(*it).wr_ptr((*it).getWindex() + (buffers[i].iov_len + res));
 		++i;
 	}
 	return ret;
