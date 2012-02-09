@@ -7,6 +7,7 @@
 #include "UdpPacketHandler.hpp"
 #include "SizeHeaderPacketHandler.hpp"
 #include "Error.hpp"
+#include "PoolObject.hpp"
 #include "thread/Mutex.hpp"
 #include "thread/Thread.hpp"
 #include "thread/ConditionVar.hpp"

@@ -30,6 +30,8 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}Packet.hpp
 	${NET_INCLUDE_DIR}PacketHandler.hpp
 	${NET_INCLUDE_DIR}PollPolicy.hpp
+	${NET_INCLUDE_DIR}PoolAllocator.hpp
+	${NET_INCLUDE_DIR}PoolObject.hpp
 	${NET_INCLUDE_DIR}Reactor.hpp
 	${NET_INCLUDE_DIR}Service.hpp
 	${NET_INCLUDE_DIR}SetupNetwork.hpp
@@ -61,6 +63,8 @@ set(SRCS_NET
 	${NET_SRCS_DIR}NetHandler.cpp
 	${NET_SRCS_DIR}Reactor.cpp
 	${NET_SRCS_DIR}PollPolicy.cpp
+	${NET_SRCS_DIR}PoolAllocator.cpp
+	${NET_SRCS_DIR}PoolObject.cpp
 	${NET_SRCS_DIR}EpollPolicy.cpp
 	${NET_SRCS_DIR}KqueuePolicy.cpp
 	${NET_SRCS_DIR}WFMOPolicy.cpp
