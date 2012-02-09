@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include "network.h"
 #include "EpollPolicy.hpp"
+#include "TimerSocket.hpp"
 
 #include <iostream>
 NET_USE_NAMESPACE
@@ -89,7 +90,7 @@ int		EpollPolicy::handleInput(Socket &socket)
 	int ret = read(socket.getHandle(), &cnt, sizeof(cnt));
 	if (ret > 0)
 	{
-		socket.getNetHandler()->handleTimeout();
+		static_cast<TimerSocket&>(socket).getTimeoutHandler().handleTimeout();
 	}
 	return ret;
 }
@@ -106,9 +107,7 @@ int     EpollPolicy::scheduleTimer(NetHandler &handler, size_t delay, bool repea
 		timerspec.it_interval = timerspec.it_value;
 	if (timerfd_settime(timerfd, 0, &timerspec, 0) == -1)
 		return -1;
-	Socket	*tmp = new Socket();
-	tmp->setHandle(timerfd);
-	tmp->setNetHandler(&handler);
+	TimerSocket	*tmp = new TimerSocket(timerfd, handler);
 	this->registerHandler(*tmp, *this, Reactor::READ);
 	_timers[&handler] = tmp;
 	return 0;
