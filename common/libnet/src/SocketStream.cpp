@@ -52,9 +52,11 @@ int     SocketStream::sendfile(std::string const &path)
 	return sent;
 }
 #elif defined (_WIN32)
+#include <Mswsock.h>
+#pragma comment(lib, "Mswsock.lib")
 int     SocketStream::sendfile(std::string const &path)
 {
-	Handle file = ::CreateFile(path.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE file = ::CreateFile(path.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (file == INVALID_HANDLE_VALUE)
 		return -1;
 	BOOL ret = ::TransmitFile(_handle, file, 0, 0, 0, 0, TF_USE_KERNEL_APC);
