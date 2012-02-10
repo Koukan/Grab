@@ -16,7 +16,7 @@ DataBlock::DataBlock()
 
 DataBlock::DataBlock(size_t size) : _allocated(true)
 {
-	this->_vec.iov_base = (size <= 512) ? PoolAllocator::get().allocate(size) : (char*)::malloc(size);
+	this->_vec.iov_base = (size <= 512) ? reinterpret_cast<char*>(PoolAllocator::get().allocate(size)) : reinterpret_cast<char*>(::malloc(size));
 	this->_vec.iov_len = size;
 	this->_refcnt = 1;
 }
