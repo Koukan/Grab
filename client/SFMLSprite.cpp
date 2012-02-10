@@ -123,7 +123,7 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 void		SFMLSprite::draw(double elapsedTime)
 {
 	this->update(elapsedTime);
-	this->SetPosition(this->_x + this->_tx * this->GetScale().x, this->_y + this->_ty * this->GetScale().y);
+	this->SetPosition(static_cast<float>(this->_x + this->_tx * this->GetScale().x), static_cast<float>(this->_y + this->_ty * this->GetScale().y));
 	this->_window->Draw(*this);
 }
 
@@ -136,10 +136,10 @@ void		SFMLSprite::draw(int x, int y, double elapsedTime)
 
 int	SFMLSprite::getWidth() const
 {
-  return (this->GetSize().x);
+  return (static_cast<int>(this->GetSize().x));
 }
 
 int	SFMLSprite::getHeight() const
 {
-  return (this->GetSize().y);
+  return (static_cast<int>(this->GetSize().y));
 }

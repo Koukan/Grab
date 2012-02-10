@@ -34,8 +34,8 @@ bool GUIVLayout::handleGUICommand(InputCommand const &command)
 
 void GUIVLayout::draw(double elapseTime)
 {
-  int x = this->_x;
-  int y = this->_y;
+  int x = static_cast<int>(this->_x);
+  int y = static_cast<int>(this->_y);
   int nb = 0;
 
   if (this->_upArrow && this->_begin != this->_elements.begin())

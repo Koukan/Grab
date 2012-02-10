@@ -36,7 +36,7 @@ Game::~Game()
 
 void		Game::init()
 {
-  srand(Net::Clock::getMsSinceEpoch());
+  srand(static_cast<unsigned int>(Net::Clock::getMsSinceEpoch()));
   ModuleManager::init();
   //cl_log_event("system", "Grab: The Power of the Lost Grapple started");
 

@@ -10,7 +10,7 @@ SFMLFont::SFMLFont(std::string const &fileName, unsigned int size)
 	#if (SFML_VERSION_MAJOR == 2)
 		this->_str.SetCharacterSize(size);
 	#else
-		this->_str.SetSize(size);
+		this->_str.SetSize(static_cast<float>(size));
 	#endif
 }
 
@@ -25,15 +25,15 @@ Resource	*SFMLFont::clone() const
 
 void	SFMLFont::draw(double /*elapsedTime*/)
 {
-  this->_str.SetX(this->_x);
-  this->_str.SetY(this->_y);
+  this->_str.SetX(static_cast<float>(this->_x));
+  this->_str.SetY(static_cast<float>(this->_y));
   this->_window->Draw(this->_str);
 }
 
 void	SFMLFont::draw(int x, int y, double /*elapsedTime*/)
 {
-  this->_str.SetX(x);
-  this->_str.SetY(y);
+  this->_str.SetX(static_cast<float>(x));
+  this->_str.SetY(static_cast<float>(y));
   this->_window->Draw(this->_str);
 }
 
@@ -56,7 +56,7 @@ int	SFMLFont::getWidth() const
 	#if (SFML_VERSION_MAJOR == 2)
 	return (this->_str.GetRect().Width);
    	#else
-  	return (this->_str.GetRect().GetWidth());
+  	return (static_cast<int>(this->_str.GetRect().GetWidth()));
 	#endif
 }
 
@@ -65,6 +65,6 @@ int	SFMLFont::getHeight() const
 	#if (SFML_VERSION_MAJOR == 2)
 	return (this->_str.GetRect().Height);
 	#else
-  	return (this->_str.GetRect().GetHeight());
+  	return (static_cast<int>(this->_str.GetRect().GetHeight()));
 	#endif
 }
