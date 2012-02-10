@@ -32,7 +32,7 @@ typedef socklen_t	sockopt;
 #define htonll(x) ntohll(x)
 
 NET_BEGIN_NAMESPACE
-#define	Handle SOCKET
+typedef	SOCKET Handle;
 NET_END_NAMESPACE
 
 # ifndef	INVALID_SOCKET
