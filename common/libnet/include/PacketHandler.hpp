@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include <set>
 #include <string>
 #include <cstring>
 #include "NetDef.hpp"
@@ -14,7 +13,7 @@ template<typename IOType = SocketStream>
 class PacketHandler : public Service<IOType>
 {
 public:
-	PacketHandler(size_t size = 2048, std::string const &deli = "") :  _delimiter(deli), _inpacket(0), _enableWhitelist(false)
+	PacketHandler(size_t size = 2048, std::string const &deli = "") :  _delimiter(deli), _inpacket(0)
 	{
 		this->setSize(size);
 	}
@@ -129,32 +128,11 @@ public:
 		return 0;
 	}
 
-	void	enableWhitelist(bool enable)
-	{
-		_enableWhitelist = enable;
-	}
-
-	void	addAddr(InetAddr const &addr)
-	{
-		_whitelist.insert(addr);
-	}
-
-	void	removeAddr(InetAddr const &addr)
-	{
-		_whitelist.erase(addr);
-	}
-
-	void	clearAddr()
-	{
-		_whitelist.clear();
-	}
 
 protected:
 	std::string			_tmp;
 	std::string			_delimiter;
 	Packet				*_inpacket;
-	bool				_enableWhitelist;
-	std::set<InetAddr>	_whitelist;
 	DataBlock			_temp;
 	std::list<Packet>	_outputPacket;
 };

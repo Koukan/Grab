@@ -20,6 +20,12 @@ void	    NetworkModule::init()
 	this->_port = Game::get().getPort();
 	if (this->_port.empty())
 		this->_port = "25557";
+  	this->_udp.setReactor(this->_reactor);
+	Net::InetAddr     tmp("25557");
+	if (this->_udp.getIOHandler().setup(tmp) == -1)
+		Net::printLastError();
+	else
+		this->_udp.init();
 }
 
 bool		NetworkModule::connect()
@@ -32,24 +38,14 @@ bool		NetworkModule::connect()
 	return (false);
   }
   _addr = addr;
-  Net::InetAddr     tmp("25557");
-  this->_udp.getIOHandler().close();
-  this->_udp.setReactor(this->_reactor);
-  if (this->_udp.getIOHandler().setup(tmp) != -1)
-    {
-      this->_udp.init();
-	  addr.setPort(25558);
-	  this->_udp.addAddr(addr);
-	  Net::Packet     ping(18);
-	  ping << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-	  ping << static_cast<uint8_t>(UDP::PING);
-	  NetworkModule::get().sendPacketUDP(ping);
-	  //this->_udp.handleOutput(this->_udp);
-      return (true);
-    }
-  else
-	Net::printLastError();
-  return (false);
+  this->_udp.clearAddr();
+  addr.setPort(25558);
+  this->_udp.addAddr(addr);
+  Net::Packet     ping(18);
+  ping << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+  ping << static_cast<uint8_t>(UDP::PING);
+  NetworkModule::get().sendPacketUDP(ping);
+  return (true);
 }
 
 void	       	NetworkModule::update(double)

@@ -8,6 +8,7 @@
 #ifndef UDPPACKETHANDLER_H_
 #define UDPPACKETHANDLER_H_
 
+#include <set>
 #include "PacketHandler.hpp"
 #include "SocketDatagram.hpp"
 
@@ -21,6 +22,15 @@ public:
 
 	virtual int handleInput(Socket &);
 	virtual int handleOutput(Socket &);
+
+	void	enableWhitelist(bool enable);
+	void	addAddr(InetAddr const &addr);
+	void	removeAddr(InetAddr const &addr);
+	void	clearAddr();
+
+private:
+	bool				_enableWhitelist;
+	std::set<InetAddr>	_whitelist;
 };
 
 NET_END_NAMESPACE
