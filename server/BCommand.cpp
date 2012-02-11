@@ -65,10 +65,10 @@ void	BCommand::createSimpleBullet(double direction, double speed)
 		GameCommand		*cmd = new GameCommand("Spawn");
 		cmd->idObject = bullet->getId();
 		cmd->idResource = ServerResourceManager::get().getId(this->_simpleSprite);
-		cmd->x = this->_x;
-		cmd->y = this->_y;
-		cmd->vx = vx;
-		cmd->vy = vy;
+		cmd->x = static_cast<int16_t>(this->_x);
+		cmd->y = static_cast<int16_t>(this->_y);
+		cmd->vx = static_cast<int16_t>(vx);
+		cmd->vy = static_cast<int16_t>(vy);
 		cmd->game = &static_cast<GameLogic&>(this->_state).getGame();
 		CommandDispatcher::get().pushCommand(*cmd);
 	}
@@ -106,10 +106,10 @@ void	BCommand::createBullet(BulletMLState *state,
 		GameCommand		*cmd = new GameCommand("Spawn");
 		cmd->idObject = bullet->getId();
 		cmd->idResource = ServerResourceManager::get().getId(state->getSprite());
-		cmd->x = this->_x;
-		cmd->y = this->_y;
-		cmd->vx = vx;
-		cmd->vy = vy;
+		cmd->x = static_cast<int16_t>(this->_x);
+		cmd->y = static_cast<int16_t>(this->_y);
+		cmd->vx = static_cast<int16_t>(vx);
+		cmd->vy = static_cast<int16_t>(vy);
 		cmd->game = &static_cast<GameLogic&>(this->_state).getGame();
 		CommandDispatcher::get().pushCommand(*cmd);
 	}
@@ -129,10 +129,10 @@ void	BCommand::move(double time)
 			this->_elapsedTime -= 0.15;
 			GameCommand	*cmd = new GameCommand("Move");
 			cmd->idObject = this->_id;
-			cmd->x = this->_x;
-			cmd->y = this->_y;
-			cmd->vx = this->_vx;
-			cmd->vy = this->_vy;
+			cmd->x = static_cast<int16_t>(this->_x);
+			cmd->y = static_cast<int16_t>(this->_y);
+			cmd->vx = static_cast<int16_t>(this->_vx);
+			cmd->vy = static_cast<int16_t>(this->_vy);
 			cmd->game = &static_cast<GameLogic&>(this->_state).getGame();
 			CommandDispatcher::get().pushCommand(*cmd);
 		}

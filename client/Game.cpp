@@ -9,6 +9,9 @@
 #include "CommandDispatcher.hpp"
 #include "Net.hpp"
 #include "NetworkModule.hpp"
+#include "GlobalResourceManager.hpp"
+#include "SFMLSpriteProvider.hpp"
+#include "SFMLFontProvider.hpp"
 
 const std::string Game::PREF_FILE = ".preferences";
 int Game::NB_CHAR_NAME = 7;
@@ -33,9 +36,15 @@ Game::~Game()
 
 void		Game::init()
 {
-  srand(Net::Clock::getMsSinceEpoch());
+  srand(static_cast<unsigned int>(Net::Clock::getMsSinceEpoch()));
   ModuleManager::init();
   //cl_log_event("system", "Grab: The Power of the Lost Grapple started");
+
+  // add Provider
+  GlobalResourceManager::get().addProvider(*new SFMLSpriteProvider);
+  GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
+
+  // add Module
   this->loadModule(CommandDispatcher::get());
   this->loadModule(RendererManager::get());
   this->loadModule(*(new InputModule));
@@ -44,8 +53,8 @@ void		Game::init()
   this->loadModule(NetworkModule::get());
   CommandDispatcher::get().registerHandler(GameStateManager::get());
   GameStateManager::get().loadState<GSPreload>("preload");
-  GameStateManager::get().pushState("preload");
   GameStateManager::get().loadState<GSMainMenu>("mainMenu");
+  GameStateManager::get().pushState("preload");
   GameStateManager::get().pushState("mainMenu", GameState::NONE);
 }
 
@@ -90,4 +99,3 @@ void		Game::quit()
 {
 	this->destroy();
 }
-

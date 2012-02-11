@@ -6,8 +6,6 @@
 #include "Input.hpp"
 #include "ConcreteObject.hpp"
 #include "CommandDispatcher.hpp"
-#include "SFMLSpriteProvider.hpp"
-#include "SFMLFontProvider.hpp"
 #include "ScrollingSprite.hpp"
 #include "GameListCommand.hpp"
 #include "NetworkModule.hpp"
@@ -35,10 +33,6 @@ void		GSInGame::preload()
   this->addGroup("background3", 3);
   this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
-
-  // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
 
   // load xml
   this->load("resources/intro.xml");
@@ -86,9 +80,9 @@ void		GSInGame::update(double elapsedTime)
 	{
 		if (this->_ship && this->_fire)
 		{
-			GameCommand *cmd = new GameCommand("Spawn", this->getNextId(), Resource::SHOOT,
+			GameCommand *cmd = new GameCommand("Spawn", this->getNextId(), Resources::SHOOT,
 			static_cast<int16_t>(this->_ship->getX()),
-			static_cast<int16_t>(this->_ship->getY()), 
+			static_cast<int16_t>(this->_ship->getY()),
 			400,
 			0);
 			this->spawn(*cmd);
@@ -238,29 +232,29 @@ void		GSInGame::throwShip()
 
 void		GSInGame::spawn(GameCommand const &event)
 {
-  static Method<Resource::type> const	methods[] = {
-    {Resource::P1, &GSInGame::loadP1},
-    {Resource::P2, &GSInGame::loadP2},
-    {Resource::P3, &GSInGame::loadP3},
-    {Resource::P4, &GSInGame::loadP4},
-    {Resource::SINGLE_MONSTER, &GSInGame::loadMonster},
-	{Resource::BOMB_MONSTER, &GSInGame::loadMonster},
-	{Resource::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
-	{Resource::METROID_MONSTER, &GSInGame::loadMonster},
-	{Resource::BOSS_METROID, &GSInGame::loadMonster},
-	{Resource::RANDOM_MONSTER, &GSInGame::loadMonster},
-	{Resource::TRON_MONSTER, &GSInGame::loadMonster},
-	{Resource::DEFAULT_SHOT, &GSInGame::loadMonster},
-	{Resource::BOSS_SHOT, &GSInGame::loadMonster},
-	{Resource::ANIMATED_SHOT, &GSInGame::loadMonster},
-	{Resource::SHOT, &GSInGame::loadMonster},
-	{Resource::SHOOT, &GSInGame::loadShoot}
+  static Method<Resources::type> const	methods[] = {
+    {Resources::P1, &GSInGame::loadP1},
+    {Resources::P2, &GSInGame::loadP2},
+    {Resources::P3, &GSInGame::loadP3},
+    {Resources::P4, &GSInGame::loadP4},
+    {Resources::SINGLE_MONSTER, &GSInGame::loadMonster},
+	{Resources::BOMB_MONSTER, &GSInGame::loadMonster},
+	{Resources::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
+	{Resources::METROID_MONSTER, &GSInGame::loadMonster},
+	{Resources::BOSS_METROID, &GSInGame::loadMonster},
+	{Resources::RANDOM_MONSTER, &GSInGame::loadMonster},
+	{Resources::TRON_MONSTER, &GSInGame::loadMonster},
+	{Resources::DEFAULT_SHOT, &GSInGame::loadMonster},
+	{Resources::BOSS_SHOT, &GSInGame::loadMonster},
+	{Resources::ANIMATED_SHOT, &GSInGame::loadMonster},
+	{Resources::SHOT, &GSInGame::loadMonster},
+	{Resources::SHOOT, &GSInGame::loadShoot}
   };
 
   for (size_t i = 0;
        i < sizeof(methods) / sizeof(*methods); i++)
     {
-      if (static_cast<Resource::type>(event.idResource) == methods[i].name)
+      if (static_cast<Resources::type>(event.idResource) == methods[i].name)
 	{
 	  (this->*methods[i].method)(event);
 	  if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
@@ -347,9 +341,9 @@ void		GSInGame::loadMonster(GameCommand const &event)
 {
   HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
 
-  if (event.idResource >= Resource::SINGLE_MONSTER)
+  if (event.idResource >= Resources::SINGLE_MONSTER)
   {
-  	Sprite *sprite = this->getSprite(Resource::monsters[event.idResource - Resource::SINGLE_MONSTER].sprite);
+  	Sprite *sprite = this->getSprite(Resources::monsters[event.idResource - Resources::SINGLE_MONSTER].sprite);
   	if (sprite)
   	{
 		ConcreteObject *monster = new ConcreteObject(sprite, *hitbox, event.vx, event.vy);

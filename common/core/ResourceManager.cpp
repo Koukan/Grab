@@ -1,140 +1,97 @@
-#include <iostream>
-#include <stdexcept>
 #include "ResourceManager.hpp"
-#include "Sprite.hpp"
-#include "Font.hpp"
-#include "Converter.hpp"
-#include "LoadXMLProvider.hpp"
-#include "SpriteProvider.hpp"
-#include "FontProvider.hpp"
+#include "XMLProvider.hpp"
+#include "GlobalResourceManager.hpp"
+#include <iostream>
 
 ResourceManager::ResourceManager()
-  : XMLProvider("resources")
 {
-  this->addProvider(*this);
-  this->addProvider(*new LoadXMLProvider(*this));
 }
 
 ResourceManager::~ResourceManager()
 {
-  ProviderMap::iterator it;
-
-  for (it = this->_providers.begin(); it != this->_providers.end(); ++it)
-    if ((*it).second != this)
-      delete (*it).second;
+	for (SpriteMap::iterator it = this->_sprites.begin();
+		 it != this->_sprites.end(); it++)
+		it->second->removeUse();
+	for (FontMap::iterator it = this->_fonts.begin();
+		 it != this->_fonts.end(); it++)
+		it->second->removeUse();
+	for (BulletMap::iterator it = this->_bullets.begin();
+		 it != this->_bullets.end(); it++)
+		it->second->removeUse();
+	for (ResourceMap::iterator it = this->_resources.begin();
+		 it != this->_resources.end(); it++)
+		it->second->removeUse();
 }
 
-void			ResourceManager::load(std::string const &path)
+void		ResourceManager::load(std::string const &path)
 {
-	if (!this->_document.LoadFile(path.c_str()))
-		throw std::runtime_error(path + ": not found");
-	this->handleXML(&this->_document);
+	GlobalResourceManager::get().load(path, *this);
 }
 
-void			ResourceManager::addProvider(XMLProvider &provider)
+Sprite		*ResourceManager::getSprite(std::string const &name) const
 {
-  if (this->_providers.find(provider.getHandledTag()) == this->_providers.end())
-    this->_providers[provider.getHandledTag()] = &provider;
+	SpriteMap::const_iterator it = this->_sprites.find(name);
+
+	if (it != this->_sprites.end())
+		return static_cast<Sprite*>(it->second->clone());
+	return 0;
 }
 
-Sprite			*ResourceManager::getSprite(std::string const &name) const
+CoreFont	*ResourceManager::getFont(std::string const &name) const
 {
-  ProviderMap::const_iterator it;
+	FontMap::const_iterator it = this->_fonts.find(name);
 
-  if ((it = this->_providers.find("sprite")) != this->_providers.end())
-    return (static_cast<SpriteProvider*>((*it).second))->getSprite(name);
-  return 0;
+	if (it != this->_fonts.end())
+		return static_cast<CoreFont*>(it->second->clone());
+	return 0;
 }
 
-CoreFont		*ResourceManager::getFont(std::string const &name) const
+BulletMLParser	*ResourceManager::getBulletParser(std::string const &name) const
 {
-  ProviderMap::const_iterator it;
+	BulletMap::const_iterator it = this->_bullets.find(name);
 
-  if ((it = this->_providers.find("font")) != this->_providers.end())
-    return (static_cast<FontProvider*>((*it).second))->getFont(name);
-  return 0;
+	if (it != this->_bullets.end())
+		return static_cast<BulletMLParser*>(it->second->clone());
+	return 0;
 }
 
-void			ResourceManager::handleXML(TiXmlNode *parent)
+Resource	*ResourceManager::getResource(std::string const &name) const
 {
-	static Method<TiXmlNode::NodeType> const	methods[] = {
-			{TiXmlNode::DOCUMENT, &ResourceManager::loadDocument},
-			{TiXmlNode::ELEMENT, &ResourceManager::loadElement},
-			{TiXmlNode::COMMENT, &ResourceManager::loadComment},
-			{TiXmlNode::UNKNOWN, &ResourceManager::loadUnknown},
-			{TiXmlNode::TEXT, &ResourceManager::loadText},
-			{TiXmlNode::DECLARATION, &ResourceManager::loadDeclaration}
-	};
-	size_t				i;
-	TiXmlNode::NodeType		type;
+	ResourceMap::const_iterator it = this->_resources.find(name);
 
-	if (!parent)
-		return ;
-	for (TiXmlNode *child = parent->FirstChild(); child != 0;
-		 child = child->NextSibling())
-	{
-		type = static_cast<TiXmlNode::NodeType>(child->Type());
-		for (i = 0; i != (sizeof(methods) / sizeof(*methods)); i++)
-		{
-			if (type == methods[i].name)
-			{
-				(this->*methods[i].func)(child);
-				break ;
-			}
-		}
-	}
+	if (it != this->_resources.find(name))
+		return it->second->clone();
+	return 0;
 }
 
-void			ResourceManager::loadDocument(TiXmlNode *parent)
+void		ResourceManager::addSprite(Sprite &sprite)
 {
-  this->handleXML(parent);
+	this->_sprites[sprite.getResourceName()] = &sprite;
+	sprite.addUse();
 }
 
-void			ResourceManager::loadElement(TiXmlNode *parent)
+void		ResourceManager::addFont(CoreFont &font)
 {
-	std::string		name;
-	ProviderMap::iterator	it;
-
-	for (TiXmlNode *child = parent->FirstChild(); child != 0;
-		 child = child->NextSibling())
-	{
-		name = child->Value();
-		for (it = this->_providers.begin(); it != this->_providers.end(); ++it)
-		{
-		  if (name == (*it).first)
-		    {
-		      (*it).second->handleXML(child);
-		      break ;
-		    }
-		}
-	}
+	this->_fonts[font.getResourceName()] = &font;
+	font.addUse();
 }
 
-void			ResourceManager::loadComment(TiXmlNode *)
+void		ResourceManager::addBulletParser(BulletMLParser &parser)
 {
+	this->_bullets[parser.getResourceName()] = &parser;
+	parser.addUse();
 }
 
-void			ResourceManager::loadUnknown(TiXmlNode *)
+void		ResourceManager::addBulletParser(std::string const &path,
+											 std::string const &name)
 {
+	BulletMLParser	*parser = GlobalResourceManager::get().addBulletParser(path, name);
+	if (parser)
+		this->addBulletParser(*parser);
 }
 
-void			ResourceManager::loadText(TiXmlNode *)
+void		ResourceManager::addResource(Resource &resource)
 {
-}
-
-void			ResourceManager::loadDeclaration(TiXmlNode *)
-{
-}
-
-void		ResourceManager::get2Int(std::string const &data,
-					 std::string const &sep,
-					 int &a, int &b)
-{
-	size_t	pos = data.find(sep);
-
-	a = Converter::toInt<int>(data);
-	if (pos == std::string::npos)
-		b = 0;
-	else
-		b = Converter::toInt<int>(data.substr(pos + sep.size()));
+	this->_resources[resource.getResourceName()] = &resource;
+	resource.addUse();
 }

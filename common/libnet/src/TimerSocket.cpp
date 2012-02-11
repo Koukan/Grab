@@ -7,7 +7,8 @@ TimerSocket::TimerSocket(Handle handle, NetHandler &handler) : _nethandler(handl
 	this->setHandle(handle);
 }
 
-NetHandler	&TimerSocket::getNetHandler()
+NetHandler	&TimerSocket::getTimeoutHandler()
 {
 	return _nethandler;
 }
+

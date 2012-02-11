@@ -7,14 +7,15 @@
 class SFMLFontProvider : public FontProvider
 {
 public:
-  SFMLFontProvider();
-  ~SFMLFontProvider();
+	SFMLFontProvider();
+	~SFMLFontProvider();
 
-  virtual void	addFont(std::string const &fontName, std::string const &fontFile, std::string const &fontSize);
-  virtual CoreFont	*getFont(std::string const &fontName) const;
-
-  typedef std::map<std::string const, SFMLFont *>	FontMap;
+	virtual CoreFont	*addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize);
+	virtual Resource	*getResource(std::string const &fontName) const;
+	virtual void		deleteResource(std::string const &name);
 
 private:
-  FontMap _fonts;
+	typedef std::map<std::string const, SFMLFont *>	FontMap;
+
+	FontMap _fonts;
 };

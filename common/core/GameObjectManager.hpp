@@ -28,8 +28,6 @@ class Group
 
     void	addObject(GameObject *object);
     void	removeObject(GameObject *object);
-    void	addDelete(GameObject *object);
-    void	deleteObjects();
 
     //setter
     void	setLayer(int layer);
@@ -45,7 +43,7 @@ class Group
     double				getTimeEffect() const;
     TimeEffectGroup		*getTimeEffectGroup() const;
     gameObjectSet const	&getObjects() const;
-	QuadTree			&getQuadTree() const;
+	QuadTree			&getQuadTree();
 	std::string const	&getName() const;
 	GameState			&getState() const;
 	uint32_t			getId() const;
@@ -56,12 +54,11 @@ class Group
     bool						_physic;
     TimeEffectGroup				*_timeEffectGroup;
     gameObjectSet				_objects;
-    std::stack<GameObject*>		_deletes;
-	QuadTree					*_quadTree;
 	std::string					_name;
 	uint32_t					_beginId;
 	uint32_t					_endId;
 	mutable uint32_t			_currentId;
+	QuadTree					_quadTree;
 };
 
 class GameObjectManager : public TimeEffectManager

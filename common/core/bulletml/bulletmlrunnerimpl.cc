@@ -166,6 +166,22 @@ void BulletMLRunnerImpl::setSimpleHitBox(BulletMLState &state) {
 		state.setSimpleHeight(box->getSimpleHeight());
 }
 
+void BulletMLRunnerImpl::setLife(BulletMLState &state) {
+    BulletMLNode* box = act_->getChild(BulletMLNode::life);
+    if (box == 0) return;
+
+		state.setLife(box->getLife());
+		state.setSimpleLife(box->getSimpleLife());
+}
+
+void BulletMLRunnerImpl::setDamage(BulletMLState &state) {
+    BulletMLNode* box = act_->getChild(BulletMLNode::damage);
+    if (box == 0) return;
+
+		state.setDamage(box->getDamage());
+		state.setSimpleDamage(box->getSimpleDamage());
+}
+
 bool BulletMLRunnerImpl::isTurnEnd() {
 	return isEnd() || actTurn_ > endTurn_;
 }
@@ -350,6 +366,8 @@ void BulletMLRunnerImpl::runBullet() {
 
 		setHitBox(*state);
 		setSimpleHitBox(*state);
+		setLife(*state);
+		setDamage(*state);
 		// end add
 
 		runner_->createBullet(state, dir_, spd_);

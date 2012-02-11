@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
+#include "Net.hpp"
 
-class Command
+class Command : public Net::PoolObject
 {
   public:
     Command(std::string const &name) : name(name)

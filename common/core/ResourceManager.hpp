@@ -1,44 +1,36 @@
 #pragma once
 
 #include <map>
-#include <list>
-#include "BulletResourceManager.hpp"
-#include "tinyxml.h"
+#include "Resource.hpp"
 #include "Sprite.hpp"
 #include "Font.hpp"
-#include "XMLProvider.hpp"
+#include "bulletmlparser.h"
 
-class ResourceManager : public BulletResourceManager, public XMLProvider
+class ResourceManager
 {
   public:
 	ResourceManager();
 	virtual ~ResourceManager();
 	void			load(std::string const &path);
-	void			addProvider(XMLProvider &provider);
 	Sprite			*getSprite(std::string const &name) const;
 	CoreFont		*getFont(std::string const &name) const;
+	BulletMLParser	*getBulletParser(std::string const &name) const;
+	Resource		*getResource(std::string const &name) const;
 
-  template <typename T>
-  struct			Method
-  {
-    T			name;
-    void		(ResourceManager::*func)(TiXmlNode *);
-  };
+	void			addSprite(Sprite &);
+	void			addFont(CoreFont &);
+	void			addBulletParser(BulletMLParser &);
+	void			addBulletParser(std::string const &path, std::string const &name);
+	void			addResource(Resource &);
 
   private:
-	typedef std::map<std::string, XMLProvider *> ProviderMap;
+	typedef std::map<std::string, Sprite*>			SpriteMap;
+	typedef std::map<std::string, CoreFont*>		FontMap;
+	typedef std::map<std::string, BulletMLParser*>	BulletMap;
+	typedef std::map<std::string, Resource*>		ResourceMap;
 
-	void			handleXML(TiXmlNode *parent);
-	void			loadDocument(TiXmlNode *parent);
-	void			loadElement(TiXmlNode *parent);
-	void			loadComment(TiXmlNode *parent);
-	void			loadUnknown(TiXmlNode *parent);
-	void			loadText(TiXmlNode *parent);
-	void			loadDeclaration(TiXmlNode *parent);
-	void			loadSprite(TiXmlNode *parent);
-	void			get2Int(std::string const &data, std::string const &sep,
-							int &a, int &b);
-
-	ProviderMap	_providers;
-	TiXmlDocument	_document;
+	SpriteMap		_sprites;
+	FontMap			_fonts;
+	BulletMap		_bullets;
+	ResourceMap		_resources;
 };

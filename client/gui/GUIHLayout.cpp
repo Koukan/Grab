@@ -31,8 +31,8 @@ bool GUIHLayout::handleGUICommand(InputCommand const &command)
 
 void GUIHLayout::draw(double elapseTime)
 {
-  int x = this->_x;
-  int y = this->_y;
+  int x = static_cast<int>(this->_x);
+  int y = static_cast<int>(this->_y);
   int nb = 0;
 
   for (std::list<GUIElement *>::iterator it = this->_begin; it != this->_elements.end() && nb < this->_nbElements; ++it)

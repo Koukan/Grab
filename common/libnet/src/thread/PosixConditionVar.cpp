@@ -18,17 +18,17 @@ ConditionVar::~ConditionVar()
 
 bool    ConditionVar::signal()
 {
-  return (static_cast<bool>(!pthread_cond_signal(&_cond)));
+  return (pthread_cond_signal(&_cond) != -1);
 }
 
 bool    ConditionVar::broadcast()
 {
-  return (static_cast<bool>(!pthread_cond_broadcast(&_cond)));
+  return (pthread_cond_broadcast(&_cond) != -1);
 }
 
 bool	ConditionVar::wait()
 {
-  return (static_cast<bool>(!pthread_cond_wait(&_cond, &this->_mutex)));
+  return (pthread_cond_wait(&_cond, &this->_mutex) != -1);
 }
 
 bool	ConditionVar::uniqueWait()

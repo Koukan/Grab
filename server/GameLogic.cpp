@@ -13,12 +13,12 @@
 GameLogic::GameLogic(Game &game)
 	: GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
 {
-	addBulletParser("resource/BulletSimple.xml", "single");
-	addBulletParser("resource/BulletSinusoidal.xml", "sinusoidal");
-	addBulletParser("resource/BulletBomb.xml", "bomb");
-	addBulletParser("resource/BulletWall.xml", "wall");
-	addBulletParser("resource/BulletRandom.xml", "random");
-	addBulletParser("resource/BulletBossMetroid.xml", "bossMetroid");
+	addBulletParser("resources/BulletSimple.xml", "single");
+	addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
+	addBulletParser("resources/BulletBomb.xml", "bomb");
+	addBulletParser("resources/BulletWall.xml", "wall");
+	addBulletParser("resources/BulletRandom.xml", "random");
+	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
 
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
@@ -113,10 +113,10 @@ void		GameLogic::startGame()
 		GameCommand	*cmd = new GameCommand("Spawn");
 		cmd->idResource = (*it)->getId();
 		cmd->idObject = tmp->getId();
-		cmd->x = tmp->getX();
-		cmd->y = tmp->getY();
-		cmd->vx = tmp->getVx();
-		cmd->vy = tmp->getVy();
+		cmd->x = static_cast<int16_t>(tmp->getX());
+		cmd->y = static_cast<int16_t>(tmp->getY());
+		cmd->vx = static_cast<int16_t>(tmp->getVx());
+		cmd->vy = static_cast<int16_t>(tmp->getVy());
 		cmd->game = &_game;
 		CommandDispatcher::get().pushCommand(*cmd);
 		y += step;

@@ -28,7 +28,7 @@ bool    ConditionVar::broadcast()
 
 bool	ConditionVar::wait()
 {
-  return (SleepConditionVariableCS(&_cond, &_mutex, 0) != 0);
+  return (SleepConditionVariableCS(&_cond, &_mutex, INFINITE) != 0);
 }
 
 bool	ConditionVar::uniqueWait()

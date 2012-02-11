@@ -14,7 +14,10 @@
 
 #include <stdio.h>
 
-class BulletMLParser {
+#include "Resource.hpp"
+
+class BulletMLParser : public Resource
+{
 protected:
     typedef std::vector<std::string> MyAttributes;
     typedef MyAttributes::const_iterator MyAttributeIte;
@@ -24,6 +27,7 @@ public:
     DECLSPEC virtual ~BulletMLParser();
 
 public:
+	DECLSPEC virtual Resource	*clone() const;
 	DECLSPEC void build();
     DECLSPEC virtual void parse() =0;
 

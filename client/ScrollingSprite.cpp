@@ -29,7 +29,7 @@ void ScrollingSprite::pushSprite(std::string const &spriteName)
 void ScrollingSprite::draw(double elapseTime)
 {
   if (!this->_sprites.empty())
-  	(this->*(this->_scrolling))(elapseTime);
+  	(this->*(this->_scrolling))(static_cast<int>(elapseTime));
 }
 
 void ScrollingSprite::setSpeed(int speed)
@@ -58,11 +58,11 @@ Sprite *ScrollingSprite::prevSprite()
 void ScrollingSprite::hScrolling(int elapseTime)
 {
   Sprite	*sprite = _sprites[this->_current];
-  int x2 = _offset;
+  int x2 = static_cast<int>(_offset);
 
   while (x2 < this->_width)
     {
-      sprite->draw(x2 + this->_x, this->_y, elapseTime);
+      sprite->draw(static_cast<int>(x2 + this->_x), static_cast<int>(this->_y), elapseTime);
       sprite = this->nextSprite();
       x2 += sprite->getWidth();
     }
@@ -88,11 +88,11 @@ void ScrollingSprite::hScrolling(int elapseTime)
 void ScrollingSprite::vScrolling(int elapseTime)
 {
   Sprite	*sprite = _sprites[this->_current];
-  int y2 = this->_offset;
+  int y2 = static_cast<int>(this->_offset);
 
   while (y2 < this->_height)
     {
-      sprite->draw(this->_x, this->_y + y2, elapseTime);
+      sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y + y2), elapseTime);
 	  sprite = this->nextSprite();
       y2 += sprite->getHeight();
     }

@@ -37,7 +37,7 @@ void		NetworkModule::update(double elapsedtime)
 {
 	if (this->_reactor)
 	{
-		_pingupdate += elapsedtime;
+		_pingupdate += static_cast<size_t>(elapsedtime);
 		if (_pingupdate >= 1000)
 		{
 	  		_pingupdate = 0;

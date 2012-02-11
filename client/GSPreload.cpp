@@ -23,8 +23,6 @@ bool		GSPreload::handleCommand(Command const &)
 
 void	GSPreload::onStart()
 {
-  this->addProvider(*(new SFMLSpriteProvider));
-
   this->load("resources/intro.xml");
 
   ScrollingSprite *obj = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.03);

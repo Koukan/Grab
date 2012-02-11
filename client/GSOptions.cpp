@@ -23,10 +23,6 @@ GSOptions::~GSOptions()
 
 void	GSOptions::onStart()
 {
-  // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
-
   // load xml
   this->load("resources/intro.xml");
 

@@ -97,7 +97,7 @@ void    ModuleManager::update(double)
 	    		towait = module->_lastUpdate;
 		}
     }
-	Net::Clock::sleep((towait < 0) ? 10 : towait);
+	Net::Clock::sleep((towait < 0) ? 10 : static_cast<int>(towait));
   }
   for (std::map<std::string, Module*>::iterator it = _modules.begin(); it != _modules.end(); ++it)
   {

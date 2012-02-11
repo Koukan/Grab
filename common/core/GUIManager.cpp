@@ -7,10 +7,10 @@ GUIManager::GUIManager()
 
 GUIManager::~GUIManager()
 {
-  for (std::list<ButtonSprite *>::iterator it = this->_spriteButtons.begin(); it != this->_spriteButtons.end(); ++it)
-    {
-      delete *it;
-    }
+	for (std::list<ButtonSprite *>::iterator it = this->_spriteButtons.begin(); it != this->_spriteButtons.end(); ++it)
+	{
+		delete *it;
+	}
 }
 
 bool		GUIManager::handleCommand(Command const &command)

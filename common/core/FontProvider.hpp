@@ -8,8 +8,7 @@ class FontProvider : public XMLProvider
 public:
   FontProvider();
   virtual ~FontProvider();
-  virtual void	addFont(std::string const &, std::string const &, std::string const &) = 0;
-  virtual CoreFont *getFont(std::string const &) const = 0;
-  
-  virtual void		handleXML(TiXmlNode *node);
+  virtual CoreFont	*addFont(std::string const &, std::string const &, unsigned int) = 0;
+
+  virtual void		handleXML(TiXmlNode *node, ResourceManager &);
 };

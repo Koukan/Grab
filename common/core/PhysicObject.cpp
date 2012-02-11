@@ -3,7 +3,7 @@
 #include "GameStateManager.hpp"
 
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy) :
-  DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _hitBox(&hitbox)
+  DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _static(false), _hitBox(&hitbox)
 {
 }
 
@@ -29,6 +29,16 @@ HitBox	&PhysicObject::getHitBox() const
 	return (*this->_hitBox);
 }
 
+bool	PhysicObject::isStatic() const
+{
+	return _static;
+}
+
+void	PhysicObject::setStatic(bool val)
+{
+	_static = val;
+}
+
 void	PhysicObject::setVx(double vx)
 {
   this->_vx = vx;
@@ -46,7 +56,8 @@ void	PhysicObject::setHitBox(HitBox &hitBox)
 
 void	PhysicObject::move(double time)
 {
-  this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
+	if (!this->_static && (this->_vx || this->_vy))
+		this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
 }
 
 int		PhysicObject::getWidthElement()

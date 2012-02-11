@@ -17,15 +17,18 @@ public:
   void			setVx(double);
   void			setVy(double);
   void			setHitBox(HitBox &hitBox);
+  void			setStatic(bool value = true);
 
   int			getWidthElement();
   int			getHeightElement();
   int			getXElement();
   int			getYElement();
+  bool			isStatic() const;
   void			collide(TreeElement &elem);
 
 protected:
 	double	_vx;
 	double	_vy;
+	bool	_static;
 	HitBox	*_hitBox;
 };

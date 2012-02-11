@@ -10,10 +10,11 @@
 
 #include "NetDef.hpp"
 #include "network.h"
+#include "PoolObject.hpp"
 
 NET_BEGIN_NAMESPACE
 
-class NET_DLLREQ DataBlock
+class NET_DLLREQ DataBlock : public PoolObject
 {
 public:
 	DataBlock();

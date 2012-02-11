@@ -31,14 +31,7 @@ public:
 	int		cancelTimer(NetHandler &handler);
 
 private:
-	struct	epollpolicydata
-	{
-		NetHandler	*handler;
-		Socket		*socket;
-	};
-
 	int		_epollfd;
-	std::map<Handle, epollpolicydata>	_handlers;
 	std::map<NetHandler*, Socket*>   	_timers;
 };
 

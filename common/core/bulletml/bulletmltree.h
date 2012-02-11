@@ -25,7 +25,7 @@ public:
 	typedef enum { bullet, action, fire, changeDirection, changeSpeed, accel,
 				   wait, repeat, bulletRef, actionRef, fireRef, vanish,
 				   horizontal, vertical, term, times, direction, speed, param,
-				   bulletml, hitbox, simpleHitbox, nameSize} Name;
+				   bulletml, hitbox, simpleHitbox, life, damage, nameSize} Name;
 
 private:
 	static Type string2type(const std::string& str);
@@ -80,6 +80,10 @@ public:
 	void setSimpleShape(std::string const &shape) { this->simpleShape_ = shape; }
 	void setSimpleWidth(std::string const &width) { this->simpleWidth_ = strtol(width.c_str(), 0, 10); }
 	void setSimpleHeight(std::string const &height) { this->simpleHeight_ = strtol(height.c_str(), 0, 10); }
+	void setLife(std::string const &life) { this->life_ = strtol(life.c_str(), 0, 10); }
+	void setSimpleLife(std::string const &life) { this->simpleLife_ = strtol(life.c_str(), 0, 10); }
+	void setDamage(std::string const &damage) { this->damage_ = strtol(damage.c_str(), 0, 10); }
+	void setSimpleDamage(std::string const &damage) { this->simpleDamage_ = strtol(damage.c_str(), 0, 10); }
 
 	// getter
 	std::string const &getLabel() const { return this->label_; }
@@ -93,6 +97,10 @@ public:
 	std::string const &getSimpleShape() const { return this->simpleShape_; }
 	uint32_t getSimpleWidth() const { return this->simpleWidth_; }
 	uint32_t getSimpleHeight() const { return this->simpleHeight_; }
+	uint32_t getLife() const { return this->life_; }
+	uint32_t getSimpleLife() const { return this->simpleLife_; }
+	uint32_t getDamage() const { return this->damage_; }
+	uint32_t getSimpleDamage() const { return this->simpleDamage_; }
 
 protected:
     Name					name_;
@@ -110,6 +118,10 @@ protected:
 	std::string				simpleShape_;
 	uint32_t				simpleWidth_;
 	uint32_t				simpleHeight_;
+	uint32_t				damage_;
+	uint32_t				simpleDamage_;
+	uint32_t				life_;
+	uint32_t				simpleLife_;
 };
 
 

@@ -61,6 +61,11 @@ void BulletMLParser::build() {
 	IDPool::quit();
 }
 
+Resource		*BulletMLParser::clone() const
+{
+	return const_cast<BulletMLParser*>(this);
+}
+
 BulletMLNode* BulletMLParser::getBulletRef(int id) {
 	BulletMLError::doAssert((int)bulletMap_.size() > id && bulletMap_[id] != 0,
 		   "bulletRef key doesn't exist.");
@@ -185,6 +190,20 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					elem->setSimpleWidth(val);
 				else if (key == "height")
 					elem->setSimpleHeight(val);
+			}
+			else if (elem->getName() == BulletMLNode::life)
+			{
+				if (key == "value")
+					elem->setLife(val);
+				else if (key == "simple")
+					elem->setSimpleLife(val);
+			}
+			else if (elem->getName() == BulletMLNode::damage)
+			{
+				if (key == "value")
+					elem->setDamage(val);
+				else if (key == "simple")
+					elem->setSimpleDamage(val);
 			}
 		}
 	}
