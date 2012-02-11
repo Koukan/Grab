@@ -39,10 +39,6 @@ void	GSPauseMenu::createParty()
 
 void	GSPauseMenu::onStart()
 {
-  // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
-
   // load xml
   this->load("resources/intro.xml");
 

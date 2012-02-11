@@ -8,7 +8,7 @@ void	Rules::wallTouchObject(GameObject &, GameObject &o2)
 	o2.erase();
 }
 
-void		Rules::shotTouchMonster(GameObject&o1, GameObject&o2)
+void		Rules::shotTouchMonster(GameObject &o1, GameObject &)
 {
-	o1.erase();	
+	o1.erase();
 }

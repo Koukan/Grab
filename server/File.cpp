@@ -26,7 +26,7 @@ bool		File::load(std::string const &path)
 			buffer = new char[size];
 			file.read(buffer, size);
 			if (file.eof())
-				size = file.gcount();
+				size = static_cast<size_t>(file.gcount());
 			::md5_append(&pms, reinterpret_cast<md5_byte_t*>(buffer), size);
 			this->_list.push_back(new Net::DataBlock(buffer, size));
 		}

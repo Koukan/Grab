@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Resource
+namespace Resources
 {
   enum type {
     P1 = 0,

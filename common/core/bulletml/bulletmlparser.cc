@@ -61,6 +61,11 @@ void BulletMLParser::build() {
 	IDPool::quit();
 }
 
+Resource		*BulletMLParser::clone() const
+{
+	return const_cast<BulletMLParser*>(this);
+}
+
 BulletMLNode* BulletMLParser::getBulletRef(int id) {
 	BulletMLError::doAssert((int)bulletMap_.size() > id && bulletMap_[id] != 0,
 		   "bulletRef key doesn't exist.");

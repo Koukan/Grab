@@ -8,6 +8,16 @@ GSManager::GSManager() : Module("GSManager")
 
 GSManager::~GSManager()
 {
+	for (instanceMap::iterator it = this->_keeper.begin();
+		 it != this->_keeper.end(); it++)
+		delete it->second;
+	this->removeDelete();
+	for (std::list<GameState*>::iterator it = this->_currentStates.begin();
+		 it != this->_currentStates.end(); it++)
+		delete *it;
+	for (std::list<GameState*>::iterator it = this->_loadedStates.begin();
+		 it != this->_loadedStates.end(); it++)
+		delete *it;
 }
 
 void		GSManager::init()
@@ -21,6 +31,7 @@ void		GSManager::update(double elapsedTime)
 	{
 		(*it)->update(elapsedTime);
 	}
+	this->removeDelete();
 }
 
 void		GSManager::destroy()

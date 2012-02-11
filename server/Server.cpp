@@ -11,8 +11,7 @@ Server::~Server()
 {
 }
 
-#include <iostream>
-bool			Server::init(std::string const &port, size_t nbthread)
+bool			Server::initServer(std::string const &port, size_t nbthread)
 {
 	NetworkModule		&network = NetworkModule::get();
 

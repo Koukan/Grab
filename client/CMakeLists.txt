@@ -131,7 +131,7 @@ set_source_files_properties (
   ${SRCS}
   PROPERTIES
   COMPILE_FLAGS
-  "-std=c++0x -W -Wall -g3"
+  "-std=c++0x -W -Wall -Wextra -g3"
 )
 ENDIF(WIN32)
 
@@ -165,8 +165,14 @@ include_directories (
 )
 
 find_package (Threads)
+
+if(WIN32)
+add_subdirectory(../common/libnet ../common/libnet_build2)
+add_subdirectory(../common/core ../common/libcore_build2)
+else(WIN32)
 add_subdirectory(../common/libnet ../common/libnet_build)
 add_subdirectory(../common/core ../common/libcore_build)
+endif(WIN32)
 
 ###### linking net to core
 

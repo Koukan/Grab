@@ -113,10 +113,10 @@ void		GameLogic::startGame()
 		GameCommand	*cmd = new GameCommand("Spawn");
 		cmd->idResource = (*it)->getId();
 		cmd->idObject = tmp->getId();
-		cmd->x = tmp->getX();
-		cmd->y = tmp->getY();
-		cmd->vx = tmp->getVx();
-		cmd->vy = tmp->getVy();
+		cmd->x = static_cast<int16_t>(tmp->getX());
+		cmd->y = static_cast<int16_t>(tmp->getY());
+		cmd->vx = static_cast<int16_t>(tmp->getVx());
+		cmd->vy = static_cast<int16_t>(tmp->getVy());
 		cmd->game = &_game;
 		CommandDispatcher::get().pushCommand(*cmd);
 		y += step;

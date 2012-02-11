@@ -50,11 +50,11 @@ bool	GUILabel::handleGUICommand(InputCommand const &)
 void	GUILabel::draw(double elapseTime)
 {
   if (this->_sprite)
-    this->_sprite->draw(this->_x, this->_y, elapseTime);
+    this->_sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y), elapseTime);
   if (this->_font)
     {
-      this->_font->draw(this->_x + (this->_width - this->_font->getWidth()) / 2,
-			this->_y + (this->_height - this->_font->getHeight()) / 2 - 5, elapseTime);
+      this->_font->draw(static_cast<int>(this->_x + (this->_width - this->_font->getWidth()) / 2),
+			static_cast<int>(this->_y + (this->_height - this->_font->getHeight()) / 2 - 5), elapseTime);
     }
 }
 

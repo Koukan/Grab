@@ -1,6 +1,6 @@
 #include "Resources.hpp"
 
-const Resource::Monster Resource::monsters[] = {
+const Resources::Monster Resources::monsters[] = {
 	{"enemy plane", 50},
 	{"enemy bomb", 0},
 	{"enemy star", 10},

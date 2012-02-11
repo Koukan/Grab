@@ -26,11 +26,10 @@ ButtonSprite::ButtonSprite(ButtonSprite const &buttonSprite) :
  _defaultName(buttonSprite._defaultName), _selected(buttonSprite._selected), _clicked(buttonSprite._clicked), _state(ButtonSprite::DEFAULT)
 {
   GameState *gameState = &(GameStateManager::get().getCurrentState());
-  
+
   this->_defaultSprite = gameState->getSprite(_defaultName);
   this->_selectedSprite = gameState->getSprite(_selected);
   this->_clickedSprite = gameState->getSprite(_clicked);
-  gameState->getGUI().registerButtonSprite(*this);
 }
 
 void ButtonSprite::updateState(enum ButtonSprite::eState state)

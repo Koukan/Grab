@@ -75,8 +75,6 @@ void	GSLoading::errorFullGameCommand(Command const &)
 
 void	GSLoading::onStart()
 {
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
   this->load("resources/intro.xml");
   this->load("resources/player.xml");
   this->load("resources/enemies.xml");
