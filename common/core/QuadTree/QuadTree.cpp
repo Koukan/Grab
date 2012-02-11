@@ -286,7 +286,9 @@ void	QuadTree::move(TreeElement &elem)
 				elem.setNode(this->_mainNode);
 			}
 			else if (elem.getNodeNb() != nodeNb)
+			{
 				this->push(elem);
+			}
 			else
 			{
 				elem.setXElementAbs();
