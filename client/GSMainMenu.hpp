@@ -10,7 +10,7 @@ public:
 
   void	onStart();
 
-  void	createGame();
+  void	modeSelection();
   void	inGameTest();
   void	joinGame();
   void	options();

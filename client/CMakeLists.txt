@@ -73,6 +73,8 @@ set(SRCS
 	GSJoinGame.hpp
 	GSLoading.cpp
 	GSLoading.hpp
+	GSModeSelection.cpp
+	GSModeSelection.hpp
 	GSOptions.cpp
 	GSOptions.hpp
 	GSPauseMenu.cpp
@@ -81,10 +83,13 @@ set(SRCS
 	GSPreload.hpp
 	GSMainMenu.cpp
 	GSMainMenu.hpp
-	GSCreateMenu.cpp
-	GSCreateMenu.hpp
+	GSPartySettings.cpp
+	GSPartySettings.hpp
+	GSShipSelection.cpp
+	GSShipSelection.hpp
 	InputModule.cpp
 	InputModule.hpp
+	Modes.hpp
 	main.cpp
 	NetworkModule.cpp
 	NetworkModule.hpp

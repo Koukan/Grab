@@ -1,5 +1,4 @@
 #include "GSOptions.hpp"
-#include "GSCreateMenu.hpp"
 #include "SFMLSpriteProvider.hpp"
 #include "SFMLFontProvider.hpp"
 #include "GUIButton.hpp"
