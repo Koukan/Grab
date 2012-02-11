@@ -11,12 +11,12 @@
 
 NET_USE_NAMESPACE
 
-Packet::Packet(size_t size) : _rindex(0), _windex(0), _size(0)
+Packet::Packet(size_t size) : _rindex(0), _windex(0), _size(0), _allocdata(true)
 {
 	_data = new DataBlock(size);
 }
 
-Packet::Packet(DataBlock &data, size_t size) : _rindex(0), _windex(0), _size(size)
+Packet::Packet(DataBlock &data, size_t size) : _rindex(0), _windex(0), _size(size), _allocdata(false)
 {
   _data = &data;
   data.seize();
@@ -29,6 +29,7 @@ Packet::Packet(Packet const &other)
 	  this->_rindex = 0;
 	  this->_windex = 0;
 	  this->_size = other._size;
+	  this->_allocdata = false;
 	  this->_data = other._data;
 	  this->_addr = other._addr;
 	  if (this->_data)
@@ -64,6 +65,8 @@ void	Packet::release()
   if (_data)
   {
 	  _data->release();
+	  if (_allocdata && _data->getRefCount() == 0)
+		delete _data;
 	  _data = 0;
   }
 }

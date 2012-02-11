@@ -14,7 +14,10 @@ void* PoolObject::operator new(std::size_t size)
 
 void PoolObject::operator delete(void *p, std::size_t size)
 {
-	PoolAllocator::get().deallocate(p, size);
+	if (size <= 512)
+		PoolAllocator::get().deallocate(p, size);
+	else
+		::free(p);
 }
 
 PoolObject::~PoolObject()

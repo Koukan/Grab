@@ -63,6 +63,12 @@ void	DataBlock::assign(char *buffer, size_t size)
 	this->_refcnt = 1;
 }
 
+
+size_t	DataBlock::getRefCount() const
+{
+	return this->_refcnt;
+}
+
 DataBlock::operator struct iovec*()
 {
   return &_vec;

@@ -26,6 +26,7 @@ public:
 	void	release();
 	void	seize();
 	void	assign(char *buffer, size_t size);
+	size_t	getRefCount() const;
 	operator struct iovec*();
 	struct iovec	_vec;
 
