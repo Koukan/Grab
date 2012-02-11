@@ -10,6 +10,7 @@
 #include "bulletmltree.h"
 #include "bulletmlcommon.h"
 
+#include <stack>
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -202,8 +203,8 @@ private:
 	virtual BulletMLRunnerImpl* makeImpl(BulletMLState* state);
 
 protected:
-	std::vector<BulletMLRunnerImpl*> impl_;
-
+	std::vector<BulletMLRunnerImpl*>	impl_;
+	std::stack<BulletMLState*>			state_;
 };
 
 #endif // ! BULLETRUNNER_H_

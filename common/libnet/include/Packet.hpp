@@ -75,6 +75,7 @@ protected:
 	size_t			_rindex;
 	size_t			_windex;
 	size_t			_size;
+	bool			_allocdata;
 	DataBlock		*_data;
 	InetAddr		_addr;
 };

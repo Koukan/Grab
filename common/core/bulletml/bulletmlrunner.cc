@@ -5,6 +5,8 @@
 #include "bulletmlrunnerimpl.h"
 
 BulletMLRunner::BulletMLRunner(BulletMLParser* bulletml) {
+	if (!bulletml)
+		BulletMLError::doAssert("Parser not found");
 	const std::vector<BulletMLNode*>& acts = bulletml->getTopActions();
 	for (size_t i = 0; i < acts.size(); i++) {
 		std::vector<BulletMLNode*> act;
@@ -12,6 +14,7 @@ BulletMLRunner::BulletMLRunner(BulletMLParser* bulletml) {
 		BulletMLState* state = new BulletMLState(bulletml, act,
 			bullet_shared_ptr<BulletMLParameter>());
 		impl_.push_back(makeImpl(state));
+		state_.push(state);
 	}
 }
 
@@ -22,6 +25,11 @@ BulletMLRunner::BulletMLRunner(BulletMLState* state) {
 BulletMLRunner::~BulletMLRunner() {
 	for (size_t i = 0; i < impl_.size(); i++) {
 		delete impl_[i];
+	}
+	while (!state_.empty())
+	{
+		delete state_.top();
+		state_.pop();
 	}
 }
 

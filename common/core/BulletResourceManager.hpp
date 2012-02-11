@@ -11,15 +11,6 @@ class BulletResourceManager : public XMLProvider
     BulletResourceManager();
     virtual ~BulletResourceManager();
 	void				handleXML(TiXmlNode*, ResourceManager&);
-	BulletMLParser		*addBulletParser(std::string const &path, std::string const &name);
-
-	//getter
-	virtual Resource	*getResource(std::string const &name) const;
-
-	virtual void		deleteResource(std::string const &name);
-
-  private:
-	typedef std::map<std::string, BulletMLParser*>	bulletParsers;
-
-	bulletParsers	_parsers;
+	BulletMLParser		*addBulletParser(std::string const &path, std::string const &name, ResourceManager &);
+	virtual void		addResource(Resource &, ResourceManager &);
 };

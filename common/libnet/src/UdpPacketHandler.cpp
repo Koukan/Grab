@@ -9,14 +9,13 @@
 
 NET_USE_NAMESPACE
 
-UdpPacketHandler::UdpPacketHandler()
+UdpPacketHandler::UdpPacketHandler() : _enableWhitelist(false)
 {
 }
 
 UdpPacketHandler::~UdpPacketHandler()
 {
 }
-
 
 int	UdpPacketHandler::handleOutput(Socket &sock)
 {
@@ -63,4 +62,25 @@ int UdpPacketHandler::handleInput(Socket &)
 	}
 	while (!this->_iohandler.isBlocking());
 	return ret;
+}
+
+
+void	UdpPacketHandler::enableWhitelist(bool enable)
+{
+	_enableWhitelist = enable;
+}
+
+void	UdpPacketHandler::addAddr(InetAddr const &addr)
+{
+	_whitelist.insert(addr);
+}
+
+void	UdpPacketHandler::removeAddr(InetAddr const &addr)
+{
+	_whitelist.erase(addr);
+}
+
+void	UdpPacketHandler::clearAddr()
+{
+	_whitelist.clear();
 }

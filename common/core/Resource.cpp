@@ -3,14 +3,15 @@
 #include <iostream>
 
 Resource::Resource()
-	: _use(*new uint32_t(1)), _resourceId(0), _resourceType(0), _resourceProvider(0)
+	: _resourceId(*new uint32_t(0)), _resourceType(0), _resourceProvider(0),
+	  _resourceName(*new std::string), _use(*new uint32_t(1))
 {
 }
 
 Resource::Resource(Resource const &other)
-	: _use(other._use), _resourceId(other._resourceId),
-	_resourceType(other._resourceType), _resourceProvider(other._resourceProvider),
-	_resourceName(other._resourceName)
+	: _resourceId(other._resourceId), _resourceType(other._resourceType),
+	 _resourceProvider(other._resourceProvider),
+	 _resourceName(other._resourceName), _use(other._use)
 {
 	++this->_use;
 }
@@ -25,24 +26,18 @@ Resource::~Resource()
 
 void		Resource::setResourceId(uint32_t id)
 {
-	this->_resourceId = id;
-}
-
-void		Resource::setResourceType(uint32_t id)
-{
-	this->_resourceType = id;
+	if (this->_resourceProvider)
+		this->_resourceProvider->changeId(*this, id);
+	else
+		this->_resourceId = id;
 }
 
 void		Resource::setResourceName(std::string const &name)
 {
-	this->_resourceName = name;
-}
-
-void		Resource::setResourceProvider(XMLProvider *provider)
-{
-	if (!this->_resourceProvider)
-		--this->_use;
-	this->_resourceProvider = provider;
+	if (this->_resourceProvider)
+		this->_resourceProvider->changeName(*this, name);
+	else
+		this->_resourceName = name;
 }
 
 uint32_t	Resource::getResourceId() const

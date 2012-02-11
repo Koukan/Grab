@@ -3,7 +3,7 @@
 #include "Converter.hpp"
 
 FontProvider::FontProvider()
-  : XMLProvider("font")
+  : XMLProvider("font", 2)
 {
 }
 
@@ -32,10 +32,11 @@ void	FontProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 	CoreFont *font = this->addFont(fontName, fontFile, fontSize);
 	if (font)
 	{
-		font->setResourceType(2);
-		font->setResourceId(this->_id++);
-		font->setResourceName(fontName);
-		font->setResourceProvider(this);
-		manager.addFont(*font);
+		this->XMLProvider::addResource(fontName, *font, manager);
 	}
+}
+
+void	FontProvider::addResource(Resource &resource, ResourceManager &manager)
+{
+	manager.addFont(static_cast<CoreFont&>(resource));
 }

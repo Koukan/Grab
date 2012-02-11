@@ -24,6 +24,7 @@ public:
   virtual Sprite	*addSprite(std::string const &) = 0;
   virtual void		addImage(std::string const &, Sprite &) = 0;
   virtual void		handleXML(TiXmlNode *, ResourceManager &);
+  virtual void		addResource(Resource &, ResourceManager &);
 
 private:
   // handle xml
