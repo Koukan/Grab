@@ -29,7 +29,7 @@ Packet::Packet(Packet const &other)
 	  this->_rindex = 0;
 	  this->_windex = 0;
 	  this->_size = other._size;
-	  this->_allocdata = false;
+	  this->_allocdata = other._allocdata;
 	  this->_data = other._data;
 	  this->_addr = other._addr;
 	  if (this->_data)
