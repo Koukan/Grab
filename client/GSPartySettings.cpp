@@ -31,7 +31,7 @@ void	GSPartySettings::back()
 
 void	GSPartySettings::createParty()
 {
-  if (_online)
+  //  if (_online)
     {
       if (NetworkModule::get().connect())
 	{
@@ -41,32 +41,28 @@ void	GSPartySettings::createParty()
 
 	  GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
 	  CommandDispatcher::get().pushCommand(*cmd);
-	  //	  GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
+	  GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
 	}
     }
-  else
+  /*  else
     {
-      GameState *shipSelection = new GSShipSelection();
+      GameState *shipSelection = new GSShipSelection(Net::Converter::toInt<int>(this->_nbPlayers), _online);
       GameStateManager::get().pushState(*shipSelection);
-    }
+      }*/
 }
 
-void	GSPartySettings::nbPlayerList(std::string const &nb)
+void	GSPartySettings::nbPlayerList(GUIElement const &nb)
 {
-  this->_nbPlayers = nb;
+  this->_nbPlayers = static_cast<GUIButton<GSPartySettings> const &>(nb).getName();
 }
 
-void	GSPartySettings::multiMode(std::string const &/*mode*/)
+void	GSPartySettings::multiMode(GUIElement const &/*mode*/)
 {
   _online = !_online;
 }
 
 void	GSPartySettings::onStart()
 {
-  // add providers
-  this->addProvider(*(new SFMLSpriteProvider));
-  this->addProvider(*(new SFMLFontProvider));
-
   // load xml
   this->load("resources/intro.xml");
 
@@ -81,14 +77,15 @@ void	GSPartySettings::onStart()
 
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Choose Ships", "buttonFont", *sprite, layout);
   new GUILabel("Player's number", "buttonFont", "", layout);
-  GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, "buttonFont", *leftArrow, *sprite, *rightArrow, layout);
+  GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, layout);
   if (_mode == Modes::STORY)
-    guilist->addLabel("1 Player");
-  guilist->addLabel("2 Players");
-  guilist->addLabel("3 Players");
-  guilist->addLabel("4 Players");
-  GUIList<GSPartySettings> *guilist2 = new GUIList<GSPartySettings>(*this, &GSPartySettings::multiMode, "buttonFont", *leftArrow, *sprite, *rightArrow, layout);
-  guilist2->addLabel("Local Only");
-  guilist2->addLabel("With Online Players");
+    guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "1 Player", "buttonFont", *sprite, 0)));
+  guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "2 Players", "buttonFont", *sprite, 0)));
+  guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "3 Players", "buttonFont", *sprite, 0)));
+  guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "4 Players", "buttonFont", *sprite, 0)));
+
+  GUIList<GSPartySettings> *guilist2 = new GUIList<GSPartySettings>(*this, &GSPartySettings::multiMode, *leftArrow, *rightArrow, layout);
+  guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Local Only", "buttonFont", *sprite, 0)));
+  guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "With Online Players", "buttonFont", *sprite, 0)));
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::back, "Back", "buttonFont", *sprite, layout);
 }

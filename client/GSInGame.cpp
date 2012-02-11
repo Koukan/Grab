@@ -232,43 +232,23 @@ void		GSInGame::throwShip()
 
 void		GSInGame::spawn(GameCommand const &event)
 {
-<<<<<<< HEAD
-  static Method<Resource::type> const	methods[] = {
-    {Resource::P1, &GSInGame::loadP1},
-    {Resource::P2, &GSInGame::loadP2},
-    {Resource::P3, &GSInGame::loadP3},
-    {Resource::P4, &GSInGame::loadP4},
-    {Resource::SINGLE_MONSTER, &GSInGame::loadMonster},
-    {Resource::BOMB_MONSTER, &GSInGame::loadMonster},
-    {Resource::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
-    {Resource::METROID_MONSTER, &GSInGame::loadMonster},
-    {Resource::BOSS_METROID, &GSInGame::loadMonster},
-    {Resource::RANDOM_MONSTER, &GSInGame::loadMonster},
-    {Resource::TRON_MONSTER, &GSInGame::loadMonster},
-    {Resource::DEFAULT_SHOT, &GSInGame::loadMonster},
-    {Resource::BOSS_SHOT, &GSInGame::loadMonster},
-    {Resource::ANIMATED_SHOT, &GSInGame::loadMonster},
-    {Resource::SHOT, &GSInGame::loadMonster},
-    {Resource::SHOOT, &GSInGame::loadShoot}
-=======
   static Method<Resources::type> const	methods[] = {
     {Resources::P1, &GSInGame::loadP1},
     {Resources::P2, &GSInGame::loadP2},
     {Resources::P3, &GSInGame::loadP3},
     {Resources::P4, &GSInGame::loadP4},
     {Resources::SINGLE_MONSTER, &GSInGame::loadMonster},
-	{Resources::BOMB_MONSTER, &GSInGame::loadMonster},
-	{Resources::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
-	{Resources::METROID_MONSTER, &GSInGame::loadMonster},
-	{Resources::BOSS_METROID, &GSInGame::loadMonster},
-	{Resources::RANDOM_MONSTER, &GSInGame::loadMonster},
-	{Resources::TRON_MONSTER, &GSInGame::loadMonster},
-	{Resources::DEFAULT_SHOT, &GSInGame::loadMonster},
-	{Resources::BOSS_SHOT, &GSInGame::loadMonster},
-	{Resources::ANIMATED_SHOT, &GSInGame::loadMonster},
-	{Resources::SHOT, &GSInGame::loadMonster},
-	{Resources::SHOOT, &GSInGame::loadShoot}
->>>>>>> 65ccad29f16a2f9535480283480c53f11a5f29ed
+    {Resources::BOMB_MONSTER, &GSInGame::loadMonster},
+    {Resources::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
+    {Resources::METROID_MONSTER, &GSInGame::loadMonster},
+    {Resources::BOSS_METROID, &GSInGame::loadMonster},
+    {Resources::RANDOM_MONSTER, &GSInGame::loadMonster},
+    {Resources::TRON_MONSTER, &GSInGame::loadMonster},
+    {Resources::DEFAULT_SHOT, &GSInGame::loadMonster},
+    {Resources::BOSS_SHOT, &GSInGame::loadMonster},
+    {Resources::ANIMATED_SHOT, &GSInGame::loadMonster},
+    {Resources::SHOT, &GSInGame::loadMonster},
+    {Resources::SHOOT, &GSInGame::loadShoot}
   };
 
   for (size_t i = 0;

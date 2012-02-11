@@ -10,8 +10,8 @@ public:
   GSPartySettings(Modes::Mode mode, std::string const &map = "");
   ~GSPartySettings();
 
-  void  nbPlayerList(std::string const &nbPlayer);
-  void	multiMode(std::string const &mode);
+  void  nbPlayerList(GUIElement const &nb);
+  void	multiMode(GUIElement const &mode);
 
   void	createParty();
   void	back();

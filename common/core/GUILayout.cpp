@@ -49,7 +49,6 @@ void GUILayout::unfocus()
   this->GUIElement::unfocus();
 }
 
-#include <iostream>
 void GUILayout::insertElementAtBegin(GUIElement &elem)
 {
   elem.unfocus();
@@ -92,7 +91,6 @@ void GUILayout::prevElement()
 	  this->_begin = it;
 	}
     }
-
   if (this->_focusElement != this->_elements.end())
     (*this->_focusElement)->unfocus();
   if (this->_focusElement == this->_elements.begin())
