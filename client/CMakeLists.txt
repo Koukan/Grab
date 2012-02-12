@@ -169,7 +169,6 @@ ELSE(WIN32)
 	add_subdirectory(../common/core ../common/libcore_build)
 ENDIF(WIN32)
 
-
 ###### linking net to core
 
 target_link_libraries(

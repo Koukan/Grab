@@ -1,6 +1,7 @@
-#if defined (_WIN32)
+//#if defined (_WIN32)
 //#include <windows.h>
-#endif
+//#endif
+
 #include "RendererManager.hpp"
 #include "GameStateManager.hpp"
 #include "DrawableObject.hpp"
