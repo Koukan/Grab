@@ -109,7 +109,7 @@ public:
     return _name;
   }
 
-private:
+protected:
   T *_instance;
   void (T::*_func)();
   ButtonSprite _sprite;

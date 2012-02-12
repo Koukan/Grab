@@ -115,6 +115,8 @@ set(SRCS
 	Wall.cpp
 	Wall.hpp
 	${GUI_SRC_DIR}/GUIButton.hpp
+	${GUI_SRC_DIR}/GUIBindButton.hpp
+	${GUI_SRC_DIR}/GUIBindButton.cpp
 	${GUI_SRC_DIR}/GUILabel.cpp
 	${GUI_SRC_DIR}/GUILabel.hpp
 	${GUI_SRC_DIR}/GUIList.hpp
