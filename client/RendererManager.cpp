@@ -1,5 +1,5 @@
 #if defined (_WIN32)
-#include <windows.h>
+//#include <windows.h>
 #endif
 #include "RendererManager.hpp"
 #include "GameStateManager.hpp"

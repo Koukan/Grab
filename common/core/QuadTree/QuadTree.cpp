@@ -163,7 +163,6 @@ int		QuadTree::findNodeNb(TreeElement &elem) const
 
 void	QuadTree::push(TreeElement &elem)
 {
-	std::cout << "quadtree push x = " << elem.getXElement() << ", y = " << elem.getYElement() << ", width = " << elem.getWidthElement() << ", height = " << elem.getHeightElement() << std::endl;
 	if (this->isInMiddle(elem))
 	{
 		this->_mainNode->getElements().insert(&elem);
@@ -251,14 +250,12 @@ void	QuadTree::pop(TreeElement &elem)
 
 void	QuadTree::move(TreeElement &elem)
 {
-	std::cout << "quadtree move x = " << elem.getXElement() << ", y = " << elem.getYElement() << ", width = " << elem.getWidthElement() << ", height = " << elem.getHeightElement() << std::endl;
 	Node *node = elem.getNode();
 	if (node)
 	{
 		if (node == this->_mainNode)
 		{
 			this->_mainNode->getElements().erase(&elem);
-			std::cout << "c'est toi ? 1" << std::endl;
 			this->push(elem);
 		}
 		else
@@ -290,7 +287,6 @@ void	QuadTree::move(TreeElement &elem)
 			}
 			else if (elem.getNodeNb() != nodeNb)
 			{
-				std::cout << "c'est toi ? 2" << std::endl;
 				this->push(elem);
 			}
 			else
