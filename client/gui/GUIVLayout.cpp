@@ -1,5 +1,6 @@
 #include "GUIVLayout.hpp"
 #include "GameStateManager.hpp"
+#include "Player.hpp"
 
 GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
   : GUILayout(x, y, width, height, padding, layout, nbElements), _upArrow(GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(GameStateManager::get().getCurrentState().getSprite(arrowDown))
@@ -19,12 +20,12 @@ GUIVLayout::~GUIVLayout()
 
 bool GUIVLayout::handleGUICommand(InputCommand const &command)
 {
-  if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up)
+  if (/*Player::isUpPressed(Player::JOYSTICK1, command)*/ command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up)
     {
       this->prevElement();
       return (true);
     }
-  else if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down)
+  else if (/*Player::isDownPressed(Player::JOYSTICK1, command)*/ command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down)
     {
       this->nextElement();
       return (true);

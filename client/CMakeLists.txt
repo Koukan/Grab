@@ -96,6 +96,8 @@ set(SRCS
 	PacketCommand.cpp
 	PacketCommand.hpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
+	Player.cpp
+	Player.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	${INCLUDES_COMMON_DIR}Resources.hpp
@@ -164,6 +166,7 @@ include_directories (
 	${CORE_BULLETML_DIR}
 	${CORE_TINYXML_DIR}
 	${GUI_INCLUDE_DIR}
+	./
 )
 
 find_package (Threads)
