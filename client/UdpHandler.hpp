@@ -24,6 +24,7 @@ private:
 	bool		testPacketId(uint32_t id);
 
 	uint32_t	_lastPacketId;
-	uint64_t	_latency;
+	double		_latency;
+	uint64_t	_nblatency;
 };
 

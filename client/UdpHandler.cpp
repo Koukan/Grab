@@ -4,7 +4,7 @@
 #include "CommandDispatcher.hpp"
 #include "GameCommand.hpp"
 
-UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0)
+UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0), _nblatency(0)
 {
 	this->enableWhitelist(true);
 }
@@ -116,7 +116,8 @@ int         UdpHandler::ping(Net::Packet &, uint64_t time_recv)
 
 int         UdpHandler::pong(Net::Packet &, uint64_t time_recv)
 {
-	_latency = (Net::Clock::getMsSinceEpoch() - time_recv) / 2;
+	_nblatency++;
+	_latency = (_latency + ((Net::Clock::getMsSinceEpoch() - time_recv) / 2)) / 2;
 	return 1;
 }
 
