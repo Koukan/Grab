@@ -21,13 +21,19 @@ class GlobalResourceManager : public XMLProvider, public Singleton<GlobalResourc
 	void			load(std::string const &path, ResourceManager &manager);
 	void			addProvider(XMLProvider &provider);
 	BulletMLParser	*addBulletParser(std::string const &path, std::string const &name, ResourceManager &manager);
+
+	// getter
 	XMLProvider		*getProvider(std::string const &name) const;
 	XMLProvider		*getProvider(uint32_t type) const;
 	Sprite			*getSprite(std::string const &name) const;
+	Sprite			*getSprite(uint32_t id) const;
 	CoreFont		*getFont(std::string const &name) const;
+	CoreFont		*getFont(uint32_t id) const;
 	BulletMLParser	*getBulletParser(std::string const &name) const;
+	BulletMLParser	*getBulletParser(uint32_t id) const;
 	Resource		*getResource(std::string const &name, std::string const &provider) const;
-	Resource		*getResource(std::string const &name, uint32_t type) const;
+	Resource		*getResource(std::string const &name, uint8_t type) const;
+	Resource		*getResource(uint32_t id, uint8_t type) const;
 
 	template <typename T>
 	struct			Method
@@ -38,7 +44,7 @@ class GlobalResourceManager : public XMLProvider, public Singleton<GlobalResourc
 
   private:
 	typedef std::map<std::string, XMLProvider *>	ProviderMap;
-	typedef std::map<uint32_t, XMLProvider *>		IdMap;
+	typedef std::map<uint8_t, XMLProvider *>		IdMap;
 
 	void			handleXML(TiXmlNode *parent, ResourceManager &manager);
 	void			loadDocument(TiXmlNode *parent, ResourceManager &manager);

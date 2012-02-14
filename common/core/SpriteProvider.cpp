@@ -36,11 +36,6 @@ void	SpriteProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 	}
 }
 
-void	SpriteProvider::addResource(Resource &resource, ResourceManager &manager)
-{
-	manager.addSprite(static_cast<Sprite&>(resource));
-}
-
 void	SpriteProvider::imageSprite(TiXmlElement *parent, Sprite *sprite)
 {
 	static Method<Sprite*> const	methods[] = {
