@@ -16,7 +16,7 @@
 
 NET_BEGIN_NAMESPACE
 
-class NET_DLLREQ KqueuePolicy : public Reactor
+class NET_DLLREQ KqueuePolicy : public Reactor, public Socket
 {
 public:
 	KqueuePolicy();
@@ -30,7 +30,6 @@ public:
 	int		cancelTimer(NetHandler &handler);
 
 private:
-	int		_kqueuefd;
 	size_t	_timerid;
 	std::map<NetHandler*, size_t>   	_timers;
 };

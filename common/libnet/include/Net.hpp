@@ -6,6 +6,7 @@
 #include "Clock.hpp"
 #include "UdpPacketHandler.hpp"
 #include "SizeHeaderPacketHandler.hpp"
+#include "RingBufferPacketHandler.hpp"
 #include "Error.hpp"
 #include "PoolObject.hpp"
 #include "thread/Mutex.hpp"

@@ -4,10 +4,13 @@
 #include "CommandHandler.hpp"
 #include "Singleton.hpp"
 #include "ButtonSprite.hpp"
+#include "Module.hpp"
+#include "Input.hpp"
+#include "GUICommand.hpp"
 
 #include <list>
 
-class GUIManager : public CommandHandler, public GUILayout
+class GUIManager : public Module /*CommandHandler*/, public GUILayout
 {
 public:
   GUIManager();
@@ -16,6 +19,13 @@ public:
   virtual bool		handleCommand(Command const &command);
   void			registerButtonSprite(ButtonSprite &sprite);
 
+  virtual	void		init();
+  virtual void		update(double elapsedTime = 0);
+  virtual void		destroy();
+
 private:
   std::list<ButtonSprite *> _spriteButtons;
+  GUICommand::directionState _direction[4];
+
+  bool	updateDirection(InputCommand const &cmd);
 };
