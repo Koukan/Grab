@@ -97,6 +97,13 @@ Sprite		*GlobalResourceManager::getSprite(std::string const &name) const
 	return 0;
 }
 
+Sprite		*GlobalResourceManager::getSprite(uint32_t id) const
+{
+	if (this->_spriteProvider)
+		return static_cast<Sprite*>(this->_spriteProvider->getResource(id));
+	return 0;
+}
+
 CoreFont	*GlobalResourceManager::getFont(std::string const &name) const
 {
 	if (this->_fontProvider)
@@ -104,10 +111,24 @@ CoreFont	*GlobalResourceManager::getFont(std::string const &name) const
 	return 0;
 }
 
+CoreFont	*GlobalResourceManager::getFont(uint32_t id) const
+{
+	if (this->_fontProvider)
+		return static_cast<CoreFont*>(this->_fontProvider->getResource(id));
+	return 0;
+}
+
 BulletMLParser	*GlobalResourceManager::getBulletParser(std::string const &name) const
 {
 	if (this->_bulletProvider)
 		return static_cast<BulletMLParser*>(this->_bulletProvider->getResource(name));
+	return 0;
+}
+
+BulletMLParser	*GlobalResourceManager::getBulletParser(uint32_t id) const
+{
+	if (this->_bulletProvider)
+		return static_cast<BulletMLParser*>(this->_bulletProvider->getResource(id));
 	return 0;
 }
 
@@ -120,7 +141,7 @@ Resource	*GlobalResourceManager::getResource(std::string const &name, std::strin
 	return 0;
 }
 
-Resource	*GlobalResourceManager::getResource(std::string const &name, uint32_t type) const
+Resource	*GlobalResourceManager::getResource(std::string const &name, uint8_t type) const
 {
 	XMLProvider	*provider = this->getProvider(type);
 
@@ -129,6 +150,14 @@ Resource	*GlobalResourceManager::getResource(std::string const &name, uint32_t t
 	return 0;
 }
 
+Resource	*GlobalResourceManager::getResource(uint32_t id, uint8_t type) const
+{
+	XMLProvider	*provider = this->getProvider(type);
+
+	if (provider)
+		return provider->getResource(id);
+	return 0;
+}
 void		GlobalResourceManager::handleXML(TiXmlNode *parent, ResourceManager &manager)
 {
 	static Method<TiXmlNode::NodeType> const	methods[] = {

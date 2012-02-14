@@ -30,7 +30,7 @@ class Resource
 
   private:
 	uint32_t		&_resourceId;
-	uint32_t		_resourceType;
+	uint8_t			_resourceType;
 	XMLProvider		*_resourceProvider;
 	std::string		&_resourceName;
 	uint32_t		&_use;

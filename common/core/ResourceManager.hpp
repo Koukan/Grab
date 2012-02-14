@@ -15,22 +15,17 @@ class ResourceManager
 	Sprite			*getSprite(std::string const &name) const;
 	CoreFont		*getFont(std::string const &name) const;
 	BulletMLParser	*getBulletParser(std::string const &name) const;
-	Resource		*getResource(std::string const &name) const;
+	Resource		*getResource(std::string const &name, uint8_t type) const;
+	Sprite			*getSprite(uint32_t id) const;
+	CoreFont		*getFont(uint32_t id) const;
+	BulletMLParser	*getBulletMLParser(uint32_t id) const;
+	Resource		*getResource(uint32_t id, uint8_t type) const;
 
-	void			addSprite(Sprite &);
-	void			addFont(CoreFont &);
-	void			addBulletParser(BulletMLParser &);
 	void			addBulletParser(std::string const &path, std::string const &name);
-	void			addResource(Resource &);
+	void			addResource(Resource &resource);
 
-  private:
-	typedef std::map<std::string, Sprite*>			SpriteMap;
-	typedef std::map<std::string, CoreFont*>		FontMap;
-	typedef std::map<std::string, BulletMLParser*>	BulletMap;
-	typedef std::map<std::string, Resource*>		ResourceMap;
+	private:
+	typedef	std::list<Resource *>	ResourceList;
 
-	SpriteMap		_sprites;
-	FontMap			_fonts;
-	BulletMap		_bullets;
-	ResourceMap		_resources;
+	ResourceList			_resources;
 };
