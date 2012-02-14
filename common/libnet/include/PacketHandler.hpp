@@ -13,66 +13,10 @@ template<typename IOType = SocketStream>
 class PacketHandler : public Service<IOType>
 {
 public:
-	PacketHandler(size_t size = 2048, std::string const &deli = "") :  _delimiter(deli), _inpacket(0)
-	{
-		this->setSize(size);
-	}
-
 	virtual ~PacketHandler()
 	{
 		if (_inpacket)
 		  delete _inpacket;
-	}
-
-	virtual	int	handleInput(Socket &)
-	{	
-		int				ret = 0;
-		do
-		{
-			 ret = this->_iohandler.recvPacket(*_inpacket);
-			 if (ret > 0)
-			 {
-			  if (_inpacket->isFull())
-			  {
-				  _inpacket->wr_ptr(0);
-				  if (_delimiter.empty())
-				  {
-					Packet	packet(*_inpacket);
-					if (this->handleInputPacket(packet) <= 0)
-						return -1;
-				  }
-			  }
-			  else if (!_delimiter.empty())
-			  {
-				  size_t	windex = _inpacket->getWindex();
-				  char	*base = _inpacket->base();
-				  char	*current = base;
-				  size_t prev = std::string::npos;
-				  _tmp.assign(base, windex);
-				  size_t pos = _tmp.find(_delimiter, 0);
-				  for (; pos != std::string::npos; pos = _tmp.find(_delimiter, pos + _delimiter.size()))
-				  {
-					  base[pos] = '\0';
-					  _temp.assign(current, &base[pos] - current);
-					  Packet	result(_temp, _temp._vec.iov_len);
-					  if (this->handleInputPacket(result) <= 0)
-						  return -1;
-					  current =  &base[pos + _delimiter.size()];
-					  prev = pos;
-				  }
-				  if (prev != std::string::npos)
-				  {
-					  prev = windex - prev - _delimiter.size();
-					  ::memmove(base, current, prev);
-					  _inpacket->wr_ptr(prev);
-				  }
-				 }
-			  }
-			  if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
-				return 1;
-			}
-			while (!this->_iohandler.isBlocking());
-			return ret;
 	}
 
 	virtual	int	handleOutput(Socket &sock)
@@ -110,11 +54,6 @@ public:
 		_inpacket = new Packet(size);
 	}
 
-	void	setDelimiter(std::string const &deli)
-	{
-		this->_delimiter = deli;
-	}
-
 	virtual int handleInputPacket(Packet &)
 	{
 		return 0;
@@ -130,10 +69,12 @@ public:
 
 
 protected:
-	std::string			_tmp;
-	std::string			_delimiter;
+	PacketHandler(size_t size = 2048) :  _inpacket(0)
+	{
+		this->setSize(size);
+	}
+
 	Packet				*_inpacket;
-	DataBlock			_temp;
 	std::list<Packet>	_outputPacket;
 };
 
