@@ -58,9 +58,6 @@ set(SRCS
 	ServerResourceManager.hpp
 	Ship.cpp
 	Ship.hpp
-	Task.hpp
-	ThreadPool.cpp
-	ThreadPool.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	main.cpp

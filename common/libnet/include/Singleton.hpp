@@ -37,9 +37,7 @@ class Singleton : private NonCopyable
 
     protected:
 	Singleton()
-	{
-			//atexit(&Singleton<T, LockingStrategy>::kill);
-	}
+	{}
 
 	virtual ~Singleton(){}
 

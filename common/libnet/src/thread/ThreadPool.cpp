@@ -1,5 +1,7 @@
 #include "ThreadPool.hpp"
 
+NET_USE_NAMESPACE
+
 ThreadPool::ThreadPool()
 {
 }
@@ -17,10 +19,7 @@ bool			ThreadPool::init(size_t nbThread)
 		thread = new Net::Thread(this, &ThreadPool::handleTask);
 		_threadsList.push_back(thread);
 		if (!thread->start())
-		  {
-		    //		    Net::printLastError();
 		    return false;
-		  }
 	}
 	return true;
 }

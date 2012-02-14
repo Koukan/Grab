@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Task.hpp"
+#include "Net.hpp"
 #include "Game.hpp"
 
-class GameTask : public Task
+class GameTask : public Net::Task
 {
   public:
     GameTask(Game &game, double elapsedTime);
