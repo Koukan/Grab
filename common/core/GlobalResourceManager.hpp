@@ -12,7 +12,7 @@ class SpriteProvider;
 class FontProvider;
 class BulletResourceManager;
 
-class GlobalResourceManager : public XMLProvider, public Singleton<GlobalResourceManager>
+class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalResourceManager>
 {
   public:
 	GlobalResourceManager();

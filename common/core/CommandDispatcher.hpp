@@ -3,7 +3,7 @@
 #include "Singleton.hpp"
 #include "Module.hpp"
 
-class CommandDispatcher : public Module, public Singleton<CommandDispatcher>
+class CommandDispatcher : public Module, public Net::Singleton<CommandDispatcher>
 {
   public:
     CommandDispatcher();

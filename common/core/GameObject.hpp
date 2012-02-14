@@ -2,11 +2,12 @@
 
 #include <stdint.h>
 #include <cstdlib>
+#include "Net.hpp"
 
 class GameObjectManager;
 class Group;
 
-class GameObject
+class GameObject : public Net::PoolObject
 {
 public:
 	GameObject(double x = 0, double y = 0, Group *group = 0);
