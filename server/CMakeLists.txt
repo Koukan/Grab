@@ -33,8 +33,6 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp
 	main.cpp
-	File.cpp
-	File.hpp
 	Game.cpp
 	Game.hpp
 	GameCommand.hpp

@@ -26,6 +26,14 @@ DataBlock::DataBlock(char *buffer, size_t size) : _allocated(false)
 	this->assign(buffer, size);
 }
 
+DataBlock::DataBlock(std::string const &data) : _allocated(true)
+{
+	this->_vec.iov_base = (data.size() <= 512) ? reinterpret_cast<char*>(PoolAllocator::get().allocate(data.size())) : reinterpret_cast<char*>(::malloc(data.size()));
+	this->_vec.iov_len = data.size();
+	this->_refcnt = 1;
+	memcpy(this->_vec.iov_base, data.c_str(), data.size());
+}
+
 DataBlock::DataBlock(struct iovec &vec) : _allocated(false)
 {
   this->_vec = vec;

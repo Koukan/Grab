@@ -37,6 +37,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}CommandHandler.hpp
 	${CORE_DIR}Converter.hpp
 	${CORE_DIR}DrawableObject.hpp
+	${CORE_DIR}File.hpp
 	${CORE_DIR}FontProvider.hpp
 	${CORE_DIR}GameObject.hpp
 	${CORE_DIR}GameObjectManager.hpp
@@ -94,6 +95,7 @@ set(SRCS_CORE
 	${CORE_DIR}GameObjectManager.cpp
 	${CORE_DIR}GameState.cpp
 	${CORE_DIR}GameStateObserver.cpp
+	${CORE_DIR}File.cpp
 	${CORE_DIR}FontProvider.cpp
 	${CORE_DIR}GlobalResourceManager.cpp
 	${CORE_DIR}GUIManager.cpp

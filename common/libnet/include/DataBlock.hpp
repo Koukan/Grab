@@ -8,6 +8,7 @@
 #ifndef DATABLOCK_HPP_
 #define DATABLOCK_HPP_
 
+#include <string>
 #include "NetDef.hpp"
 #include "network.h"
 #include "PoolObject.hpp"
@@ -20,6 +21,7 @@ public:
 	DataBlock();
 	DataBlock(size_t size);
 	DataBlock(char *buffer, size_t size);
+	DataBlock(std::string const &data);
 	DataBlock(struct iovec &vec);
 	~DataBlock();
 
