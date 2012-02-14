@@ -1,5 +1,4 @@
 #include "GUIManager.hpp"
-#include "Game.hpp"
 
 GUIManager::GUIManager()
   : GUILayout(0, 0, 0, 0, 0, 0, 0)

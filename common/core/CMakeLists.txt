@@ -45,6 +45,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}GameStateManager.hpp
 	${CORE_DIR}GameStateObserver.hpp
 	${CORE_DIR}GlobalResourceManager.hpp
+	${CORE_DIR}GUICommand.hpp
 	${CORE_DIR}GUIManager.hpp
 	${CORE_DIR}GUILayout.hpp
 	${CORE_DIR}GUIElement.hpp
@@ -72,6 +73,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}Sprite.hpp
 	${CORE_DIR}SpriteProvider.hpp
 	${CORE_DIR}TimeEffectManager.hpp
+	${CORE_DIR}XMLProvider.hpp
 	${CORE_CALLBACK_DIR}Callback_Impl.hpp
 	${CORE_QUADTREE_INCLUDE_DIR}QuadTree.hpp
 	${CORE_BULLETML_DIR}bulletmlparser.h

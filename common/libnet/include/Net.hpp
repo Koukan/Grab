@@ -14,4 +14,5 @@
 #include "thread/Thread.hpp"
 #include "thread/ConditionVar.hpp"
 #include "thread/TSS.hpp"
+#include "thread/Task.hpp"
 

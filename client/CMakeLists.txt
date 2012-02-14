@@ -87,7 +87,6 @@ set(SRCS
 	GSPartySettings.hpp
 	GSShipSelection.cpp
 	GSShipSelection.hpp
-	GUICommand.hpp
 	InputModule.cpp
 	InputModule.hpp
 	Modes.hpp

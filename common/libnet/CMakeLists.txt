@@ -50,6 +50,7 @@ set(INCLUDES_NET
 	${NET_MUTEX_INCLUDE_DIR}Mutex.hpp
 	${NET_MUTEX_INCLUDE_DIR}Thread.hpp
 	${NET_MUTEX_INCLUDE_DIR}ThreadPool.hpp
+	${NET_MUTEX_INCLUDE_DIR}Task.hpp
 	${NET_MUTEX_INCLUDE_DIR}ConditionVar.hpp
 )
 

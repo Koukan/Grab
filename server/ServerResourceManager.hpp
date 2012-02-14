@@ -6,7 +6,7 @@
 #include "ResourceManager.hpp"
 #include "File.hpp"
 
-class ServerResourceManager : public Singleton<ServerResourceManager>, public SpriteProvider, public ResourceManager
+class ServerResourceManager : public Net::Singleton<ServerResourceManager>, public SpriteProvider, public ResourceManager
 {
   public:
     ServerResourceManager();
