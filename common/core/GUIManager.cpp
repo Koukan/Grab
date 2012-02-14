@@ -2,9 +2,8 @@
 #include "Game.hpp"
 
 GUIManager::GUIManager()
-  : Module("GUI", 100), GUILayout(0, 0, 0, 0, 0, 0, 0)
+  : GUILayout(0, 0, 0, 0, 0, 0, 0)
 {
-  Game::get().loadModule(*this);
 }
 
 GUIManager::~GUIManager()
