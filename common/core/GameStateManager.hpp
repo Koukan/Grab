@@ -3,7 +3,7 @@
 #include "GSManager.hpp"
 #include "Singleton.hpp"
 
-class GameStateManager : public GSManager, public Singleton<GameStateManager>
+class GameStateManager : public GSManager, public Net::Singleton<GameStateManager>
 {
   public:
     GameStateManager(){}

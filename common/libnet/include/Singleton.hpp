@@ -1,25 +1,30 @@
 #ifndef _SINGLETON_
 #define _SINGLETON_
 
+#include "NetDef.hpp"
 #include "NonCopyable.hpp"
+#include "Mutex.hpp"
+#include "NullMutex.hpp"
 
-template <typename T>
+NET_BEGIN_NAMESPACE
+
+template <typename T, typename LockingStrategy = NullMutex>
 class Singleton : private NonCopyable
 {
     public:
         static T        *getInstance()
         {
             if (_singleton == 0)
-              _singleton = new T;
+            	allocSingleton();
             return (static_cast<T*>(_singleton));
         }
 
         static T        &get()
         {
             if (_singleton == 0)
-              _singleton = new T;
+				allocSingleton();
             return *(static_cast<T*>(_singleton));
-        }
+        }	
 
         static void     kill()
         {
@@ -31,13 +36,29 @@ class Singleton : private NonCopyable
         }
 
     protected:
-	Singleton(){}
+	Singleton()
+	{
+			//atexit(&Singleton<T, LockingStrategy>::kill);
+	}
+
 	virtual ~Singleton(){}
 
     private:
-        static T    	*_singleton;
+		static void				allocSingleton()
+		{	
+			_lockstrategy.lock();
+			if (_singleton == 0)
+				_singleton = new T;
+			_lockstrategy.unlock();
+		}
+
+        static T    			*_singleton;
+		static LockingStrategy	_lockstrategy;
 };
 
-template <typename T> T		*Singleton<T>::_singleton = 0;
+template <typename T, typename LockingStrategy> T		*Singleton<T, LockingStrategy>::_singleton = 0;
+template <typename T, typename LockingStrategy> LockingStrategy		Singleton<T, LockingStrategy>::_lockstrategy;
 
-#endif /* _SINGLETON_ */
+NET_END_NAMESPACE
+
+#endif /* _SINGLETON_ */ 

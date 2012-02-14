@@ -12,7 +12,7 @@ GUIElement::GUIElement(int x, int y, int width, int height, GUILayout *layout)
 GUIElement::GUIElement(int x, int y, int width, int height)
   : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true)
 {
-  Singleton<GameStateManager>::get().getCurrentState().getGUI().insertElementAtEnd(*this);
+	GameStateManager::get().getCurrentState().getGUI().insertElementAtEnd(*this);
 }
 
 GUIElement::~GUIElement()

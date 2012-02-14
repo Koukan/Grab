@@ -72,7 +72,6 @@ set(INCLUDES_CORE
 	${CORE_DIR}Sprite.hpp
 	${CORE_DIR}SpriteProvider.hpp
 	${CORE_DIR}TimeEffectManager.hpp
-	${CORE_DIR}Singleton.hpp
 	${CORE_CALLBACK_DIR}Callback_Impl.hpp
 	${CORE_QUADTREE_INCLUDE_DIR}QuadTree.hpp
 	${CORE_BULLETML_DIR}bulletmlparser.h
