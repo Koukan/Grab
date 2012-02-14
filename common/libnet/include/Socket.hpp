@@ -18,7 +18,8 @@ class NetHandler;
 
 class NET_DLLREQ Socket
 {
-public:
+public:	
+	virtual ~Socket();
 	int	open(InetAddr const &addr, int type, int protocol);
 	int	close();
 
@@ -31,10 +32,9 @@ public:
 	void	setHandle(Handle sock);
 	NetHandler			*getNetHandler() const;
 	void				setNetHandler(NetHandler *handler);
-	Socket();
-	virtual ~Socket();
 
 protected:
+	Socket();
 
 	Handle				_handle;
 	mutable InetAddr	*_local;

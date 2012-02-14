@@ -19,12 +19,11 @@ NET_USE_NAMESPACE
 
 EpollPolicy::EpollPolicy()
 {
-  _epollfd = epoll_create(1);
+  _handle = epoll_create(1);
 }
 
 EpollPolicy::~EpollPolicy()
 {
-  ::close(_epollfd);
 }
 
 int		EpollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
@@ -40,13 +39,13 @@ int		EpollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
 	  ev.events |= EPOLLIN;
   if (mask & Reactor::WRITE)
 	  ev.events |= EPOLLOUT;
-  return ::epoll_ctl(_epollfd, mode, socket.getHandle(), &ev);
+  return ::epoll_ctl(_handle, mode, socket.getHandle(), &ev);
 }
 
 int		EpollPolicy::removeHandler(Socket &socket)
 {
   socket.setNetHandler(0);
-  return ::epoll_ctl(_epollfd, EPOLL_CTL_DEL, socket.getHandle(), 0);
+  return ::epoll_ctl(_handle, EPOLL_CTL_DEL, socket.getHandle(), 0);
 }
 
 int		EpollPolicy::waitForEvent(int timeout)
@@ -58,7 +57,7 @@ int		EpollPolicy::waitForEvent(int timeout)
 
   while	(_wait)
   {
-	ret = ::epoll_wait(_epollfd, ev, 50, timeout);
+	ret = ::epoll_wait(_handle, ev, 50, timeout);
 	if (ret == -1 && errno != EINTR)
 		return -1;
 	else if (ret == 0 && timeout == 0)
