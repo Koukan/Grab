@@ -3,7 +3,9 @@
 
 #include "GameState.hpp"
 
-class GameStateKeeper
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ GameStateKeeper
 {
   public:
     virtual ~GameStateKeeper(){}
@@ -19,5 +21,7 @@ class GameStateInstance : public GameStateKeeper
      return new T;
    }
 };
+
+CORE_END_NAMESPACE
 
 #endif		/* _GAMESTATEINSTANCE_ */

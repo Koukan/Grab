@@ -1,5 +1,7 @@
 #include "XMLProvider.hpp"
 
+CORE_USE_NAMESPACE
+
 XMLProvider::XMLProvider(std::string const &handledTag, uint8_t type)
   : handledTag(handledTag), type(type), _id(1)
 {

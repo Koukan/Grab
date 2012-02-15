@@ -6,7 +6,9 @@
 #include "GameStateObserver.hpp"
 #include "Singleton.hpp"
 
-class PhysicManager : public GameStateObserver
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ PhysicManager : public GameStateObserver
 {
   public:
     PhysicManager();
@@ -21,5 +23,7 @@ class PhysicManager : public GameStateObserver
     static void		collide(GameObjectManager::groupsMap const&,
 							GameObjectManager::collisionGroupsMap const&);
 };
+
+CORE_END_NAMESPACE
 
 #endif		/* _PHYSICMANAGER_ */

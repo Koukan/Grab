@@ -1,5 +1,7 @@
 #include "Player.hpp"
 
+CORE_USE_NAMESPACE
+
 bool Player::isLeftPressed(Player::type type, InputCommand const &cmd)
 {
   return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&

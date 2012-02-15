@@ -3,6 +3,8 @@
 #include "GlobalResourceManager.hpp"
 #include <iostream>
 
+CORE_USE_NAMESPACE
+
 ResourceManager::ResourceManager()
 {
 }

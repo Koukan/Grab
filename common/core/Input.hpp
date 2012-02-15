@@ -3,6 +3,8 @@
 
 #include "Command.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 namespace Keyboard
 {
     enum Key
@@ -142,7 +144,7 @@ namespace Joystick
     };
 };
 
-class InputCommand : public Command
+class CORE_DLLREQ InputCommand : public Command
 {
 public :
 	InputCommand() : Command("Input")
@@ -245,5 +247,7 @@ public :
         JoystickConnectEvent JoystickConnect; 
 	};
 };
+
+CORE_END_NAMESPACE
 
 #endif // SFML_EVENT_HPP

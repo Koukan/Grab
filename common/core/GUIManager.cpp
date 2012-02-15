@@ -1,5 +1,7 @@
 #include "GUIManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GUIManager::GUIManager()
   : GUILayout(0, 0, 0, 0, 0, 0, 0)
 {

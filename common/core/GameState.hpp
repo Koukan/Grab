@@ -9,9 +9,11 @@
 #include "InputManager.hpp"
 #include "GUIManager.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class Game;
 
-class GameState : public GameObjectManager, public ResourceManager,
+class CORE_DLLREQ GameState : public GameObjectManager, public ResourceManager,
 		  public CommandHandler
 {
 public:
@@ -43,5 +45,7 @@ private:
   GUIManager	_GUIManager;
   InputManager  _inputManager;
 };
+
+CORE_END_NAMESPACE
 
 #endif		/* _GAMESTATE_ */

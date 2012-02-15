@@ -1,6 +1,7 @@
 #include "LoadXMLProvider.hpp"
 #include "GlobalResourceManager.hpp"
 
+CORE_USE_NAMESPACE
 
 LoadXMLProvider::LoadXMLProvider()
 	: XMLProvider("load", 0)

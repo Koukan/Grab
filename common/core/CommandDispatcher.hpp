@@ -3,7 +3,9 @@
 #include "Singleton.hpp"
 #include "Module.hpp"
 
-class CommandDispatcher : public Module, public Net::Singleton<CommandDispatcher>
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ CommandDispatcher : public Module, public Net::Singleton<CommandDispatcher>
 {
   public:
     CommandDispatcher();
@@ -12,3 +14,5 @@ class CommandDispatcher : public Module, public Net::Singleton<CommandDispatcher
 	virtual void		update(double elapsedTime = 0);
 	virtual void		destroy();
 };
+
+CORE_END_NAMESPACE

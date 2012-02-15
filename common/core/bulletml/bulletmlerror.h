@@ -4,6 +4,7 @@
 #include "bulletmlcommon.h"
 
 #include <stdexcept>
+#include "CoreDef.hpp"
 
 /// Ç≥Ç∑Ç™Ç…Ç‡Ç§ÇøÇÂÇ¡Ç∆è[é¿Ç≥ÇπÇÒÇ∆ÇÀÇ¶
 class BulletMLError : public std::runtime_error {

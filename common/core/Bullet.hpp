@@ -5,7 +5,9 @@
 #include "ResourceManager.hpp"
 #include "HitBox.hpp"
 
-class Bullet : public PhysicObject
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ Bullet : public PhysicObject
 {
   public:
     Bullet(double x = 0, double y = 0, double vx = 0, double vy = 0);
@@ -20,3 +22,5 @@ class Bullet : public PhysicObject
   protected:
     Sprite	*_sprite;
 };
+
+CORE_END_NAMESPACE

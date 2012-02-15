@@ -7,9 +7,7 @@
 #define BULLETMLPARSER_TINYXML_H_
 
 #include <string>
-
 #include "bulletmlcommon.h"
-
 #include "../tinyxml/tinyxml.h"
 
 class BulletMLNode;

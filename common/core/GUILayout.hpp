@@ -3,6 +3,8 @@
 #include <list>
 #include "GUIElement.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class GUILayout : public GUIElement
 {
 public:
@@ -33,3 +35,5 @@ protected:
   int _nbElements;
   bool _dispatch;
 };
+
+CORE_END_NAMESPACE

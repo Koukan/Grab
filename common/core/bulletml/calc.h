@@ -3,6 +3,7 @@
 
 #include "formula.h"
 #include "bulletmlcommon.h"
+#include "CoreDef.hpp"
 
 #include <string>
 #include <memory>

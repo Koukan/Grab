@@ -61,7 +61,7 @@ void BulletMLParser::build() {
 	IDPool::quit();
 }
 
-Resource		*BulletMLParser::clone() const
+CORE_NAMESPACE::Resource		*BulletMLParser::clone() const
 {
 	return const_cast<BulletMLParser*>(this);
 }

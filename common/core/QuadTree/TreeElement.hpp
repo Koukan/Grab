@@ -1,8 +1,12 @@
 #pragma once
 
+#include "CoreDef.hpp"
+
+CORE_BEGIN_NAMESPACE
+
 class Node;
 
-class TreeElement
+class CORE_DLLREQ TreeElement
 {
 public:
 	TreeElement(void);
@@ -31,3 +35,4 @@ private:
 	int		_absY;
 };
 
+CORE_END_NAMESPACE

@@ -2,6 +2,8 @@
 #include "SpriteProvider.hpp"
 #include "Converter.hpp"
 
+CORE_USE_NAMESPACE
+
 SpriteProvider::SpriteProvider()
   : XMLProvider("sprite", 1)
 {
@@ -65,9 +67,9 @@ void	SpriteProvider::scaleSprite(TiXmlElement *parent, Sprite *sprite)
 	{
 		name = attrib->Name();
 		if (name == "x")
-			x = Converter::toInt<float>(attrib->Value());
+		  x = Net::Converter::toInt<float>(attrib->Value());
 		else if (name == "y")
-			y = Converter::toInt<float>(attrib->Value());
+		  y = Net::Converter::toInt<float>(attrib->Value());
 	}
 	sprite->setScale(x, y);
 }
@@ -81,7 +83,7 @@ void	SpriteProvider::animationSprite(TiXmlElement *parent, Sprite *sprite)
 	{
 		name = attrib->Name();
 		if (name == "speed")
-			sprite->setSpeed(Converter::toInt<double>(attrib->Value()));
+		  sprite->setSpeed(Net::Converter::toInt<double>(attrib->Value()));
 		else if (name == "loop")
 			sprite->setRepeat((attrib->Value() == "yes") ? true : false);
 		else if (name == "pingpong")
@@ -100,9 +102,9 @@ void	SpriteProvider::translateSprite(TiXmlElement *parent, Sprite *sprite)
 	{
 		name = attrib->Name();
 		if (name == "x")
-			x = Converter::toInt<int>(attrib->Value());
+		  x = Net::Converter::toInt<int>(attrib->Value());
 		else if (name == "y")
-			y = Converter::toInt<int>(attrib->Value());
+		  y = Net::Converter::toInt<int>(attrib->Value());
 	}
 	sprite->setTranslate(x, y);
 }
@@ -137,9 +139,9 @@ void		SpriteProvider::get2Int(std::string const &data,
 {
 	size_t	pos = data.find(sep);
 
-	a = Converter::toInt<int>(data);
+	a = Net::Converter::toInt<int>(data);
 	if (pos == std::string::npos)
 		b = 0;
 	else
-		b = Converter::toInt<int>(data.substr(pos + sep.size()));
+	  b = Net::Converter::toInt<int>(data.substr(pos + sep.size()));
 }

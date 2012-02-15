@@ -11,12 +11,11 @@
 
 #include <string>
 #include <vector>
-
 #include <stdio.h>
-
 #include "Resource.hpp"
+#include "CoreDef.hpp"
 
-class BulletMLParser : public Resource
+class BulletMLParser : public CORE_NAMESPACE::Resource
 {
 protected:
     typedef std::vector<std::string> MyAttributes;

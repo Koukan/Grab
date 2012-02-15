@@ -1,6 +1,8 @@
 #include "GameState.hpp"
 #include "CommandDispatcher.hpp"
 
+CORE_USE_NAMESPACE
+
 GameState::GameState(const std::string &name) : name(name), _paused(NONE), _GUIManager(/*this*/), _inputManager(*this)
 {
 	this->registerHandler(this->_GUIManager);

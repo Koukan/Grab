@@ -7,7 +7,9 @@
 #include "Observer.hpp"
 #include "Observable.hpp"
 
-class GameStateObserver : public Module, public Observer<std::list<GameState*> >
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ GameStateObserver : public Module, public Observer<std::list<GameState*> >
 {
 public:
 	virtual ~GameStateObserver();
@@ -19,3 +21,5 @@ protected:
 
 	std::list<GameState*>	_glist;
 };
+
+CORE_END_NAMESPACE

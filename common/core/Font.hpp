@@ -4,6 +4,8 @@
 #include "DrawableObject.hpp"
 #include "Resource.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class CoreFont : public DrawableObject, public Resource
 {
 public:
@@ -21,3 +23,5 @@ public:
 	virtual int		getWidth() const {return 0;}
 	virtual int		getHeight() const {return 0;}
 };
+
+CORE_END_NAMESPACE

@@ -124,7 +124,6 @@ protected:
 	uint32_t				simpleLife_;
 };
 
-
 /*
 template <class OutIte_>
 void BulletMLNode::getAllChildren(Name name, OutIte_ outIte) {

@@ -1,6 +1,7 @@
 #include "Resource.hpp"
 #include "XMLProvider.hpp"
-#include <iostream>
+
+CORE_USE_NAMESPACE
 
 Resource::Resource()
 	: _resourceId(*new uint32_t(0)), _resourceType(0), _resourceProvider(0),

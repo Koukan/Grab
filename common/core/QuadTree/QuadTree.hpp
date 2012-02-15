@@ -4,7 +4,9 @@
 #include <iostream>
 #include "Node.hpp"
 
-class QuadTree
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ QuadTree
 {
 public:
 	enum callInfo
@@ -49,3 +51,4 @@ private:
 	void	deleteNodes(Node *node);
 };
 
+CORE_END_NAMESPACE

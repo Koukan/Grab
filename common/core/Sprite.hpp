@@ -4,7 +4,8 @@
 #include "DrawableObject.hpp"
 #include "Resource.hpp"
 
-class Sprite : public DrawableObject, public Resource
+CORE_BEGIN_NAMESPACE
+class CORE_DLLREQ Sprite : public DrawableObject, public Resource
 {
 public:
 	Sprite(){}
@@ -30,3 +31,4 @@ public:
 	virtual int		getWidth() const { return 0; }
 	virtual int		getHeight() const { return 0; }
 };
+CORE_END_NAMESPACE

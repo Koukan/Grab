@@ -2,6 +2,8 @@
 #include "CommandDispatcher.hpp"
 #include "GameState.hpp"
 
+CORE_USE_NAMESPACE
+
 CommandDispatcher::CommandDispatcher() : Module("CommandDispatcher", 5)
 {
 }

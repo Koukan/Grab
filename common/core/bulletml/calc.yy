@@ -18,6 +18,7 @@ typedef double NumType;
 #include "formula.h"
 #include "formula-variables.h"
 
+
 int yyerror(char const * s);
 int yylex();
 

@@ -3,7 +3,9 @@
 #include "Input.hpp"
 #include "Player.hpp"
 
-class GUICommand
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ GUICommand
 {
 public:
 
@@ -63,3 +65,5 @@ public:
 	Keyboard::Key key;
   };
 };
+
+CORE_END_NAMESPACE

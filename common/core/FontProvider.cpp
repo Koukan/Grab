@@ -2,6 +2,8 @@
 #include "FontProvider.hpp"
 #include "Converter.hpp"
 
+CORE_USE_NAMESPACE
+
 FontProvider::FontProvider()
   : XMLProvider("font", 2)
 {
@@ -27,7 +29,7 @@ void	FontProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 		else if (name == "file")
 			fontFile = attrib->Value();
 		else if (name == "size")
-			fontSize = Converter::toInt<unsigned int>(attrib->Value());
+		  fontSize = Net::Converter::toInt<unsigned int>(attrib->Value());
     }
 	CoreFont *font = this->addFont(fontName, fontFile, fontSize);
 	if (font)

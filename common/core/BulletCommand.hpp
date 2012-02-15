@@ -6,7 +6,9 @@
 #include "Bullet.hpp"
 #include "GameState.hpp"
 
-class BulletCommand : public BulletMLRunner, public Bullet
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 {
   public:
     BulletCommand(std::string const &parser, GameState &gstate,
@@ -56,3 +58,5 @@ class BulletCommand : public BulletMLRunner, public Bullet
 	std::string		_simpleSprite;
 	std::string		_simpleGroup;
 };
+
+CORE_END_NAMESPACE

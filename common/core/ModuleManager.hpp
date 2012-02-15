@@ -6,7 +6,9 @@
 #include "Module.hpp"
 //#include "SharedLoader.hpp"
 
-class ModuleManager : public Module
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ ModuleManager : public Module
 {
 public:
 	ModuleManager();
@@ -27,5 +29,7 @@ private:
 	std::map<std::string, Module *>		_modules;
 	bool								_stop;
 };
+
+CORE_END_NAMESPACE
 
 #endif /* _MODULEMANAGER_ */

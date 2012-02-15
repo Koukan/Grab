@@ -8,11 +8,13 @@
 #include "XMLProvider.hpp"
 #include "Singleton.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class SpriteProvider;
 class FontProvider;
 class BulletResourceManager;
 
-class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalResourceManager>
+class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalResourceManager>
 {
   public:
 	GlobalResourceManager();
@@ -64,3 +66,5 @@ class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalRe
 	IdMap					_ids;
 	TiXmlDocument			_document;
 };
+
+CORE_END_NAMESPACE

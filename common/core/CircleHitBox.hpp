@@ -4,7 +4,9 @@
 #include "RectHitBox.hpp"
 #include "PolyHitBox.hpp"
 
-class CircleHitBox : public HitBox
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ CircleHitBox : public HitBox
 {
 public:
 	CircleHitBox(double x, double y, double range);
@@ -26,3 +28,4 @@ private:
 	double	_radius;
 };
 
+CORE_END_NAMESPACE

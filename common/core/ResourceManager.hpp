@@ -5,6 +5,9 @@
 #include "Sprite.hpp"
 #include "Font.hpp"
 #include "bulletmlparser.h"
+#include "CoreDef.hpp"
+
+CORE_BEGIN_NAMESPACE
 
 class ResourceManager
 {
@@ -29,3 +32,5 @@ class ResourceManager
 
 	ResourceList			_resources;
 };
+
+CORE_END_NAMESPACE

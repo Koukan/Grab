@@ -9,6 +9,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+CORE_USE_NAMESPACE
+
 inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 

@@ -2,8 +2,11 @@
 
 #include <string>
 #include "Net.hpp"
+#include "CoreDef.hpp"
 
-class Command : public Net::PoolObject
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ Command : public Net::PoolObject
 {
   public:
     Command(std::string const &name) : name(name)
@@ -15,3 +18,5 @@ class Command : public Net::PoolObject
 
 	std::string const		name;
 };
+
+CORE_END_NAMESPACE

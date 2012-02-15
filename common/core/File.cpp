@@ -2,6 +2,8 @@
 #include "File.hpp"
 #include "md5.h"
 
+CORE_USE_NAMESPACE
+
 File::File()
 {
 }

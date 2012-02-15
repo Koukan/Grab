@@ -3,7 +3,9 @@
 #include "Font.hpp"
 #include "XMLProvider.hpp"
 
-class FontProvider : public XMLProvider
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ FontProvider : public XMLProvider
 {
 public:
   FontProvider();
@@ -12,3 +14,5 @@ public:
 
   virtual void		handleXML(TiXmlNode *node, ResourceManager &);
 };
+
+CORE_END_NAMESPACE

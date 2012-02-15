@@ -5,6 +5,8 @@
 #include <string>
 #include "Observer.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 template <typename Arg>
 class Observable
 {
@@ -42,5 +44,6 @@ private:
 	std::list<Observer<Arg> *>    _observers;
 };
 
+CORE_END_NAMESPACE
 
 #endif /* _OBSERVABLE_ */

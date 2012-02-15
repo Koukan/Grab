@@ -1,5 +1,7 @@
 #include "GUILayout.hpp"
 
+CORE_USE_NAMESPACE
+
 GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements)
   : GUIElement(x, y, width, height, layout), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {

@@ -10,7 +10,9 @@
 # if defined (_WIN32)
 #  include <windows.h>
 
-class SharedLoader
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ SharedLoader
 {
 public:
 	~SharedLoader()
@@ -53,10 +55,14 @@ private:
 	std::list<HMODULE>	_dlhandles;
 };
 
+CORE_END_NAMESPACE
+
 # else
 #  include <dlfcn.h>
 
-class SharedLoader
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ SharedLoader
 {
 public:
 	~SharedLoader()
@@ -96,6 +102,8 @@ public:
 private:
 	std::list<void *>	_dlhandles;
 };
+CORE_END_NAMESPACE
+
 #endif
 
 #endif /* _SHAREDLOADER_ */

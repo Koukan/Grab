@@ -9,6 +9,8 @@
 #include "FontProvider.hpp"
 #include "BulletResourceManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GlobalResourceManager::GlobalResourceManager()
   : XMLProvider("resources", 0), _spriteProvider(0), _fontProvider(0), _bulletProvider(0)
 {
@@ -235,9 +237,9 @@ void		GlobalResourceManager::get2Int(std::string const &data,
 {
 	size_t	pos = data.find(sep);
 
-	a = Converter::toInt<int>(data);
+	a = Net::Converter::toInt<int>(data);
 	if (pos == std::string::npos)
 		b = 0;
 	else
-		b = Converter::toInt<int>(data.substr(pos + sep.size()));
+	  b = Net::Converter::toInt<int>(data.substr(pos + sep.size()));
 }

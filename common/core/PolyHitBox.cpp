@@ -2,6 +2,7 @@
 #include "RectHitBox.hpp"
 #include "CircleHitBox.hpp"
 
+CORE_USE_NAMESPACE
 
 PolyHitBox::PolyHitBox(double x, double y, std::vector<std::pair<double, double> > &)
 	: HitBox(x, y)//, _poly(new CL_CollisionOutline())

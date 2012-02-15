@@ -1,6 +1,8 @@
 #include <algorithm>
 #include "GSManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GSManager::GSManager() : Module("GSManager")
 {
 	this->_targetRate = 20;

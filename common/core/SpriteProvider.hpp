@@ -5,7 +5,9 @@
 #include "XMLProvider.hpp"
 #include "tinyxml.h"
 
-class SpriteProvider : public XMLProvider
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ SpriteProvider : public XMLProvider
 {
 public:
   template <typename T>
@@ -39,3 +41,5 @@ private:
 };
 
 #include "SpriteProvider.ipp"
+
+CORE_END_NAMESPACE

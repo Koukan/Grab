@@ -14,10 +14,12 @@
 #include "QuadTree.hpp"
 #include "PhysicObject.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class GameState;
 class GameObjectManager;
 
-class Group
+class CORE_DLLREQ Group
 {
   public:
 	typedef std::set<GameObject*>	gameObjectSet;
@@ -61,7 +63,7 @@ class Group
 	QuadTree					_quadTree;
 };
 
-class GameObjectManager : public TimeEffectManager
+class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 {
   public:
 	typedef std::pair<std::string, std::string>			stringPair;
@@ -120,5 +122,7 @@ class GameObjectManager : public TimeEffectManager
 };
 
 #include "GameObjectManager.ipp"
+
+CORE_END_NAMESPACE
 
 #endif		/* _GAMEOBJECTMANAGER_ */

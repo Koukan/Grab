@@ -2,7 +2,9 @@
 
 #include "Input.hpp"
 
-class Player
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ Player
 {
 public:
   enum type
@@ -24,3 +26,5 @@ public:
   static bool isDownPressed(Player::type type, InputCommand const &cmd);
   static bool isDownReleased(Player::type type, InputCommand const &cmd);
 };
+
+CORE_END_NAMESPACE

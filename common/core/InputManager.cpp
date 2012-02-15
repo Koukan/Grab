@@ -1,6 +1,8 @@
 #include "GameState.hpp"
 #include "InputManager.hpp"
 
+CORE_USE_NAMESPACE
+
 InputManager::InputManager(GameState &game) : _gs(game), _flush(false) 
 {
 }

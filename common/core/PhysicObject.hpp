@@ -4,7 +4,9 @@
 #include "HitBox.hpp"
 #include "QuadTree.hpp"
 
-class PhysicObject : public DrawableObject, public TreeElement
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ PhysicObject : public DrawableObject, public TreeElement
 {
 public:
   PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0);
@@ -32,3 +34,5 @@ protected:
 	bool	_static;
 	HitBox	*_hitBox;
 };
+
+CORE_END_NAMESPACE

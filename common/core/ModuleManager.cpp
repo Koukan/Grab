@@ -6,6 +6,8 @@
 #include "ModuleManager.hpp"
 #include "Clock.hpp"
 
+CORE_USE_NAMESPACE
+
 ModuleManager::ModuleManager() : Module("ModuleManager"), _stop(false)
 {
 }
