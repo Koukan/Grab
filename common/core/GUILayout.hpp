@@ -18,6 +18,8 @@ public:
   virtual void focus();
   virtual void unfocus();
 
+  void setDispatch(bool dispatch);
+
 protected:
   GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements);
   GUILayout(int x, int y, int width, int height, int padding, int nbElements);
@@ -29,4 +31,5 @@ protected:
   std::list<GUIElement *>::iterator _begin;
   int _padding;
   int _nbElements;
+  bool _dispatch;
 };
