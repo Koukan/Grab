@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Input.hpp"
-#include "Player.hpp"
 
 CORE_BEGIN_NAMESPACE
 
@@ -37,24 +36,24 @@ public:
        BACK
      };
 
-  GUICommand(Player::type type, GUICommand::DirectionState dir, ButtonAction buttonAction)
-	  : playerType(type), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir)
+  GUICommand(int playerType, GUICommand::DirectionState dir, ButtonAction buttonAction)
+	  : playerType(playerType), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir)
   {
   }
 
-  GUICommand(Player::type type, GUICommand::ActionState action, ButtonAction buttonAction)
-	  : playerType(type), type(GUICommand::ACTION), buttonAction(buttonAction), action(action)
+  GUICommand(int playerType, GUICommand::ActionState action, ButtonAction buttonAction)
+	  : playerType(playerType), type(GUICommand::ACTION), buttonAction(buttonAction), action(action)
   {
   }
 
-  GUICommand(Player::type type, Keyboard::Key key, ButtonAction buttonAction)
+  GUICommand(int playerType, Keyboard::Key key, ButtonAction buttonAction)
 	  : playerType(type), type(GUICommand::KEY), buttonAction(buttonAction), key(key)
   {
   }
 
   ~GUICommand() {}
 
-  Player::type playerType;
+  int playerType;
   GUICommand::Type type;
   GUICommand::ButtonAction buttonAction;
 

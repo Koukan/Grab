@@ -41,44 +41,44 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 		else
 			buttonAction = GUICommand::RELEASED;
 		if (cmd.Key.Code == Keyboard::Return)
-			command = new GUICommand(Player::KEYBOARD, GUICommand::SELECT, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::SELECT, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Up)
-			command = new GUICommand(Player::KEYBOARD, GUICommand::UP, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::UP, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Down)
-			command = new GUICommand(Player::KEYBOARD, GUICommand::DOWN, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::DOWN, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Left)
-			command = new GUICommand(Player::KEYBOARD, GUICommand::LEFT, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::LEFT, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Right)
-			command = new GUICommand(Player::KEYBOARD, GUICommand::RIGHT, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::RIGHT, buttonAction);
 		else
-			command = new GUICommand(Player::KEYBOARD, cmd.Key.Code, buttonAction);
+			command = new GUICommand(GUIManager::KEYBOARD, cmd.Key.Code, buttonAction);
 	}
 	else if (cmd.Type == InputCommand::JoystickMoved)
 	{
 		if (cmd.JoystickMove.Position < -99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);
-			else if (cmd.JoystickMove.Axis == Joystick::Y)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);
+			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);
 		}
 		else if (cmd.JoystickMove.Position > 99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);
-			else if (cmd.JoystickMove.Axis == Joystick::Y)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);
+			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);
 		}
 	}
 	else if (cmd.Type == InputCommand::JoystickButtonPressed)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<Player::type>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
+			command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
 	}
 	else if (cmd.Type == InputCommand::JoystickButtonReleased)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<Player::type>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
+			command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
 	}
 	return (command);
 }
