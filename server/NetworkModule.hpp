@@ -38,6 +38,7 @@ class NetworkModule : public Module, public Net::Singleton<NetworkModule>
 	void		statusCommand(Command const &command);
 	void		startgameCommand(Command const &command);
 	void		rangeId(Command const &command);
+	void		resourceId(Command const &command);
 	void		sendPing();
 	bool		gameExist(Game *);
 

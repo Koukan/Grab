@@ -15,19 +15,21 @@ class ResourceManager
 	ResourceManager();
 	virtual ~ResourceManager();
 	void			load(std::string const &path);
-	Sprite			*getSprite(std::string const &name) const;
-	CoreFont		*getFont(std::string const &name) const;
-	BulletMLParser	*getBulletParser(std::string const &name) const;
-	Resource		*getResource(std::string const &name, uint8_t type) const;
-	Sprite			*getSprite(uint32_t id) const;
-	CoreFont		*getFont(uint32_t id) const;
-	BulletMLParser	*getBulletMLParser(uint32_t id) const;
-	Resource		*getResource(uint32_t id, uint8_t type) const;
-
 	void			addBulletParser(std::string const &path, std::string const &name);
 	void			addResource(Resource &resource);
 
-	private:
+	// getter
+	Sprite						*getSprite(std::string const &name) const;
+	CoreFont					*getFont(std::string const &name) const;
+	BulletMLParser				*getBulletParser(std::string const &name) const;
+	Resource					*getResource(std::string const &name, uint8_t type) const;
+	Sprite						*getSprite(uint32_t id) const;
+	CoreFont					*getFont(uint32_t id) const;
+	BulletMLParser				*getBulletMLParser(uint32_t id) const;
+	Resource					*getResource(uint32_t id, uint8_t type) const;
+	std::list<Resource*> const	&getResource() const;
+
+  private:
 	typedef	std::list<Resource *>	ResourceList;
 
 	ResourceList			_resources;

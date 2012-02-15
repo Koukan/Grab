@@ -48,6 +48,7 @@ set(SRCS
 	PacketCommand.hpp
 	Player.cpp
 	Player.hpp
+	ResourceCommand.hpp
 	Rules.cpp
 	Rules.hpp
 	Server.cpp

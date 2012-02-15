@@ -34,7 +34,8 @@ namespace TCP
 		END_RESOURCES = 12,
 		GAMESTATE = 13,
 		TCP_ERROR = 14, // may be Error, but WinGDI.h already defines it on Windows
-		RANGEID = 15
+		RANGEID = 15,
+		RESOURCEID = 16
 	};
 }
 
