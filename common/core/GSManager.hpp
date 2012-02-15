@@ -55,6 +55,6 @@ protected:
 
 #include "GSManager.ipp"
 
-bool		operator==(GameState const * const & state, const std::string &name);
+bool		operator==(Core::GameState const * const & state, const std::string &name);
 
 CORE_END_NAMESPACE

@@ -4,7 +4,7 @@
 #include "GSLoading.hpp"
 #include "GameCommand.hpp"
 
-GameButton::GameButton(int id, int nbPlayers, std::string const &name, ButtonSprite const &sprite, GUILayout *layout)
+GameButton::GameButton(int id, int nbPlayers, std::string const &name, Core::ButtonSprite const &sprite, Core::GUILayout *layout)
   : GUIButton<GameButton>(*this, &GameButton::push, name, "listGameFont", sprite, layout), _id(id), _nbPlayers(nbPlayers)
 {
 }
@@ -18,6 +18,6 @@ void GameButton::push()
   GameCommand *command = new GameCommand("ConnectGame");
   command->idObject = this->_id;
 
-  CommandDispatcher::get().pushCommand(*command);
-  GameStateManager::get().changeState(*(new GSLoading(this->_nbPlayers)));
+  Core::CommandDispatcher::get().pushCommand(*command);
+  Core::GameStateManager::get().changeState(*(new GSLoading(this->_nbPlayers)));
 }

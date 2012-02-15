@@ -4,7 +4,7 @@
 #include "GUIVLayout.hpp"
 #include "GUIHLayout.hpp"
 
-class GSJoinGame : public GameState
+class GSJoinGame : public Core::GameState
 {
 public:
   GSJoinGame();
@@ -12,11 +12,11 @@ public:
 
   void	onStart();
   void	returnMainMenu();
-  bool	handleCommand(Command const &command);
+  bool	handleCommand(Core::Command const &command);
 
 private:
   GUIVLayout *_vlayout;
   GUIHLayout *_hlayout;
-  ButtonSprite const *_sprite;
+  Core::ButtonSprite const *_sprite;
   bool _isListed;
 };

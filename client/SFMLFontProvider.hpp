@@ -4,11 +4,11 @@
 #include "SFMLFont.hpp"
 #include <map>
 
-class SFMLFontProvider : public FontProvider
+class SFMLFontProvider : public Core::FontProvider
 {
 public:
 	SFMLFontProvider();
 	virtual ~SFMLFontProvider();
 
-	virtual CoreFont	*addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize);
+  virtual Core::CoreFont	*addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize);
 };

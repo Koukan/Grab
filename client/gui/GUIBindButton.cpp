@@ -1,6 +1,6 @@
 #include "GUIBindButton.hpp"
 
-GUIBindButton::GUIBindButton(int playerNb, std::string const &font, ButtonSprite const &sprite, int x, int y)
+GUIBindButton::GUIBindButton(int playerNb, std::string const &font, Core::ButtonSprite const &sprite, int x, int y)
   : GUIButton(*this, &GUIBindButton::pushButton, "bind controls", font, sprite, x, y), _playerNb(playerNb)
 {
   this->_bindingList.push_back("\"fire\"");
@@ -9,7 +9,7 @@ GUIBindButton::GUIBindButton(int playerNb, std::string const &font, ButtonSprite
   this->_iterator = this->_bindingList.end();
 }
 
-GUIBindButton::GUIBindButton(int playerNb, std::string const &font, ButtonSprite const &sprite, GUILayout *layout)
+GUIBindButton::GUIBindButton(int playerNb, std::string const &font, Core::ButtonSprite const &sprite, Core::GUILayout *layout)
   : GUIButton(*this, &GUIBindButton::pushButton, "bind controls", font, sprite, layout), _playerNb(playerNb)
 {
   this->_bindingList.push_back("\"fire\"");
@@ -22,7 +22,7 @@ GUIBindButton::~GUIBindButton()
 {
 }
 
-bool GUIBindButton::handleGUICommand(GUICommand const &command)
+bool GUIBindButton::handleGUICommand(Core::GUICommand const &command)
 {
 /*  if (this->_iterator != this->_bindingList.end() && command.Type == InputCommand::KeyReleased)
     {

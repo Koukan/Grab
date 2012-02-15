@@ -12,7 +12,7 @@
 #include "NetworkModule.hpp"
 
 GSOptions::GSOptions()
-  : GameState("mainMenu")
+  : Core::GameState("mainMenu")
 {
 };
 
@@ -27,10 +27,10 @@ void	GSOptions::onStart()
 
   // add gui
 
-  GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
+  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
   layout->setY((768 - layout->getHeight()) / 3);
 
-  ButtonSprite *sprite = new ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUILabel("Player Name", "buttonFont", "", layout);
   this->_name = new GUITextBox<GSOptions>("buttonFont", *sprite, layout, 7, NetworkModule::get().getName());
   new GUILabel("IP Address", "buttonFont", "", layout);
@@ -46,5 +46,5 @@ void	GSOptions::returnMenu()
   NetworkModule::get().setIP(this->_ip->getText());
   NetworkModule::get().setPort(this->_port->getText());
   Game::get().savePreferencesFile(this->_name->getText(), this->_ip->getText(), this->_port->getText());
-  GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }

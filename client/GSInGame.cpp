@@ -40,25 +40,25 @@ void		GSInGame::preload()
   this->load("resources/shots.xml");
   this->load("resources/enemies.xml");
 
-  this->addGameObject(new PhysicObject(*new RectHitBox(2000, -2000, 1000, 8000)), "Wall");
-  this->addGameObject(new PhysicObject(*new RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
-  this->addGameObject(new PhysicObject(*new RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
-  this->addGameObject(new PhysicObject(*new RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
 }
 
 void		GSInGame::onStart()
 {
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputEscape, static_cast<int>(Keyboard::Escape));
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputUp, static_cast<int>(Keyboard::Up));
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputDown, static_cast<int>(Keyboard::Down));
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputLeft, static_cast<int>(Keyboard::Left));
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputRight, static_cast<int>(Keyboard::Right));
-  this->getInput().registerInputCallback(InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Keyboard::Up));
-  this->getInput().registerInputCallback(InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Keyboard::Down));
-  this->getInput().registerInputCallback(InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Keyboard::Left));
-  this->getInput().registerInputCallback(InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Keyboard::Right));
-  this->getInput().registerInputCallback(InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Keyboard::Space));
-  this->getInput().registerInputCallback(InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Keyboard::Space));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputEscape, static_cast<int>(Core::Keyboard::Escape));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputUp, static_cast<int>(Core::Keyboard::Up));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputDown, static_cast<int>(Core::Keyboard::Down));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputLeft, static_cast<int>(Core::Keyboard::Left));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputRight, static_cast<int>(Core::Keyboard::Right));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Core::Keyboard::Up));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Core::Keyboard::Down));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Core::Keyboard::Left));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Core::Keyboard::Right));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
   // add gui
 
   ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.06);
@@ -86,7 +86,7 @@ void		GSInGame::update(double elapsedTime)
 			400,
 			0);
 			this->spawn(*cmd);
-			CommandDispatcher::get().pushCommand(*cmd);
+			Core::CommandDispatcher::get().pushCommand(*cmd);
 			this->_elapsedTime += 500;
 		}
 	}
@@ -102,7 +102,7 @@ void		GSInGame::update(double elapsedTime)
 void		GSInGame::onEnd()
 {}
 
-bool		GSInGame::handleCommand(Command const &command)
+bool		GSInGame::handleCommand(Core::Command const &command)
 {
   static Method<std::string const> const	methods[] = {
 	{"destroy", &GSInGame::destroy},
@@ -150,7 +150,7 @@ void		GSInGame::displayScores()
     }  
 }
 
-void		GSInGame::inputUp(InputCommand const &/*event*/)
+void		GSInGame::inputUp(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -159,7 +159,7 @@ void		GSInGame::inputUp(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::inputDown(InputCommand const &/*event*/)
+void		GSInGame::inputDown(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -168,7 +168,7 @@ void		GSInGame::inputDown(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::inputLeft(InputCommand const &/*event*/)
+void		GSInGame::inputLeft(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -177,7 +177,7 @@ void		GSInGame::inputLeft(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::inputRight(InputCommand const &/*event*/)
+void		GSInGame::inputRight(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -186,7 +186,7 @@ void		GSInGame::inputRight(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::releaseInputUpDown(InputCommand const &/*event*/)
+void		GSInGame::releaseInputUpDown(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -195,7 +195,7 @@ void		GSInGame::releaseInputUpDown(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::releaseInputLeftRight(InputCommand const &/*event*/)
+void		GSInGame::releaseInputLeftRight(Core::InputCommand const &/*event*/)
 {
   if (this->_ship)
     {
@@ -204,17 +204,17 @@ void		GSInGame::releaseInputLeftRight(InputCommand const &/*event*/)
     }
 }
 
-void		GSInGame::inputEscape(InputCommand const &/*event*/)
+void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-  GameStateManager::get().pushState(*(new GSPauseMenu()), GameState::NONE);
+  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
 }
 
-void		GSInGame::inputSpace(InputCommand const &/*event*/)
+void		GSInGame::inputSpace(Core::InputCommand const &/*event*/)
 {
 	this->_fire = true;
 }
 
-void		GSInGame::releaseInputSpace(InputCommand const &/*event*/)
+void		GSInGame::releaseInputSpace(Core::InputCommand const &/*event*/)
 {
 	this->_fire = false;
 }
@@ -227,7 +227,7 @@ void		GSInGame::throwShip()
 				     static_cast<int16_t>(this->_ship->getVx()),
 				     static_cast<int16_t>(this->_ship->getVy()));
 
-  CommandDispatcher::get().pushCommand(*cmd); //send to network
+  Core::CommandDispatcher::get().pushCommand(*cmd); //send to network
 }
 
 void		GSInGame::spawn(GameCommand const &event)
@@ -259,7 +259,7 @@ void		GSInGame::spawn(GameCommand const &event)
 	  (this->*methods[i].method)(event);
 	  if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
 	    {
-	      this->_ship = static_cast<PhysicObject *>(this->getGameObject(event.idObject));
+	      this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
 	    }
 	}
     }
@@ -267,7 +267,7 @@ void		GSInGame::spawn(GameCommand const &event)
 
 void		GSInGame::destroy(GameCommand const &event)
 {
-	GameObject *tmp = this->getGameObject(event.idObject);
+	Core::GameObject *tmp = this->getGameObject(event.idObject);
 	if (tmp)
 	{
 		if (this->_ship->getId() == event.idObject)
@@ -291,13 +291,13 @@ void		GSInGame::score(GameCommand const &event)
 
 void		GSInGame::move(GameCommand const &event)
 {
-	PhysicObject *obj = static_cast<PhysicObject *>(this->getGameObject(event.idObject));
+	Core::PhysicObject *obj = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
 
 	if (obj)
 		this->updatePositions(event, *obj);
 }
 
-void		GSInGame::updatePositions(GameCommand const &event, PhysicObject &obj) const
+void		GSInGame::updatePositions(GameCommand const &event, Core::PhysicObject &obj) const
 {
 	obj.setX(event.x);
 	obj.setY(event.y);
@@ -307,7 +307,7 @@ void		GSInGame::updatePositions(GameCommand const &event, PhysicObject &obj) con
 
 void		GSInGame::loadP1(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *player = new ConcreteObject(this->getSprite("player1"), *hitbox, event.vx, event.vy);
   player->setId(event.idObject);
   this->addGameObject(player, "players");
@@ -315,7 +315,7 @@ void		GSInGame::loadP1(GameCommand const &event)
 
 void		GSInGame::loadP2(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *player = new ConcreteObject(this->getSprite("player2"), *hitbox, event.vx, event.vy);
   player->setId(event.idObject);
   this->addGameObject(player, "players");
@@ -323,7 +323,7 @@ void		GSInGame::loadP2(GameCommand const &event)
 
 void		GSInGame::loadP3(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *player = new ConcreteObject(this->getSprite("player3"), *hitbox, event.vx, event.vy);
   player->setId(event.idObject);
   this->addGameObject(player, "players");
@@ -331,7 +331,7 @@ void		GSInGame::loadP3(GameCommand const &event)
 
 void		GSInGame::loadP4(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *player = new ConcreteObject(this->getSprite("player4"), *hitbox, event.vx, event.vy);
   player->setId(event.idObject);
   this->addGameObject(player, "players");
@@ -339,26 +339,26 @@ void		GSInGame::loadP4(GameCommand const &event)
 
 void		GSInGame::loadMonster(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
 
   if (event.idResource >= Resources::SINGLE_MONSTER)
   {
-  	Sprite *sprite = this->getSprite(Resources::monsters[event.idResource - Resources::SINGLE_MONSTER].sprite);
+  	Core::Sprite *sprite = this->getSprite(Resources::monsters[event.idResource - Resources::SINGLE_MONSTER].sprite);
   	if (sprite)
   	{
 		ConcreteObject *monster = new ConcreteObject(sprite, *hitbox, event.vx, event.vy);
 		monster->setId(event.idObject);
-		this->addGameObject(static_cast<GameObject *>(monster), "monster");
+		this->addGameObject(static_cast<Core::GameObject *>(monster), "monster");
   	}
   }
 }
 
 void		GSInGame::loadShoot(GameCommand const &event)
 {
-  HitBox *hitbox = new RectHitBox(event.x, event.y, 2, 2);
+  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *obj = new ConcreteObject(this->getSprite("default shot"), *hitbox, event.vx, event.vy);
   obj->setId(event.idObject);
-  this->addGameObject(static_cast<GameObject *>(obj), "shoot");
+  this->addGameObject(static_cast<Core::GameObject *>(obj), "shoot");
 }
 
 void		GSInGame::rangeid(GameCommand const &event)
@@ -371,7 +371,7 @@ void		GSInGame::rangeid(GameCommand const &event)
   this->displayScores();
   this->_nameFonts[this->_idPlayer]->setText(NetworkModule::get().getName());
   this->_nameFonts[this->_idPlayer]->setPosition((1024 / (this->_nbPlayers + 1)) * (this->_idPlayer+1) - this->_nameFonts[this->_idPlayer]->getWidth() / 2, 680);
-  CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
+  Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
 }
 
 uint32_t	GSInGame::getNextId()

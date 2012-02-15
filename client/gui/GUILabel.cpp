@@ -1,7 +1,7 @@
 #include "GUILabel.hpp"
 
 GUILabel::GUILabel(std::string const &name, std::string const &font, std::string const &sprite, int x, int y)
-  : GUIElement(x, y, 0, 0), _sprite(GameStateManager::get().getCurrentState().getSprite(sprite)), _font(GameStateManager::get().getCurrentState().getFont(font))
+  : Core::GUIElement(x, y, 0, 0), _sprite(Core::GameStateManager::get().getCurrentState().getSprite(sprite)), _font(Core::GameStateManager::get().getCurrentState().getFont(font))
 {
   if (this->_font)
     this->_font->setText(name);
@@ -18,8 +18,8 @@ GUILabel::GUILabel(std::string const &name, std::string const &font, std::string
   this->setEnable(false);
 }
 
-GUILabel::GUILabel(std::string const &name, std::string const &font, std::string const &sprite, GUILayout *layout)
-  : GUIElement(0, 0, 0, 0, layout), _sprite(GameStateManager::get().getCurrentState().getSprite(sprite)), _font(GameStateManager::get().getCurrentState().getFont(font))
+GUILabel::GUILabel(std::string const &name, std::string const &font, std::string const &sprite, Core::GUILayout *layout)
+  : Core::GUIElement(0, 0, 0, 0, layout), _sprite(Core::GameStateManager::get().getCurrentState().getSprite(sprite)), _font(Core::GameStateManager::get().getCurrentState().getFont(font))
 {
   if (this->_font)
     this->_font->setText(name);
@@ -42,7 +42,7 @@ GUILabel::~GUILabel()
   delete this->_sprite;
 }
 
-bool	GUILabel::handleGUICommand(GUICommand const &)
+bool	GUILabel::handleGUICommand(Core::GUICommand const &)
 {
   return (false);
 }

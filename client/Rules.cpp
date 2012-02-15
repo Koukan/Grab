@@ -2,13 +2,12 @@
 #include "CommandDispatcher.hpp"
 #include "GameCommand.hpp"
 
-#include <iostream>
-void	Rules::wallTouchObject(GameObject &, GameObject &o2)
+void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
 	o2.erase();
 }
 
-void		Rules::shotTouchMonster(GameObject &o1, GameObject &)
+void		Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &)
 {
 	o1.erase();
 }

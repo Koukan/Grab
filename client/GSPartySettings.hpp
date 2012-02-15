@@ -4,14 +4,14 @@
 #include "GameState.hpp"
 #include "Modes.hpp"
 
-class GSPartySettings : public GameState
+class GSPartySettings : public Core::GameState
 {
 public:
   GSPartySettings(Modes::Mode mode, std::string const &map = "");
   ~GSPartySettings();
 
-  void  nbPlayerList(GUIElement const &nb);
-  void	multiMode(GUIElement const &mode);
+  void  nbPlayerList(Core::GUIElement const &nb);
+  void	multiMode(Core::GUIElement const &mode);
 
   void	createParty();
   void	back();

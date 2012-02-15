@@ -4,7 +4,7 @@
 #include "GameStateObserver.hpp"
 #include "Singleton.hpp"
 
-class RendererManager : public GameStateObserver, public Net::Singleton<RendererManager>
+class RendererManager : public Core::GameStateObserver, public Net::Singleton<RendererManager>
 {
 	public:
 		RendererManager();

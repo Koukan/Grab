@@ -7,10 +7,10 @@
 #include "GUIElement.hpp"
 
 template <typename T>
-class GUIList : public GUIElement {
+class GUIList : public Core::GUIElement {
 public:
-  GUIList(ButtonSprite &left_arrow, ButtonSprite &right_arrow, int x, int y)
-    : GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
+  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y)
+    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(0), _func(0), _focusElement(_elements.begin())
   {
@@ -20,8 +20,8 @@ public:
       this->unfocus();
   }
 
-  GUIList(ButtonSprite &left_arrow, ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(GUIElement const &))
-    : GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
+  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(Core::GUIElement const &))
+    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(&instance), _func(func), _focusElement(_elements.begin())
   {
@@ -31,8 +31,8 @@ public:
       this->unfocus();
       }
 
-  GUIList(T &instance, void (T::*func)(GUIElement const &), ButtonSprite &left_arrow, ButtonSprite &right_arrow, GUILayout *layout)
-    : GUIElement(0, 0, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), layout),
+  GUIList(T &instance, void (T::*func)(Core::GUIElement const &), Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, Core::GUILayout *layout)
+    : Core::GUIElement(0, 0, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), layout),
       _leftArrow(left_arrow), _rightArrow(right_arrow), _instance(&instance), _func(func), _focusElement(_elements.begin())
   {
     if (this->_isFocused)
@@ -44,7 +44,7 @@ public:
   ~GUIList()
   {}
 
-  virtual void addElement(GUIElement &elem)
+  virtual void addElement(Core::GUIElement &elem)
   {
     this->_elements.push_back(&elem);
     if (this->_focusElement == this->_elements.end())
@@ -55,38 +55,38 @@ public:
       }
   }
 
-  virtual bool handleGUICommand(GUICommand const &command)
+  virtual bool handleGUICommand(Core::GUICommand const &command)
   {
-    if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
+    if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
       {
-	this->_leftArrow.updateState(ButtonSprite::CLICKED);
+	this->_leftArrow.updateState(Core::ButtonSprite::CLICKED);
 	this->EventLeft();
 	if (this->_instance)
 	  (this->_instance->*(this->_func))(**(_focusElement));
 	return (true);
       }
-    else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
+    else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
       {
-	this->_rightArrow.updateState(ButtonSprite::CLICKED);
+	this->_rightArrow.updateState(Core::ButtonSprite::CLICKED);
 	this->EventRight();
 	if (this->_instance)
 	  (this->_instance->*(this->_func))(**(_focusElement));
 	return (true);
       }
-	else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::RELEASED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Left*/)
+	else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::RELEASED && command.direction == Core::GUICommand::LEFT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Left*/)
       {
 	if (this->_isFocused)
-	  this->_leftArrow.updateState(ButtonSprite::SELECTED);
+	  this->_leftArrow.updateState(Core::ButtonSprite::SELECTED);
 	else
-	  this->_leftArrow.updateState(ButtonSprite::DEFAULT);
+	  this->_leftArrow.updateState(Core::ButtonSprite::DEFAULT);
 	return (true);
       }
-    else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::RELEASED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Right*/)
+    else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::RELEASED && command.direction == Core::GUICommand::RIGHT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Right*/)
       {
 	if (this->_isFocused)
-	  this->_rightArrow.updateState(ButtonSprite::SELECTED);
+	  this->_rightArrow.updateState(Core::ButtonSprite::SELECTED);
 	else
-	  this->_rightArrow.updateState(ButtonSprite::DEFAULT);
+	  this->_rightArrow.updateState(Core::ButtonSprite::DEFAULT);
 	return (true);
       }
     if (this->_focusElement != this->_elements.end())
@@ -96,8 +96,8 @@ public:
 
   virtual void focus()
   {
-    this->_leftArrow.updateState(ButtonSprite::SELECTED);
-    this->_rightArrow.updateState(ButtonSprite::SELECTED);
+    this->_leftArrow.updateState(Core::ButtonSprite::SELECTED);
+    this->_rightArrow.updateState(Core::ButtonSprite::SELECTED);
     if (this->_focusElement != this->_elements.end())
       (*this->_focusElement)->focus();
     this->GUIElement::focus();
@@ -105,8 +105,8 @@ public:
 
   virtual void unfocus()
   {
-    this->_leftArrow.updateState(ButtonSprite::DEFAULT);
-    this->_rightArrow.updateState(ButtonSprite::DEFAULT);
+    this->_leftArrow.updateState(Core::ButtonSprite::DEFAULT);
+    this->_rightArrow.updateState(Core::ButtonSprite::DEFAULT);
     if (this->_focusElement != this->_elements.end())
       (*this->_focusElement)->unfocus();
     this->GUIElement::unfocus();
@@ -175,10 +175,10 @@ private:
       }
   }
 
-  ButtonSprite				_leftArrow;
-  ButtonSprite				_rightArrow;
+  Core::ButtonSprite				_leftArrow;
+  Core::ButtonSprite				_rightArrow;
   T *					_instance;
-  void					(T::*_func)(GUIElement const &);
-  std::list<GUIElement *>		_elements;
-  std::list<GUIElement *>::iterator	_focusElement;
+  void					(T::*_func)(Core::GUIElement const &);
+  std::list<Core::GUIElement *>		_elements;
+  std::list<Core::GUIElement *>::iterator	_focusElement;
 };

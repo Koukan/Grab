@@ -5,7 +5,7 @@
 #include "Module.hpp"
 #include "Input.hpp"
 
-class InputModule : public Module
+class InputModule : public Core::Module
 {
 public:
 	InputModule();
@@ -16,8 +16,6 @@ public:
 	virtual void	destroy();
 
 private:
-	void			translateFromSFML1_6(InputCommand &cmd) const;
-	//void			treatInput(const CL_InputEvent &event, const CL_InputState &state);
 
 #if (SFML_VERSION_MAJOR != 2)
 	std::map<sf::Key::Code, Keyboard::Key> _dict;

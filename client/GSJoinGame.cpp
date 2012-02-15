@@ -17,7 +17,7 @@
 #include "GameButton.hpp"
 
 GSJoinGame::GSJoinGame()
-  : GameState("mainMenu"), _isListed(false)
+  : Core::GameState("mainMenu"), _isListed(false)
 {
 };
 
@@ -30,12 +30,12 @@ void	GSJoinGame::onStart()
   // load xml
   this->load("resources/intro.xml");
 
-  this->_sprite = new ButtonSprite("default button", "selected button", "pressed button");
+  this->_sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   if (NetworkModule::get().connect())
     {
-      CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
+      Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
 	  //CommandDispatcher::get().pushCommand(*(new GameCommand("Spawn")));
-      CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
+      Core::CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
       
       this->_hlayout = new GUIHLayout(300, 768 / 2, 0, 0, 50);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_hlayout);
@@ -51,10 +51,10 @@ void	GSJoinGame::onStart()
 
 void	GSJoinGame::returnMainMenu()
 {
-  	GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
-bool	GSJoinGame::handleCommand(Command const &command)
+bool	GSJoinGame::handleCommand(Core::Command const &command)
 {
   if (command.name == "listGame")
     {

@@ -7,11 +7,11 @@
 #include <string>
 
 template <typename T>
-class GUIButton : public GUIElement
+class GUIButton : public Core::GUIElement
 {
 public:
-  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, ButtonSprite const &sprite, int x, int y)
-    : GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _instance(&instance), _func(func), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _pressed(false), _name(name)
+  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, int x, int y)
+    : Core::GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _pressed(false), _name(name)
   {
     if (this->_font)
       this->_font->setText(name);
@@ -21,8 +21,8 @@ public:
       this->unfocus();
   }
 
-  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, ButtonSprite const &sprite, GUILayout *layout)
-    : GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _instance(&instance), _func(func), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _name(name)
+  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, Core::GUILayout *layout)
+    : Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _name(name)
   {
     if (this->_font)
       this->_font->setText(name);
@@ -37,22 +37,22 @@ public:
     delete this->_font;
   }
 
-  virtual bool handleGUICommand(GUICommand const &command)
+  virtual bool handleGUICommand(Core::GUICommand const &command)
   {
-    if (command.type == GUICommand::ACTION && command.buttonAction == GUICommand::PRESSED && command.action == GUICommand::SELECT
+    if (command.type == Core::GUICommand::ACTION && command.buttonAction == Core::GUICommand::PRESSED && command.action == Core::GUICommand::SELECT
 			/*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Return*/)
       {
-	this->_sprite.updateState(ButtonSprite::CLICKED);
+	this->_sprite.updateState(Core::ButtonSprite::CLICKED);
 	this->_pressed = true;
 	return (true);
       }
-    else if (command.type == GUICommand::ACTION && command.buttonAction == GUICommand::RELEASED && command.action == GUICommand::SELECT
+    else if (command.type == Core::GUICommand::ACTION && command.buttonAction == Core::GUICommand::RELEASED && command.action == Core::GUICommand::SELECT
 		/*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Return*/)
       {
 	if (this->_isFocused)
-	  this->_sprite.updateState(ButtonSprite::SELECTED);
+	  this->_sprite.updateState(Core::ButtonSprite::SELECTED);
 	else
-	  this->_sprite.updateState(ButtonSprite::DEFAULT);
+	  this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
 	if (this->_pressed)
 	{
 		(this->_instance->*(this->_func))();
@@ -85,23 +85,23 @@ public:
 
   virtual void focus()
   {
-    this->_sprite.updateState(ButtonSprite::SELECTED);
-    this->GUIElement::focus();
+    this->_sprite.updateState(Core::ButtonSprite::SELECTED);
+    this->Core::GUIElement::focus();
   }
 
   virtual void unfocus()
   {
 	this->_pressed = false;
-    this->_sprite.updateState(ButtonSprite::DEFAULT);
-    this->GUIElement::unfocus();
+	this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
+	this->Core::GUIElement::unfocus();
   }
 
-  CoreFont *getFont() const
+  Core::CoreFont *getFont() const
   {
     return (this->_font);
   }
 
-  void setFont(CoreFont *font)
+  void setFont(Core::CoreFont *font)
   {
     this->_font = font;
   }
@@ -114,8 +114,8 @@ public:
 protected:
   T *_instance;
   void (T::*_func)();
-  ButtonSprite _sprite;
-  CoreFont *_font;
+  Core::ButtonSprite _sprite;
+  Core::CoreFont *_font;
   bool	_pressed;
   std::string const _name;
 };

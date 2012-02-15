@@ -13,7 +13,7 @@
 #include "GameStateManager.hpp"
 #include "GSInGame.hpp"
 
-GSLoading::GSLoading(int nbPlayers) : GameState("Loading"), _nbPlayers(nbPlayers)
+GSLoading::GSLoading(int nbPlayers) : Core::GameState("Loading"), _nbPlayers(nbPlayers)
 {
   //AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
   //AudioManager::get().play("intro", "test", "intro");
@@ -23,9 +23,9 @@ GSLoading::GSLoading(int nbPlayers) : GameState("Loading"), _nbPlayers(nbPlayers
 GSLoading::~GSLoading()
 {}
 
-void	GSLoading::escape(const InputCommand &)
+void	GSLoading::escape(const Core::InputCommand &)
 {
-  	GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
   	Game::get().quit();
 }
 
@@ -48,7 +48,7 @@ void	GSLoading::listChoice(std::string const &)
 		//this->setComponentVisibility(false);
 }
 
-bool		GSLoading::handleCommand(Command const &command)
+bool		GSLoading::handleCommand(Core::Command const &command)
 {
   static Method const	methods[] = {
     {"GameBegin", &GSLoading::gameBeginCommand},
@@ -68,9 +68,9 @@ bool		GSLoading::handleCommand(Command const &command)
   return false;
 }
 
-void	GSLoading::errorFullGameCommand(Command const &)
+void	GSLoading::errorFullGameCommand(Core::Command const &)
 {
-	GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
 void	GSLoading::onStart()
@@ -83,12 +83,12 @@ void	GSLoading::onStart()
   this->addGroup("ship", 10);
   this->addGroup("shot", 9);
 
-  Sprite *test = this->getSprite("player1");
+  Core::Sprite *test = this->getSprite("player1");
   test->setX(550);
   test->setY(360);
   this->addGameObject(test, "gui", 20);
 
-  CoreFont *font = this->getFont("buttonFont");
+  Core::CoreFont *font = this->getFont("buttonFont");
   font->setX(400);
   font->setY(350);
   font->setText("Loading");
@@ -101,7 +101,7 @@ void	GSLoading::onStart()
   this->addGameObject(bullet, "ship");*/
 }
 
-void	GSLoading::gameBeginCommand(Command const &)
+void	GSLoading::gameBeginCommand(Core::Command const &)
 {
-	GameStateManager::get().changeState(*_ingame);
+  Core::GameStateManager::get().changeState(*_ingame);
 }

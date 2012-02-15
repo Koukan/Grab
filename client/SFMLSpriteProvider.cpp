@@ -9,17 +9,17 @@ SFMLSpriteProvider::~SFMLSpriteProvider()
 {
 }
 
-Sprite		*SFMLSpriteProvider::addSprite(std::string const &name)
+Core::Sprite		*SFMLSpriteProvider::addSprite(std::string const &name)
 {
 	ResourceMap::iterator	it = this->_resources.find(name);
 
 	if (it == this->_resources.end())
-		return new SFMLSprite;
+	  return new SFMLSprite;
 	else
-		return static_cast<Sprite*>(it->second);
+	  return static_cast<Core::Sprite*>(it->second);
 }
 
-void		SFMLSpriteProvider::addImage(std::string const &path, Sprite &sprite)
+void		SFMLSpriteProvider::addImage(std::string const &path, Core::Sprite &sprite)
 {
 	ImagesMap::iterator	it = this->_images.find(path);
 

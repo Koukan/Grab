@@ -6,29 +6,29 @@
 
 class GSInGame;
 
-class GSLoading : public GameState
+class GSLoading : public Core::GameState
 {
 public:
 	GSLoading(int nbPlayers);
 	~GSLoading();
 	virtual void	onStart();
 	virtual	void	update(double elapseTime = 0);
-	virtual bool	handleCommand(Command const &command);
+  virtual bool	handleCommand(Core::Command const &command);
 
 private:
 	struct Method
 	{
 	  std::string const		name;
-	  void (GSLoading::*method)(Command const &);
+	  void (GSLoading::*method)(Core::Command const &);
 	};
 
-	void			escape(const InputCommand &event);
+  void			escape(const Core::InputCommand &event);
 	void			buttonClick();
 	void			listChoice(std::string const &name);
-	void			gameBeginCommand(Command const &);
-	void			errorFullGameCommand(Command const &);
+  void			gameBeginCommand(Core::Command const &);
+  void			errorFullGameCommand(Core::Command const &);
 
-	BulletCommand		*_bullet;
+  Core::BulletCommand		*_bullet;
 	GSInGame			*_ingame;
 	int					_nbPlayers;
 };

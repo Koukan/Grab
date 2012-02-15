@@ -5,7 +5,7 @@
 class GameButton : public GUIButton<GameButton>
 {
 public:
-  GameButton(int id, int nbPlayers, std::string const &name, ButtonSprite const &sprite, GUILayout *layout);
+  GameButton(int id, int nbPlayers, std::string const &name, Core::ButtonSprite const &sprite, Core::GUILayout *layout);
   ~GameButton();
 
   void push();

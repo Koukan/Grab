@@ -1,12 +1,12 @@
 #include "GUIHLayout.hpp"
 
-GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements)
-  : GUILayout(x, y, width, height, padding, layout, nbElements)
+GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements)
+  : Core::GUILayout(x, y, width, height, padding, layout, nbElements)
 {
 }
 
 GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, int nbElements)
-  : GUILayout(x, y, width, height, padding, nbElements)
+  : Core::GUILayout(x, y, width, height, padding, nbElements)
 {
 }
 
@@ -14,14 +14,14 @@ GUIHLayout::~GUIHLayout()
 {
 }
 
-bool GUIHLayout::handleGUICommand(GUICommand const &command)
+bool GUIHLayout::handleGUICommand(Core::GUICommand const &command)
 {
-  if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
+  if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
     {
       this->prevElement();
       return (true);
     }
-  else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
+  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
     {
       this->nextElement();
       return (true);
@@ -35,7 +35,7 @@ void GUIHLayout::draw(double elapseTime)
   int y = static_cast<int>(this->_y);
   int nb = 0;
 
-  for (std::list<GUIElement *>::iterator it = this->_begin; it != this->_elements.end() && nb < this->_nbElements; ++it)
+  for (std::list<Core::GUIElement *>::iterator it = this->_begin; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
       (*it)->draw(x, y - (*it)->getHeight() / 2, elapseTime);
       x += (*it)->getWidth() + this->_padding;
@@ -47,7 +47,7 @@ void GUIHLayout::draw(int x, int y, double elapseTime)
 {
   int nb = 0;
 
-  for (std::list<GUIElement *>::iterator it = this->_begin; it != this->_elements.end() && nb < this->_nbElements; ++it)
+  for (std::list<Core::GUIElement *>::iterator it = this->_begin; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
       (*it)->draw(x, y - (*it)->getHeight() / 2, elapseTime);
       x += (*it)->getWidth() + this->_padding;

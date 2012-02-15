@@ -12,15 +12,15 @@ ScrollingSprite::ScrollingSprite(int x, int y, int width, int height, ScrollingS
 
 ScrollingSprite::~ScrollingSprite()
 {
-  for (std::vector<Sprite *>::iterator it = this->_sprites.begin(); it != this->_sprites.end(); ++it)
+  for (std::vector<Core::Sprite *>::iterator it = this->_sprites.begin(); it != this->_sprites.end(); ++it)
     delete *it;
 }
 
 void ScrollingSprite::pushSprite(std::string const &spriteName)
 {
-  GameState &gameState = GameStateManager::get().getCurrentState();
+  Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
 
-  Sprite *tmp = gameState.getSprite(spriteName);
+  Core::Sprite *tmp = gameState.getSprite(spriteName);
   if (!tmp)
 	return ;
   this->_sprites.push_back(tmp);
@@ -37,7 +37,7 @@ void ScrollingSprite::setSpeed(int speed)
   this->_speed = speed;
 }
 
-Sprite *ScrollingSprite::nextSprite()
+Core::Sprite *ScrollingSprite::nextSprite()
 {
   if (_current == this->_sprites.size() - 1)
     _current = 0;
@@ -46,7 +46,7 @@ Sprite *ScrollingSprite::nextSprite()
   return (_sprites[this->_current]);
 }
 
-Sprite *ScrollingSprite::prevSprite()
+Core::Sprite *ScrollingSprite::prevSprite()
 {
   if (_current == 0)
 	_current = this->_sprites.size() - 1;
@@ -57,7 +57,7 @@ Sprite *ScrollingSprite::prevSprite()
 
 void ScrollingSprite::hScrolling(int elapseTime)
 {
-  Sprite	*sprite = _sprites[this->_current];
+  Core::Sprite	*sprite = _sprites[this->_current];
   int x2 = static_cast<int>(_offset);
 
   while (x2 < this->_width)
@@ -87,7 +87,7 @@ void ScrollingSprite::hScrolling(int elapseTime)
 
 void ScrollingSprite::vScrolling(int elapseTime)
 {
-  Sprite	*sprite = _sprites[this->_current];
+  Core::Sprite	*sprite = _sprites[this->_current];
   int y2 = static_cast<int>(this->_offset);
 
   while (y2 < this->_height)

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "GSManager.hpp"
 
-CORE_USE_NAMESPACE
+CORE_BEGIN_NAMESPACE
 
 GSManager::GSManager() : Module("GSManager")
 {
@@ -75,15 +75,15 @@ void		GSManager::popState(bool del)
 
 void		GSManager::removeState(const std::string &name)
 {
-	for (std::list<GameState*>::iterator it = _currentStates.begin();
-		it != _currentStates.end(); it++)
-	if ((*it)->name == name)
-    {
+  for (std::list<GameState*>::iterator it = _currentStates.begin();
+       it != _currentStates.end(); it++)
+    if ((*it)->name == name)
+      {
     	(*it)->onEnd();
     	it = _currentStates.erase(it);
-    }
-	_loadedStates.erase(find(_loadedStates.begin(), _loadedStates.end(), name));
-	_keeper.erase(name);
+      }
+  _loadedStates.erase(find(_loadedStates.begin(), _loadedStates.end(), name));
+  _keeper.erase(name);
 }
 
 GameState	&GSManager::getCurrentState()
@@ -184,9 +184,12 @@ void		GSManager::pop(bool changed, bool del)
 	notify(this->_currentStates);
 }
 
-bool		operator==(GameState const * const & state, const std::string &name)
+bool		operator==(Core::GameState const * const & state, const std::string &name)
 {
 	if (state->name == name)
 		return true;
 	return false;
 }
+
+CORE_END_NAMESPACE
+

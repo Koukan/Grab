@@ -8,13 +8,13 @@
 #include "Sprite.hpp"
 #include "HitBox.hpp"
 
-class ConcreteObject : public PhysicObject
+class ConcreteObject : public Core::PhysicObject
 {
 public:
-  ConcreteObject(Sprite *sprite, HitBox & hitbox, double vx, double vy);
+  ConcreteObject(Core::Sprite *sprite, Core::HitBox & hitbox, double vx, double vy);
   virtual ~ConcreteObject();
   virtual void draw(double);
 
 private:
-  Sprite		*_sprite;
+  Core::Sprite		*_sprite;
 };

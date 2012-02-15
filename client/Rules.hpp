@@ -5,8 +5,8 @@
 class Rules
 {
   public:
-	static void		wallTouchObject(GameObject&, GameObject&);
-	static void		shotTouchMonster(GameObject&, GameObject&);
+	static void		wallTouchObject(Core::GameObject&, Core::GameObject&);
+	static void		shotTouchMonster(Core::GameObject&, Core::GameObject&);
 
   private:
     Rules();

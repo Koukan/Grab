@@ -14,7 +14,7 @@
 #include "GUIBindButton.hpp"
 
 GSMainMenu::GSMainMenu()
-  : GameState("mainMenu")
+  : Core::GameState("mainMenu")
 {
 }
 
@@ -31,46 +31,46 @@ void	GSMainMenu::onStart()
 
   // add gui
 
-  GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
+  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
   layout->setY((768 - layout->getHeight()) / 2);
-  Sprite *sp = this->getSprite("logo");
+  Core::Sprite *sp = this->getSprite("logo");
   sp->setX(280);
   sp->setY(100);
   this->addGameObject(sp, "gui", 20);
-  ButtonSprite *sprite = new ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIBindButton(1, "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::modeSelection, "Create Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::joinGame, "Join Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::options, "Options", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::quitGame, "Quit", "buttonFont", *sprite, layout);
   //  new GUIButton<GSMainMenu>(*this, &GSMainMenu::inGameTest, "In Game Test", "buttonFont", *sprite, layout);
-  GameStateManager::get().loadState<GSModeSelection>("modeSelection");
-  GameStateManager::get().loadState<GSJoinGame>("joinGame");
-  GameStateManager::get().loadState<GSOptions>("options");
+  Core::GameStateManager::get().loadState<GSModeSelection>("modeSelection");
+  Core::GameStateManager::get().loadState<GSJoinGame>("joinGame");
+  Core::GameStateManager::get().loadState<GSOptions>("options");
 }
 
 void	GSMainMenu::modeSelection()
 {
-  GameStateManager::get().pushState("modeSelection");
+  Core::GameStateManager::get().pushState("modeSelection");
 }
 
 void	GSMainMenu::joinGame()
 {
-  GameStateManager::get().pushState("joinGame");
+  Core::GameStateManager::get().pushState("joinGame");
 }
 
 void	GSMainMenu::inGameTest()
 {
-  GameStateManager::get().pushState("Game");
+  Core::GameStateManager::get().pushState("Game");
 }
 
 void	GSMainMenu::options()
 {
-  GameStateManager::get().pushState("options");
+  Core::GameStateManager::get().pushState("options");
 }
 void	GSMainMenu::quitGame()
 {
-  GameStateManager::get().popState();
-  GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
   Game::get().quit();
 }

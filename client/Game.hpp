@@ -8,7 +8,7 @@
 #include "GameStateManager.hpp"
 #include "ModuleManager.hpp"
 
-class Game : public Net::Singleton<Game>, public ModuleManager
+class Game : public Net::Singleton<Game>, public Core::ModuleManager
 {
 public:
   static const std::string PREF_FILE;

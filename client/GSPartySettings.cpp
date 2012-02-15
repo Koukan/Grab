@@ -16,7 +16,7 @@
 #include "Converter.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
-  : GameState("mainMenu"), _mode(mode), _map(map), _online(true)
+  : Core::GameState("mainMenu"), _mode(mode), _map(map), _online(true)
 {
 }
 
@@ -26,7 +26,7 @@ GSPartySettings::~GSPartySettings()
 
 void	GSPartySettings::back()
 {
-  GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
 void	GSPartySettings::createParty()
@@ -35,28 +35,28 @@ void	GSPartySettings::createParty()
     {
       if (NetworkModule::get().connect())
 	{
-	  CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
+	  Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
 
 	  int nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
 
 	  GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
-	  CommandDispatcher::get().pushCommand(*cmd);
-	  GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
+	  Core::CommandDispatcher::get().pushCommand(*cmd);
+	  Core::GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
 	}
     }
     else
     {
-      GameState *shipSelection = new GSShipSelection(Net::Converter::toInt<int>(this->_nbPlayers), _online);
-      GameStateManager::get().pushState(*shipSelection);
+      Core::GameState *shipSelection = new GSShipSelection(Net::Converter::toInt<int>(this->_nbPlayers), _online);
+      Core::GameStateManager::get().pushState(*shipSelection);
     }
 }
 
-void	GSPartySettings::nbPlayerList(GUIElement const &nb)
+void	GSPartySettings::nbPlayerList(Core::GUIElement const &nb)
 {
   this->_nbPlayers = static_cast<GUIButton<GSPartySettings> const &>(nb).getName();
 }
 
-void	GSPartySettings::multiMode(GUIElement const &/*mode*/)
+void	GSPartySettings::multiMode(Core::GUIElement const &/*mode*/)
 {
   _online = !_online;
 }
@@ -68,12 +68,12 @@ void	GSPartySettings::onStart()
 
   // add gui
 
-  GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
+  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
   layout->setY((768 - layout->getHeight()) / 2);
 
-  ButtonSprite *sprite = new ButtonSprite("default button", "selected button", "pressed button");
-  ButtonSprite *leftArrow = new ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
-  ButtonSprite *rightArrow = new ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
+  Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Choose Ships", "buttonFont", *sprite, layout);
   new GUILabel("Player's number", "buttonFont", "", layout);
