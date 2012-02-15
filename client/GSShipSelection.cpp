@@ -8,7 +8,7 @@ GSShipSelection::GSShipSelection(unsigned int nbPlayers, bool online) :
 GSShipSelection::~GSShipSelection()
 {}
 
-void	GSShipSelection::
+//void	GSShipSelection::
 void	GSShipSelection::onStart()
 {
   // load xml
