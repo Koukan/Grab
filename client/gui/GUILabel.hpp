@@ -13,7 +13,7 @@ public:
   GUILabel(std::string const &name, std::string const &font, std::string const &sprite, GUILayout *layout);
   ~GUILabel();
 
-  virtual bool handleGUICommand(InputCommand const &command);
+  virtual bool handleGUICommand(GUICommand const &command);
   virtual void	draw(double elapseTime);
   virtual void	draw(int x, int y, double elapseTime);
   virtual void	setText(std::string const &str);

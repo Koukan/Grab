@@ -9,7 +9,7 @@ public:
   void insertElementAtBegin(GUIElement &elem);
   void insertElementAtEnd(GUIElement &elem);
 
-  virtual bool handleGUICommand(InputCommand const &command);
+  virtual bool handleGUICommand(GUICommand const &command);
   virtual void draw(double elapseTime);
   virtual void draw(int x, int y, double elapseTime);
   void prevElement();
@@ -17,6 +17,8 @@ public:
 
   virtual void focus();
   virtual void unfocus();
+
+  void setDispatch(bool dispatch);
 
 protected:
   GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements);
@@ -29,4 +31,5 @@ protected:
   std::list<GUIElement *>::iterator _begin;
   int _padding;
   int _nbElements;
+  bool _dispatch;
 };

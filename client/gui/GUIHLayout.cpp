@@ -14,14 +14,14 @@ GUIHLayout::~GUIHLayout()
 {
 }
 
-bool GUIHLayout::handleGUICommand(InputCommand const &command)
+bool GUIHLayout::handleGUICommand(GUICommand const &command)
 {
-  if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left)
+  if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
     {
       this->prevElement();
       return (true);
     }
-  else if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right)
+  else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
     {
       this->nextElement();
       return (true);

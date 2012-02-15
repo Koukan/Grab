@@ -31,7 +31,7 @@ void	GSPartySettings::back()
 
 void	GSPartySettings::createParty()
 {
-  //  if (_online)
+  if (_online)
     {
       if (NetworkModule::get().connect())
 	{
@@ -44,11 +44,11 @@ void	GSPartySettings::createParty()
 	  GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
 	}
     }
-  /*  else
+    else
     {
       GameState *shipSelection = new GSShipSelection(Net::Converter::toInt<int>(this->_nbPlayers), _online);
       GameStateManager::get().pushState(*shipSelection);
-      }*/
+    }
 }
 
 void	GSPartySettings::nbPlayerList(GUIElement const &nb)

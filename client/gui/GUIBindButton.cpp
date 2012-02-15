@@ -22,9 +22,9 @@ GUIBindButton::~GUIBindButton()
 {
 }
 
-bool GUIBindButton::handleGUICommand(InputCommand const &command)
+bool GUIBindButton::handleGUICommand(GUICommand const &command)
 {
-  if (this->_iterator != this->_bindingList.end() && command.Type == InputCommand::KeyReleased)
+/*  if (this->_iterator != this->_bindingList.end() && command.Type == InputCommand::KeyReleased)
     {
 
       // bind control
@@ -39,6 +39,7 @@ bool GUIBindButton::handleGUICommand(InputCommand const &command)
 	}
       return (true);
     }
+*/
   return (this->GUIButton::handleGUICommand(command));
 }
 

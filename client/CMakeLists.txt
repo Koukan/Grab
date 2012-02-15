@@ -96,8 +96,8 @@ set(SRCS
 	PacketCommand.cpp
 	PacketCommand.hpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
-	Player.cpp
-	Player.hpp
+	player.cpp
+	player.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	${INCLUDES_COMMON_DIR}Resources.hpp

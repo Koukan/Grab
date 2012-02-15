@@ -46,7 +46,7 @@ bool				File::save()
 		return false;
 	for (std::list<Net::DataBlock*>::const_iterator it = this->_list.begin();
 		 it != this->_list.end(); it++)
-		 out.write((*it)->_vec.iov_base, (*it)->_vec.iov_len);
+		 out.write(reinterpret_cast<char *>((*it)->_vec.iov_base), (*it)->_vec.iov_len);
 	if (!out.good())
 		return false;
 	return true;

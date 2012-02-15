@@ -2,6 +2,7 @@
 
 #include "DrawableObject.hpp"
 #include "Input.hpp"
+#include "GUICommand.hpp"
 
 class GUILayout;
 
@@ -12,7 +13,7 @@ public:
   GUIElement(int x, int y, int width, int height);
   virtual ~GUIElement();
 
-  virtual bool handleGUICommand(InputCommand const &command) = 0;
+  virtual bool handleGUICommand(GUICommand const &command) = 0;
   virtual void draw(double elapseTime) = 0;
   virtual void draw(int /*x*/, int /*y*/, double /*elapseTime*/) {}
   virtual void focus();

@@ -8,6 +8,7 @@ GSShipSelection::GSShipSelection(unsigned int nbPlayers, bool online) :
 GSShipSelection::~GSShipSelection()
 {}
 
+//void	GSShipSelection::
 void	GSShipSelection::onStart()
 {
   // load xml
@@ -19,7 +20,7 @@ void	GSShipSelection::onStart()
   GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
   for (unsigned int i = 0; i < _nbPlayers; ++i)
     {
-
+      //      GUIList<GSShipSelection> *guiList = new GUIList<GSShipSelection>(*this, );
 
     }
 }

@@ -1,24 +1,25 @@
 #pragma once
 
-#include "Command.hpp"
+#include "Input.hpp"
 
-class GUICommand : public Command
+class GUICommand
 {
 public:
 
-  enum type
+  enum Type
     {
       DIRECTION,
-      ACTION
+      ACTION,
+	  KEY
     };
   
-  enum buttonAction
+  enum ButtonAction
     {
       PRESSED,
       RELEASED
     };
 
-  enum directionState
+  enum DirectionState
     {
       DEFAULT,
       LEFT,
@@ -27,21 +28,37 @@ public:
       DOWN
     };
   
-   enum actionState
+   enum ActionState
      {
        SELECT,
        BACK
      };
 
-  GUICommand(directionState);
-  ~GUICommand();
+  GUICommand(int playerType, GUICommand::DirectionState dir, ButtonAction buttonAction)
+	  : playerType(playerType), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir)
+  {
+  }
 
-  GUICommand::type type;
-  GUICommand::buttonAction buttonAction;
+  GUICommand(int playerType, GUICommand::ActionState action, ButtonAction buttonAction)
+	  : playerType(playerType), type(GUICommand::ACTION), buttonAction(buttonAction), action(action)
+  {
+  }
+
+  GUICommand(int playerType, Keyboard::Key key, ButtonAction buttonAction)
+	  : playerType(type), type(GUICommand::KEY), buttonAction(buttonAction), key(key)
+  {
+  }
+
+  ~GUICommand() {}
+
+  int playerType;
+  GUICommand::Type type;
+  GUICommand::ButtonAction buttonAction;
 
   union
   {
-    directionState direction;
-    actionState action;
+    DirectionState direction;
+    ActionState action;
+	Keyboard::Key key;
   };
 };

@@ -50,6 +50,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}GUIManager.hpp
 	${CORE_DIR}GUILayout.hpp
 	${CORE_DIR}GUIElement.hpp
+	${CORE_DIR}GUICommand.hpp
 	${CORE_DIR}GSManager.hpp
 	${CORE_DIR}HitBox.hpp
 	${CORE_DIR}Input.hpp
