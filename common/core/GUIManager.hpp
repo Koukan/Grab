@@ -25,7 +25,8 @@ public:
 
 private:
   std::list<ButtonSprite *> _spriteButtons;
-  GUICommand::directionState _direction[4];
+  GUICommand::DirectionState _direction[4];
 
   bool	updateDirection(InputCommand const &cmd);
+  GUICommand *createGUICommand(InputCommand const &cmd);
 };

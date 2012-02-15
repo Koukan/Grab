@@ -18,14 +18,14 @@ GUIVLayout::~GUIVLayout()
 	delete this->_downArrow;
 }
 
-bool GUIVLayout::handleGUICommand(InputCommand const &command)
+bool GUIVLayout::handleGUICommand(GUICommand const &command)
 {
-  if (/*Player::isUpPressed(Player::JOYSTICK1, command)*/ command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up)
+	if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::UP /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up*/)
     {
       this->prevElement();
       return (true);
     }
-  else if (/*Player::isDownPressed(Player::JOYSTICK1, command)*/ command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down)
+  else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::DOWN /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down*/)
     {
       this->nextElement();
       return (true);

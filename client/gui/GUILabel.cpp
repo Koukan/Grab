@@ -42,7 +42,7 @@ GUILabel::~GUILabel()
   delete this->_sprite;
 }
 
-bool	GUILabel::handleGUICommand(InputCommand const &)
+bool	GUILabel::handleGUICommand(GUICommand const &)
 {
   return (false);
 }

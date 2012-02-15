@@ -52,18 +52,18 @@ public:
     delete this->_font;
   }
 
-  virtual bool handleGUICommand(InputCommand const &command)
+  virtual bool handleGUICommand(GUICommand const &command)
   {
-    if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Back)
+    if (command.type == GUICommand::KEY && command.buttonAction == GUICommand::PRESSED && command.key == Keyboard::Back /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Back*/)
       {
 	this->_text = this->_text.substr(0, this->_text.size() - 1);
 	if (this->_instance)
 	  (this->_instance->*(this->_func))(this->_text);
 	return true;
       }
-    if (command.Type == InputCommand::KeyPressed && GUITextBoxCharMap.find(command.Key.Code) != GUITextBoxCharMap.end() && this->_maxChar > this->_text.size())
+    if (command.type == GUICommand::KEY && command.buttonAction == GUICommand::PRESSED && GUITextBoxCharMap.find(command.key) != GUITextBoxCharMap.end() && this->_maxChar > this->_text.size())
       {
-	this->_text += GUITextBoxCharMap[command.Key.Code];
+	this->_text += GUITextBoxCharMap[command.key];
 	if (this->_instance)
 	  (this->_instance->*(this->_func))(this->_text);
 	return true;

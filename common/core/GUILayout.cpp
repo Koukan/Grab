@@ -143,7 +143,7 @@ void GUILayout::nextElement()
     }
 }
 
-bool GUILayout::handleGUICommand(InputCommand const &command)
+bool GUILayout::handleGUICommand(GUICommand const &command)
 {
   if (!_dispatch)
     {

@@ -55,9 +55,9 @@ public:
       }
   }
 
-  virtual bool handleGUICommand(InputCommand const &command)
+  virtual bool handleGUICommand(GUICommand const &command)
   {
-    if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left)
+    if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
       {
 	this->_leftArrow.updateState(ButtonSprite::CLICKED);
 	this->EventLeft();
@@ -65,7 +65,7 @@ public:
 	  (this->_instance->*(this->_func))(**(_focusElement));
 	return (true);
       }
-    else if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right)
+    else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
       {
 	this->_rightArrow.updateState(ButtonSprite::CLICKED);
 	this->EventRight();
@@ -73,7 +73,7 @@ public:
 	  (this->_instance->*(this->_func))(**(_focusElement));
 	return (true);
       }
-    else if (command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Left)
+	else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::RELEASED && command.direction == GUICommand::LEFT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Left*/)
       {
 	if (this->_isFocused)
 	  this->_leftArrow.updateState(ButtonSprite::SELECTED);
@@ -81,7 +81,7 @@ public:
 	  this->_leftArrow.updateState(ButtonSprite::DEFAULT);
 	return (true);
       }
-    else if (command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Right)
+    else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::RELEASED && command.direction == GUICommand::RIGHT /*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Right*/)
       {
 	if (this->_isFocused)
 	  this->_rightArrow.updateState(ButtonSprite::SELECTED);
