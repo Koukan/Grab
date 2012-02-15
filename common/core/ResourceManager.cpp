@@ -59,6 +59,11 @@ Resource		*ResourceManager::getResource(uint32_t id, uint8_t type) const
 	return GlobalResourceManager::get().getResource(id, type);
 }
 
+std::list<Resource*> const	&ResourceManager::getResource() const
+{
+	return this->_resources;
+}
+
 void		ResourceManager::addBulletParser(std::string const &path,
 											 std::string const &name)
 {

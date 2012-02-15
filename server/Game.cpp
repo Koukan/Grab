@@ -5,6 +5,7 @@
 #include "PhysicManager.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameCommand.hpp"
+#include "ResourceCommand.hpp"
 #include "Converter.hpp"
 
 Game::Game(uint16_t id, uint8_t maxPlayers)
@@ -62,6 +63,17 @@ bool		Game::addPlayer(Player &player)
 		cmd->x = this->_list.size() - 1;
 		cmd->player = &player;
 		CommandDispatcher::get().pushCommand(*cmd);
+
+		// send Resource
+		std::list<Resource*> const	& list = _logic.getResource();
+		for (std::list<Resource*>::const_iterator it = list.begin();
+			 it != list.end(); it++)
+		{
+			CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", (*it)->getResourceType(),
+				(*it)->getResourceId(), (*it)->getResourceName(), &player));
+		}
+		// end Resource
+
 		player.setGame(*this);
 		//this->addReadyPlayer();
 		//this->broadcastStatus(player, 1);
