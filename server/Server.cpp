@@ -16,15 +16,15 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 {
 	NetworkModule		&network = NetworkModule::get();
 
-	GlobalResourceManager::get().init();
-	this->ModuleManager::init();
+	Core::GlobalResourceManager::get().init();
+	this->Core::ModuleManager::init();
 	if (!this->ThreadPool::init(nbthread))
 	{
-	    Logger::logger << "Can't init threads";
+	  Core::Logger::logger << "Can't init threads";
 	    return false;
 	}
 	network.setPort(port);
-	this->loadModule(CommandDispatcher::get());
+	this->loadModule(Core::CommandDispatcher::get());
 	this->loadModule(network);
 	this->update(0);
 	return true;

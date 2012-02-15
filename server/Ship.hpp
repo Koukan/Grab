@@ -5,7 +5,7 @@
 
 class Player;
 
-class Ship : public PhysicObject
+class Ship : public Core::PhysicObject
 {
 public:
 	Ship(double x, double y, Player *player);

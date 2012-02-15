@@ -5,7 +5,7 @@
 #include "GameLogic.hpp"
 #include "Net.hpp"
 
-class Game : public Module
+class Game : public Core::Module
 {
   public:
     Game(uint16_t id, uint8_t maxPlayers);

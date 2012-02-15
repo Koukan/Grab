@@ -11,7 +11,7 @@
 #include "Rules.hpp"
 
 GameLogic::GameLogic(Game &game)
-	: GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
+  : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
 {
 	addBulletParser("resources/BulletSimple.xml", "single");
 	addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
@@ -25,10 +25,10 @@ GameLogic::GameLogic(Game &game)
 	this->addGroup("ship", 0);
 	this->addGroup("shot", 0);
 
-	this->addGameObject(new PhysicObject(*new RectHitBox(3000, -2000, 1000, 8000)), "Wall");
-	this->addGameObject(new PhysicObject(*new RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
-	this->addGameObject(new PhysicObject(*new RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
-	this->addGameObject(new PhysicObject(*new RectHitBox(-3000, 1000, 8000, 1000)), "Wall");
+	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(3000, -2000, 1000, 8000)), "Wall");
+	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
+	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
+	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, 1000, 8000, 1000)), "Wall");
 
 	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
@@ -53,7 +53,7 @@ void		GameLogic::update(double elapseTime)
 // loadBullet -> serverresourcemanager::get().addBulletParser(nom de fichier, id_ref) creer un BCommand(id_ref, *this, ...)
 // modifier BCommand pour id_resource en fonction du sprite
 
-bool		GameLogic::handleCommand(Command const &command)
+bool		GameLogic::handleCommand(Core::Command const &command)
 {
 	GameCommand	const &gc = static_cast<GameCommand const &>(command);
 	if (gc.name == "move")
@@ -71,13 +71,13 @@ bool		GameLogic::handleCommand(Command const &command)
 		answer->vy = gc.vy;
 		answer->game = &_game;
 		answer->player = gc.player;
-		CommandDispatcher::get().pushCommand(*answer);
+		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
 	else if (gc.name == "spawn")
 	{
-		CircleHitBox	*hitbox = new CircleHitBox(gc.x, gc.y, 15);
-		Bullet			*bullet = new Bullet(*hitbox, gc.vx, gc.vy);
+	  Core::CircleHitBox	*hitbox = new Core::CircleHitBox(gc.x, gc.y, 15);
+	  Core::Bullet			*bullet = new Core::Bullet(*hitbox, gc.vx, gc.vy);
 		bullet->setId(gc.idObject);
 		this->addGameObject(bullet, "playerfires", 9);
 		GameCommand *answer = new GameCommand("Spawn");
@@ -89,7 +89,7 @@ bool		GameLogic::handleCommand(Command const &command)
 		answer->vy = gc.vy;
 		answer->game = &_game;
 		answer->player = gc.player;
-		CommandDispatcher::get().pushCommand(*answer);
+		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
 	return false;
@@ -118,7 +118,7 @@ void		GameLogic::startGame()
 		cmd->vx = static_cast<int16_t>(tmp->getVx());
 		cmd->vy = static_cast<int16_t>(tmp->getVy());
 		cmd->game = &_game;
-		CommandDispatcher::get().pushCommand(*cmd);
+		Core::CommandDispatcher::get().pushCommand(*cmd);
 		y += step;
 	}
 	this->_gameStarted = true;

@@ -3,10 +3,10 @@
 #include "Command.hpp"
 #include "Game.hpp"
 
-class GameCommand : public Command
+class GameCommand : public Core::Command
 {
   public:
-    GameCommand(std::string const &name) : Command(name),
+  GameCommand(std::string const &name) : Core::Command(name),
 		idObject(0), idResource(0), x(0), y(0), vx(0), vy(0),
 		player(0), game(0)
 		{}
