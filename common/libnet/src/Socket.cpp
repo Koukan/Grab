@@ -28,7 +28,11 @@ int	Socket::open(InetAddr const &addr, int type, int protocol)
 {
   if (_handle != INVALID_HANDLE)
 	this->close();
+#if defined (_WIN32)
+  _handle = WSASocket(addr.getFamily(), type, protocol, NULL, 0, WSA_FLAG_OVERLAPPED);
+#else
   _handle = ::socket(addr.getFamily(), type, protocol);
+#endif
   if (_handle == INVALID_HANDLE)
 	  return -1;
   return 0;

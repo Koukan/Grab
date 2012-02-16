@@ -12,6 +12,7 @@ void    *PoolAllocator::allocate(std::size_t size)
 {
 	std::size_t index = size / 8;
 
+	ScopedLock	lock(_mutex);
 	if (_freed[index] == 0)
 		return ::malloc((index + 1) * 8);
 	void	*ret = _freed[index];
@@ -23,6 +24,7 @@ void    PoolAllocator::deallocate(void *p, std::size_t size)
 {
 	std::size_t index = size / 8;
 	elempool	*elem = reinterpret_cast<elempool*>(p);
+	ScopedLock	lock(_mutex);
 	elem->next = _freed[index];
 	_freed[index] = elem;
 }
