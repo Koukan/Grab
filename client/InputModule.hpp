@@ -18,7 +18,7 @@ public:
 private:
 
 #if (SFML_VERSION_MAJOR != 2)
-	std::map<sf::Key::Code, Keyboard::Key> _dict;
+	std::map<sf::Key::Code, Core::Keyboard::Key> _dict;
 #endif
 };
 

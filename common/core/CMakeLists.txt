@@ -35,6 +35,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}Command.hpp
 	${CORE_DIR}CommandDispatcher.hpp
 	${CORE_DIR}CommandHandler.hpp
+	${CORE_DIR}CoreDef.hpp
 	${CORE_DIR}DrawableObject.hpp
 	${CORE_DIR}File.hpp
 	${CORE_DIR}FontProvider.hpp

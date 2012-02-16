@@ -5,6 +5,7 @@
 #include "NetworkModule.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameListCommand.hpp"
+#include "ResourceCommand.hpp"
 #include "Command.hpp"
 
 Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
@@ -36,7 +37,8 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			NULL, // END_RESOURCES
 			&Server::treatGameStatePacket,
 			&Server::treatErrorPacket,
-			&Server::rangeId
+			&Server::rangeId,
+			&Server::resourceId
 	};
 	uint8_t			type;
 
@@ -143,5 +145,18 @@ bool		Server::rangeId(Net::Packet &packet)
 	packet >> begin;
 	packet >> end;
 	Core::CommandDispatcher::get().pushCommand(*(new GameCommand("rangeid", begin, end, idPlayer)));
+	return true;
+}
+
+bool		Server::resourceId(Net::Packet &packet)
+{
+	uint8_t		type;
+	uint32_t	id;
+	std::string	name;
+
+	packet >> type;
+	packet >> id;
+	packet >> name;
+	Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("resourceId", type, id, name));
 	return true;
 }

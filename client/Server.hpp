@@ -21,6 +21,7 @@ class Server : public Net::SizeHeaderPacketHandler<>
 	bool			treatGameStatePacket(Net::Packet &packet);
 	bool			treatErrorPacket(Net::Packet &packet);
 	bool			rangeId(Net::Packet &packet);
+	bool			resourceId(Net::Packet &packet);
 
 	std::string		_name;
 	Game			*_game;
