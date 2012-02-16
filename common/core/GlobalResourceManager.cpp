@@ -83,7 +83,7 @@ XMLProvider	*GlobalResourceManager::getProvider(std::string const &name) const
 	return 0;
 }
 
-XMLProvider	*GlobalResourceManager::getProvider(uint32_t type) const
+XMLProvider	*GlobalResourceManager::getProvider(uint8_t type) const
 {
 	IdMap::const_iterator	it = this->_ids.find(type);
 
@@ -160,6 +160,23 @@ Resource	*GlobalResourceManager::getResource(uint32_t id, uint8_t type) const
 		return provider->getResource(id);
 	return 0;
 }
+
+void		GlobalResourceManager::changeId(std::string const &name, uint32_t id, uint8_t type)
+{
+	XMLProvider	*provider = this->getProvider(type);
+
+	if (provider)
+		provider->changeId(name, id);
+}
+
+void		GlobalResourceManager::changeId(uint32_t oldId, uint32_t newId, uint8_t type)
+{
+	XMLProvider	*provider = this->getProvider(type);
+
+	if (provider)
+		provider->changeId(oldId, newId);
+}
+
 void		GlobalResourceManager::handleXML(TiXmlNode *parent, ResourceManager &manager)
 {
 	static Method<TiXmlNode::NodeType> const	methods[] = {

@@ -157,6 +157,6 @@ bool		Server::resourceId(Net::Packet &packet)
 	packet >> type;
 	packet >> id;
 	packet >> name;
-	Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("resourceId", type, id, name));
+	Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", type, id, name));
 	return true;
 }

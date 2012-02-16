@@ -13,7 +13,7 @@ public:
 	~GSLoading();
 	virtual void	onStart();
 	virtual	void	update(double elapseTime = 0);
-  virtual bool	handleCommand(Core::Command const &command);
+	virtual bool	handleCommand(Core::Command const &command);
 
 private:
 	struct Method
@@ -22,13 +22,14 @@ private:
 	  void (GSLoading::*method)(Core::Command const &);
 	};
 
-  void			escape(const Core::InputCommand &event);
+	void			escape(const Core::InputCommand &event);
 	void			buttonClick();
 	void			listChoice(std::string const &name);
-  void			gameBeginCommand(Core::Command const &);
-  void			errorFullGameCommand(Core::Command const &);
+	void			gameBeginCommand(Core::Command const &);
+	void			errorFullGameCommand(Core::Command const &);
+	void			resourceId(Core::Command const &);
 
-  Core::BulletCommand		*_bullet;
-	GSInGame			*_ingame;
-	int					_nbPlayers;
+	Core::BulletCommand		*_bullet;
+	GSInGame				*_ingame;
+	int						_nbPlayers;
 };

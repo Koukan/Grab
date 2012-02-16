@@ -79,6 +79,7 @@ std::string const	&File::calcMD5()
 		::md5_append(&pms, reinterpret_cast<md5_byte_t*>((*it)->_vec.iov_base), (*it)->_vec.iov_len);
 	::md5_finish(&pms, reinterpret_cast<md5_byte_t*>(md5));
 	this->_md5.assign(md5, 16);
+	return this->_md5;
 }
 
 void				File::setPath(std::string const &path)

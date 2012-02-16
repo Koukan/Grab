@@ -12,6 +12,7 @@
 #include "ScrollingSprite.hpp"
 #include "GameStateManager.hpp"
 #include "GSInGame.hpp"
+#include "ResourceCommand.hpp"
 
 GSLoading::GSLoading(int nbPlayers) : Core::GameState("Loading"), _nbPlayers(nbPlayers)
 {
@@ -52,11 +53,11 @@ bool		GSLoading::handleCommand(Core::Command const &command)
 {
   static Method const	methods[] = {
     {"GameBegin", &GSLoading::gameBeginCommand},
-    {"ErrorFullGame", &GSLoading::errorFullGameCommand}
+    {"ErrorFullGame", &GSLoading::errorFullGameCommand},
+	{"ResourceId", &GSLoading::resourceId}
   };
 
-  for (size_t i = 0;
-		 i < sizeof(methods) / sizeof(*methods); ++i)
+	for (size_t i = 0; i < sizeof(methods) / sizeof(*methods); ++i)
 	{
 		if (command.name == methods[i].name)
 		{
@@ -65,36 +66,32 @@ bool		GSLoading::handleCommand(Core::Command const &command)
 		}
 	}
 	return (_ingame->handleCommand(command));
-  return false;
+	return false;
 }
 
 void	GSLoading::errorFullGameCommand(Core::Command const &)
 {
-  Core::GameStateManager::get().popState();
+	delete _ingame;
+	Core::GameStateManager::get().popState();
 }
 
 void	GSLoading::onStart()
 {
-  this->load("resources/intro.xml");
-  this->load("resources/player.xml");
-  this->load("resources/enemies.xml");
-  this->load("resources/shots.xml");
-  this->load("resources/destruction.xml");
-  this->addGroup("ship", 10);
-  this->addGroup("shot", 9);
+	this->load("resources/intro.xml");
+	this->load("resources/player.xml");
 
-  Core::Sprite *test = this->getSprite("player1");
-  test->setX(550);
-  test->setY(360);
-  this->addGameObject(test, "gui", 20);
+	Core::Sprite *test = this->getSprite("player1");
+	test->setX(550);
+	test->setY(360);
+	this->addGameObject(test, "gui", 20);
 
-  Core::CoreFont *font = this->getFont("buttonFont");
-  font->setX(400);
-  font->setY(350);
-  font->setText("Loading");
-  this->addGameObject(font, "gui", 20);
-  _ingame = new GSInGame(this->_nbPlayers);
-  _ingame->preload();
+	Core::CoreFont *font = this->getFont("buttonFont");
+	font->setX(400);
+	font->setY(350);
+	font->setText("Loading");
+	this->addGameObject(font, "gui", 20);
+	_ingame = new GSInGame(this->_nbPlayers);
+	_ingame->preload();
 
   /*this->addBulletParser("resources/BulletBossMetroid.xml", "Test");
   BulletCommand *bullet = new BulletCommand("Test", *this, 1100, 300);
@@ -103,5 +100,12 @@ void	GSLoading::onStart()
 
 void	GSLoading::gameBeginCommand(Core::Command const &)
 {
-  Core::GameStateManager::get().changeState(*_ingame);
+	Core::GameStateManager::get().changeState(*_ingame);
+}
+
+void	GSLoading::resourceId(Core::Command const &command)
+{
+	ResourceCommand const &cmd = static_cast<ResourceCommand const &>(command);
+
+	_ingame->changeId(cmd.name, cmd.id, cmd.type);
 }

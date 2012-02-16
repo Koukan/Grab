@@ -18,6 +18,9 @@ class ResourceManager
 	void			addBulletParser(std::string const &path, std::string const &name);
 	void			addResource(Resource &resource);
 
+	void			changeId(std::string const &name, uint32_t id, uint8_t type);
+	void			changeId(uint32_t oldId, uint32_t newId, uint8_t type);
+
 	// getter
 	Sprite						*getSprite(std::string const &name) const;
 	CoreFont					*getFont(std::string const &name) const;

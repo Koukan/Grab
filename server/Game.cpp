@@ -65,13 +65,13 @@ bool		Game::addPlayer(Player &player)
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 
 		// send Resource
-		// std::list<Core::Resource*> const	& list = _logic.getResource();
-		// for (std::list<Core::Resource*>::const_iterator it = list.begin();
-		// 	 it != list.end(); it++)
-		// {
-		//   Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", (*it)->getResourceType(),
-		// 		(*it)->getResourceId(), (*it)->getResourceName(), &player));
-		// }
+		std::list<Core::Resource*> const	& list = _logic.getResource();
+		for (std::list<Core::Resource*>::const_iterator it = list.begin();
+		 	 it != list.end(); it++)
+		{
+		   Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", (*it)->getResourceType(),
+		 		(*it)->getResourceId(), (*it)->getResourceName(), &player));
+		}
 		// end Resource
 
 		player.setGame(*this);

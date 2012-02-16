@@ -26,7 +26,7 @@ class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Single
 
 	// getter
 	XMLProvider		*getProvider(std::string const &name) const;
-	XMLProvider		*getProvider(uint32_t type) const;
+	XMLProvider		*getProvider(uint8_t type) const;
 	Sprite			*getSprite(std::string const &name) const;
 	Sprite			*getSprite(uint32_t id) const;
 	CoreFont		*getFont(std::string const &name) const;
@@ -36,6 +36,9 @@ class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Single
 	Resource		*getResource(std::string const &name, std::string const &provider) const;
 	Resource		*getResource(std::string const &name, uint8_t type) const;
 	Resource		*getResource(uint32_t id, uint8_t type) const;
+
+	void			changeId(std::string const &name, uint32_t id, uint8_t type);
+	void			changeId(uint32_t oldId, uint32_t newId, uint8_t type);
 
 	template <typename T>
 	struct			Method

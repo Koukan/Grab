@@ -14,7 +14,7 @@ GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout
 }
 
 GUILayout::GUILayout(int x, int y, int width, int height, int padding, int nbElements)
-  : GUIElement(x, y, width, height), _padding(padding), _nbElements(nbElements)
+  : GUIElement(x, y, width, height), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();

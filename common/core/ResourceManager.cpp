@@ -21,6 +21,16 @@ void		ResourceManager::load(std::string const &path)
 	GlobalResourceManager::get().load(path, *this);
 }
 
+void		ResourceManager::changeId(std::string const &name, uint32_t id, uint8_t type)
+{
+	GlobalResourceManager::get().changeId(name, id, type);
+}
+
+void		ResourceManager::changeId(uint32_t oldId, uint32_t newId, uint8_t type)
+{
+	GlobalResourceManager::get().changeId(oldId, newId, type);
+}
+
 Sprite		*ResourceManager::getSprite(std::string const &name) const
 {
 	return GlobalResourceManager::get().getSprite(name);

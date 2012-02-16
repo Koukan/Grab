@@ -39,6 +39,7 @@ void		GSInGame::preload()
   this->load("resources/player.xml");
   this->load("resources/shots.xml");
   this->load("resources/enemies.xml");
+  this->load("resources/destruction.xml");
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
