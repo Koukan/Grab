@@ -4,9 +4,11 @@
 #include <string>
 #include "CommandHandler.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class ModuleManager;
 
-class Module : public CommandHandler
+class CORE_DLLREQ Module : public CommandHandler
 {
 public:
 	Module(std::string const &name, double targetRate = 0);
@@ -33,5 +35,6 @@ private:
 	friend class		ModuleManager;
 };
 
+CORE_END_NAMESPACE
 
 #endif /* _MODULE_ */

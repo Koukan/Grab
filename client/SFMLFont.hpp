@@ -5,7 +5,7 @@
 #include <string>
 #include "Font.hpp"
 
-class SFMLFont : public CoreFont
+class SFMLFont : public Core::CoreFont
 {
 public:
   SFMLFont(std::string const &fileName, unsigned int size);

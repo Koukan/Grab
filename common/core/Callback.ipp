@@ -1,6 +1,8 @@
 #ifndef		_CALLBACK_IPP_
 #define 	_CALLBACK_IPP_
 
+CORE_BEGIN_NAMESPACE
+
 template <typename UserData>
 Callback::Callback(void(*function)(UserData&))
 	: _callback(new Callback_Impl_Function_UserData<UserData>(function)),
@@ -117,5 +119,7 @@ void            Callback::operator()(UserData1 &data1, UserData2 &data2)
 {
   this->call(data1, data2);
 }
+
+CORE_END_NAMESPACE
 
 #endif		/* _CALLBACK_IPP_ */

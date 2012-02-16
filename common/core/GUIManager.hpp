@@ -7,10 +7,11 @@
 #include "Module.hpp"
 #include "Input.hpp"
 #include "GUICommand.hpp"
-
 #include <list>
 
-class GUIManager : public CommandHandler, public GUILayout
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ GUIManager : public CommandHandler, public GUILayout
 {
 public:
   GUIManager();
@@ -29,3 +30,5 @@ private:
 
   GUICommand *createGUICommand(InputCommand const &cmd);
 };
+
+CORE_END_NAMESPACE

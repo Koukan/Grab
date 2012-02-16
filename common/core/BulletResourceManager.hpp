@@ -5,7 +5,9 @@
 #include "bulletmlparser.h"
 #include "XMLProvider.hpp"
 
-class BulletResourceManager : public XMLProvider
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ BulletResourceManager : public XMLProvider
 {
   public:
     BulletResourceManager();
@@ -13,3 +15,5 @@ class BulletResourceManager : public XMLProvider
 	void				handleXML(TiXmlNode*, ResourceManager&);
 	BulletMLParser		*addBulletParser(std::string const &path, std::string const &name, ResourceManager &);
 };
+
+CORE_END_NAMESPACE

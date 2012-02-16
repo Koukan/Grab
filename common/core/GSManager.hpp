@@ -6,7 +6,9 @@
 #include "Module.hpp"
 #include "Observable.hpp"
 
-class GSManager : public Module, public Observable<std::list<GameState*> >
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ GSManager : public Module, public Observable<std::list<GameState*> >
 {
 public:
   GSManager();
@@ -53,4 +55,6 @@ protected:
 
 #include "GSManager.ipp"
 
-bool		operator==(GameState const * const & state, const std::string &name);
+bool		operator==(Core::GameState const * const & state, const std::string &name);
+
+CORE_END_NAMESPACE

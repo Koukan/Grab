@@ -3,6 +3,8 @@
 #include "bulletmlparser-tinyxml.h"
 #include "bulletmlerror.h"
 
+CORE_USE_NAMESPACE
+
 BulletResourceManager::BulletResourceManager()
 	: XMLProvider("bulletml", 3)
 {

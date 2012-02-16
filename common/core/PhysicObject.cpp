@@ -2,6 +2,8 @@
 #include "Callback.hpp"
 #include "GameStateManager.hpp"
 
+CORE_USE_NAMESPACE
+
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy) :
   DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _static(false), _hitBox(&hitbox)
 {

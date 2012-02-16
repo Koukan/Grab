@@ -37,26 +37,26 @@ Game::~Game()
 void		Game::init()
 {
   srand(static_cast<unsigned int>(Net::Clock::getMsSinceEpoch()));
-  ModuleManager::init();
+  Core::ModuleManager::init();
   //cl_log_event("system", "Grab: The Power of the Lost Grapple started");
 
   // add Provider
-  GlobalResourceManager::get().init();
-  GlobalResourceManager::get().addProvider(*new SFMLSpriteProvider);
-  GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
+  Core::GlobalResourceManager::get().init();
+  Core::GlobalResourceManager::get().addProvider(*new SFMLSpriteProvider);
+  Core::GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
 
   // add Module
-  this->loadModule(CommandDispatcher::get());
+  this->loadModule(Core::CommandDispatcher::get());
   this->loadModule(RendererManager::get());
   this->loadModule(*(new InputModule));
-  this->loadModule(*(new PhysicManager));
-  this->loadModule(GameStateManager::get());
+  this->loadModule(*(new Core::PhysicManager));
+  this->loadModule(Core::GameStateManager::get());
   this->loadModule(NetworkModule::get());
-  CommandDispatcher::get().registerHandler(GameStateManager::get());
-  GameStateManager::get().loadState<GSPreload>("preload");
-  GameStateManager::get().loadState<GSMainMenu>("mainMenu");
-  GameStateManager::get().pushState("preload");
-  GameStateManager::get().pushState("mainMenu", GameState::NONE);
+  Core::CommandDispatcher::get().registerHandler(Core::GameStateManager::get());
+  Core::GameStateManager::get().loadState<GSPreload>("preload");
+  Core::GameStateManager::get().loadState<GSMainMenu>("mainMenu");
+  Core::GameStateManager::get().pushState("preload");
+  Core::GameStateManager::get().pushState("mainMenu", Core::GameState::NONE);
 }
 
 void		Game::readPreferencesFile()

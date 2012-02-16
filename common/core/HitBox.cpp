@@ -3,6 +3,8 @@
 #include "RectHitBox.hpp"
 #include "PolyHitBox.hpp"
 
+CORE_USE_NAMESPACE
+
 HitBox::HitBox(double x, double y)
 	: _x(x), _y(y)
 {

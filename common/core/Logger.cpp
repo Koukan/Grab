@@ -2,4 +2,4 @@
 #include <string>
 #include "Logger.hpp"
 
-Logger Logger::logger;
+CORE_NAMESPACE::Logger CORE_NAMESPACE::Logger::logger;

@@ -4,13 +4,13 @@
 #include "SpriteProvider.hpp"
 #include "SFMLSprite.hpp"
 
-class SFMLSpriteProvider : public SpriteProvider
+class SFMLSpriteProvider : public Core::SpriteProvider
 {
   public:
     SFMLSpriteProvider();
     virtual ~SFMLSpriteProvider();
-	virtual Sprite		*addSprite(std::string const &name);
-	virtual void		addImage(std::string const &path, Sprite &sprite);
+  virtual Core::Sprite		*addSprite(std::string const &name);
+  virtual void		addImage(std::string const &path, Core::Sprite &sprite);
 	virtual void		deleteResource(std::string const &name);
 
   private:

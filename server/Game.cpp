@@ -5,10 +5,11 @@
 #include "PhysicManager.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameCommand.hpp"
+#include "ResourceCommand.hpp"
 #include "Converter.hpp"
 
 Game::Game(uint16_t id, uint8_t maxPlayers)
-	: Module("Game" + id, 20), _logic(*this),
+  : Core::Module("Game" + id, 20), _logic(*this),
 	  _id(id), _maxPlayers(maxPlayers), _readyPlayers(0)
 {
 	Server::get().loadModule(*this);
@@ -42,7 +43,7 @@ void		Game::updateGameState(double elapsedTime)
 {
 	Net::ScopedLock		lock(this->_mutex);
 
-	PhysicManager::apply(this->_logic, elapsedTime);
+	Core::PhysicManager::apply(this->_logic, elapsedTime);
 	this->_logic.update(elapsedTime);
 }
 
@@ -61,7 +62,18 @@ bool		Game::addPlayer(Player &player)
 		cmd->idResource = end;
 		cmd->x = this->_list.size() - 1;
 		cmd->player = &player;
-		CommandDispatcher::get().pushCommand(*cmd);
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+
+		// send Resource
+		std::list<Core::Resource*> const	& list = _logic.getResource();
+		for (std::list<Core::Resource*>::const_iterator it = list.begin();
+		 	 it != list.end(); it++)
+		{
+		   Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", (*it)->getResourceType(),
+		 		(*it)->getResourceId(), (*it)->getResourceName(), &player));
+		}
+		// end Resource
+
 		player.setGame(*this);
 		//this->addReadyPlayer();
 		//this->broadcastStatus(player, 1);
@@ -124,13 +136,13 @@ void		Game::broadcastStatus(Player &player, int status)
 		tmp->game = this;
 		tmp->player = &player;
 		tmp->idObject = status;
-		CommandDispatcher::get().pushCommand(*tmp);
+		Core::CommandDispatcher::get().pushCommand(*tmp);
 }
 
 void		Game::startGame()
 {
 		GameCommand *tmp = new GameCommand("Startgame");
 		tmp->game = this;
-		CommandDispatcher::get().pushCommand(*tmp);
+		Core::CommandDispatcher::get().pushCommand(*tmp);
 		_logic.startGame();
 }

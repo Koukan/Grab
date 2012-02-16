@@ -1,6 +1,8 @@
 #include "RectHitBox.hpp"
 #include "CircleHitBox.hpp"
 
+CORE_USE_NAMESPACE
+
 RectHitBox::RectHitBox(double x, double y, double width, double height)
 	: HitBox(x, y), _width(width), _height(height)
 {

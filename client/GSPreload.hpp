@@ -3,12 +3,12 @@
 #include <list>
 #include "GameState.hpp"
 
-class GSPreload : public GameState
+class GSPreload : public Core::GameState
 {
 public:
 	GSPreload();
 	~GSPreload();
 	virtual void	onStart();
 	virtual	void	update(double elapseTime = 0);
-	virtual bool	handleCommand(Command const &command);
+  virtual bool	handleCommand(Core::Command const &command);
 };

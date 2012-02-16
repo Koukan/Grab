@@ -4,6 +4,8 @@
 #include "Input.hpp"
 #include "GUICommand.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class GUILayout;
 
 class GUIElement : public DrawableObject
@@ -34,3 +36,5 @@ protected:
   bool _isFocused;
   bool _enable;
 };
+
+CORE_END_NAMESPACE

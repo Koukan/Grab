@@ -3,7 +3,9 @@
 
 #include "GameObject.hpp"
 
-class DrawableObject : public GameObject
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ DrawableObject : public GameObject
 {
 public:
   DrawableObject(double x = 0, double y = 0) :
@@ -12,5 +14,8 @@ public:
 
   virtual void		draw(double elapseTime) = 0;
 };
+
+
+CORE_END_NAMESPACE
 
 #endif		/* _DRAWABLEOBJECT_ */

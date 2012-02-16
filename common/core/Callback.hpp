@@ -7,8 +7,11 @@
 #include "Callback_Impl_Function_UserData.hpp"
 #include "Callback_Impl_Method_UserData.hpp"
 #include "Callback_Impl_Function_UserData2.hpp"
+#include "CoreDef.hpp"
 
-class Callback
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ Callback
 {
   public:
     // 0 argurment
@@ -57,6 +60,8 @@ class Callback
     Callback_Impl	*_callback;
     bool		_instance;
 };
+
+CORE_END_NAMESPACE
 
 #include "Callback.ipp"
 

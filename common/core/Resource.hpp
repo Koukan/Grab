@@ -2,10 +2,13 @@
 
 #include <stdint.h>
 #include <string>
+#include "CoreDef.hpp"
+
+CORE_BEGIN_NAMESPACE
 
 class XMLProvider;
 
-class Resource
+class CORE_DLLREQ Resource
 {
   public:
 	Resource();
@@ -36,3 +39,5 @@ class Resource
 	uint32_t		&_use;
 	friend class	XMLProvider;
 };
+
+CORE_END_NAMESPACE

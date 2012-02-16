@@ -8,11 +8,13 @@
 #include "XMLProvider.hpp"
 #include "Singleton.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class SpriteProvider;
 class FontProvider;
 class BulletResourceManager;
 
-class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalResourceManager>
+class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalResourceManager>
 {
   public:
 	GlobalResourceManager();
@@ -24,7 +26,7 @@ class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalRe
 
 	// getter
 	XMLProvider		*getProvider(std::string const &name) const;
-	XMLProvider		*getProvider(uint32_t type) const;
+	XMLProvider		*getProvider(uint8_t type) const;
 	Sprite			*getSprite(std::string const &name) const;
 	Sprite			*getSprite(uint32_t id) const;
 	CoreFont		*getFont(std::string const &name) const;
@@ -34,6 +36,9 @@ class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalRe
 	Resource		*getResource(std::string const &name, std::string const &provider) const;
 	Resource		*getResource(std::string const &name, uint8_t type) const;
 	Resource		*getResource(uint32_t id, uint8_t type) const;
+
+	void			changeId(std::string const &name, uint32_t id, uint8_t type);
+	void			changeId(uint32_t oldId, uint32_t newId, uint8_t type);
 
 	template <typename T>
 	struct			Method
@@ -64,3 +69,5 @@ class GlobalResourceManager : public XMLProvider, public Net::Singleton<GlobalRe
 	IdMap					_ids;
 	TiXmlDocument			_document;
 };
+
+CORE_END_NAMESPACE

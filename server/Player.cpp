@@ -43,7 +43,7 @@ int			Player::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
-	Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
+	Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
 	{
 		return (this->*methods[type])(packet);
@@ -116,7 +116,7 @@ int		Player::connection(Net::Packet &packet)
 	packet >> _name;
 	answer << static_cast<uint8_t>(TCP::ETABLISHED);
 	this->handleOutputPacket(answer);
-	Logger::logger << "Player " << _name << " connected";
+	Core::Logger::logger << "Player " << _name << " connected";
 	return 1;
 }
 
@@ -151,7 +151,7 @@ int		Player::connectGame(Net::Packet &packet)
 	{
 		if (game->addPlayer(*this))
 		{
-			Logger::logger << "Player " << _name << " join game" << id;
+			Core::Logger::logger << "Player " << _name << " join game" << id;
 			return 1;
 		}
 		return this->sendError(Error::GAME_FULL);
@@ -177,7 +177,7 @@ int		Player::createGame(Net::Packet &packet)
 	packet >> 	maxPlayer;
 	Game		*game = Server::get().createGame(maxPlayer);
 
-	Logger::logger << "Game created by " << int(maxPlayer);
+	Core::Logger::logger << "Game created by " << int(maxPlayer);
 	if (game)
 	{
 		game->addPlayer(*this);
@@ -200,7 +200,7 @@ int         		Player::sendError(Error::Type error)
 {
 	Net::Packet		answer(7);
 
-	Logger::logger << "Send error to " << this->_name;
+	Core::Logger::logger << "Send error to " << this->_name;
 	answer << static_cast<uint8_t>(TCP::TCP_ERROR);
 	answer << static_cast<uint16_t>(error);
 	this->handleOutputPacket(answer);

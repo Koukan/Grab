@@ -4,7 +4,7 @@
 #include "Command.hpp"
 #include "PacketType.hpp"
 
-class GameListCommand : public Command
+class GameListCommand : public Core::Command
 {
 public:
   GameListCommand(std::string const &name, uint16_t idGame, uint8_t nbPlayers, uint8_t state);

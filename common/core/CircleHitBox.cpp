@@ -1,5 +1,7 @@
 #include "CircleHitBox.hpp"
 
+CORE_USE_NAMESPACE
+
 CircleHitBox::CircleHitBox(double x, double y, double ray)
 	: HitBox(x, y), _radius(ray)
 {

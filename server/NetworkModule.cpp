@@ -3,12 +3,13 @@
 #include "PacketCommand.hpp"
 #include "PacketType.hpp"
 #include "GameCommand.hpp"
+#include "ResourceCommand.hpp"
 #include "GameManager.hpp"
 #include "Server.hpp"
 
-NetworkModule::NetworkModule() : Module("NetworkModule", 5), _reactor(0), _pingupdate(0)
+NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5), _reactor(0), _pingupdate(0)
 {
-	CommandDispatcher::get().registerHandler(*this);
+  Core::CommandDispatcher::get().registerHandler(*this);
 }
 
 NetworkModule::~NetworkModule()
@@ -51,15 +52,16 @@ void		NetworkModule::destroy()
 {
 }
 
-bool		NetworkModule::handleCommand(Command const &command)
+bool		NetworkModule::handleCommand(Core::Command const &command)
 {
 	static Method const	methods[] = {
+		{"Move", &NetworkModule::moveCommand},
 		{"Spawn", &NetworkModule::spawnCommand},
 		{"Destroy", &NetworkModule::destroyCommand},
-		{"Move", &NetworkModule::moveCommand},
 		{"Status", &NetworkModule::statusCommand},
 		{"Startgame", &NetworkModule::startgameCommand},
-		{"RangeId", &NetworkModule::rangeId}
+		{"RangeId", &NetworkModule::rangeId},
+		{"ResourceId", &NetworkModule::resourceId}
 	};
 
 	for (size_t i = 0;
@@ -110,7 +112,7 @@ Player 		*NetworkModule::getPlayerByAddr(Net::InetAddr const &addr) const
 	return ((it != _players.end()) ? it->second : 0);
 }
 
-void		NetworkModule::spawnCommand(Command const &command)
+void		NetworkModule::spawnCommand(Core::Command const &command)
 {
 	GameCommand	const &cmd = static_cast<GameCommand const &>(command);
 
@@ -131,7 +133,7 @@ void		NetworkModule::spawnCommand(Command const &command)
 	}
 }
 
-void		NetworkModule::destroyCommand(Command const &command)
+void		NetworkModule::destroyCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
@@ -147,7 +149,7 @@ void		NetworkModule::destroyCommand(Command const &command)
 	}
 }
 
-void		NetworkModule::moveCommand(Command const &command)
+void		NetworkModule::moveCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
@@ -204,7 +206,7 @@ void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Player*> const
 	}
 }
 
-void        NetworkModule::statusCommand(Command const &command)
+void        NetworkModule::statusCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
@@ -220,7 +222,7 @@ void        NetworkModule::statusCommand(Command const &command)
 	}
 }
 
-void		NetworkModule::startgameCommand(Command const &command)
+void		NetworkModule::startgameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
@@ -234,7 +236,7 @@ void		NetworkModule::startgameCommand(Command const &command)
 	}
 }
 
-void		NetworkModule::rangeId(Command const &command)
+void		NetworkModule::rangeId(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
@@ -254,7 +256,22 @@ void		NetworkModule::rangeId(Command const &command)
 	}
 }
 
-void		 NetworkModule::sendPing()
+void		NetworkModule::resourceId(Core::Command const &command)
+{
+	ResourceCommand const	&cmd = static_cast<ResourceCommand const &>(command);
+
+	if (cmd.player)
+	{
+		Net::Packet	packet(cmd.name.size() + 7);
+		packet << static_cast<uint8_t>(TCP::RESOURCEID);
+		packet << static_cast<uint8_t>(cmd.type);
+		packet << static_cast<uint32_t>(cmd.id);
+		packet << cmd.name;
+		cmd.player->handleOutputPacket(packet);
+	}
+}
+
+void		NetworkModule::sendPing()
 {
 	GameManager::gamesMap const &map = Server::get().getGameList();
 

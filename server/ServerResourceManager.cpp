@@ -13,26 +13,26 @@ ServerResourceManager::~ServerResourceManager()
 {
 }
 
-Sprite		*ServerResourceManager::addSprite(
+Core::Sprite		*ServerResourceManager::addSprite(
 				std::string const &name)
 {
 	if (this->_ids.find(name) == this->_ids.end())
 		this->_ids[name] = _id++;
-	return new Sprite;
+	return new Core::Sprite;
 }
 
-Sprite		*ServerResourceManager::getSprite(
+Core::Sprite		*ServerResourceManager::getSprite(
 				std::string const &) const
 {
 	return 0;
 }
 
 void		ServerResourceManager::addImage(
-				std::string const &path, Sprite &)
+						std::string const &path, Core::Sprite &)
 {
 	if (this->_resources.find(path) == this->_resources.end())
 	{
-		File	*file = new File;
+	  Core::File	*file = new Core::File;
 		if (file->load(path))
 			this->_resources[path] = file;
 		else

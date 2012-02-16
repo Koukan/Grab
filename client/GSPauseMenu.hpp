@@ -3,7 +3,7 @@
 #include <string>
 #include "GameState.hpp"
 
-class GSPauseMenu : public GameState
+class GSPauseMenu : public Core::GameState
 {
 public:
   GSPauseMenu();

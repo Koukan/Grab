@@ -6,7 +6,7 @@
 #include "GameStateManager.hpp"
 #include "DrawableObject.hpp"
 
-RendererManager::RendererManager() : GameStateObserver("RendererManager")
+RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
 	this->_targetRate = 20;
 	this->_window = 0;
@@ -29,26 +29,26 @@ void				RendererManager::init()
 
 void				RendererManager::update(double elapsedTime)
 {
-	GameObjectManager::groupsDisplay::const_iterator	lit;
-	Group::gameObjectSet::const_iterator				oit;
+  Core::GameObjectManager::groupsDisplay::const_iterator	lit;
+  Core::Group::gameObjectSet::const_iterator				oit;
 	double												time;
 
 	this->clear();
-	for (std::list<GameState*>::const_iterator it = this->_glist.begin();
+	for (std::list<Core::GameState*>::const_iterator it = this->_glist.begin();
 			it != this->_glist.end(); it++)
 	{
-		if (((*it)->getPaused() & GameState::DRAW) != 0)
+	  if (((*it)->getPaused() & Core::GameState::DRAW) != 0)
 				continue;
-		GameObjectManager::groupsDisplay const	&groups = (*it)->getDisplayObjects();
+		Core::GameObjectManager::groupsDisplay const	&groups = (*it)->getDisplayObjects();
 		for (lit = groups.begin(); lit != groups.end(); lit++)
 		{
 			if (lit->second->getLayer() >= 0)
 			{
 				time = lit->second->getTimeEffect() * elapsedTime;
-				Group::gameObjectSet const	&objects = lit->second->getObjects();
+				Core::Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)
 				{
-					static_cast<DrawableObject*>(*oit)->draw(time);
+				  static_cast<Core::DrawableObject*>(*oit)->draw(time);
 				}
 			}
 		}

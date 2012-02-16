@@ -3,9 +3,9 @@
 #include "GameStateManager.hpp"
 
 Wall::Wall(double x, double y, double width, double height, std::string const &groupName)
-	: PhysicObject(*new RectHitBox(x, y, width, height))
+  : Core::PhysicObject(*new Core::RectHitBox(x, y, width, height))
 {
-	GameStateManager::get().getCurrentState().addGameObject(this, groupName);
+  Core::GameStateManager::get().getCurrentState().addGameObject(this, groupName);
 }
 
 
@@ -13,7 +13,7 @@ Wall::~Wall()
 {
 }
 
-void	Wall::collideBullet(GameObject &obj)
+void	Wall::collideBullet(Core::GameObject &obj)
 {
 	obj.erase();
 }

@@ -3,11 +3,14 @@
 #include <stdint.h>
 #include <cstdlib>
 #include "Net.hpp"
+#include "CoreDef.hpp"
+
+CORE_BEGIN_NAMESPACE
 
 class GameObjectManager;
 class Group;
 
-class GameObject : public Net::PoolObject
+class CORE_DLLREQ GameObject : public Net::PoolObject
 {
 public:
 	GameObject(double x = 0, double y = 0, Group *group = 0);
@@ -38,3 +41,5 @@ protected:
 
 	friend class GameObjectManager;
 };
+
+CORE_END_NAMESPACE

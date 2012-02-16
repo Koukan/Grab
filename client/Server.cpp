@@ -5,6 +5,7 @@
 #include "NetworkModule.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameListCommand.hpp"
+#include "ResourceCommand.hpp"
 #include "Command.hpp"
 
 Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
@@ -36,7 +37,8 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			NULL, // END_RESOURCES
 			&Server::treatGameStatePacket,
 			&Server::treatErrorPacket,
-			&Server::rangeId
+			&Server::rangeId,
+			&Server::resourceId
 	};
 	uint8_t			type;
 
@@ -70,13 +72,13 @@ bool		Server::treatGamePacket(Net::Packet &packet)
 	packet >> idGame;
 	packet >> nbPlayers;
 	packet >> state;
-	CommandDispatcher::get().pushCommand(*(new GameListCommand("listGame", idGame, nbPlayers, state)));
+	Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("listGame", idGame, nbPlayers, state)));
 	return true;
 }
 
 bool		Server::treatEndListGamePacket(Net::Packet &)
 {
-	CommandDispatcher::get().pushCommand(*(new GameListCommand("listGame", 0, 0, 0)));
+  Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("listGame", 0, 0, 0)));
 	return true;
 }
 
@@ -99,11 +101,11 @@ bool		Server::treatGameStatePacket(Net::Packet &packet)
 	packet >> err;
 	if (err == GameStateEnum::BEGIN)
 	{
-		CommandDispatcher::get().pushCommand(*(new Command("GameBegin")));
+	  Core::CommandDispatcher::get().pushCommand(*(new Core::Command("GameBegin")));
 	}
 	else
 	{
-		GameStateManager::get().popState();
+	  Core::GameStateManager::get().popState();
 	}
 	return true;
 }
@@ -129,7 +131,7 @@ bool		Server::treatErrorPacket(Net::Packet &packet)
 	MessageBox(NULL, errorTexts[err], TEXT("Error"), MB_OK);
 #endif
 	std::cerr << errorTexts[err] << std::endl;
-	CommandDispatcher::get().pushCommand(*(new Command("ErrorFullGame")));
+	Core::CommandDispatcher::get().pushCommand(*(new Core::Command("ErrorFullGame")));
 	return true;
 }
 
@@ -142,6 +144,19 @@ bool		Server::rangeId(Net::Packet &packet)
 	packet >> idPlayer;
 	packet >> begin;
 	packet >> end;
-	CommandDispatcher::get().pushCommand(*(new GameCommand("rangeid", begin, end, idPlayer)));
+	Core::CommandDispatcher::get().pushCommand(*(new GameCommand("rangeid", begin, end, idPlayer)));
+	return true;
+}
+
+bool		Server::resourceId(Net::Packet &packet)
+{
+	uint8_t		type;
+	uint32_t	id;
+	std::string	name;
+
+	packet >> type;
+	packet >> id;
+	packet >> name;
+	Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", type, id, name));
 	return true;
 }

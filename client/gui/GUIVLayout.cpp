@@ -2,13 +2,13 @@
 #include "GameStateManager.hpp"
 #include "Player.hpp"
 
-GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
-  : GUILayout(x, y, width, height, padding, layout, nbElements), _upArrow(GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(GameStateManager::get().getCurrentState().getSprite(arrowDown))
+GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
+  : Core::GUILayout(x, y, width, height, padding, layout, nbElements), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
 {
 }
 
 GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
-  : GUILayout(x, y, width, height, padding, nbElements), _upArrow(GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(GameStateManager::get().getCurrentState().getSprite(arrowDown))
+  : Core::GUILayout(x, y, width, height, padding, nbElements), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
 {
 }
 
@@ -18,14 +18,14 @@ GUIVLayout::~GUIVLayout()
 	delete this->_downArrow;
 }
 
-bool GUIVLayout::handleGUICommand(GUICommand const &command)
+bool GUIVLayout::handleGUICommand(Core::GUICommand const &command)
 {
-	if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::UP /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up*/)
+	if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::UP /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up*/)
     {
       this->prevElement();
       return (true);
     }
-  else if (command.type == GUICommand::DIRECTION && command.buttonAction == GUICommand::PRESSED && command.direction == GUICommand::DOWN /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down*/)
+  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::DOWN /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down*/)
     {
       this->nextElement();
       return (true);
@@ -41,7 +41,7 @@ void GUIVLayout::draw(double elapseTime)
 
   if (this->_upArrow && this->_begin != this->_elements.begin())
     this->_upArrow->draw(x - this->_upArrow->getWidth() / 2, y - this->_upArrow->getHeight() - 5);
-  std::list<GUIElement *>::iterator it = this->_begin;
+  std::list<Core::GUIElement *>::iterator it = this->_begin;
   for (; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
       (*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);
@@ -58,7 +58,7 @@ void GUIVLayout::draw(int x, int y, double elapseTime)
 
   if (this->_upArrow && this->_begin != this->_elements.begin())
     this->_upArrow->draw(x - this->_upArrow->getWidth() / 2, y - this->_upArrow->getHeight() - 5);
-  std::list<GUIElement *>::iterator it = this->_begin;
+  std::list<Core::GUIElement *>::iterator it = this->_begin;
   for (; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
       (*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);

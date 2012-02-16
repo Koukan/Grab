@@ -2,6 +2,8 @@
 #include "Bullet.hpp"
 #include "CircleHitBox.hpp"
 
+CORE_USE_NAMESPACE
+
 Bullet::Bullet(double x, double y, double vx, double vy)
 	: PhysicObject(*new CircleHitBox(x, y, 1), vx, vy), _sprite(0)
 {

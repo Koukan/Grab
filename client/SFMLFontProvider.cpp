@@ -9,12 +9,12 @@ SFMLFontProvider::~SFMLFontProvider()
 {
 }
 
-CoreFont	*SFMLFontProvider::addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize)
+Core::CoreFont	*SFMLFontProvider::addFont(std::string const &fontName, std::string const &fontFile, unsigned int fontSize)
 {
 	ResourceMap::const_iterator it = this->_resources.find(fontName);
 
 	if (it == this->_resources.end())
 		return new SFMLFont(fontFile, fontSize);
 	else
-		return static_cast<CoreFont*>(it->second);
+	  return static_cast<Core::CoreFont*>(it->second);
 }

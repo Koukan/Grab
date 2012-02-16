@@ -5,7 +5,9 @@
 #include "Command.hpp"
 #include "Mutex.hpp"
 
-class CommandHandler
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ CommandHandler
 {
   public:
     CommandHandler();
@@ -23,3 +25,5 @@ class CommandHandler
 	std::queue<Command const *>	_commands;
 	Net::Mutex					_mutex;
 };
+
+CORE_END_NAMESPACE

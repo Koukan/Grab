@@ -4,6 +4,8 @@
 #include "HitBox.hpp"
 //#include "ClanLib/Display/Collision/collision_outline.h"
 
+CORE_BEGIN_NAMESPACE
+
 class RectHitBox;
 class CircleHitBox;
 
@@ -28,3 +30,4 @@ private:
 	//CL_CollisionOutline *_poly;
 };
 
+CORE_END_NAMESPACE

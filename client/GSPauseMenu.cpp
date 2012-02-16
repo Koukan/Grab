@@ -9,7 +9,7 @@
 #include "Game.hpp"
 
 GSPauseMenu::GSPauseMenu()
-  : GameState("mainMenu")
+  : Core::GameState("mainMenu")
 {
 };
 
@@ -19,13 +19,13 @@ GSPauseMenu::~GSPauseMenu()
 
 void	GSPauseMenu::returnMainMenu()
 {
-  GameStateManager::get().popState();
-  GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::resumeGame()
 {
-  GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::createParty()
@@ -44,14 +44,14 @@ void	GSPauseMenu::onStart()
 
   // add gui
 
-  GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
+  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
   layout->setY((768 - layout->getHeight()) / 2);
-  Sprite *s = this->getSprite("black background");
+  Core::Sprite *s = this->getSprite("black background");
   s->setX(0);
   s->setY(0);
   this->addGameObject(s, "background", 1);
 
-  ButtonSprite *sprite = new ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::resumeGame, "Resume Game", "buttonFont", *sprite, layout);
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::returnMainMenu, "Return to Menu", "buttonFont", *sprite, layout);

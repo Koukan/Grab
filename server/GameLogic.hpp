@@ -6,13 +6,13 @@
 
 class Game;
 
-class GameLogic : public GameState
+class GameLogic : public Core::GameState
 {
   public:
     GameLogic(Game &game);
     virtual ~GameLogic();
 	virtual void		update(double elapsedTime);
-	virtual bool		handleCommand(Command const &command);
+  virtual bool		handleCommand(Core::Command const &command);
 	Game				&getGame() const;
 	void				startGame();
 

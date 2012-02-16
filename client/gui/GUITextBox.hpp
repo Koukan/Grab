@@ -9,10 +9,10 @@
 #include "GameStateManager.hpp"
 
 template <typename T>
-class GUITextBox : public GUIElement {
+class GUITextBox : public Core::GUIElement {
 public:
-  GUITextBox(std::string const & font, ButtonSprite &sprite, int x, int y, int maxChar = 100, std::string const &text = "")
-    : GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _instance(0), _func(0), _maxChar(maxChar), _text(text)
+  GUITextBox(std::string const & font, Core::ButtonSprite &sprite, int x, int y, int maxChar = 100, std::string const &text = "")
+    : Core::GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _instance(0), _func(0), _maxChar(maxChar), _text(text)
   {
     if (this->_isFocused)
       this->focus();
@@ -20,8 +20,8 @@ public:
       this->unfocus();
   }
 
-  GUITextBox(std::string const & font, ButtonSprite &sprite, GUILayout *layout, int maxChar = 100, std::string const &text = "")
-    : GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _instance(0), _func(0), _maxChar(maxChar), _text(text)
+  GUITextBox(std::string const & font, Core::ButtonSprite &sprite, Core::GUILayout *layout, int maxChar = 100, std::string const &text = "")
+    : Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _instance(0), _func(0), _maxChar(maxChar), _text(text)
   {
     if (this->_isFocused)
       this->focus();
@@ -29,8 +29,8 @@ public:
       this->unfocus();
   }
 
-  GUITextBox(T &instance, void (T::*func)(std::string const &), std::string const & font, ButtonSprite &sprite, int x, int y, int maxChar = 100, std::string const &text = "")
-    : GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _instance(&instance), _func(func), _maxChar(maxChar), _text(text)
+  GUITextBox(T &instance, void (T::*func)(std::string const &), std::string const & font, Core::ButtonSprite &sprite, int x, int y, int maxChar = 100, std::string const &text = "")
+    : Core::GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _instance(&instance), _func(func), _maxChar(maxChar), _text(text)
   {
     if (this->_isFocused)
       this->focus();
@@ -38,8 +38,8 @@ public:
       this->unfocus();
   }
 
-  GUITextBox(T &instance, void (T::*func)(std::string const &), std::string const & font, ButtonSprite &sprite, GUILayout *layout, int maxChar = 100, std::string const &text = "")
-    : GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _sprite(sprite), _font(GameStateManager::get().getCurrentState().getFont(font)), _instance(&instance), _func(func), _maxChar(maxChar), _text(text)
+  GUITextBox(T &instance, void (T::*func)(std::string const &), std::string const & font, Core::ButtonSprite &sprite, Core::GUILayout *layout, int maxChar = 100, std::string const &text = "")
+    : Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _instance(&instance), _func(func), _maxChar(maxChar), _text(text)
   {
     if (this->_isFocused)
       this->focus();
@@ -52,16 +52,16 @@ public:
     delete this->_font;
   }
 
-  virtual bool handleGUICommand(GUICommand const &command)
+  virtual bool handleGUICommand(Core::GUICommand const &command)
   {
-    if (command.type == GUICommand::KEY && command.buttonAction == GUICommand::PRESSED && command.key == Keyboard::Back /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Back*/)
+    if (command.type == Core::GUICommand::KEY && command.buttonAction == Core::GUICommand::PRESSED && command.key == Core::Keyboard::Back /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Back*/)
       {
 	this->_text = this->_text.substr(0, this->_text.size() - 1);
 	if (this->_instance)
 	  (this->_instance->*(this->_func))(this->_text);
 	return true;
       }
-    if (command.type == GUICommand::KEY && command.buttonAction == GUICommand::PRESSED && GUITextBoxCharMap.find(command.key) != GUITextBoxCharMap.end() && this->_maxChar > this->_text.size())
+    if (command.type == Core::GUICommand::KEY && command.buttonAction == Core::GUICommand::PRESSED && GUITextBoxCharMap.find(command.key) != GUITextBoxCharMap.end() && this->_maxChar > this->_text.size())
       {
 	this->_text += GUITextBoxCharMap[command.key];
 	if (this->_instance)
@@ -73,14 +73,14 @@ public:
 
   virtual void focus()
   {
-    this->_sprite.updateState(ButtonSprite::SELECTED);
-    this->GUIElement::focus();
+    this->_sprite.updateState(Core::ButtonSprite::SELECTED);
+    this->Core::GUIElement::focus();
   }
 
   virtual void unfocus()
   {
-    this->_sprite.updateState(ButtonSprite::DEFAULT);
-    this->GUIElement::unfocus();
+    this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
+    this->Core::GUIElement::unfocus();
   }
 
   virtual void draw(double elapseTime)
@@ -111,8 +111,8 @@ public:
   }
 
 private:
-  ButtonSprite				_sprite;
-  CoreFont *				_font;
+  Core::ButtonSprite				_sprite;
+  Core::CoreFont *				_font;
   T *					_instance;
   void					(T::*_func)(std::string const &);
   unsigned int				_maxChar;

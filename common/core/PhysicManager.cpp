@@ -2,6 +2,8 @@
 
 #define	CUTTIME		100
 
+CORE_USE_NAMESPACE
+
 PhysicManager::PhysicManager() : GameStateObserver("PhysicManager")
 {
 	this->_targetRate = 20;

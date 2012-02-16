@@ -1,5 +1,7 @@
 #include "GUIManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GUIManager::GUIManager()
   : GUILayout(0, 0, 0, 0, 0, 0, 0)
 {
@@ -57,14 +59,14 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::LEFT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);*/
-			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+			else if (cmd.JoystickMove.Axis == Joystick::Y)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::UP; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);*/
 		}
 		else if (cmd.JoystickMove.Position > 99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::RIGHT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);*/
-			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+			else if (cmd.JoystickMove.Axis == Joystick::Y)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DOWN; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);*/
 		}
 		else

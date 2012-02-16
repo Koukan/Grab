@@ -58,7 +58,7 @@ int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
 	packet >> gc->y;
 	packet >> gc->vx;
 	packet >> gc->vy;
-	CommandDispatcher::get().pushCommand(*gc);
+	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
 
@@ -70,7 +70,7 @@ int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 	this->testPacketId(id_packet);
 	GameCommand *gc = new GameCommand("destroy");
 	packet >> gc->idObject;
-	CommandDispatcher::get().pushCommand(*gc);	
+	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
 
@@ -82,7 +82,7 @@ int			UdpHandler::move(Net::Packet &packet, uint64_t)
 	packet >> gc->y;
 	packet >> gc->vx;
 	packet >> gc->vy;
-	CommandDispatcher::get().pushCommand(*gc);
+	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
 
@@ -134,7 +134,7 @@ bool		UdpHandler::testPacketId(uint32_t id)
 		{
 			gc = new GameCommand("retrieve");
 			gc->idObject = val + _lastPacketId;
-			CommandDispatcher::get().pushCommand(*gc, true);
+			Core::CommandDispatcher::get().pushCommand(*gc, true);
 		}
 	   return true;
 	}

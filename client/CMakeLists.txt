@@ -96,12 +96,13 @@ set(SRCS
 	PacketCommand.cpp
 	PacketCommand.hpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
-	player.cpp
-	player.hpp
+	Player.cpp
+	Player.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	${INCLUDES_COMMON_DIR}Resources.hpp
 	${INCLUDES_COMMON_DIR}Resources.cpp
+	ResourceCommand.hpp
 	Rules.cpp
 	Rules.hpp
 	ScrollingSprite.hpp

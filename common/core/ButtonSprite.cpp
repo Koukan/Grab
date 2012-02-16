@@ -1,6 +1,8 @@
 #include "ButtonSprite.hpp"
 #include "GameStateManager.hpp"
 
+CORE_USE_NAMESPACE
+
 ButtonSprite::ButtonSprite(std::string const &buttonSprite,
 			   std::string const &buttonSelectedSprite,
 			   std::string const &buttonClickedSprite)

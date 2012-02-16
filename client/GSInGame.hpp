@@ -8,7 +8,7 @@
 #include "Font.hpp"
 #include "Resources.hpp"
 
-class GSInGame : public GameState
+class GSInGame : public Core::GameState
 {
 public:
 	GSInGame(int nbPlayers);
@@ -16,7 +16,7 @@ public:
 	virtual void	onStart();
 	virtual void	onEnd();
 	virtual void	update(double elapsedTime = 0);
-	virtual bool	handleCommand(Command const &command);
+  virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 
 private:
@@ -28,15 +28,15 @@ private:
 	  void (GSInGame::*method)(GameCommand const &);
 	};
 
-	void		inputEscape(InputCommand const &event);
-	void		inputSpace(InputCommand const &event);
-	void		inputUp(InputCommand const &event);
- 	void		inputDown(InputCommand const &event);
-  	void		inputLeft(InputCommand const &event);
-  	void		inputRight(InputCommand const &event);
-	void		releaseInputUpDown(InputCommand const &event);
-  	void		releaseInputLeftRight(InputCommand const &event);
-	void		releaseInputSpace(InputCommand const &/*event*/);
+	void		inputEscape(Core::InputCommand const &event);
+	void		inputSpace(Core::InputCommand const &event);
+	void		inputUp(Core::InputCommand const &event);
+ 	void		inputDown(Core::InputCommand const &event);
+  	void		inputLeft(Core::InputCommand const &event);
+  	void		inputRight(Core::InputCommand const &event);
+	void		releaseInputUpDown(Core::InputCommand const &event);
+  	void		releaseInputLeftRight(Core::InputCommand const &event);
+	void		releaseInputSpace(Core::InputCommand const &/*event*/);
 
 	// HandleCommand
 
@@ -51,7 +51,7 @@ private:
 
   	void		throwShip();
 
-	void		updatePositions(GameCommand const &event, PhysicObject &obj) const;
+  void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
 	void		displayScores();
 
 	void		loadP1(GameCommand const &event);
@@ -66,9 +66,9 @@ private:
 	uint16_t	_idPlayer;
 	int		_nbPlayers;
 	std::vector<uint32_t> _scores;
-	std::vector<CoreFont*>    _scoreFonts;
-	std::vector<CoreFont*>    _nameFonts;
-	PhysicObject	*_ship;
+  std::vector<Core::CoreFont*>    _scoreFonts;
+  std::vector<Core::CoreFont*>    _nameFonts;
+  Core::PhysicObject	*_ship;
 	uint32_t	_rangeBegin;
 	uint32_t	_rangeEnd;
 	uint32_t	_currentId;

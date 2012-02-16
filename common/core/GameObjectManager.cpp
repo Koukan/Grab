@@ -4,6 +4,8 @@
 #include "GameObject.hpp"
 #include "GameState.hpp"
 
+CORE_USE_NAMESPACE
+
 Group::Group(GameState &state, std::string const &name, int layer,
 	     uint32_t begin, uint32_t end, bool physic)
 	: _gameState(state), _layer(layer), _physic(physic),

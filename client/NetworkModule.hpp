@@ -8,7 +8,7 @@
 #include "Singleton.hpp"
 #include "GameCommand.hpp"
 
-class NetworkModule : public Module, public Net::Singleton<NetworkModule>
+class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 {
   public:
 	NetworkModule();
@@ -17,7 +17,7 @@ class NetworkModule : public Module, public Net::Singleton<NetworkModule>
 	virtual bool		connect();
 	virtual void		update(double elapsedTime);
 	virtual void		destroy();
-	virtual bool		handleCommand(Command const &command);
+	virtual bool		handleCommand(Core::Command const &command);
 	void				setName(std::string const &name);
 	void				setPort(std::string const &port);
 	void				setIP(std::string const &ip);
@@ -32,23 +32,23 @@ class NetworkModule : public Module, public Net::Singleton<NetworkModule>
 
 // Command UDP
 
-	void		retrieveCommand(Command const &command);
-	void		moveCommand(Command const &command);
-	void		spawnCommand(Command const &command);
+	void		retrieveCommand(Core::Command const &command);
+	void		moveCommand(Core::Command const &command);
+	void		spawnCommand(Core::Command const &command);
 
 // Command TCP
 
-	void		connectionCommand(Command const &command);
-	void		createGameCommand(Command const &command);
-	void		listGamesCommand(Command const &command);
-	void		connectGameCommand(Command const &command);
-	void		playerCommand(Command const &command);
+	void		connectionCommand(Core::Command const &command);
+	void		createGameCommand(Core::Command const &command);
+	void		listGamesCommand(Core::Command const &command);
+	void		connectGameCommand(Core::Command const &command);
+	void		playerCommand(Core::Command const &command);
 		
 
 	struct	Method
 	{
 		std::string	const name;
-		void	(NetworkModule::*method)(Command const &);
+	  void	(NetworkModule::*method)(Core::Command const &);
 	};
 
   Net::DefaultSyncPolicy	    _reactor;

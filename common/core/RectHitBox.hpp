@@ -3,9 +3,11 @@
 #include "HitBox.hpp"
 #include "PolyHitBox.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class CircleHitBox;
 
-class RectHitBox : public HitBox
+class CORE_DLLREQ RectHitBox : public HitBox
 {
 public:
 	RectHitBox(double x, double y, double width, double height);
@@ -28,3 +30,4 @@ private:
 	double	_height;
 };
 
+CORE_END_NAMESPACE

@@ -18,7 +18,7 @@ SFMLFont::~SFMLFont()
 {
 }
 
-Resource	*SFMLFont::clone() const
+Core::Resource	*SFMLFont::clone() const
 {
 	return new SFMLFont(*this);
 }

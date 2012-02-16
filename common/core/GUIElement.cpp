@@ -2,6 +2,8 @@
 #include "GUILayout.hpp"
 #include "GameStateManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GUIElement::GUIElement(int x, int y, int width, int height, GUILayout *layout)
   : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true)
 {

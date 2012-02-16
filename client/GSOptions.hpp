@@ -3,7 +3,7 @@
 #include "GameState.hpp"
 #include "GUITextBox.hpp"
 
-class GSOptions : public GameState
+class GSOptions : public Core::GameState
 {
 public:
   GSOptions();

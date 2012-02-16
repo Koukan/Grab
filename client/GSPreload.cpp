@@ -5,7 +5,7 @@
 #include "GameStateManager.hpp"
 #include "GSMainMenu.hpp"
 
-GSPreload::GSPreload() : GameState("Preload")
+GSPreload::GSPreload() : Core::GameState("Preload")
 {
 }
 
@@ -16,7 +16,7 @@ void	GSPreload::update(double )
 {
 }
 
-bool		GSPreload::handleCommand(Command const &)
+bool		GSPreload::handleCommand(Core::Command const &)
 {
   return false;
 }

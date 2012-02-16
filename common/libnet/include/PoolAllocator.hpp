@@ -2,6 +2,7 @@
 #include <vector>
 #include "Singleton.hpp"
 #include "NetDef.hpp"
+#include "Mutex.hpp"
 
 NET_BEGIN_NAMESPACE
 
@@ -19,6 +20,7 @@ class NET_DLLREQ PoolAllocator : public Singleton<PoolAllocator>
 		};
 
 		std::vector<elempool*>	_freed;
+		Mutex					_mutex;
 };
 
 NET_END_NAMESPACE

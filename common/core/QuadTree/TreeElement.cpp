@@ -1,6 +1,8 @@
 #include "TreeElement.hpp"
 #include "Node.hpp"
 
+CORE_USE_NAMESPACE
+
 TreeElement::TreeElement(void)
 	: _node(0)
 {

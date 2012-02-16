@@ -1,5 +1,6 @@
 #include "QuadTree.hpp"
 
+CORE_USE_NAMESPACE
 
 QuadTree::QuadTree(void)
 	: _mainNode(new Node(0, 0, 0))

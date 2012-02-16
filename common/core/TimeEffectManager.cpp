@@ -1,5 +1,7 @@
 #include "TimeEffectManager.hpp"
 
+CORE_USE_NAMESPACE
+
 TimeEffectGroup::TimeEffectGroup()
 	: _timeEffect(1), _time(0)
 {

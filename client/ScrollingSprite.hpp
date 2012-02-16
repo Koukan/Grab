@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-class ScrollingSprite : public DrawableObject
+class ScrollingSprite : public Core::DrawableObject
 {
 public:
   enum eDirection
@@ -27,12 +27,12 @@ private:
   double	_speed;
   double	_offset;
 
-  std::vector<Sprite *> _sprites;
+  std::vector<Core::Sprite *> _sprites;
   size_t				_current;
   void (ScrollingSprite::*_scrolling)(int elapseTime);
 
   void hScrolling(int elapseTime);
   void vScrolling(int elapseTime);
-  Sprite *nextSprite();
-  Sprite *prevSprite();
+  Core::Sprite *nextSprite();
+  Core::Sprite *prevSprite();
 };

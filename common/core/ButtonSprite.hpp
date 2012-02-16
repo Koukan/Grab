@@ -4,7 +4,9 @@
 #include "DrawableObject.hpp"
 #include "Sprite.hpp"
 
-class ButtonSprite {
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ ButtonSprite {
 public:
   enum eState {
     DEFAULT,
@@ -33,3 +35,5 @@ private:
   Sprite	*_clickedSprite;
   enum eState	_state;
 };
+
+CORE_END_NAMESPACE

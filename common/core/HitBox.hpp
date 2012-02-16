@@ -1,10 +1,14 @@
 #pragma once
 
+#include "CoreDef.hpp"
+
+CORE_BEGIN_NAMESPACE
+
 class CircleHitBox;
 class RectHitBox;
 class PolyHitBox;
 
-class HitBox
+class CORE_DLLREQ HitBox
 {
 public:
 	HitBox(double x, double y);
@@ -34,3 +38,4 @@ protected:
 	double			_y;
 };
 
+CORE_END_NAMESPACE

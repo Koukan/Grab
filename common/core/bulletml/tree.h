@@ -4,7 +4,6 @@
 #define TREE_H_
 
 #include "bulletmlcommon.h"
-
 #include <list>
 
 /// ツリーのクラス
@@ -19,6 +18,7 @@
  * setReleaseDuty を呼ばれたノードが破壊されると、
  * それの息子以下の世代は全て破壊される。
  */
+
 template <class C_>
 class TreeNode {
 public:

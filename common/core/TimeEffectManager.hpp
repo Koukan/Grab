@@ -3,8 +3,11 @@
 #include <list>
 #include <map>
 #include <string>
+#include "CoreDef.hpp"
 
-class TimeEffectGroup
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ TimeEffectGroup
 {
   public:
    TimeEffectGroup();
@@ -45,3 +48,5 @@ class TimeEffectManager
   private:
     std::map<std::string, TimeEffectGroup*>	_timeEffectMap;
 };
+
+CORE_END_NAMESPACE

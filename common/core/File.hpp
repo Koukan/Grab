@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Net.hpp"
+#include "CoreDef.hpp"
 
+CORE_BEGIN_NAMESPACE
 
 class File
 {
@@ -26,3 +28,5 @@ class File
 	std::list<Net::DataBlock*>	_list;
 	std::string					_md5;
 };
+
+CORE_END_NAMESPACE

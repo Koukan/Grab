@@ -2,7 +2,7 @@
 
 #include "GameState.hpp"
 
-class GSModeSelection : public GameState
+class GSModeSelection : public Core::GameState
 {
 public:
   GSModeSelection();

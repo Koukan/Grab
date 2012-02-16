@@ -3,6 +3,8 @@
 #include "GlobalResourceManager.hpp"
 #include <iostream>
 
+CORE_USE_NAMESPACE
+
 ResourceManager::ResourceManager()
 {
 }
@@ -17,6 +19,16 @@ ResourceManager::~ResourceManager()
 void		ResourceManager::load(std::string const &path)
 {
 	GlobalResourceManager::get().load(path, *this);
+}
+
+void		ResourceManager::changeId(std::string const &name, uint32_t id, uint8_t type)
+{
+	GlobalResourceManager::get().changeId(name, id, type);
+}
+
+void		ResourceManager::changeId(uint32_t oldId, uint32_t newId, uint8_t type)
+{
+	GlobalResourceManager::get().changeId(oldId, newId, type);
 }
 
 Sprite		*ResourceManager::getSprite(std::string const &name) const
@@ -57,6 +69,11 @@ BulletMLParser	*ResourceManager::getBulletMLParser(uint32_t id) const
 Resource		*ResourceManager::getResource(uint32_t id, uint8_t type) const
 {
 	return GlobalResourceManager::get().getResource(id, type);
+}
+
+std::list<Resource*> const	&ResourceManager::getResource() const
+{
+	return this->_resources;
 }
 
 void		ResourceManager::addBulletParser(std::string const &path,

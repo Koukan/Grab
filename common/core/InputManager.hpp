@@ -7,9 +7,11 @@
 #include "Input.hpp"
 #include "CommandHandler.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 class GameState;
 
-class InputManager : public CommandHandler
+class CORE_DLLREQ InputManager : public CommandHandler
 {
 public:
 	InputManager(GameState &game);
@@ -48,5 +50,7 @@ void		InputManager::registerInputCallback(InputCommand::EventType eventType,
   tmp->key = key;
   _inputCallbacks[eventType].push_back(tmp);
 }
+
+CORE_END_NAMESPACE
 
 #endif /* _INPUTMANAGER_ */

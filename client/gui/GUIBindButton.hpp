@@ -7,11 +7,11 @@
 class GUIBindButton : public GUIButton<GUIBindButton>
 {
 public:
-  GUIBindButton(int playerNb, std::string const &font, ButtonSprite const &sprite, int x, int y);
-  GUIBindButton(int playerNb, std::string const &font, ButtonSprite const &sprite, GUILayout *layout);
+  GUIBindButton(int playerNb, std::string const &font, Core::ButtonSprite const &sprite, int x, int y);
+  GUIBindButton(int playerNb, std::string const &font, Core::ButtonSprite const &sprite, Core::GUILayout *layout);
   ~GUIBindButton();
 
-  virtual bool handleGUICommand(GUICommand const &command);
+  virtual bool handleGUICommand(Core::GUICommand const &command);
   void pushButton();
 
 private:

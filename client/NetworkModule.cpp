@@ -4,9 +4,9 @@
 #include "PacketCommand.hpp"
 #include "PacketType.hpp"
 
-NetworkModule::NetworkModule() : Module("NetworkModule", 5)
+NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5)
 {
-	CommandDispatcher::get().registerHandler(*this);
+	Core::CommandDispatcher::get().registerHandler(*this);
 }
 
 NetworkModule::~NetworkModule()
@@ -57,7 +57,7 @@ void	       	NetworkModule::destroy(void)
 {
 }
 
-bool		NetworkModule::handleCommand(Command const &command)
+bool		NetworkModule::handleCommand(Core::Command const &command)
 {
 	static Method const	methods[] = {
 		{"Connection", &NetworkModule::connectionCommand},
@@ -84,7 +84,7 @@ bool		NetworkModule::handleCommand(Command const &command)
 	return false;
 }
 
-void		NetworkModule::connectionCommand(Command const &command)
+void		NetworkModule::connectionCommand(Core::Command const &command)
 {
 	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
 	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + cmd._login.length() + 1);
@@ -94,7 +94,7 @@ void		NetworkModule::connectionCommand(Command const &command)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::createGameCommand(Command const &command)
+void		NetworkModule::createGameCommand(Core::Command const &command)
 {
 	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
 	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint8_t));
@@ -104,7 +104,7 @@ void		NetworkModule::createGameCommand(Command const &command)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::listGamesCommand(Command const &)
+void		NetworkModule::listGamesCommand(Core::Command const &)
 {
 	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t));
 
@@ -112,7 +112,7 @@ void		NetworkModule::listGamesCommand(Command const &)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::connectGameCommand(Command const &command)
+void		NetworkModule::connectGameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint16_t));
@@ -121,7 +121,7 @@ void		NetworkModule::connectGameCommand(Command const &command)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::playerCommand(Command const &command)
+void		NetworkModule::playerCommand(Core::Command const &command)
 {
 	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
 	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint8_t) + cmd._login.length() + 1);
@@ -132,7 +132,7 @@ void		NetworkModule::playerCommand(Command const &command)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::moveCommand(Command const &command)
+void		NetworkModule::moveCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 	Net::Packet		packet(21);
@@ -146,7 +146,7 @@ void		NetworkModule::moveCommand(Command const &command)
 	this->sendPacketUDP(packet);
 }
 
-void		NetworkModule::retrieveCommand(Command const &command)
+void		NetworkModule::retrieveCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 	Net::Packet		packet(13);
@@ -156,7 +156,7 @@ void		NetworkModule::retrieveCommand(Command const &command)
 	this->sendPacketUDP(packet);
 }
 
-void		NetworkModule::spawnCommand(Command const &command)
+void		NetworkModule::spawnCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 	Net::Packet		packet(29);

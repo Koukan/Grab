@@ -1,5 +1,6 @@
 #include "Node.hpp"
 
+CORE_USE_NAMESPACE
 
 Node::Node(int x, int y, int size)
 	: _parent(0), _size(size), _x(x), _y(y)

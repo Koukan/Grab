@@ -6,14 +6,14 @@
 #include "ResourceManager.hpp"
 #include "File.hpp"
 
-class ServerResourceManager : public Net::Singleton<ServerResourceManager>, public SpriteProvider, public ResourceManager
+class ServerResourceManager : public Net::Singleton<ServerResourceManager>, public Core::SpriteProvider, public Core::ResourceManager
 {
   public:
     ServerResourceManager();
     virtual ~ServerResourceManager();
-	virtual Sprite	*addSprite(std::string const &);
-	virtual Sprite	*getSprite(std::string const &) const;
-	virtual void	addImage(std::string const &path, Sprite &);
+  virtual Core::Sprite	*addSprite(std::string const &);
+  virtual Core::Sprite	*getSprite(std::string const &) const;
+  virtual void	addImage(std::string const &path, Core::Sprite &);
 	//void			loadResource(std::string const &path);
 
 	//getter
@@ -21,6 +21,6 @@ class ServerResourceManager : public Net::Singleton<ServerResourceManager>, publ
 
   private:
 	uint32_t						_id;
-	std::map<std::string, File*>	_resources;
+  std::map<std::string, Core::File*>	_resources;
 	std::map<std::string, uint32_t> _ids;
 };

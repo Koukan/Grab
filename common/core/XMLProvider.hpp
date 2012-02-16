@@ -5,7 +5,9 @@
 #include "tinyxml.h"
 #include "ResourceManager.hpp"
 
-class XMLProvider
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ XMLProvider
 {
 public:
 	XMLProvider(std::string const &handledTag, uint8_t type);
@@ -40,3 +42,5 @@ protected:
 	ResourceMap			_resources;
 	IdMap				_ids;
 };
+
+CORE_END_NAMESPACE

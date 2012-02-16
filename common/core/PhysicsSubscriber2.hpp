@@ -2,6 +2,7 @@
 #define 	_PHYSICSSUBSCRIBER2_
 
 #include "IPhysicsSubscriber.hpp"
+CORE_BEGIN_NAMESPACE
 
 template <class T>
 class PhysicsSubscriber2 : public IPhysicsSubscriber
@@ -29,5 +30,7 @@ class PhysicsSubscriber2 : public IPhysicsSubscriber
 
     MemFunc	_func;
 };
+
+CORE_END_NAMESPACE
 
 #endif		/* _PHYSICSSUBSCRIBER2_ */

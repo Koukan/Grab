@@ -4,13 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include "Sprite.hpp"
 
-class SFMLSprite : public Sprite, public sf::Sprite
+class SFMLSprite : public Core::Sprite, public sf::Sprite
 {
 	public:
 		SFMLSprite(double x = 0, double y = 0);
 		virtual ~SFMLSprite();
 		void				update(double elapsedTime);
-		virtual Resource	*clone() const;
+  virtual Core::Resource	*clone() const;
 		virtual void		setScale(float x, float y);
 		virtual void		setSpeed(double rate);
 		virtual void		setRepeat(bool repeat);

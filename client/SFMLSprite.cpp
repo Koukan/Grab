@@ -15,7 +15,7 @@ SFMLSprite::~SFMLSprite()
 {
 }
 
-Resource	*SFMLSprite::clone() const
+Core::Resource	*SFMLSprite::clone() const
 {
 	return new SFMLSprite(*this);
 }

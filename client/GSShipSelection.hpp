@@ -2,7 +2,7 @@
 
 #include "GameState.hpp"
 
-class GSShipSelection : public GameState
+class GSShipSelection : public Core::GameState
 {
 public:
   GSShipSelection(unsigned int nbPlayers, bool online);

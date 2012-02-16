@@ -3,7 +3,7 @@
 #include "Command.hpp"
 #include "Game.hpp"
 
-class GameCommand : public Command
+class GameCommand : public Core::Command
 {
   public:
     GameCommand(std::string const &name, uint32_t idObject = 0,

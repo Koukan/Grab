@@ -1,8 +1,11 @@
 #pragma once
 #include <iostream>
 #include "Net.hpp"
+#include "CoreDef.hpp"
 
-class Logger
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ Logger
 {
 private:
   class Log
@@ -44,3 +47,5 @@ public:
 
   static Logger logger;
 };
+
+CORE_END_NAMESPACE

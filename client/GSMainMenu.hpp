@@ -2,7 +2,7 @@
 
 #include "GameState.hpp"
 
-class GSMainMenu : public GameState
+class GSMainMenu : public Core::GameState
 {
 public:
   GSMainMenu();

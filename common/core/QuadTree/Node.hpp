@@ -3,9 +3,11 @@
 #include <set>
 #include "TreeElement.hpp"
 
+CORE_BEGIN_NAMESPACE
+
 typedef std::set<TreeElement *>	Elements;
 
-class Node
+class CORE_DLLREQ Node
 {
 public:
 	Node(int x, int y, int size);
@@ -37,3 +39,4 @@ private:
 	int		_y;
 };
 
+CORE_END_NAMESPACE

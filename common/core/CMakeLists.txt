@@ -35,7 +35,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}Command.hpp
 	${CORE_DIR}CommandDispatcher.hpp
 	${CORE_DIR}CommandHandler.hpp
-	${CORE_DIR}Converter.hpp
+	${CORE_DIR}CoreDef.hpp
 	${CORE_DIR}DrawableObject.hpp
 	${CORE_DIR}File.hpp
 	${CORE_DIR}FontProvider.hpp
@@ -61,7 +61,6 @@ set(INCLUDES_CORE
 	${CORE_DIR}md5.h
 	${CORE_DIR}Module.hpp
 	${CORE_DIR}ModuleManager.hpp
-	${CORE_DIR}NonCopyable.hpp
 	${CORE_DIR}Observable.hpp
 	${CORE_DIR}PhysicManager.hpp
 	${CORE_DIR}PhysicObject.hpp

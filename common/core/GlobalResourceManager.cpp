@@ -9,6 +9,8 @@
 #include "FontProvider.hpp"
 #include "BulletResourceManager.hpp"
 
+CORE_USE_NAMESPACE
+
 GlobalResourceManager::GlobalResourceManager()
   : XMLProvider("resources", 0), _spriteProvider(0), _fontProvider(0), _bulletProvider(0)
 {
@@ -81,7 +83,7 @@ XMLProvider	*GlobalResourceManager::getProvider(std::string const &name) const
 	return 0;
 }
 
-XMLProvider	*GlobalResourceManager::getProvider(uint32_t type) const
+XMLProvider	*GlobalResourceManager::getProvider(uint8_t type) const
 {
 	IdMap::const_iterator	it = this->_ids.find(type);
 
@@ -158,6 +160,23 @@ Resource	*GlobalResourceManager::getResource(uint32_t id, uint8_t type) const
 		return provider->getResource(id);
 	return 0;
 }
+
+void		GlobalResourceManager::changeId(std::string const &name, uint32_t id, uint8_t type)
+{
+	XMLProvider	*provider = this->getProvider(type);
+
+	if (provider)
+		provider->changeId(name, id);
+}
+
+void		GlobalResourceManager::changeId(uint32_t oldId, uint32_t newId, uint8_t type)
+{
+	XMLProvider	*provider = this->getProvider(type);
+
+	if (provider)
+		provider->changeId(oldId, newId);
+}
+
 void		GlobalResourceManager::handleXML(TiXmlNode *parent, ResourceManager &manager)
 {
 	static Method<TiXmlNode::NodeType> const	methods[] = {
@@ -235,9 +254,9 @@ void		GlobalResourceManager::get2Int(std::string const &data,
 {
 	size_t	pos = data.find(sep);
 
-	a = Converter::toInt<int>(data);
+	a = Net::Converter::toInt<int>(data);
 	if (pos == std::string::npos)
 		b = 0;
 	else
-		b = Converter::toInt<int>(data.substr(pos + sep.size()));
+	  b = Net::Converter::toInt<int>(data.substr(pos + sep.size()));
 }

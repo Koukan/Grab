@@ -1,6 +1,8 @@
 #include "CommandHandler.hpp"
 #include <iostream>
 
+CORE_USE_NAMESPACE
+
 CommandHandler::CommandHandler()
 {
 }

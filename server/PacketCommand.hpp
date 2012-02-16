@@ -5,7 +5,7 @@
 #include "Player.hpp"
 #include "Command.hpp"
 
-class PacketCommand : public Command
+class PacketCommand : public Core::Command
 {
   public:
     PacketCommand(std::string const &name,

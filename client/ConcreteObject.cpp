@@ -1,7 +1,7 @@
 #include "ConcreteObject.hpp"
 
-ConcreteObject::ConcreteObject(Sprite *sprite, HitBox &hitbox, double vx, double vy)
-  : PhysicObject(hitbox, vx, vy), _sprite(sprite)
+ConcreteObject::ConcreteObject(Core::Sprite *sprite, Core::HitBox &hitbox, double vx, double vy)
+  : Core::PhysicObject(hitbox, vx, vy), _sprite(sprite)
 {
 }
 

@@ -3,7 +3,9 @@
 
 #include "IPhysicsSubscriber.hpp"
 
-class PhysicsSubscriber3 : public IPhysicsSubscriber
+CORE_BEGIN_NAMESPACE
+
+class CORE_DLLREQ PhysicsSubscriber3 : public IPhysicsSubscriber
 {
   public:
     PhysicsSubscriber3(void (*function)(GameObject&, GameObject&)) :
@@ -21,5 +23,7 @@ class PhysicsSubscriber3 : public IPhysicsSubscriber
 
 	void			(*_func)(GameObject&, GameObject&);
 };
+
+CORE_END_NAMESPACE
 
 #endif		/* _PHYSICSSUBSCRIBER3_ */
