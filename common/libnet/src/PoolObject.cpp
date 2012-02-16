@@ -7,7 +7,7 @@ NET_USE_NAMESPACE
 void* PoolObject::operator new(std::size_t size)
 {
 	if (size <= 512)
-		return PoolAllocator::get().allocate(size);
+		return PoolAllocator::allocate(size);
 	else
 		return ::malloc(size);
 }
@@ -15,7 +15,7 @@ void* PoolObject::operator new(std::size_t size)
 void PoolObject::operator delete(void *p, std::size_t size)
 {
 	if (size <= 512)
-		PoolAllocator::get().deallocate(p, size);
+		PoolAllocator::deallocate(p, size);
 	else
 		::free(p);
 }

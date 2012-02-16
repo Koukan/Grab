@@ -43,13 +43,6 @@ public:
 		return ret;
 	}
 
-private:
-	static void	cleanup(void *ptr)
-	{
-		T 	*tmp = reinterpret_cast<T*>(ptr);
-		delete tmp;
-	}
-
 	T			*getValue()
 	{
 		if (!_once)
@@ -64,8 +57,16 @@ private:
 		return reinterpret_cast<T*>(pthread_getspecific(_key));
 	}
 
+private:
+	static void	cleanup(void *ptr)
+	{
+		T 	*tmp = reinterpret_cast<T*>(ptr);
+		delete tmp;
+	}
+
+
 	bool		_once;
-	T			*_obj;
+	//T			*_obj;
 	pthread_key_t _key;
 	Mutex		_mutex;
 };
@@ -102,13 +103,6 @@ public:
 		return ret;
 	}
 
-private:
-	static void	cleanup(void *ptr)
-	{
-		T 	*tmp = reinterpret_cast<T*>(ptr);
-		delete tmp;
-	}
-
 	T			*getValue()
 	{
 		if (!_once)
@@ -123,8 +117,15 @@ private:
 		return reinterpret_cast<T*>(TlsGetValue(_key));
 	}
 
+private:
+	static void	cleanup(void *ptr)
+	{
+		T 	*tmp = reinterpret_cast<T*>(ptr);
+		delete tmp;
+	}
+
 	bool		_once;
-	T			*_obj;
+	//T			*_obj;
 	DWORD 		_key;
 	Mutex		_mutex;
 };

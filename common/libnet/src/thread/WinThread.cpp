@@ -1,11 +1,13 @@
 #if defined (_WIN32)
 #include "Thread.hpp"
+#include "PoolAllocator.hpp"
 
 NET_USE_NAMESPACE
 
 static DWORD WINAPI		starter(void *arg)
 {
   Thread	*tmp = static_cast<Thread*>(arg);
+  PoolAllocator::init();
   tmp->run();
   return (0);
 }
