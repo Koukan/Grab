@@ -11,5 +11,4 @@ public:
   virtual CoreFont	*addFont(std::string const &, std::string const &, unsigned int) = 0;
 
   virtual void		handleXML(TiXmlNode *node, ResourceManager &);
-  virtual void		addResource(Resource &, ResourceManager &);
 };

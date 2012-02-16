@@ -55,9 +55,3 @@ BulletMLParser		*BulletResourceManager::addBulletParser(std::string const &path,
 	}
 	return 0;
 }
-
-void			BulletResourceManager::addResource(Resource &resource,
-										ResourceManager &manager)
-{
-	manager.addBulletParser(static_cast<BulletMLParser&>(resource));
-}

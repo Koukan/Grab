@@ -8,12 +8,11 @@
 class XMLProvider
 {
 public:
-	XMLProvider(std::string const &handledTag, uint32_t type);
+	XMLProvider(std::string const &handledTag, uint8_t type);
 	virtual ~XMLProvider();
 	virtual void	init();
 	virtual void	handleXML(TiXmlNode *, ResourceManager &) = 0;
 	void			addResource(std::string const &name, Resource &resource, ResourceManager &manager);
-	virtual void	addResource(Resource&, ResourceManager&);
 	virtual void	deleteResource(std::string const &name);
 
 	// setter
@@ -31,11 +30,11 @@ public:
 	Resource		*getResource(uint32_t id) const;
 
 	std::string const	handledTag;
-	uint32_t const		type;
+	uint8_t const		type;
 
 protected:
 	typedef	std::map<std::string const, Resource*>	ResourceMap;
-	typedef	std::map<uint32_t, Resource*>			IdMap;
+	typedef	std::map<uint8_t, Resource*>			IdMap;
 
 	uint32_t			_id;
 	ResourceMap			_resources;

@@ -7,8 +7,8 @@
 
 #define     NBTHREAD    8
 
-class Server : public ModuleManager, public Singleton<Server>,
-			   public GameManager, public ThreadPool
+class Server : public ModuleManager, public Net::Singleton<Server>,
+			   public GameManager, public Net::ThreadPool
 {
   public:
     Server();

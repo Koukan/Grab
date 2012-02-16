@@ -33,8 +33,6 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp
 	main.cpp
-	File.cpp
-	File.hpp
 	Game.cpp
 	Game.hpp
 	GameCommand.hpp
@@ -58,9 +56,6 @@ set(SRCS
 	ServerResourceManager.hpp
 	Ship.cpp
 	Ship.hpp
-	Task.hpp
-	ThreadPool.cpp
-	ThreadPool.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	main.cpp

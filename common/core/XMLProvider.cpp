@@ -1,6 +1,6 @@
 #include "XMLProvider.hpp"
 
-XMLProvider::XMLProvider(std::string const &handledTag, uint32_t type)
+XMLProvider::XMLProvider(std::string const &handledTag, uint8_t type)
   : handledTag(handledTag), type(type), _id(1)
 {
 }
@@ -39,11 +39,6 @@ void		XMLProvider::addResource(std::string const &name,
 		this->_resources[name] = &resource;
 		this->_ids[id] = &resource;
 	}
-	this->addResource(resource, manager);
-}
-
-void		XMLProvider::addResource(Resource &resource, ResourceManager &manager)
-{
 	manager.addResource(resource);
 }
 
@@ -124,6 +119,6 @@ Resource	*XMLProvider::getResource(uint32_t id) const
 	IdMap::const_iterator		it = this->_ids.find(id);
 
 	if (it != this->_ids.end())
-		return it->second;
+		return it->second->clone();
 	return 0;
 }

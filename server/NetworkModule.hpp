@@ -7,7 +7,7 @@
 #include "UdpHandler.hpp"
 #include "Singleton.hpp"
 
-class NetworkModule : public Module, public Singleton<NetworkModule>
+class NetworkModule : public Module, public Net::Singleton<NetworkModule>
 {
   public:
     NetworkModule();

@@ -35,8 +35,3 @@ void	FontProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 		this->XMLProvider::addResource(fontName, *font, manager);
 	}
 }
-
-void	FontProvider::addResource(Resource &resource, ResourceManager &manager)
-{
-	manager.addFont(static_cast<CoreFont&>(resource));
-}

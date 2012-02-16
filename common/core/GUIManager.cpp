@@ -1,10 +1,8 @@
 #include "GUIManager.hpp"
-#include "Game.hpp"
 
 GUIManager::GUIManager()
-  : Module("GUI", 100), GUILayout(0, 0, 0, 0, 0, 0, 0)
+  : GUILayout(0, 0, 0, 0, 0, 0, 0)
 {
-  Game::get().loadModule(*this);
 }
 
 GUIManager::~GUIManager()
@@ -58,17 +56,27 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 		if (cmd.JoystickMove.Position < -99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::Axis::X)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::LEFT, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);
 			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::UP, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);
 		}
 		else if (cmd.JoystickMove.Position > 99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::Axis::X)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::RIGHT, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);
 			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
-				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::DOWN, GUICommand::PRESSED);
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);
 		}
+	}
+	else if (cmd.Type == InputCommand::JoystickButtonPressed)
+	{
+		if (cmd.JoystickButton.Button == 0)
+			command = new GUICommand(static_cast<Player::type>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
+	}
+	else if (cmd.Type == InputCommand::JoystickButtonReleased)
+	{
+		if (cmd.JoystickButton.Button == 0)
+			command = new GUICommand(static_cast<Player::type>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
 	}
 	return (command);
 }

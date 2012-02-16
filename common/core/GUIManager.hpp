@@ -10,17 +10,17 @@
 
 #include <list>
 
-class GUIManager : public Module /*CommandHandler*/, public GUILayout
+class GUIManager : public CommandHandler, public GUILayout
 {
 public:
   GUIManager();
   ~GUIManager();
 
   virtual bool		handleCommand(Command const &command);
-  void			registerButtonSprite(ButtonSprite &sprite);
+  void				registerButtonSprite(ButtonSprite &sprite);
 
-  virtual	void		init();
-  virtual void		update(double elapsedTime = 0);
+  virtual	void	init();
+  void				update(double elapsedTime = 0);
   virtual void		destroy();
 
 private:

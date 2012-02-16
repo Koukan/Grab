@@ -47,6 +47,11 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}SizeHeaderPacketHandler.hpp
 	${NET_INCLUDE_DIR}WFMOPolicy.hpp
 	${NET_INCLUDE_DIR}network.h
+	${NET_MUTEX_INCLUDE_DIR}Mutex.hpp
+	${NET_MUTEX_INCLUDE_DIR}Thread.hpp
+	${NET_MUTEX_INCLUDE_DIR}ThreadPool.hpp
+	${NET_MUTEX_INCLUDE_DIR}Task.hpp
+	${NET_MUTEX_INCLUDE_DIR}ConditionVar.hpp
 )
 
 set(SRCS_NET
@@ -74,6 +79,8 @@ set(SRCS_NET
 	${NET_SRCS_DIR}UdpPacketHandler.cpp
 	${NET_SRCS_DIR}Clock.cpp
 	${NET_MUTEX_SRCS_DIR}Thread.cpp
+	${NET_MUTEX_SRCS_DIR}ThreadPool.cpp
+	${NET_MUTEX_SRCS_DIR}NullMutex.cpp
 	${NET_MUTEX_SRCS_DIR}PosixMutex.cpp
 	${NET_MUTEX_SRCS_DIR}PosixThread.cpp
 	${NET_MUTEX_SRCS_DIR}PosixConditionVar.cpp
