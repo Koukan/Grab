@@ -1,7 +1,7 @@
 #include "GUILayout.hpp"
 
 GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements)
-  : GUIElement(x, y, width, height, layout), _padding(padding), _nbElements(nbElements)
+  : GUIElement(x, y, width, height, layout), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();
@@ -145,9 +145,22 @@ void GUILayout::nextElement()
 
 bool GUILayout::handleGUICommand(GUICommand const &command)
 {
-  if (this->_focusElement != this->_elements.end())
-    return ((*(this->_focusElement))->handleGUICommand(command));
-  return (false);
+  if (!_dispatch)
+    {
+      if (this->_focusElement != this->_elements.end())
+	return ((*(this->_focusElement))->handleGUICommand(command));
+      return (false);
+    }
+  else
+    {
+      bool handle = false;
+
+      for (std::list<GUIElement *>::iterator it = _elements.begin(); it != _elements.end(); ++it)
+	{
+	  handle = handle && (*it)->handleGUICommand(command);
+	}
+      return (handle);
+    }
 }
 
 void		GUILayout::draw(double elapseTime)
@@ -164,4 +177,9 @@ void GUILayout::draw(int x, int y, double elapseTime)
     {
       (*it)->draw(x, y, elapseTime);
     }
+}
+
+void GUILayout::setDispatch(bool dispatch)
+{
+  _dispatch = dispatch;
 }
