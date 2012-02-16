@@ -14,15 +14,6 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ GUIManager : public CommandHandler, public GUILayout
 {
 public:
-	enum PlayerType
-	{
-      KEYBOARD = 0,
-      JOYSTICK1,
-      JOYSTICK2,
-      JOYSTICK3,
-      JOYSTICK4
-	};
-
   GUIManager();
   ~GUIManager();
 
@@ -36,8 +27,8 @@ public:
 private:
   std::list<ButtonSprite *> _spriteButtons;
   GUICommand::DirectionState _direction[4];
+  int _elapsedTime[4];
 
-  bool	updateDirection(InputCommand const &cmd);
   GUICommand *createGUICommand(InputCommand const &cmd);
 };
 
