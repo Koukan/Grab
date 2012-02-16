@@ -48,6 +48,6 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	Net::Acceptor<Player>				_acceptor;
 	UdpHandler							_udp;
 	std::string							_port;
-	Net::SetupNetwork					_init;
+	//Net::SetupNetwork					_init;
 	std::map<Net::InetAddr, Player *>	_players;
 };
