@@ -11,7 +11,7 @@ public:
   GUIBindButton(int playerNb, std::string const &font, ButtonSprite const &sprite, GUILayout *layout);
   ~GUIBindButton();
 
-  virtual bool handleGUICommand(InputCommand const &command);
+  virtual bool handleGUICommand(GUICommand const &command);
   void pushButton();
 
 private:

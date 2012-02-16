@@ -37,15 +37,17 @@ public:
     delete this->_font;
   }
 
-  virtual bool handleGUICommand(InputCommand const &command)
+  virtual bool handleGUICommand(GUICommand const &command)
   {
-    if (command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Return)
+    if (command.type == GUICommand::ACTION && command.buttonAction == GUICommand::PRESSED && command.action == GUICommand::SELECT
+			/*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Return*/)
       {
 	this->_sprite.updateState(ButtonSprite::CLICKED);
 	this->_pressed = true;
 	return (true);
       }
-    else if (command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Return)
+    else if (command.type == GUICommand::ACTION && command.buttonAction == GUICommand::RELEASED && command.action == GUICommand::SELECT
+		/*command.Type == InputCommand::KeyReleased && command.Key.Code == Keyboard::Return*/)
       {
 	if (this->_isFocused)
 	  this->_sprite.updateState(ButtonSprite::SELECTED);

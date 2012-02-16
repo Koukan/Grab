@@ -14,7 +14,7 @@ public:
   virtual void draw(double elapseTime);
   virtual void draw(int x, int y, double elapseTime);
 
-  virtual bool handleGUICommand(InputCommand const &command);
+  virtual bool handleGUICommand(GUICommand const &command);
 
 private:
   Sprite *_upArrow;

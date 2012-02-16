@@ -11,7 +11,8 @@ public:
       JOYSTICK1,
       JOYSTICK2,
       JOYSTICK3,
-      JOYSTICK4
+      JOYSTICK4,
+	  DEFAULT
     };
 
   static bool isLeftPressed(Player::type type, InputCommand const &cmd);
