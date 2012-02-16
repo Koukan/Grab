@@ -13,6 +13,15 @@
 class GUIManager : public CommandHandler, public GUILayout
 {
 public:
+	enum PlayerType
+	{
+      KEYBOARD = 0,
+      JOYSTICK1,
+      JOYSTICK2,
+      JOYSTICK3,
+      JOYSTICK4
+	};
+
   GUIManager();
   ~GUIManager();
 
