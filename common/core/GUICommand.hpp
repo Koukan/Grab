@@ -6,6 +6,15 @@ class GUICommand
 {
 public:
 
+	enum PlayerType
+	{
+      KEYBOARD = 0,
+      JOYSTICK1,
+      JOYSTICK2,
+      JOYSTICK3,
+      JOYSTICK4
+	};
+
   enum Type
     {
       DIRECTION,
@@ -34,24 +43,24 @@ public:
        BACK
      };
 
-  GUICommand(int playerType, GUICommand::DirectionState dir, ButtonAction buttonAction)
+  GUICommand(GUICommand::PlayerType playerType, GUICommand::DirectionState dir, ButtonAction buttonAction)
 	  : playerType(playerType), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir)
   {
   }
 
-  GUICommand(int playerType, GUICommand::ActionState action, ButtonAction buttonAction)
+  GUICommand(GUICommand::PlayerType playerType, GUICommand::ActionState action, ButtonAction buttonAction)
 	  : playerType(playerType), type(GUICommand::ACTION), buttonAction(buttonAction), action(action)
   {
   }
 
-  GUICommand(int playerType, Keyboard::Key key, ButtonAction buttonAction)
-	  : playerType(type), type(GUICommand::KEY), buttonAction(buttonAction), key(key)
+  GUICommand(GUICommand::PlayerType playerType, Keyboard::Key key, ButtonAction buttonAction)
+	  : playerType(playerType), type(GUICommand::KEY), buttonAction(buttonAction), key(key)
   {
   }
 
   ~GUICommand() {}
 
-  int playerType;
+  GUICommand::PlayerType playerType;
   GUICommand::Type type;
   GUICommand::ButtonAction buttonAction;
 

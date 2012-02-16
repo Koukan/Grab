@@ -15,7 +15,7 @@ GUIManager::~GUIManager()
 
 bool		GUIManager::handleCommand(Command const &command)
 {
-  if (command.name == "Input" && this->updateDirection(static_cast<InputCommand const &>(command)))
+  if (command.name == "Input")
   {
 	  GUICommand *cmd = this->createGUICommand(static_cast<InputCommand const &>(command));
 	  if (!cmd)
@@ -39,44 +39,46 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 		else
 			buttonAction = GUICommand::RELEASED;
 		if (cmd.Key.Code == Keyboard::Return)
-			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::SELECT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::SELECT, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Up)
-			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::UP, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::UP, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Down)
-			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::DOWN, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::DOWN, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Left)
-			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::LEFT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::LEFT, buttonAction);
 		else if (cmd.Key.Code == Keyboard::Right)
-			command = new GUICommand(GUIManager::KEYBOARD, GUICommand::RIGHT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::RIGHT, buttonAction);
 		else
-			command = new GUICommand(GUIManager::KEYBOARD, cmd.Key.Code, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, cmd.Key.Code, buttonAction);
 	}
 	else if (cmd.Type == InputCommand::JoystickMoved)
 	{
 		if (cmd.JoystickMove.Position < -99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
-				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::LEFT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);*/
 			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
-				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::UP; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);*/
 		}
 		else if (cmd.JoystickMove.Position > 99.f)
 		{
 			if (cmd.JoystickMove.Axis == Joystick::X)
-				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::RIGHT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);*/
 			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
-				command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DOWN; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);*/
 		}
+		else
+			this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DEFAULT;
 	}
 	else if (cmd.Type == InputCommand::JoystickButtonPressed)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
 	}
 	else if (cmd.Type == InputCommand::JoystickButtonReleased)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
 	}
 	return (command);
 }
@@ -98,53 +100,3 @@ void		GUIManager::destroy()
 {
 }
 
-bool		GUIManager::updateDirection(InputCommand const &cmd)
-{
-  if (cmd.Type == InputCommand::JoystickMoved)
-    {
-      GUICommand::DirectionState &direction = this->_direction[cmd.JoystickMove.JoystickId + 1];
-
-      if (cmd.JoystickMove.Axis == Joystick::X)
-	{
-          if (cmd.JoystickMove.Position < -80.f)
-	    direction = GUICommand::LEFT;
-	  else if (cmd.JoystickMove.Position > 80.f)
-	    direction = GUICommand::RIGHT;
-	  else if (cmd.JoystickMove.Position > -10.f && cmd.JoystickMove.Position < 10.f)
-	    direction = GUICommand::DEFAULT;
-	}
-      else if (cmd.JoystickMove.Axis == Joystick::Y)
-	{
-          if (cmd.JoystickMove.Position < -80.f)
-	    direction = GUICommand::UP;
-	  else if (cmd.JoystickMove.Position > 80.f)
-	    direction = GUICommand::DOWN;
-	  else if (cmd.JoystickMove.Position > -10.f && cmd.JoystickMove.Position < 10.f)
-	    direction = GUICommand::DEFAULT;
-	}
-    }
-  else if (cmd.Type == InputCommand::KeyPressed)
-    {
-      GUICommand::DirectionState &direction = this->_direction[0];
-
-      if (cmd.Key.Code == Keyboard::Left)
-	direction = GUICommand::LEFT;
-      else if (cmd.Key.Code == Keyboard::Right)
-	direction = GUICommand::RIGHT;
-      else if (cmd.Key.Code == Keyboard::Up)
-	direction = GUICommand::UP;
-      else if (cmd.Key.Code == Keyboard::Down)
-	direction = GUICommand::DOWN;
-    }
-  else if (cmd.Type == InputCommand::KeyReleased)
-    {
-      GUICommand::DirectionState &direction = this->_direction[0];
-
-      if (cmd.Key.Code == Keyboard::Left ||
-	  cmd.Key.Code == Keyboard::Right ||
-	  cmd.Key.Code == Keyboard::Up ||
-	  cmd.Key.Code == Keyboard::Down)
-	direction = GUICommand::DEFAULT;
-    }
-  return (true);
-}
