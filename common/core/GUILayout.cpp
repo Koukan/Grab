@@ -143,7 +143,7 @@ void GUILayout::nextElement()
     }
 }
 
-bool GUILayout::handleGUICommand(InputCommand const &command)
+bool GUILayout::handleGUICommand(GUICommand const &command)
 {
   if (this->_focusElement != this->_elements.end())
     return ((*(this->_focusElement))->handleGUICommand(command));

@@ -48,6 +48,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}GUIManager.hpp
 	${CORE_DIR}GUILayout.hpp
 	${CORE_DIR}GUIElement.hpp
+	${CORE_DIR}GUICommand.hpp
 	${CORE_DIR}GSManager.hpp
 	${CORE_DIR}HitBox.hpp
 	${CORE_DIR}Input.hpp
@@ -64,6 +65,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}PhysicObject.hpp
 	${CORE_DIR}PhysicsSubscriber.hpp
 	${CORE_DIR}PhysicsSubscriber2.hpp
+	${CORE_DIR}Player.hpp
 	${CORE_DIR}PolyHitBox.hpp
 	${CORE_DIR}RectHitBox.hpp
 	${CORE_DIR}Resource.hpp
@@ -108,6 +110,7 @@ set(SRCS_CORE
 	${CORE_DIR}ModuleManager.cpp
 	${CORE_DIR}PhysicManager.cpp
 	${CORE_DIR}PhysicObject.cpp
+	${CORE_DIR}Player.cpp
 	${CORE_DIR}PolyHitBox.cpp
 	${CORE_DIR}RectHitBox.cpp
 	${CORE_DIR}Resource.cpp

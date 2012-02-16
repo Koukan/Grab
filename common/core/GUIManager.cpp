@@ -18,8 +18,59 @@ GUIManager::~GUIManager()
 bool		GUIManager::handleCommand(Command const &command)
 {
   if (command.name == "Input" && this->updateDirection(static_cast<InputCommand const &>(command)))
-    return (this->handleGUICommand(static_cast<InputCommand const &>(command)));
+  {
+	  GUICommand *cmd = this->createGUICommand(static_cast<InputCommand const &>(command));
+	  if (!cmd)
+		  return (false);
+	  bool ret = this->handleGUICommand(*cmd);
+	  delete cmd;
+	  return (ret);
+  }
   return (false);
+}
+
+GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
+{
+	GUICommand *command = 0;
+	GUICommand::ButtonAction buttonAction;
+
+	if (cmd.Type == InputCommand::KeyPressed || cmd.Type == InputCommand::KeyReleased)
+	{
+		if (cmd.Type == InputCommand::KeyPressed)
+			buttonAction = GUICommand::PRESSED;
+		else
+			buttonAction = GUICommand::RELEASED;
+		if (cmd.Key.Code == Keyboard::Return)
+			command = new GUICommand(Player::KEYBOARD, GUICommand::SELECT, buttonAction);
+		else if (cmd.Key.Code == Keyboard::Up)
+			command = new GUICommand(Player::KEYBOARD, GUICommand::UP, buttonAction);
+		else if (cmd.Key.Code == Keyboard::Down)
+			command = new GUICommand(Player::KEYBOARD, GUICommand::DOWN, buttonAction);
+		else if (cmd.Key.Code == Keyboard::Left)
+			command = new GUICommand(Player::KEYBOARD, GUICommand::LEFT, buttonAction);
+		else if (cmd.Key.Code == Keyboard::Right)
+			command = new GUICommand(Player::KEYBOARD, GUICommand::RIGHT, buttonAction);
+		else
+			command = new GUICommand(Player::KEYBOARD, cmd.Key.Code, buttonAction);
+	}
+	else if (cmd.Type == InputCommand::JoystickMoved)
+	{
+		if (cmd.JoystickMove.Position < -99.f)
+		{
+			if (cmd.JoystickMove.Axis == Joystick::Axis::X)
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::LEFT, GUICommand::PRESSED);
+			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::UP, GUICommand::PRESSED);
+		}
+		else if (cmd.JoystickMove.Position > 99.f)
+		{
+			if (cmd.JoystickMove.Axis == Joystick::Axis::X)
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::RIGHT, GUICommand::PRESSED);
+			else if (cmd.JoystickMove.Axis == Joystick::Axis::Y)
+				command = new GUICommand(static_cast<Player::type>(cmd.JoystickMove.JoystickId), GUICommand::DOWN, GUICommand::PRESSED);
+		}
+	}
+	return (command);
 }
 
 void		GUIManager::registerButtonSprite(ButtonSprite &sprite)
@@ -43,7 +94,7 @@ bool		GUIManager::updateDirection(InputCommand const &cmd)
 {
   if (cmd.Type == InputCommand::JoystickMoved)
     {
-      GUICommand::directionState &direction = this->_direction[cmd.JoystickMove.JoystickId + 1];
+      GUICommand::DirectionState &direction = this->_direction[cmd.JoystickMove.JoystickId + 1];
 
       if (cmd.JoystickMove.Axis == Joystick::X)
 	{
@@ -66,7 +117,7 @@ bool		GUIManager::updateDirection(InputCommand const &cmd)
     }
   else if (cmd.Type == InputCommand::KeyPressed)
     {
-      GUICommand::directionState &direction = this->_direction[0];
+      GUICommand::DirectionState &direction = this->_direction[0];
 
       if (cmd.Key.Code == Keyboard::Left)
 	direction = GUICommand::LEFT;
@@ -79,7 +130,7 @@ bool		GUIManager::updateDirection(InputCommand const &cmd)
     }
   else if (cmd.Type == InputCommand::KeyReleased)
     {
-      GUICommand::directionState &direction = this->_direction[0];
+      GUICommand::DirectionState &direction = this->_direction[0];
 
       if (cmd.Key.Code == Keyboard::Left ||
 	  cmd.Key.Code == Keyboard::Right ||

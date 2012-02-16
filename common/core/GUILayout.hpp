@@ -9,7 +9,7 @@ public:
   void insertElementAtBegin(GUIElement &elem);
   void insertElementAtEnd(GUIElement &elem);
 
-  virtual bool handleGUICommand(InputCommand const &command);
+  virtual bool handleGUICommand(GUICommand const &command);
   virtual void draw(double elapseTime);
   virtual void draw(int x, int y, double elapseTime);
   void prevElement();
