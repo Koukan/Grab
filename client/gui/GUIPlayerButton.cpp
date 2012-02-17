@@ -40,10 +40,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				this->_font->setText("Ready");
 			--this->_nbReady;
 			if (this->_nbReady == 0)
-			{
 				this->_bindPlayer.goToShipSelection();
-				std::cout << "go go go" << std::endl;
-			}
 		}
 		return (true);
 	}
