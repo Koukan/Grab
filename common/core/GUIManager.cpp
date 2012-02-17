@@ -68,9 +68,9 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::LEFT ||
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::RIGHT))
 		{
-			if (cmd.JoystickMove.Position < -99.f)
+			if (cmd.JoystickMove.Position < -60.f)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::LEFT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);*/
-			else if (cmd.JoystickMove.Position > 99.f)
+			else if (cmd.JoystickMove.Position > 60.f)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::RIGHT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);*/
 			else
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DEFAULT;
@@ -80,9 +80,9 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::UP ||
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::DOWN))
 		{
-			if (cmd.JoystickMove.Position < -99.f)
+			if (cmd.JoystickMove.Position < -60.f)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::UP; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);*/
-			else if (cmd.JoystickMove.Position > 99.f)
+			else if (cmd.JoystickMove.Position > 60.f)
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DOWN; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);*/
 			else
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DEFAULT;
