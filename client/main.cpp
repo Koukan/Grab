@@ -7,6 +7,7 @@
 int	main(int /*ac*/, char**av)
 {
   std::string		path = av[0];
+  Net::SetupNetwork		setup;
 
   chdir(path.substr(0, path.rfind('/')).c_str());
   try
