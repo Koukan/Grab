@@ -53,7 +53,7 @@ void GUILayout::unfocus()
 
 void GUILayout::insertElementAtBegin(GUIElement &elem)
 {
-  elem.unfocus();
+	elem.unfocus();
   this->_elements.push_front(&elem);
   this->_begin = this->_elements.begin();
   if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable())
@@ -67,7 +67,7 @@ void GUILayout::insertElementAtBegin(GUIElement &elem)
 
 void GUILayout::insertElementAtEnd(GUIElement &elem)
 {
-  elem.unfocus();
+	elem.unfocus();
   this->_elements.push_back(&elem);
   this->_begin = this->_elements.begin();
   if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable())
@@ -93,7 +93,7 @@ void GUILayout::prevElement()
 	  this->_begin = it;
 	}
     }
-  if (this->_focusElement != this->_elements.end())
+  if (this->_focusElement != this->_elements.end() && !this->_dispatch)
     (*this->_focusElement)->unfocus();
   if (this->_focusElement == this->_elements.begin())
     this->_focusElement = --this->_elements.end();
@@ -104,7 +104,10 @@ void GUILayout::prevElement()
       if ((*this->_focusElement)->getEnable() == false)
 	this->prevElement();
       else
-	(*this->_focusElement)->focus();
+	  {
+		if (!this->_dispatch)
+			(*this->_focusElement)->focus();
+	  }
     }
 }
 
@@ -128,12 +131,14 @@ void GUILayout::nextElement()
     this->_focusElement = this->_elements.begin();
   else if (this->_focusElement == --this->_elements.end())
     {
-      (*this->_focusElement)->unfocus();
-      this->_focusElement = this->_elements.begin();
+		if (!this->_dispatch)
+			(*this->_focusElement)->unfocus();
+		this->_focusElement = this->_elements.begin();
     }
   else
     {
-    (*this->_focusElement)->unfocus();
+		if (!this->_dispatch)
+		    (*this->_focusElement)->unfocus();
       ++this->_focusElement;
     }
   if (this->_focusElement != this->_elements.end())
@@ -141,7 +146,10 @@ void GUILayout::nextElement()
       if ((*this->_focusElement)->getEnable() == false)
 	  this->nextElement();
       else
-	(*this->_focusElement)->focus();
+	  {
+		if (!this->_dispatch)
+			(*this->_focusElement)->focus();
+	  }
     }
 }
 
@@ -159,7 +167,7 @@ bool GUILayout::handleGUICommand(GUICommand const &command)
 
       for (std::list<GUIElement *>::iterator it = _elements.begin(); it != _elements.end(); ++it)
 	{
-	  handle = handle && (*it)->catchGUICommand(command);
+	  handle = handle || (*it)->catchGUICommand(command);
 	}
       return (handle);
     }
