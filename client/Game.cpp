@@ -18,7 +18,7 @@ int Game::NB_CHAR_NAME = 7;
 int	Game::NB_CHAR_IP = 15;
 int Game::NB_CHAR_PORT = 5;
 
-Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE), _preferences(3)
+Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE.c_str()), _preferences(3)
 {
 	if (this->_preferencesFile.is_open())
 	  this->readPreferencesFile();
@@ -71,7 +71,7 @@ void		Game::savePreferencesFile(std::string const &name, std::string const &ip, 
 {
   if (_preferencesFile.is_open())
     _preferencesFile.close();
-  _preferencesFile.open(PREF_FILE, std::ios_base::out | std::ios_base::trunc);
+  _preferencesFile.open(PREF_FILE.c_str(), std::ios_base::out | std::ios_base::trunc);
   if (_preferencesFile.is_open())
     {
 		_preferencesFile << name << std::endl;
