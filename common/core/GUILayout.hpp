@@ -23,8 +23,8 @@ public:
   void setDispatch(bool dispatch);
 
 protected:
-  GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements);
-  GUILayout(int x, int y, int width, int height, int padding, int nbElements);
+  GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, GUICommand::PlayerType playerType = GUICommand::ALL);
+  GUILayout(int x, int y, int width, int height, int padding, int nbElements, GUICommand::PlayerType playerType = GUICommand::ALL);
   virtual ~GUILayout();
 
 protected:

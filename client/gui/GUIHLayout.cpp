@@ -1,12 +1,14 @@
 #include "GUIHLayout.hpp"
 
-GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements)
-  : Core::GUILayout(x, y, width, height, padding, layout, nbElements)
+GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements,
+	  Core::GUICommand::PlayerType playerType)
+  : Core::GUILayout(x, y, width, height, padding, layout, nbElements, playerType)
 {
 }
 
-GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, int nbElements)
-  : Core::GUILayout(x, y, width, height, padding, nbElements)
+GUIHLayout::GUIHLayout(int x, int y, int width, int height, int padding, int nbElements,
+	  Core::GUICommand::PlayerType playerType)
+  : Core::GUILayout(x, y, width, height, padding, nbElements, playerType)
 {
 }
 
@@ -26,7 +28,7 @@ bool GUIHLayout::handleGUICommand(Core::GUICommand const &command)
       this->nextElement();
       return (true);
     }
-  return (this->GUILayout::handleGUICommand(command));
+  return (this->GUILayout::catchGUICommand(command));
 }
 
 void GUIHLayout::draw(double elapseTime)

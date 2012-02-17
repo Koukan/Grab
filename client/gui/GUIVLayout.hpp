@@ -7,8 +7,10 @@
 class GUIVLayout : public Core::GUILayout
 {
 public:
-  GUIVLayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements = 100, std::string const &arrowUp = "", std::string const &arrowDown = "");
-  GUIVLayout(int x, int y, int width, int height, int padding, int nbElements = 100, std::string const &arrowUp = "", std::string const &arrowDown = "");
+  GUIVLayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements = 100, std::string const &arrowUp = "", std::string const &arrowDown = "",
+	  Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL);
+  GUIVLayout(int x, int y, int width, int height, int padding, int nbElements = 100, std::string const &arrowUp = "", std::string const &arrowDown = "",
+	  Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL);
   ~GUIVLayout();
 
   virtual void draw(double elapseTime);

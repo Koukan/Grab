@@ -2,13 +2,15 @@
 #include "GameStateManager.hpp"
 #include "Player.hpp"
 
-GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
-  : Core::GUILayout(x, y, width, height, padding, layout, nbElements), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
+GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements, std::string const &arrowUp, std::string const &arrowDown,
+	  Core::GUICommand::PlayerType playerType)
+  : Core::GUILayout(x, y, width, height, padding, layout, nbElements, playerType), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
 {
 }
 
-GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, int nbElements, std::string const &arrowUp, std::string const &arrowDown)
-  : Core::GUILayout(x, y, width, height, padding, nbElements), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
+GUIVLayout::GUIVLayout(int x, int y, int width, int height, int padding, int nbElements, std::string const &arrowUp, std::string const &arrowDown,
+	  Core::GUICommand::PlayerType playerType)
+  : Core::GUILayout(x, y, width, height, padding, nbElements, playerType), _upArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowUp)), _downArrow(Core::GameStateManager::get().getCurrentState().getSprite(arrowDown))
 {
 }
 

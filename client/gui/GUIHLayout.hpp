@@ -5,8 +5,8 @@
 class GUIHLayout : public Core::GUILayout
 {
 public:
-  GUIHLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements = 100);
-  GUIHLayout(int x, int y, int width, int height, int padding, int nbElements = 100);
+  GUIHLayout(int x, int y, int width, int height, int padding, Core::GUILayout *layout, int nbElements = 100, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL);
+  GUIHLayout(int x, int y, int width, int height, int padding, int nbElements = 100, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL);
   ~GUIHLayout();
 
   virtual void draw(double elapseTime);

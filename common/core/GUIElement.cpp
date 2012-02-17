@@ -4,21 +4,28 @@
 
 CORE_USE_NAMESPACE
 
-GUIElement::GUIElement(int x, int y, int width, int height, GUILayout *layout)
-  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true)
+GUIElement::GUIElement(int x, int y, int width, int height, GUILayout *layout, GUICommand::PlayerType playerType)
+  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _playerType(playerType)
 {
   if (layout)
     layout->insertElementAtEnd(*this);
 }
 
-GUIElement::GUIElement(int x, int y, int width, int height)
-  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true)
+GUIElement::GUIElement(int x, int y, int width, int height, GUICommand::PlayerType playerType)
+  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _playerType(playerType)
 {
 	GameStateManager::get().getCurrentState().getGUI().insertElementAtEnd(*this);
 }
 
 GUIElement::~GUIElement()
 {
+}
+
+bool GUIElement::catchGUICommand(GUICommand const &command)
+{
+	if (this->_playerType == GUICommand::ALL || command.playerType == this->_playerType)
+		return (this->handleGUICommand(command));
+	return (false);
 }
 
 void GUIElement::focus()

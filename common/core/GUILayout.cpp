@@ -2,8 +2,8 @@
 
 CORE_USE_NAMESPACE
 
-GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements)
-  : GUIElement(x, y, width, height, layout), _padding(padding), _nbElements(nbElements), _dispatch(false)
+GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, GUICommand::PlayerType playerType)
+  : GUIElement(x, y, width, height, layout, playerType), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();
@@ -13,8 +13,8 @@ GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout
     this->unfocus();
 }
 
-GUILayout::GUILayout(int x, int y, int width, int height, int padding, int nbElements)
-  : GUIElement(x, y, width, height), _padding(padding), _nbElements(nbElements), _dispatch(false)
+GUILayout::GUILayout(int x, int y, int width, int height, int padding, int nbElements, GUICommand::PlayerType playerType)
+  : GUIElement(x, y, width, height, playerType), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();
@@ -150,7 +150,7 @@ bool GUILayout::handleGUICommand(GUICommand const &command)
   if (!_dispatch)
     {
       if (this->_focusElement != this->_elements.end())
-	return ((*(this->_focusElement))->handleGUICommand(command));
+		return ((*(this->_focusElement))->catchGUICommand(command));
       return (false);
     }
   else
@@ -159,7 +159,7 @@ bool GUILayout::handleGUICommand(GUICommand const &command)
 
       for (std::list<GUIElement *>::iterator it = _elements.begin(); it != _elements.end(); ++it)
 	{
-	  handle = handle && (*it)->handleGUICommand(command);
+	  handle = handle && (*it)->catchGUICommand(command);
 	}
       return (handle);
     }

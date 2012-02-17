@@ -10,8 +10,8 @@ template <typename T>
 class GUIButton : public Core::GUIElement
 {
 public:
-  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, int x, int y)
-    : Core::GUIElement(x, y, sprite.getWidth(), sprite.getHeight()), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _pressed(false), _name(name)
+  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, int x, int y, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+    : Core::GUIElement(x, y, sprite.getWidth(), sprite.getHeight(), playerType), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _pressed(false), _name(name)
   {
     if (this->_font)
       this->_font->setText(name);
@@ -21,8 +21,8 @@ public:
       this->unfocus();
   }
 
-  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, Core::GUILayout *layout)
-    : Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _name(name)
+  GUIButton(T &instance, void (T::*func)(), std::string const &name, std::string const &font, Core::ButtonSprite const &sprite, Core::GUILayout *layout, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+    : Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, playerType), _instance(&instance), _func(func), _sprite(sprite), _font(Core::GameStateManager::get().getCurrentState().getFont(font)), _name(name)
   {
     if (this->_font)
       this->_font->setText(name);

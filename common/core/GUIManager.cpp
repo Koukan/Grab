@@ -30,7 +30,7 @@ bool		GUIManager::handleCommand(Command const &command)
 	  GUICommand *cmd = this->createGUICommand(static_cast<InputCommand const &>(command));
 	  if (!cmd)
 		  return (false);
-	  bool ret = this->handleGUICommand(*cmd);
+	  bool ret = this->catchGUICommand(*cmd);
 	  delete cmd;
 	  return (ret);
   }

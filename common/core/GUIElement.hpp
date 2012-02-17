@@ -11,10 +11,11 @@ class GUILayout;
 class GUIElement : public DrawableObject
 {
 public:
-  GUIElement(int x, int y, int width, int height, GUILayout *layout);
-  GUIElement(int x, int y, int width, int height);
+	GUIElement(int x, int y, int width, int height, GUILayout *layout, GUICommand::PlayerType playerType = GUICommand::ALL);
+  GUIElement(int x, int y, int width, int height, GUICommand::PlayerType playerType = GUICommand::ALL);
   virtual ~GUIElement();
 
+  bool catchGUICommand(GUICommand const &command);
   virtual bool handleGUICommand(GUICommand const &command) = 0;
   virtual void draw(double elapseTime) = 0;
   virtual void draw(int /*x*/, int /*y*/, double /*elapseTime*/) {}
@@ -35,6 +36,7 @@ protected:
   int _height;
   bool _isFocused;
   bool _enable;
+  GUICommand::PlayerType _playerType;
 };
 
 CORE_END_NAMESPACE

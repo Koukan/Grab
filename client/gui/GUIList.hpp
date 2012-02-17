@@ -9,8 +9,8 @@
 template <typename T>
 class GUIList : public Core::GUIElement {
 public:
-  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y)
-    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
+  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), playerType),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(0), _func(0), _focusElement(_elements.begin())
   {
@@ -20,8 +20,8 @@ public:
       this->unfocus();
   }
 
-  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(Core::GUIElement const &))
-    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight()),
+  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(Core::GUIElement const &), Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+    : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), playerType),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(&instance), _func(func), _focusElement(_elements.begin())
   {
@@ -31,8 +31,8 @@ public:
       this->unfocus();
       }
 
-  GUIList(T &instance, void (T::*func)(Core::GUIElement const &), Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, Core::GUILayout *layout)
-    : Core::GUIElement(0, 0, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), layout),
+  GUIList(T &instance, void (T::*func)(Core::GUIElement const &), Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, Core::GUILayout *layout, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+    : Core::GUIElement(0, 0, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), layout, playerType),
       _leftArrow(left_arrow), _rightArrow(right_arrow), _instance(&instance), _func(func), _focusElement(_elements.begin())
   {
     if (this->_isFocused)

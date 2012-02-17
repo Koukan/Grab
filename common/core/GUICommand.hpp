@@ -14,7 +14,8 @@ public:
       JOYSTICK1,
       JOYSTICK2,
       JOYSTICK3,
-      JOYSTICK4
+      JOYSTICK4,
+	  ALL
 	};
 
   enum Type
