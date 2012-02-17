@@ -18,14 +18,23 @@ set(SFML_LIBRARIES
 	${SFML_WINDOW_LIBRARY}
 	${SFML_SYSTEM_LIBRARY}
 )
-ELSE(WIN32)
-set(TYPE "Unix")
+ELSEIF(LINUX)
+set(TYPE "Linux")
 set(SFML_INCLUDE_DIR "/usr/include/SFML")
 set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
 	sfml-system
 	dl
+)
+ELSE(LINUX)
+set(TYPE "BSD")
+set(SFML_INCLUDE_DIR "/usr/local/include/")
+LINK_DIRECTORIES ("/usr/local/lib/")
+set(SFML_LIBRARIES
+	sfml-graphics
+	sfml-window
+	sfml-system
 )
 ENDIF(WIN32)
 #####
