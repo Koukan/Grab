@@ -16,14 +16,22 @@ public:
       JOYSTICK4
     };
 
-  static bool isLeftPressed(Player::type type, InputCommand const &cmd);
-  static bool isLeftReleased(Player::type type, InputCommand const &cmd);
-  static bool isRightPressed(Player::type type, InputCommand const &cmd);
-  static bool isRightReleased(Player::type type, InputCommand const &cmd);
-  static bool isUpPressed(Player::type type, InputCommand const &cmd);
-  static bool isUpReleased(Player::type type, InputCommand const &cmd);
-  static bool isDownPressed(Player::type type, InputCommand const &cmd);
-  static bool isDownReleased(Player::type type, InputCommand const &cmd);
+  enum Action
+  {
+	  FIRE = 0,
+	  SPECIAL_FIRE
+  };
+
+  Player(Player::type type);
+  ~Player();
+
+  Player::type getType() const;
+  void setType(Player::type type);
+  InputCommand &getAction(Player::Action action);
+
+private:
+	Player::type _type;
+	InputCommand _actions[2];
 };
 
 CORE_END_NAMESPACE

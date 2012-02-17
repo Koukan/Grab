@@ -38,7 +38,6 @@ void	GSMainMenu::onStart()
   sp->setY(100);
   this->addGameObject(sp, "gui", 20);
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
-  new GUIBindButton(1, "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::modeSelection, "Create Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::joinGame, "Join Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::options, "Options", "buttonFont", *sprite, layout);

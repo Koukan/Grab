@@ -155,22 +155,18 @@ void GUILayout::nextElement()
 
 bool GUILayout::handleGUICommand(GUICommand const &command)
 {
-  if (!_dispatch)
-    {
-      if (this->_focusElement != this->_elements.end())
-		return ((*(this->_focusElement))->catchGUICommand(command));
-      return (false);
-    }
-  else
-    {
-      bool handle = false;
-
-      for (std::list<GUIElement *>::iterator it = _elements.begin(); it != _elements.end(); ++it)
+	if (!_dispatch)
 	{
-	  handle = handle || (*it)->catchGUICommand(command);
-	}
-      return (handle);
+		if (this->_focusElement != this->_elements.end())
+			return ((*(this->_focusElement))->catchGUICommand(command));
+		return (false);
     }
+	for (std::list<GUIElement *>::iterator it = _elements.begin(); it != _elements.end(); ++it)
+	{
+		if ((*it)->catchGUICommand(command))
+			return (true);
+	}
+	return (false);
 }
 
 void		GUILayout::draw(double elapseTime)

@@ -2,68 +2,40 @@
 
 CORE_USE_NAMESPACE
 
-bool Player::isLeftPressed(Player::type type, InputCommand const &cmd)
+Player::Player(Player::type type)
+	: _type(type)
 {
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::X &&
-	  cmd.JoystickMove.Position < -0.9f);
+	if (type == Player::KEYBOARD)
+	{
+		this->_actions[Player::FIRE].Type = InputCommand::KeyPressed;
+		this->_actions[Player::FIRE].Key.Code = Keyboard::Space;
+		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::KeyPressed;
+		this->_actions[Player::SPECIAL_FIRE].Key.Code = Keyboard::LControl;
+	}
+	else
+	{
+		this->_actions[Player::FIRE].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::FIRE].JoystickButton.Button = 0;
+		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::SPECIAL_FIRE].JoystickButton.Button = 2;
+	}
 }
 
-bool Player::isLeftReleased(Player::type type, InputCommand const &cmd)
+Player::~Player()
 {
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::X &&
-	  cmd.JoystickMove.Position > -0.9f);
 }
 
-bool Player::isRightPressed(Player::type type, InputCommand const &cmd)
+Player::type Player::getType() const
 {
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::X &&
-	  cmd.JoystickMove.Position > 0.9f);
+	return (this->_type);
 }
 
-bool Player::isRightReleased(Player::type type, InputCommand const &cmd)
+void Player::setType(Player::type type)
 {
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::X &&
-	  cmd.JoystickMove.Position < 0.9f);
+	this->_type = type;
 }
 
-bool Player::isUpPressed(Player::type type, InputCommand const &cmd)
+InputCommand &Player::getAction(Player::Action action)
 {
-  if (cmd.Type == InputCommand::JoystickMoved)
-    std::cout << "joy move" << std::endl;
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::Y &&
-	  cmd.JoystickMove.Position < -0.9f);
-}
-
-bool Player::isUpReleased(Player::type type, InputCommand const &cmd)
-{
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::Y &&
-	  cmd.JoystickMove.Position > -0.9f);
-}
-
-bool Player::isDownPressed(Player::type type, InputCommand const &cmd)
-{
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::Y &&
-	  cmd.JoystickMove.Position > 0.9f);
-}
-
-bool Player::isDownReleased(Player::type type, InputCommand const &cmd)
-{
-  return (cmd.Type == InputCommand::JoystickMoved && type > 1 &&
-	  static_cast<int>(cmd.JoystickMove.JoystickId) == type - 1 &&
-	  cmd.JoystickMove.Axis == Joystick::Y &&
-	  cmd.JoystickMove.Position < 0.9f);
+	return (this->_actions[action]);
 }

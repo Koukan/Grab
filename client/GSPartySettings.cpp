@@ -13,6 +13,7 @@
 #include "GSLoading.hpp"
 #include "GSPartySettings.hpp"
 #include "GSShipSelection.hpp"
+#include "GSBindPlayer.hpp"
 #include "Converter.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
@@ -46,8 +47,8 @@ void	GSPartySettings::createParty()
     }
     else
     {
-      Core::GameState *shipSelection = new GSShipSelection(Net::Converter::toInt<int>(this->_nbPlayers), _online);
-      Core::GameStateManager::get().pushState(*shipSelection);
+      Core::GameState *bindPlayers = new GSBindPlayer(this->_mode, "", Net::Converter::toInt<int>(this->_nbPlayers), _online);
+      Core::GameStateManager::get().pushState(*bindPlayers);
     }
 }
 

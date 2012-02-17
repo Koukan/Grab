@@ -67,6 +67,8 @@ set(SRCS
 	GameCommand.hpp
 	GameListCommand.hpp
 	GameListCommand.cpp
+	GSBindPlayer.cpp
+	GSBindPlayer.hpp
 	GSInGame.cpp
 	GSInGame.hpp
 	GSJoinGame.cpp
@@ -123,6 +125,8 @@ set(SRCS
 	${GUI_SRC_DIR}/GUILabel.cpp
 	${GUI_SRC_DIR}/GUILabel.hpp
 	${GUI_SRC_DIR}/GUIList.hpp
+	${GUI_SRC_DIR}/GUIPlayerButton.cpp
+	${GUI_SRC_DIR}/GUIPlayerButton.hpp
 	${GUI_SRC_DIR}/GUITextBox.hpp
 	${GUI_SRC_DIR}/GUIVLayout.cpp
 	${GUI_SRC_DIR}/GUIHLayout.cpp
