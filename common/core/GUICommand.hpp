@@ -67,7 +67,6 @@ public:
   GUICommand::PlayerType playerType;
   GUICommand::Type type;
   GUICommand::ButtonAction buttonAction;
-  int id;
 
   union
   {
@@ -75,6 +74,8 @@ public:
     ActionState action;
 	Keyboard::Key key;
   };
+
+  int id;
 };
 
 CORE_END_NAMESPACE
