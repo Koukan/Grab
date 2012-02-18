@@ -69,14 +69,14 @@ void	GSPartySettings::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
+  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 0);
   layout->setY((768 - layout->getHeight()) / 2);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 
-  new GUILabel("Player's number", "buttonFont", "", layout);
+  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
   GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, layout);
   if (_mode == Modes::STORY)
     guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "1 Player", "buttonFont", *sprite, 0)));
@@ -87,6 +87,5 @@ void	GSPartySettings::onStart()
   GUIList<GSPartySettings> *guilist2 = new GUIList<GSPartySettings>(*this, &GSPartySettings::multiMode, *leftArrow, *rightArrow, layout);
   guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Local Only", "buttonFont", *sprite, 0)));
   guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "With Online Players", "buttonFont", *sprite, 0)));
-  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::back, "Back", "buttonFont", *sprite, layout);
 }

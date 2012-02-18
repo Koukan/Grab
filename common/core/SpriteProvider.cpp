@@ -33,8 +33,13 @@ void	SpriteProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 				this->loadElement(static_cast<TiXmlElement*>(parent), sprite,
 						  methods, sizeof(methods) / sizeof(*methods));
 			}
-			break ;
+			//			break ;
 		}
+		else if (name == "transparency" && sprite)
+		  {
+		    sprite->setTransparency(Net::Converter::toInt<float>(attrib->Value()));
+		  }
+
 	}
 }
 

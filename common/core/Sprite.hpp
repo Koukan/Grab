@@ -16,6 +16,7 @@ public:
 	virtual void	draw(int /*x*/, int /*y*/, double /*elapsedTime*/ = 0){}
 
 	// setter
+	virtual void	setTransparency(float){}
 	virtual void	setScale(float /*x*/, float /*y*/){}
 	virtual void	setSpeed(double){}
 	virtual void	setRepeat(bool){}

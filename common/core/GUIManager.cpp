@@ -65,7 +65,7 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 			buttonAction = GUICommand::RELEASED;
 		if (cmd.Key.Code == Keyboard::Return)
 			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::SELECT, buttonAction, cmd.Key.Code);
-		else if (cmd.Key.Code == Keyboard::Back)
+		else if (cmd.Key.Code == Keyboard::Escape)
 			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::BACK, buttonAction, cmd.Key.Code);
 		else if (cmd.Key.Code == Keyboard::Up)
 			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::UP, buttonAction, cmd.Key.Code);

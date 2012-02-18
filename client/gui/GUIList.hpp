@@ -52,6 +52,7 @@ public:
 	this->_focusElement = this->_elements.begin();
 	(this->_instance->*(this->_func))(*(*_focusElement));
 	this->_width = this->_leftArrow.getWidth() + this->_rightArrow.getWidth() + 10 + (*this->_focusElement)->getWidth();
+	this->_height = (*this->_focusElement)->getHeight();
       }
   }
 
