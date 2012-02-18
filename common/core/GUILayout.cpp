@@ -74,8 +74,11 @@ void GUILayout::insertElementAtEnd(GUIElement &elem)
     {
       std::list<GUIElement *>::iterator it = this->_elements.begin();
       for (; it != this->_elements.end() && !(*it)->getEnable(); ++it);
-      this->_focusElement = it;
-      (*it)->focus();
+	  if (it != this->_elements.end())
+	  {
+	      this->_focusElement = it;
+		  (*it)->focus();
+	  }
     }
 }
 

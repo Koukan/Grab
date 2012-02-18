@@ -28,7 +28,7 @@ bool GUIHLayout::handleGUICommand(Core::GUICommand const &command)
       this->nextElement();
       return (true);
     }
-  return (this->GUILayout::catchGUICommand(command));
+  return (this->GUILayout::handleGUICommand(command));
 }
 
 void GUIHLayout::draw(double elapseTime)
