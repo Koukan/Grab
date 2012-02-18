@@ -54,7 +54,12 @@ public:
 
   virtual bool handleGUICommand(Core::GUICommand const &command)
   {
-    if (command.type == Core::GUICommand::KEY && command.buttonAction == Core::GUICommand::PRESSED && command.key == Core::Keyboard::Back /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Back*/)
+	  if (command.buttonAction == Core::GUICommand::RELEASED &&
+		  command.type == Core::GUICommand::ACTION &&
+		  command.action == Core::GUICommand::BACK)
+		  return (true);
+    if (command.buttonAction == Core::GUICommand::PRESSED && ((command.type == Core::GUICommand::KEY && command.key == Core::Keyboard::Back) ||
+		(command.type == Core::GUICommand::ACTION && command.action == Core::GUICommand::BACK)))
       {
 	this->_text = this->_text.substr(0, this->_text.size() - 1);
 	if (this->_instance)

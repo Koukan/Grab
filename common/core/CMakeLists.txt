@@ -38,6 +38,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}CoreDef.hpp
 	${CORE_DIR}DrawableObject.hpp
 	${CORE_DIR}File.hpp
+	${CORE_DIR}Font.hpp
 	${CORE_DIR}FontProvider.hpp
 	${CORE_DIR}GameObject.hpp
 	${CORE_DIR}GameObjectManager.hpp

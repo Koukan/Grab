@@ -1,4 +1,5 @@
 #include "GUIManager.hpp"
+#include "GameStateManager.hpp"
 
 CORE_USE_NAMESPACE
 
@@ -37,6 +38,20 @@ bool		GUIManager::handleCommand(Command const &command)
   return (false);
 }
 
+bool		GUIManager::handleGUICommand(GUICommand const &command)
+{
+	if (this->GUILayout::handleGUICommand(command))
+		return (true);
+	if (command.type == Core::GUICommand::ACTION &&
+		command.buttonAction == Core::GUICommand::RELEASED &&
+		command.action == Core::GUICommand::BACK)
+	{
+		GameStateManager::get().popState();
+		return (true);
+	}
+	return (false);
+}
+
 GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 {
 	GUICommand *command = 0;
@@ -49,17 +64,19 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 		else
 			buttonAction = GUICommand::RELEASED;
 		if (cmd.Key.Code == Keyboard::Return)
-			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::SELECT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::SELECT, buttonAction, cmd.Key.Code);
+		else if (cmd.Key.Code == Keyboard::Back)
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::BACK, buttonAction, cmd.Key.Code);
 		else if (cmd.Key.Code == Keyboard::Up)
-			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::UP, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::UP, buttonAction, cmd.Key.Code);
 		else if (cmd.Key.Code == Keyboard::Down)
-			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::DOWN, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::DOWN, buttonAction, cmd.Key.Code);
 		else if (cmd.Key.Code == Keyboard::Left)
-			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::LEFT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::LEFT, buttonAction, cmd.Key.Code);
 		else if (cmd.Key.Code == Keyboard::Right)
-			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::RIGHT, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, GUICommand::RIGHT, buttonAction, cmd.Key.Code);
 		else
-			command = new GUICommand(GUICommand::KEYBOARD, cmd.Key.Code, buttonAction);
+			command = new GUICommand(GUICommand::KEYBOARD, cmd.Key.Code, buttonAction, cmd.Key.Code);
 	}
 	else if (cmd.Type == InputCommand::JoystickMoved)
 	{
@@ -69,9 +86,9 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::RIGHT))
 		{
 			if (cmd.JoystickMove.Position < -60.f)
-				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::LEFT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::LEFT, GUICommand::PRESSED);*/
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::LEFT;
 			else if (cmd.JoystickMove.Position > 60.f)
-				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::RIGHT; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::RIGHT, GUICommand::PRESSED);*/
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::RIGHT;
 			else
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DEFAULT;
 		}
@@ -81,9 +98,9 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 			this->_direction[cmd.JoystickMove.JoystickId] == GUICommand::DOWN))
 		{
 			if (cmd.JoystickMove.Position < -60.f)
-				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::UP; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::UP, GUICommand::PRESSED);*/
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::UP;
 			else if (cmd.JoystickMove.Position > 60.f)
-				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DOWN; /*command = new GUICommand(static_cast<GUIManager::PlayerType>(cmd.JoystickMove.JoystickId + 1), GUICommand::DOWN, GUICommand::PRESSED);*/
+				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DOWN;
 			else
 				this->_direction[cmd.JoystickMove.JoystickId] = GUICommand::DEFAULT;
 		}
@@ -91,12 +108,20 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 	else if (cmd.Type == InputCommand::JoystickButtonPressed)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED);
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::PRESSED, cmd.JoystickButton.Button);
+		else if (cmd.JoystickButton.Button == 1)
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::BACK, GUICommand::PRESSED, cmd.JoystickButton.Button);
+		else
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::UNKNOWN, GUICommand::PRESSED, cmd.JoystickButton.Button);
 	}
 	else if (cmd.Type == InputCommand::JoystickButtonReleased)
 	{
 		if (cmd.JoystickButton.Button == 0)
-			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED);
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::SELECT, GUICommand::RELEASED, cmd.JoystickButton.Button);
+		else if (cmd.JoystickButton.Button == 1)
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::BACK, GUICommand::RELEASED, cmd.JoystickButton.Button);
+		else
+			command = new GUICommand(static_cast<GUICommand::PlayerType>(cmd.JoystickButton.JoystickId + 1), GUICommand::UNKNOWN, GUICommand::RELEASED, cmd.JoystickButton.Button);
 	}
 	return (command);
 }
@@ -120,7 +145,7 @@ void		GUIManager::update(double elapsedTime)
 		{
 			if (this->_elapsedTime[i] <= 0)
 			{
-				GUICommand *cmd = new GUICommand(static_cast<GUICommand::PlayerType>(i + 1), this->_direction[i], GUICommand::PRESSED);
+				GUICommand *cmd = new GUICommand(static_cast<GUICommand::PlayerType>(i + 1), this->_direction[i], GUICommand::PRESSED, 0);
 				this->handleGUICommand(*cmd);
 				cmd->buttonAction = GUICommand::RELEASED;
 				this->handleGUICommand(*cmd);

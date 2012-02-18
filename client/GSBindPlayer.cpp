@@ -5,7 +5,7 @@
 #include "GameStateManager.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
-	: Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0)
+	: Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0)
 {
 	this->_players[0] = 0;
 	this->_players[1] = 0;
@@ -31,9 +31,7 @@ void GSBindPlayer::onStart()
 	Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 
 	for (unsigned int i = 0; i < this->_nbPlayers; ++i)
-	{
-		new GUIPlayerButton(*this, *(this->_players + i), this->_nbReady, *sprite, "buttonFont", layout);
-	}
+		new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout);
 }
 
 void GSBindPlayer::goToShipSelection()

@@ -18,6 +18,7 @@ public:
   ~GUIManager();
 
   virtual bool		handleCommand(Command const &command);
+  virtual bool		handleGUICommand(GUICommand const &command);
   void				registerButtonSprite(ButtonSprite &sprite);
 
   virtual	void	init();

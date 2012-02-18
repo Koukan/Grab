@@ -42,22 +42,23 @@ public:
   
    enum ActionState
      {
-       SELECT,
-       BACK
+		 SELECT,
+		 BACK,
+		 UNKNOWN
      };
 
-  GUICommand(GUICommand::PlayerType playerType, GUICommand::DirectionState dir, ButtonAction buttonAction)
-	  : playerType(playerType), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir)
+  GUICommand(GUICommand::PlayerType playerType, GUICommand::DirectionState dir, ButtonAction buttonAction, int id)
+	  : playerType(playerType), type(GUICommand::DIRECTION), buttonAction(buttonAction), direction(dir), id(id)
   {
   }
 
-  GUICommand(GUICommand::PlayerType playerType, GUICommand::ActionState action, ButtonAction buttonAction)
-	  : playerType(playerType), type(GUICommand::ACTION), buttonAction(buttonAction), action(action)
+  GUICommand(GUICommand::PlayerType playerType, GUICommand::ActionState action, ButtonAction buttonAction, int id)
+	  : playerType(playerType), type(GUICommand::ACTION), buttonAction(buttonAction), action(action), id(id)
   {
   }
 
-  GUICommand(GUICommand::PlayerType playerType, Keyboard::Key key, ButtonAction buttonAction)
-	  : playerType(playerType), type(GUICommand::KEY), buttonAction(buttonAction), key(key)
+  GUICommand(GUICommand::PlayerType playerType, Keyboard::Key key, ButtonAction buttonAction, int id)
+	  : playerType(playerType), type(GUICommand::KEY), buttonAction(buttonAction), key(key), id(id)
   {
   }
 
@@ -66,6 +67,7 @@ public:
   GUICommand::PlayerType playerType;
   GUICommand::Type type;
   GUICommand::ButtonAction buttonAction;
+  int id;
 
   union
   {

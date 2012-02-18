@@ -22,4 +22,5 @@ private:
 //	std::list<Core::Player *> _players;
 	Core::Player *_players[4];
 	int _nbReady;
+	int _nbPending;
 };
