@@ -50,6 +50,8 @@ public:
     if (this->_focusElement == this->_elements.end())
       {
 	this->_focusElement = this->_elements.begin();
+	if (this->_isFocused)
+		(*this->_focusElement)->focus();
 	(this->_instance->*(this->_func))(*(*_focusElement));
 	this->_width = this->_leftArrow.getWidth() + this->_rightArrow.getWidth() + 10 + (*this->_focusElement)->getWidth();
       }

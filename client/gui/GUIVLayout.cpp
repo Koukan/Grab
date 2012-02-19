@@ -22,12 +22,12 @@ GUIVLayout::~GUIVLayout()
 
 bool GUIVLayout::handleGUICommand(Core::GUICommand const &command)
 {
-	if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::UP /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Up*/)
+	if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::UP)
     {
       this->prevElement();
       return (true);
     }
-  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::DOWN /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Down*/)
+  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::DOWN)
     {
       this->nextElement();
       return (true);
