@@ -25,7 +25,7 @@ void	GSPreload::onStart()
 {
   this->load("resources/intro.xml");
 
-  ScrollingSprite *obj = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.03);
+  ScrollingSprite *obj = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.02);
   obj->pushSprite("space background");
   obj->pushSprite("space background 2");
   obj->pushSprite("space background 3");

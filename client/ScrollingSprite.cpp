@@ -37,80 +37,76 @@ void ScrollingSprite::setSpeed(int speed)
   this->_speed = speed;
 }
 
-Core::Sprite *ScrollingSprite::nextSprite()
+size_t ScrollingSprite::nextSprite(size_t i)
 {
-  if (_current == this->_sprites.size() - 1)
-    _current = 0;
-  else
-	_current++;
-  return (_sprites[this->_current]);
+  if (i == this->_sprites.size() - 1)
+    return (0);
+  return (i + 1);
 }
 
-Core::Sprite *ScrollingSprite::prevSprite()
+size_t ScrollingSprite::prevSprite(size_t i)
 {
-  if (_current == 0)
-	_current = this->_sprites.size() - 1;
-  else
-	_current--;
-  return (_sprites[this->_current]);
+  if (i == 0)
+	return (this->_sprites.size() - 1);
+  return (i - 1);
 }
 
 void ScrollingSprite::hScrolling(int elapseTime)
 {
-  Core::Sprite	*sprite = _sprites[this->_current];
+  size_t	tmp = this->_current;
   int x2 = static_cast<int>(_offset);
 
   while (x2 < this->_width)
     {
-      sprite->draw(static_cast<int>(x2 + this->_x), static_cast<int>(this->_y), elapseTime);
-      sprite = this->nextSprite();
-      x2 += sprite->getWidth();
+      _sprites[tmp]->draw(static_cast<int>(x2 + this->_x), static_cast<int>(this->_y), elapseTime);
+      x2 += _sprites[tmp]->getWidth();
+      tmp = this->nextSprite(tmp);
     }
   this->_offset += this->_speed * elapseTime;
-  if (this->_offset + sprite->getWidth() < 0)
+  if (this->_offset + _sprites[_current]->getWidth() < 0)
     {
-      while (this->_offset + sprite->getWidth() < 0)
+      while (this->_offset + _sprites[_current]->getWidth() < 0)
 	{
-	  sprite = this->nextSprite();
-	  this->_offset += sprite->getWidth();
+	  this->_offset += _sprites[_current]->getWidth();
+	  _current = this->nextSprite(_current);
 	}
     }
   else if (this->_offset > 0)
     {
       while (this->_offset > 0)
 	{
-	  sprite = this->prevSprite();
-	  this->_offset -= sprite->getWidth();
+	  this->_offset -= _sprites[_current]->getWidth();
+	  _current = this->prevSprite(_current);
 	}
     }
 }
 
 void ScrollingSprite::vScrolling(int elapseTime)
 {
-  Core::Sprite	*sprite = _sprites[this->_current];
+  size_t	tmp = this->_current;
   int y2 = static_cast<int>(this->_offset);
 
   while (y2 < this->_height)
     {
-      sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y + y2), elapseTime);
-	  sprite = this->nextSprite();
-      y2 += sprite->getHeight();
+      _sprites[tmp]->draw(static_cast<int>(this->_x), static_cast<int>(this->_y + y2), elapseTime);
+      y2 += _sprites[tmp]->getHeight();
+	  tmp = this->nextSprite(tmp);
     }
   this->_offset += this->_speed * elapseTime;
-  if (this->_offset + sprite->getHeight() < 0)
+  if (this->_offset + _sprites[_current]->getHeight() < 0)
     {
-      while (this->_offset + sprite->getHeight() < 0)
+      while (this->_offset + _sprites[_current]->getHeight() < 0)
 	{
-	  sprite = this->nextSprite();
-	  this->_offset += sprite->getHeight();
+	  this->_offset += _sprites[_current]->getHeight();
+	  _current = this->nextSprite(_current);
 	}
     }
   else if (this->_offset > 0)
     {
       while (this->_offset > 0)
 	{
-	  sprite = this->prevSprite();
-	  this->_offset -= sprite->getHeight();
+	  this->_offset -= _sprites[_current]->getHeight();
+	  _current = this->prevSprite(_current);
 	}
     }
 }

@@ -57,12 +57,6 @@ GUICommand *GUIManager::createGUICommand(InputCommand const &cmd)
 	GUICommand *command = 0;
 	GUICommand::ButtonAction buttonAction;
 
-	if (cmd.Type == InputCommand::JoystickMoved)
-	{
-		std::cout << "joystick " << cmd.JoystickMove.JoystickId << std::endl;
-		std::cout << "axis " << cmd.JoystickMove.Axis << std::endl;
-		std::cout << "position " << cmd.JoystickMove.Position << std::endl;
-	}
 	if (cmd.Type == InputCommand::KeyPressed || cmd.Type == InputCommand::KeyReleased)
 	{
 		if (cmd.Type == InputCommand::KeyPressed)

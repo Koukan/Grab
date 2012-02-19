@@ -33,6 +33,6 @@ private:
 
   void hScrolling(int elapseTime);
   void vScrolling(int elapseTime);
-  Core::Sprite *nextSprite();
-  Core::Sprite *prevSprite();
+  size_t nextSprite(size_t i);
+  size_t prevSprite(size_t i);
 };
