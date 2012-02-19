@@ -151,3 +151,13 @@ void	SFMLSprite::setTransparency(float transparency)
   base.a = transparency * 255;
   this->SetColor(base);
 }
+
+void	SFMLSprite::setColor(int r, int g, int b)
+{
+  sf::Color base = this->GetColor();
+
+  base.r = r;
+  base.g = g;
+  base.b = b;
+  this->SetColor(base);
+}

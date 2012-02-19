@@ -124,6 +124,8 @@ set(SRCS
 	SFMLSprite.hpp
 	SFMLSpriteProvider.cpp
 	SFMLSpriteProvider.hpp
+	Ship.cpp
+	Ship.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	Wall.cpp
@@ -141,6 +143,10 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIHLayout.cpp
 	${GUI_SRC_DIR}/GUIVLayout.hpp
 	${GUI_SRC_DIR}/GUIHLayout.hpp
+	${GUI_SRC_DIR}/GUIShipList.cpp
+	${GUI_SRC_DIR}/GUIShipList.hpp
+	${GUI_SRC_DIR}/GUIShipButton.cpp
+	${GUI_SRC_DIR}/GUIShipButton.hpp
 )
 
 IF(WIN32)

@@ -22,6 +22,7 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 								uint32_t spacex, uint32_t spacey);
 
 		virtual void		setTransparency(float transparency);
+		virtual void		setColor(int r, int g, int b);
 		virtual void		draw(double elapsedTime = 0);
 		virtual void		draw(int x, int y, double elapsedTime = 0);
 
