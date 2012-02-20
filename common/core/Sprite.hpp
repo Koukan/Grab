@@ -17,7 +17,7 @@ public:
 
 	// setter
 	virtual void	setTransparency(float){}
-	virtual void	setColor(int r, int g, int b){}
+	virtual void	setColor(int /*r*/, int /*g*/, int /*b*/){}
 	virtual void	setScale(float /*x*/, float /*y*/){}
 	virtual void	setSpeed(double){}
 	virtual void	setRepeat(bool){}
