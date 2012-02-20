@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 #include "RectHitBox.hpp"
 #include "GSInGame.hpp"
@@ -12,7 +11,7 @@
 #include "Rules.hpp"
 
 
-GSInGame::GSInGame(int nbPlayers) : GameState("Game"), _idPlayer(0),
+GSInGame::GSInGame(int nbPlayers) : GameState("Game", true), _idPlayer(0),
 	_nbPlayers(nbPlayers), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0),  _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
@@ -61,7 +60,6 @@ void		GSInGame::onStart()
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
   // add gui
-
   ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.06);
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");

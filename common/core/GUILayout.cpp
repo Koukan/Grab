@@ -192,3 +192,8 @@ void GUILayout::setDispatch(bool dispatch)
 {
   _dispatch = dispatch;
 }
+
+bool GUILayout::isEmpty() const
+{
+  return !(this->_nbElements);
+}

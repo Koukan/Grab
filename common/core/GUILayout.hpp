@@ -21,6 +21,7 @@ public:
   virtual void unfocus();
 
   void setDispatch(bool dispatch);
+  bool isEmpty() const;
 
 protected:
   GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, GUICommand::PlayerType playerType = GUICommand::ALL);

@@ -4,13 +4,12 @@
 #include "GUIButton.hpp"
 
 GSShipSelection::GSShipSelection(std::list<Core::Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
-  Core::GameState("shipSelection"), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online)
+  Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online)
 {}
 
 GSShipSelection::~GSShipSelection()
 {}
 
-//void	GSShipSelection::
 void	GSShipSelection::onStart()
 {
   // load xml

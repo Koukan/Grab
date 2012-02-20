@@ -25,7 +25,7 @@ public:
     ALL = 3
   };
 
-  GameState(const std::string &name);
+  GameState(const std::string &name, bool GUIautoBack = false);
   virtual ~GameState();
   virtual void	onStart();
   virtual void	onEnd();

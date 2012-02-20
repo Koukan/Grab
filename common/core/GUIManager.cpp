@@ -3,8 +3,8 @@
 
 CORE_USE_NAMESPACE
 
-GUIManager::GUIManager()
-  : GUILayout(0, 0, 0, 0, 0, 0, 0)
+GUIManager::GUIManager(bool autoBack)
+  : GUILayout(0, 0, 0, 0, 0, 0, 0), _autoBack(autoBack)
 {
 	this->_direction[0] = GUICommand::DEFAULT;
 	this->_direction[1] = GUICommand::DEFAULT;
@@ -42,9 +42,9 @@ bool		GUIManager::handleGUICommand(GUICommand const &command)
 {
 	if (this->GUILayout::handleGUICommand(command))
 		return (true);
-	if (command.type == Core::GUICommand::ACTION &&
+	if (_autoBack && command.type == Core::GUICommand::ACTION &&
 		command.buttonAction == Core::GUICommand::RELEASED &&
-		command.action == Core::GUICommand::BACK)
+	    command.action == Core::GUICommand::BACK)
 	{
 		GameStateManager::get().popState();
 		return (true);

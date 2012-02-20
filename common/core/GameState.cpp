@@ -3,7 +3,7 @@
 
 CORE_USE_NAMESPACE
 
-GameState::GameState(const std::string &name) : name(name), _paused(NONE), _GUIManager(/*this*/), _inputManager(*this)
+GameState::GameState(const std::string &name, bool GUIautoBack) : name(name), _paused(NONE), _GUIManager(GUIautoBack), _inputManager(*this)
 {
 	this->registerHandler(this->_GUIManager);
 	this->_GUIManager.registerHandler(this->_inputManager);

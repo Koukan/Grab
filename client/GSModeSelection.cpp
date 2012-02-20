@@ -8,7 +8,7 @@
 #include "GSModeSelection.hpp"
 
 GSModeSelection::GSModeSelection()
-  : Core::GameState("modeSelection")
+  : Core::GameState("modeSelection", true)
 {}
 
 GSModeSelection::~GSModeSelection()

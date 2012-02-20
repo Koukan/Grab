@@ -14,7 +14,7 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ GUIManager : public CommandHandler, public GUILayout
 {
 public:
-  GUIManager();
+  GUIManager(bool autoBack = false);
   ~GUIManager();
 
   virtual bool		handleCommand(Command const &command);
@@ -31,6 +31,8 @@ private:
   int _elapsedTime[4];
 
   GUICommand *createGUICommand(InputCommand const &cmd);
+
+  bool _autoBack;
 };
 
 CORE_END_NAMESPACE

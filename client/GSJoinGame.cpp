@@ -17,7 +17,7 @@
 #include "GameButton.hpp"
 
 GSJoinGame::GSJoinGame()
-  : Core::GameState("mainMenu"), _isListed(false)
+  : Core::GameState("joinGame", true), _isListed(false)
 {
 };
 
