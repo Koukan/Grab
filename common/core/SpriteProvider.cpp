@@ -33,11 +33,19 @@ void	SpriteProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 				this->loadElement(static_cast<TiXmlElement*>(parent), sprite,
 						  methods, sizeof(methods) / sizeof(*methods));
 			}
-			//			break ;
 		}
 		else if (name == "transparency" && sprite)
 		  {
 		    sprite->setTransparency(Net::Converter::toInt<float>(attrib->Value()));
+		  }
+		else if (name == "color" && sprite)
+		  {
+			  int r;
+			  int g;
+			  int b;
+
+			  this->get3Int(attrib->Value(), ",", r, g, b);
+		    sprite->setColor(r, g, b);
 		  }
 
 	}
@@ -149,4 +157,24 @@ void		SpriteProvider::get2Int(std::string const &data,
 		b = 0;
 	else
 	  b = Net::Converter::toInt<int>(data.substr(pos + sep.size()));
+}
+
+void		SpriteProvider::get3Int(std::string const &data, std::string const &sep,
+					 int &a, int &b, int &c)
+{
+	size_t	pos = data.find(sep);
+
+	a = Net::Converter::toInt<int>(data);
+	if (pos == std::string::npos)
+		b = 0;
+	else
+	{
+		std::string data2 = data.substr(pos + sep.size());
+		size_t pos2 = data2.find(sep);
+		b = Net::Converter::toInt<int>(data2);
+		if (pos2 == std::string::npos)
+			c = 0;
+		else
+			c = Net::Converter::toInt<int>(data2.substr(pos2 + sep.size()));
+	}
 }

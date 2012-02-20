@@ -38,6 +38,8 @@ private:
   void	  get2Int(std::string const &data,
 		  std::string const &sep,
 		  int &a, int &b);
+  void			get3Int(std::string const &data, std::string const &sep,
+							int &a, int &b, int &c);
 };
 
 #include "SpriteProvider.ipp"
