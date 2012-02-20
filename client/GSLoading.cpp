@@ -14,7 +14,7 @@
 #include "GSInGame.hpp"
 #include "ResourceCommand.hpp"
 
-GSLoading::GSLoading(int nbPlayers) : Core::GameState("Loading"), _nbPlayers(nbPlayers)
+GSLoading::GSLoading(int nbPlayers) : Core::GameState("Loading", true), _nbPlayers(nbPlayers)
 {
   //AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
   //AudioManager::get().play("intro", "test", "intro");

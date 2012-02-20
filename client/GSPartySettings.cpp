@@ -17,7 +17,7 @@
 #include "Converter.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
-  : Core::GameState("mainMenu"), _mode(mode), _map(map), _online(true)
+  : Core::GameState("partySettings", true), _mode(mode), _map(map), _online(true)
 {
 }
 

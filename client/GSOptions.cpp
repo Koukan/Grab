@@ -12,7 +12,7 @@
 #include "NetworkModule.hpp"
 
 GSOptions::GSOptions()
-  : Core::GameState("mainMenu")
+  : Core::GameState("mainMenu", true)
 {
 };
 

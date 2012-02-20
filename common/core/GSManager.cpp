@@ -91,6 +91,11 @@ GameState	&GSManager::getCurrentState()
 	return *_currentStates.back();
 }
 
+std::list<GameState *> const & GSManager::getCurrentStates() const
+{
+  return _currentStates;
+}
+
 void		GSManager::getGameState(std::list<GameState*> &list, GameState::Pause state) const
 {
 	for (std::list<GameState*>::const_iterator it = this->_currentStates.begin();

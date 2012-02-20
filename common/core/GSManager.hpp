@@ -33,7 +33,7 @@ public:
   //getter
   GameState		&getCurrentState();
   void			getGameState(std::list<GameState*> &list, GameState::Pause state = GameState::ALL) const;
-
+  std::list<GameState *> const & getCurrentStates() const;
 
 protected:
   void			addDelete(GameState *state);
