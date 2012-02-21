@@ -20,7 +20,7 @@ private:
 	unsigned int _nbPlayers;
 	bool _online;
 //	std::list<Core::Player *> _players;
-	Core::Player *_players[4];
+	Player *_players[4];
 	int _nbReady;
 	int _nbPending;
 };

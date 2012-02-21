@@ -19,7 +19,7 @@ public:
 		BINDING
 	};
 
-	GUIPlayerButton(GSBindPlayer &bindPlayer, Core::Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout);
+	GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout);
 	~GUIPlayerButton();
 
 	virtual bool handleGUICommand(Core::GUICommand const &command);
@@ -31,7 +31,7 @@ private:
 	bool						_isSelect;
 	bool						_isReady;
 	BindState					_bindState;
-	Core::Player				*&_player;
+	Player				*&_player;
 	int							&_nbPending;
 	int							&_nbReady;
 	Core::ButtonSprite			_sprite;
