@@ -25,15 +25,17 @@ Core::Resource	*SFMLFont::clone() const
 
 void	SFMLFont::draw(double /*elapsedTime*/)
 {
-  this->_str.SetX(static_cast<float>(this->_x));
-  this->_str.SetY(static_cast<float>(this->_y));
+		//this->_str.SetX(static_cast<float>(this->_x));
+		//this->_str.SetY(static_cast<float>(this->_y));
+  this->_str.SetPosition(this->_x, this->_y);
   this->_window->Draw(this->_str);
 }
 
 void	SFMLFont::draw(int x, int y, double /*elapsedTime*/)
 {
-  this->_str.SetX(static_cast<float>(x));
-  this->_str.SetY(static_cast<float>(y));
+		//this->_str.SetX(static_cast<float>(x));
+		//this->_str.SetY(static_cast<float>(y));
+  this->_str.SetPosition(x, y);
   this->_window->Draw(this->_str);
 }
 
@@ -54,7 +56,7 @@ void	SFMLFont::setColor(int r, int g, int b)
 int	SFMLFont::getWidth() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-	return (this->_str.GetRect().Width);
+	return (this->_str.GetLocalBounds().Width);
    	#else
   	return (static_cast<int>(this->_str.GetRect().GetWidth()));
 	#endif
@@ -63,7 +65,7 @@ int	SFMLFont::getWidth() const
 int	SFMLFont::getHeight() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-	return (this->_str.GetRect().Height);
+	return (this->_str.GetLocalBounds().Height);
 	#else
   	return (static_cast<int>(this->_str.GetRect().GetHeight()));
 	#endif

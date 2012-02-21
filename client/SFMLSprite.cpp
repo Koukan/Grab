@@ -58,8 +58,8 @@ void		SFMLSprite::update(double elapsedTime)
 				nb = size;
 		}
 		this->_currentFrame = nb;
-		this->SetSubRect(this->_rect[this->_currentFrame]);
-		//this->SetTextureRect(this->_rect[this->_currentFrame]);
+		//this->SetSubRect(this->_rect[this->_currentFrame]);
+		this->SetTextureRect(this->_rect[this->_currentFrame]);
 	}
 }
 
@@ -117,7 +117,10 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 	}
 	//this->SetTextureRect(this->_rect[0/*this->_currentFrame*/]);
 	if (!this->_rect.empty())
-		this->SetSubRect(this->_rect[0/*this->_currentFrame*/]);
+	{
+			//this->SetSubRect(this->_rect[0/*this->_currentFrame*/]);
+			this->SetTextureRect(this->_rect[0/*this->_currentFrame*/]);
+	}
 }
 
 void		SFMLSprite::draw(double elapsedTime)
@@ -136,12 +139,12 @@ void		SFMLSprite::draw(int x, int y, double elapsedTime)
 
 int	SFMLSprite::getWidth() const
 {
-  return (static_cast<int>(this->GetSize().x));
+  return (static_cast<int>(this->GetLocalBounds().Width));
 }
 
 int	SFMLSprite::getHeight() const
 {
-  return (static_cast<int>(this->GetSize().y));
+  return (static_cast<int>(this->GetLocalBounds().Height));
 }
 
 void	SFMLSprite::setTransparency(float transparency)
