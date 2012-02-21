@@ -36,7 +36,7 @@ void GSBindPlayer::onStart()
 
 void GSBindPlayer::goToShipSelection()
 {
-	std::list<Core::Player *> *players = new std::list<Core::Player *>();
+	std::list<Player *> *players = new std::list<Player *>();
 
 	for (int i = 0; i < 4; ++i)
 	{

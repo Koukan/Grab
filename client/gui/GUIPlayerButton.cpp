@@ -2,7 +2,7 @@
 #include "GameStateManager.hpp"
 #include "GSBindPlayer.hpp"
 
-GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Core::Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout)
+GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout)
 	: Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, Core::GUICommand::ALL), _bindPlayer(bindPlayer), _isSelect(false),
 	_isReady(false), _bindState(GUIPlayerButton::NONE), _player(player), _nbPending(nbPending), _nbReady(nbReady), _sprite(sprite),
 	_font(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
@@ -56,7 +56,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				if (!this->_isSelect)
 				{
 					this->changeToSelect(command.playerType);
-					this->_player = new Core::Player(static_cast<Core::Player::type>(command.playerType));
+					this->_player = new Player(static_cast<Player::type>(command.playerType));
 					++this->_nbPending;
 					this->_isSelect = true;
 					this->_playerType = command.playerType;
@@ -101,7 +101,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 	else if (command.type != Core::GUICommand::DIRECTION &&
 			command.buttonAction == Core::GUICommand::RELEASED)
 	{
-		Core::InputCommand &cmd = this->_player->getAction(static_cast<Core::Player::Action>(this->_bindIndex));
+		Core::InputCommand &cmd = this->_player->getAction(static_cast<Player::Action>(this->_bindIndex));
 		if (command.playerType == Core::GUICommand::KEYBOARD)
 		{
 			cmd.Type = Core::InputCommand::KeyReleased;

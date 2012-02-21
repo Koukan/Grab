@@ -3,7 +3,7 @@
 #include "GUIList.hpp"
 #include "GUIButton.hpp"
 
-GSShipSelection::GSShipSelection(std::list<Core::Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
+GSShipSelection::GSShipSelection(std::list<Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
   Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online)
 {}
 
@@ -28,7 +28,7 @@ void	GSShipSelection::onStart()
   layout->setDispatch(true);
 
   GUIList<GSShipSelection> *guilist;
-  for (std::list<Core::Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it)
+  for (std::list<Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it)
   {
 	  guilist = new GUIList<GSShipSelection>(*this, &GSShipSelection::shipChange, *leftArrow, *rightArrow, layout, static_cast<Core::GUICommand::PlayerType>((*it)->getType()));
 	  guilist->addElement(*(new GUIButton<GSShipSelection>(*this, &GSShipSelection::back, "Vaisseau 1", "buttonFont", *sprite, static_cast<Core::GUILayout *>(0), static_cast<Core::GUICommand::PlayerType>((*it)->getType()))));

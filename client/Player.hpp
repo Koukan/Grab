@@ -2,9 +2,8 @@
 
 #include "Input.hpp"
 
-CORE_BEGIN_NAMESPACE
-
-class CORE_DLLREQ Player
+class Ship;
+class Player
 {
 public:
   enum type
@@ -22,16 +21,18 @@ public:
 	  SPECIAL_FIRE
   };
 
-  Player(Player::type type);
+  Player(Player::type type, Ship *ship = 0);
   ~Player();
 
   Player::type getType() const;
   void setType(Player::type type);
-  InputCommand &getAction(Player::Action action);
+  Core::InputCommand &getAction(Player::Action action);
+
+  void	setShip(Ship *ship);
+  Ship *getShip() const;
 
 private:
 	Player::type _type;
-	InputCommand _actions[2];
+  Core::InputCommand _actions[2];
+	Ship*	     _ship;
 };
-
-CORE_END_NAMESPACE
