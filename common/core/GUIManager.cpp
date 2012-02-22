@@ -138,16 +138,16 @@ void		GUIManager::init()
 void		GUIManager::update(double elapsedTime)
 {
 	static bool repeat[4] = {false, false, false, false};
+	static GUICommand::DirectionState tmpDirections[4] = {GUICommand::DEFAULT, GUICommand::DEFAULT, GUICommand::DEFAULT, GUICommand::DEFAULT};
 
 	for (int i = 0; i < 4; ++i)
 	{
 		if (this->_direction[i] != GUICommand::DEFAULT)
 		{
+			tmpDirections[i] = this->_direction[i];
 			if (this->_elapsedTime[i] <= 0)
 			{
 				GUICommand *cmd = new GUICommand(static_cast<GUICommand::PlayerType>(i + 1), this->_direction[i], GUICommand::PRESSED, 0);
-				this->handleGUICommand(*cmd);
-				cmd->buttonAction = GUICommand::RELEASED;
 				this->handleGUICommand(*cmd);
 				delete cmd;
 				if (!repeat[i])
@@ -161,10 +161,14 @@ void		GUIManager::update(double elapsedTime)
 			else
 				this->_elapsedTime[i] -= elapsedTime;
 		}
-		else
+		else if (repeat[i] == true)
 		{
+			GUICommand *cmd = new GUICommand(static_cast<GUICommand::PlayerType>(i + 1), tmpDirections[i], GUICommand::RELEASED, 0);
+			this->handleGUICommand(*cmd);
+			delete cmd;
 			this->_elapsedTime[i] = 0;
 			repeat[i] = false;
+			tmpDirections[i] = GUICommand::DEFAULT;
 		}
 	}
 }

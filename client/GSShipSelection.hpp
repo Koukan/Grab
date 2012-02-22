@@ -18,9 +18,10 @@ public:
   void shipChange(Core::GUIElement const &);
 
 private:
-  std::list<Player *> const	*_players;
+  std::list<Player *> const			*_players;
   Modes::Mode						_mode;
   std::string						_map;
   unsigned int						_nbPlayers;
+  unsigned int						_nbReady;
   bool								_online;
 };

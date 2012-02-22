@@ -1,17 +1,32 @@
 #include "GSShipSelection.hpp"
 #include "GUIVLayout.hpp"
-#include "GUIList.hpp"
-#include "GUIButton.hpp"
+#include "GUIShipList.hpp"
 
 GSShipSelection::GSShipSelection(std::list<Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
-  Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online)
+  Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbReady(0), _online(online)
 {}
 
 GSShipSelection::~GSShipSelection()
-{}
+{
+	delete this->_players;
+}
 
 void	GSShipSelection::onStart()
 {
+	// player colors
+
+	static struct {
+		int r;
+		int g;
+		int b;
+	} playerColors[] =
+	{
+		{255, 0, 0},
+		{0, 255, 0},
+		{0, 0, 255},
+		{255, 255, 0}
+	};
+
   // load xml
   this->load("resources/intro.xml");
   this->load("resources/player.xml");
@@ -27,13 +42,10 @@ void	GSShipSelection::onStart()
   Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
   layout->setDispatch(true);
 
-  GUIList<GSShipSelection> *guilist;
-  for (std::list<Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it)
+  unsigned int i = 0;
+  for (std::list<Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it, ++i)
   {
-	  guilist = new GUIList<GSShipSelection>(*this, &GSShipSelection::shipChange, *leftArrow, *rightArrow, layout, static_cast<Core::GUICommand::PlayerType>((*it)->getType()));
-	  guilist->addElement(*(new GUIButton<GSShipSelection>(*this, &GSShipSelection::back, "Vaisseau 1", "buttonFont", *sprite, static_cast<Core::GUILayout *>(0), static_cast<Core::GUICommand::PlayerType>((*it)->getType()))));
-	  guilist->addElement(*(new GUIButton<GSShipSelection>(*this, &GSShipSelection::back, "Vaisseau 2", "buttonFont", *sprite, static_cast<Core::GUILayout *>(0), static_cast<Core::GUICommand::PlayerType>((*it)->getType()))));
-	  guilist->addElement(*(new GUIButton<GSShipSelection>(*this, &GSShipSelection::back, "Vaisseau 3", "buttonFont", *sprite, static_cast<Core::GUILayout *>(0), static_cast<Core::GUICommand::PlayerType>((*it)->getType()))));
+	  new GUIShipList(*(*it), this->_nbReady, this->_players->size(), *leftArrow, *rightArrow, *sprite, layout, playerColors[i].r, playerColors[i].g, playerColors[i].b);
   }
 }
 
