@@ -7,6 +7,7 @@
 #include "PhysicObject.hpp"
 #include "Font.hpp"
 #include "Resources.hpp"
+#include "Ship.hpp"
 
 class GSInGame : public Core::GameState
 {
