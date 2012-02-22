@@ -76,6 +76,8 @@ set(SRCS
 	GameCommand.hpp
 	GameListCommand.hpp
 	GameListCommand.cpp
+	Grab.hpp
+	Grab.cpp
 	GSBindPlayer.cpp
 	GSBindPlayer.hpp
 	GSInGame.cpp
