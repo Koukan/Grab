@@ -7,12 +7,15 @@
 #include "PhysicObject.hpp"
 #include "Font.hpp"
 #include "Resources.hpp"
+#include "Player.hpp"
 #include "Ship.hpp"
+#include "Modes.hpp"
+#include <list>
 
 class GSInGame : public Core::GameState
 {
 public:
-	GSInGame(int nbPlayers);
+	GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online);
 	~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
@@ -65,7 +68,11 @@ private:
 	uint32_t	getNextId();
 
 	uint16_t	_idPlayer;
-	int		_nbPlayers;
+	std::list<Player *> const &_players;
+	Modes::Mode _mode;
+	std::string const _map;
+	unsigned int _nbPlayers;
+	bool _online;
 	std::vector<uint32_t> _scores;
   std::vector<Core::CoreFont*>    _scoreFonts;
   std::vector<Core::CoreFont*>    _nameFonts;
