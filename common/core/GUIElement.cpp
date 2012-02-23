@@ -24,7 +24,7 @@ GUIElement::~GUIElement()
 bool GUIElement::catchGUICommand(GUICommand const &command)
 {
 	if (this->_playerType == GUICommand::ALL || command.playerType == this->_playerType)
-		return (this->handleGUICommand(command));
+	  return (this->handleGUICommand(command));
 	return (false);
 }
 

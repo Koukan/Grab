@@ -147,7 +147,6 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIHLayout.hpp
 	${GUI_SRC_DIR}/GUIShipList.cpp
 	${GUI_SRC_DIR}/GUIShipList.hpp
-	${GUI_SRC_DIR}/GUIShipButton.cpp
 	${GUI_SRC_DIR}/GUIShipButton.hpp
 )
 

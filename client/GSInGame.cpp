@@ -10,10 +10,9 @@
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
 
-
-GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
+GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4])
 	: GameState("Game", true), _idPlayer(0),
-	_players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
+	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _selectedShips(selectedShips), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0),  _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
@@ -26,6 +25,7 @@ GSInGame::~GSInGame()
 void		GSInGame::preload()
 {
   this->addGroup("players", 40);
+  this->addGroup("grabs", 40);
   this->addGroup("Wall", 0);
   this->addGroup("shot", 9);
   this->addGroup("monster", 10);
@@ -66,11 +66,7 @@ void		GSInGame::onStart()
   this->addGameObject(obj1, "background2");
 
   if (!_online)
-    {
-      //      for 
-  //  new Ship("player1", "osef", 0, 20, 255, 255, 255, std::make_pair<int, int>(0, 0),
-  //	   std::make_pair<int, int>(2, 2), std::make_pair<int, int>(4, 4), "players");
-    }
+    this->createShips();
 }
 
 void		GSInGame::update(double elapsedTime)
@@ -128,7 +124,7 @@ void		GSInGame::displayScores()
 {
   std::ostringstream	ss;
 
-  for (int i = 0; i < this->_nbPlayers; ++i)
+  for (unsigned int i = 0; i < this->_nbPlayers; ++i)
     {
       ss.str("");
       ss << "P" << (i+1);
@@ -139,7 +135,7 @@ void		GSInGame::displayScores()
       this->addGameObject(this->_nameFonts[i], "score", 20);
     }
 
-  for (int i = 0; i < this->_nbPlayers; ++i)
+  for (unsigned int i = 0; i < this->_nbPlayers; ++i)
     {
       this->_scoreFonts[i] = this->getFont("buttonFont");
       this->_scoreFonts[i]->setText("0000000");
@@ -371,6 +367,34 @@ void		GSInGame::rangeid(GameCommand const &event)
   this->_nameFonts[this->_idPlayer]->setText(NetworkModule::get().getName());
   this->_nameFonts[this->_idPlayer]->setPosition((1024 / (this->_nbPlayers + 1)) * (this->_idPlayer+1) - this->_nameFonts[this->_idPlayer]->getWidth() / 2, 680);
   Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
+}
+
+void		GSInGame::createShips()
+{
+  // player colors
+
+  static struct {
+    int r;
+    int g;
+    int b;
+  } playerColors[] =
+      {
+	{255, 0, 0},
+	{0, 255, 0},
+	{0, 0, 255},
+	{255, 255, 0}
+      };
+
+  Ship *ship;
+  unsigned int i = 0;
+  for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
+    {
+      ship = new Ship(_selectedShips[i].spriteName, _selectedShips[i].bulletFileName, _selectedShips[i].speed,
+		      _selectedShips[i].fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+      (*it)->setShip(ship);
+      ship->registerInGameObjectManager("players", "grabs");
+    }
+
 }
 
 uint32_t	GSInGame::getNextId()

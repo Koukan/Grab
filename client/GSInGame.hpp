@@ -15,7 +15,7 @@
 class GSInGame : public Core::GameState
 {
 public:
-	GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online);
+  GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4]);
 	~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
@@ -64,8 +64,10 @@ private:
 	void		loadP4(GameCommand const &event);
 	void		loadMonster(GameCommand const &event);
 	void		loadShoot(GameCommand const &event);
-	
+
 	uint32_t	getNextId();
+
+  void		createShips();
 
 	uint16_t	_idPlayer;
 	std::list<Player *> const &_players;
@@ -73,6 +75,7 @@ private:
 	std::string const _map;
 	unsigned int _nbPlayers;
 	bool _online;
+  Ship::ShipInfo const (&_selectedShips)[4];
 	std::vector<uint32_t> _scores;
   std::vector<Core::CoreFont*>    _scoreFonts;
   std::vector<Core::CoreFont*>    _nameFonts;

@@ -8,14 +8,34 @@
 class Ship : public ConcreteObject
 {
 public:
-  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group = "");
+  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b);
 
-  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], std::string const &group);
+  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4]);
 
   ~Ship();
 
+  void registerInGameObjectManager(std::string const &shipGroup,
+				   std::string const &grabsGroup);
 private:
 	float			_speed;
 	int				_fireFrequency;
   std::vector<Grab *> _grabs;
+
+public:
+	struct ShipInfo
+	{
+#if defined (_WIN32)
+		std::string const shipName;
+		std::string const spriteName;
+		std::string const bulletFileName;
+#else
+		std::string shipName;
+		std::string spriteName;
+		std::string bulletFileName;
+#endif
+		float speed;
+		int fireFrequency;
+	};
+  static ShipInfo const	shipsList[];
+  static unsigned int const shipsListSize;
 };

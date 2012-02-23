@@ -4,6 +4,7 @@
 #include "GUIElement.hpp"
 #include "Player.hpp"
 #include "Modes.hpp"
+#include "Ship.hpp"
 #include <list>
 
 class GSShipSelection : public Core::GameState
@@ -15,7 +16,6 @@ public:
   void onStart();
   void back();
 
-  void shipChange(Core::GUIElement const &);
   void changeToInGame();
 
 
@@ -26,4 +26,5 @@ private:
   unsigned int						_nbPlayers;
   unsigned int						_nbReady;
   bool								_online;
+  Ship::ShipInfo	_selectedShips[4];
 };

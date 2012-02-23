@@ -14,20 +14,6 @@ GSShipSelection::~GSShipSelection()
 
 void	GSShipSelection::onStart()
 {
-	// player colors
-
-	static struct {
-		int r;
-		int g;
-		int b;
-	} playerColors[] =
-	{
-		{255, 0, 0},
-		{0, 255, 0},
-		{0, 0, 255},
-		{255, 255, 0}
-	};
-
   // load xml
   this->load("resources/intro.xml");
   this->load("resources/player.xml");
@@ -44,9 +30,10 @@ void	GSShipSelection::onStart()
   layout->setDispatch(true);
 
   unsigned int i = 0;
-  for (std::list<Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it, ++i)
+  for (std::list<Player *>::const_iterator it = _players->begin();
+       it != _players->end(); ++i, it++)
   {
-	  new GUIShipList(*this, *(*it), this->_nbReady, this->_players->size(), *leftArrow, *rightArrow, *sprite, layout, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+    new GUIShipList(*this, *(*it), _selectedShips[i], this->_nbReady, this->_players->size(), *leftArrow, *rightArrow, *sprite, layout);
   }
 }
 
@@ -54,12 +41,8 @@ void	GSShipSelection::back()
 {
 }
 
-void GSShipSelection::shipChange(Core::GUIElement const &)
-{
-}
-
 void GSShipSelection::changeToInGame()
 {
-	Core::GameState *inGame = new GSInGame(*this->_players, this->_mode, this->_map, this->_nbPlayers, this->_online);
+  Core::GameState *inGame = new GSInGame(*this->_players, this->_mode, this->_map, this->_nbPlayers, this->_online, _selectedShips);
 	Core::GameStateManager::get().pushState(*inGame);
 }
