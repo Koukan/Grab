@@ -46,9 +46,12 @@ void GUIVLayout::draw(double elapseTime)
   std::list<Core::GUIElement *>::iterator it = this->_begin;
   for (; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
-      (*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);
-      y += (*it)->getHeight() + this->_padding;
-      ++nb;
+		if (!(*it)->getHide())
+		{
+			(*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);
+			y += (*it)->getHeight() + this->_padding;
+			++nb;
+		}
     }
   if (this->_downArrow && it != this->_elements.end())
     this->_downArrow->draw(x - this->_downArrow->getWidth() / 2, y + 5 - this->_padding);
@@ -63,9 +66,12 @@ void GUIVLayout::draw(int x, int y, double elapseTime)
   std::list<Core::GUIElement *>::iterator it = this->_begin;
   for (; it != this->_elements.end() && nb < this->_nbElements; ++it)
     {
-      (*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);
-      y += (*it)->getHeight() + this->_padding;
-      ++nb;
+		if (!(*it)->getHide())
+		{
+			(*it)->draw(x - (*it)->getWidth() / 2, y, elapseTime);
+			y += (*it)->getHeight() + this->_padding;
+			++nb;
+		}
     }
   if (this->_downArrow && it != this->_elements.end())
     this->_downArrow->draw(x - this->_downArrow->getWidth() / 2, y + 5 - this->_padding);

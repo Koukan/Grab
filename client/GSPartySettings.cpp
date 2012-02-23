@@ -47,7 +47,11 @@ void	GSPartySettings::createParty()
     }
     else
     {
-      Core::GameState *bindPlayers = new GSBindPlayer(this->_mode, "", Net::Converter::toInt<int>(this->_nbPlayers), _online);
+		Core::GameState *bindPlayers;
+		if (_online)
+			bindPlayers = new GSBindPlayer(this->_mode, "", Net::Converter::toInt<int>(this->_nbPlayers), _online);
+		else
+			bindPlayers = new GSBindPlayer(this->_mode, "", 4, _online);
       Core::GameStateManager::get().pushState(*bindPlayers);
     }
 }
@@ -59,6 +63,7 @@ void	GSPartySettings::nbPlayerList(Core::GUIElement const &nb)
 
 void	GSPartySettings::multiMode(Core::GUIElement const &/*mode*/)
 {
+  this->_playerList->setHide(_online);
   _online = !_online;
 }
 
@@ -76,16 +81,22 @@ void	GSPartySettings::onStart()
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 
-  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
-  GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, layout);
+  Core::GUIElement *elem = new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
+
+  GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, 0);
+  guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "4 Players", "buttonFont", *sprite, 0)));
   if (_mode == Modes::STORY)
     guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "1 Player", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "2 Players", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "3 Players", "buttonFont", *sprite, 0)));
-  guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "4 Players", "buttonFont", *sprite, 0)));
+  guilist->setHide(true);
+  this->_playerList = guilist;
 
   GUIList<GSPartySettings> *guilist2 = new GUIList<GSPartySettings>(*this, &GSPartySettings::multiMode, *leftArrow, *rightArrow, layout);
   guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Local Only", "buttonFont", *sprite, 0)));
   guilist2->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "With Online Players", "buttonFont", *sprite, 0)));
+
+  layout->insertElementAtEnd(*(this->_playerList));
+
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::back, "Back", "buttonFont", *sprite, layout);
 }

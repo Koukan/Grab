@@ -53,13 +53,13 @@ void GUILayout::unfocus()
 
 void GUILayout::insertElementAtBegin(GUIElement &elem)
 {
-	elem.unfocus();
+  elem.unfocus();
   this->_elements.push_front(&elem);
   this->_begin = this->_elements.begin();
-  if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable())
+  if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable() || (*this->_focusElement)->getHide())
     {
       std::list<GUIElement *>::iterator it = this->_elements.begin();
-      for (; it != this->_elements.end() && !(*it)->getEnable(); ++it);
+      for (; it != this->_elements.end() && !(*it)->getEnable() && (*this->_focusElement)->getHide(); ++it);
       this->_focusElement = it;
       (*it)->focus();
     }
@@ -70,10 +70,10 @@ void GUILayout::insertElementAtEnd(GUIElement &elem)
 	elem.unfocus();
   this->_elements.push_back(&elem);
   this->_begin = this->_elements.begin();
-  if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable())
+  if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable() || (*this->_focusElement)->getHide())
     {
       std::list<GUIElement *>::iterator it = this->_elements.begin();
-      for (; it != this->_elements.end() && !(*it)->getEnable(); ++it);
+      for (; it != this->_elements.end() && !(*it)->getEnable() && (*this->_focusElement)->getHide(); ++it);
 	  if (it != this->_elements.end())
 	  {
 	      this->_focusElement = it;
@@ -104,7 +104,7 @@ void GUILayout::prevElement()
     --this->_focusElement;
   if (this->_focusElement != this->_elements.end())
     {
-      if ((*this->_focusElement)->getEnable() == false)
+      if ((*this->_focusElement)->getEnable() == false || (*this->_focusElement)->getHide())
 	this->prevElement();
       else
 	  {
@@ -146,7 +146,7 @@ void GUILayout::nextElement()
     }
   if (this->_focusElement != this->_elements.end())
     {
-      if ((*this->_focusElement)->getEnable() == false)
+      if ((*this->_focusElement)->getEnable() == false || (*this->_focusElement)->getHide())
 	  this->nextElement();
       else
 	  {
@@ -176,7 +176,8 @@ void		GUILayout::draw(double elapseTime)
 {
   for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end(); ++it)
     {
-      (*it)->draw(elapseTime);
+		if (!(*it)->getHide())
+			(*it)->draw(elapseTime);
     }
 }
 
@@ -184,7 +185,8 @@ void GUILayout::draw(int x, int y, double elapseTime)
 {
   for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end(); ++it)
     {
-      (*it)->draw(x, y, elapseTime);
+		if (!(*it)->getHide())
+			(*it)->draw(x, y, elapseTime);
     }
 }
 
