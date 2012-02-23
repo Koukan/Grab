@@ -64,10 +64,12 @@ void		GSInGame::onStart()
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");
 
-  new Ship("player1", "osef", 0, 20, 255, 255, 255, std::make_pair<int, int>(0, 0),
-	   std::make_pair<int, int>(2, 2), std::make_pair<int, int>(4, 4), "players");
-
-
+  if (!_online)
+    {
+      //      for 
+  //  new Ship("player1", "osef", 0, 20, 255, 255, 255, std::make_pair<int, int>(0, 0),
+  //	   std::make_pair<int, int>(2, 2), std::make_pair<int, int>(4, 4), "players");
+    }
 }
 
 void		GSInGame::update(double elapsedTime)

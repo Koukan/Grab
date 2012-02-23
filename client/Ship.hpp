@@ -10,7 +10,7 @@ class Ship : public ConcreteObject
 public:
   Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group = "");
 
-  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grab1, std::pair<int, int> grab2, std::pair<int, int> grab3, std::string const &group);
+  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], std::string const &group);
 
   ~Ship();
 
