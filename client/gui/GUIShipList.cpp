@@ -7,7 +7,7 @@ GUIShipList::GUIShipList(Player &player, unsigned int &nbReady, unsigned int nbP
 	layout, static_cast<Core::GUICommand::PlayerType>(player.getType())),
 	_player(player), _currentShip(0), _nbReady(nbReady), _nbPlayers(nbPlayers), _r(r), _g(g), _b(b), _shipSelected(false)
 {
-	this->_shipInfos.push_back(ShipInfo("noname 1", "player1", "", 0.5, 400));
+  	this->_shipInfos.push_back(ShipInfo("noname 1", "player1", "", 0.5, 400));
 	this->_shipInfos.push_back(ShipInfo("noname 2", "player2", "", 0.5, 800));
 	this->_shipInfos.push_back(ShipInfo("noname 3", "player3", "", 0.5, 200));
 	this->addButtons(middle);
