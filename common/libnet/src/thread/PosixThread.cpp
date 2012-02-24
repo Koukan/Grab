@@ -1,5 +1,5 @@
-#if defined (__unix__)
 #include "Thread.hpp"
+#if defined (__unix__)
 #include "PoolAllocator.hpp"
 
 NET_USE_NAMESPACE

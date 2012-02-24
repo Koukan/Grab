@@ -1,5 +1,5 @@
-#if defined (__unix__)
 #include "Mutex.hpp"
+#if defined (__unix__)
 
 NET_USE_NAMESPACE
 
@@ -30,11 +30,17 @@ bool	Mutex::tryLock()
 
 bool	Mutex::timedLock(int sec, int nano)
 {
+  #if defined (__APPLE__)
+	return false;
+  #elif defined (__MACOSX__)
+	return false;
+  #else
   struct timespec ts;
 
   ts.tv_sec = sec;
   ts.tv_nsec = nano;
   return static_cast<bool>(!pthread_mutex_timedlock(&_mutex, &ts));
+  #endif
 }
 
 #endif
