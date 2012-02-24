@@ -1,10 +1,11 @@
 #include "GUIShipList.hpp"
 #include "GUIShipButton.hpp"
+#include "GSShipSelection.hpp"
 
-GUIShipList::GUIShipList(Player &player, unsigned int &nbReady, unsigned int nbPlayers,
+GUIShipList::GUIShipList(GSShipSelection &shipSelection, Player &player, unsigned int &nbReady, unsigned int nbPlayers,
 	Core::ButtonSprite &leftArrow, Core::ButtonSprite &rightArrow, Core::ButtonSprite &middle, Core::GUILayout *layout, int r, int g, int b)
 	: GUIList<GUIShipList>(*this, &GUIShipList::changeShip, leftArrow, rightArrow,
-	layout, static_cast<Core::GUICommand::PlayerType>(player.getType())),
+	layout, static_cast<Core::GUICommand::PlayerType>(player.getType())), _shipSelection(shipSelection),
 	_player(player), _currentShip(0), _nbReady(nbReady), _nbPlayers(nbPlayers), _r(r), _g(g), _b(b), _shipSelected(false)
 {
   	this->_shipInfos.push_back(ShipInfo("noname 1", "player1", "", 0.5, 400));
@@ -49,7 +50,7 @@ void GUIShipList::selectShip()
 	this->_shipSelected = true;
 	if (this->_nbReady == this->_nbPlayers)
 	{
-		std::cout << "go go go" << std::endl;
+		this->_shipSelection.changeToInGame();
 	}
 }
 

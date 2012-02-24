@@ -16,6 +16,8 @@ public:
   void back();
 
   void shipChange(Core::GUIElement const &);
+  void changeToInGame();
+
 
 private:
   std::list<Player *> const			*_players;

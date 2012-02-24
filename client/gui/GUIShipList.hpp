@@ -6,10 +6,12 @@
 #include "Ship.hpp"
 #include <vector>
 
+class GSShipSelection;
+
 class GUIShipList : public GUIList<GUIShipList>
 {
 public:
-	GUIShipList(Player &player, unsigned int &nbReady, unsigned int nbPlayers, Core::ButtonSprite &leftArrow, Core::ButtonSprite &rightArrow,
+	GUIShipList(GSShipSelection &shipSelection, Player &player, unsigned int &nbReady, unsigned int nbPlayers, Core::ButtonSprite &leftArrow, Core::ButtonSprite &rightArrow,
 		Core::ButtonSprite &middle, Core::GUILayout *layout, int r, int g, int b);
 	~GUIShipList();
 
@@ -39,6 +41,7 @@ private:
 		int fireFrequency;
 	};
 
+	GSShipSelection			&_shipSelection;
 	Player					&_player;
 	int						_currentShip;
 	unsigned int			&_nbReady;

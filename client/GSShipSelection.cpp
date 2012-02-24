@@ -1,6 +1,7 @@
 #include "GSShipSelection.hpp"
 #include "GUIVLayout.hpp"
 #include "GUIShipList.hpp"
+#include "GSInGame.hpp"
 
 GSShipSelection::GSShipSelection(std::list<Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
   Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbReady(0), _online(online)
@@ -45,7 +46,7 @@ void	GSShipSelection::onStart()
   unsigned int i = 0;
   for (std::list<Player *>::const_iterator it = this->_players->begin(); it != this->_players->end(); ++it, ++i)
   {
-	  new GUIShipList(*(*it), this->_nbReady, this->_players->size(), *leftArrow, *rightArrow, *sprite, layout, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+	  new GUIShipList(*this, *(*it), this->_nbReady, this->_players->size(), *leftArrow, *rightArrow, *sprite, layout, playerColors[i].r, playerColors[i].g, playerColors[i].b);
   }
 }
 
@@ -55,4 +56,10 @@ void	GSShipSelection::back()
 
 void GSShipSelection::shipChange(Core::GUIElement const &)
 {
+}
+
+void GSShipSelection::changeToInGame()
+{
+	Core::GameState *inGame = new GSInGame(*this->_players, this->_mode, this->_map, this->_nbPlayers, this->_online);
+	Core::GameStateManager::get().pushState(*inGame);
 }
