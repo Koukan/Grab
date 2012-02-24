@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Ship.hpp"
 #include "Grab.hpp"
 #include "GameStateManager.hpp"
@@ -189,7 +190,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 	float distance = this->_joyPosX * this->_joyPosX + this->_joyPosY * this->_joyPosY;
 	if (distance >= limit * limit)
 	{
-		distance = sqrt(distance);
+		distance = ::sqrt(distance);
 		this->_vx = this->_joyPosX * this->_speed / distance;
 		this->_vy = this->_joyPosY * this->_speed / distance;
 	}
