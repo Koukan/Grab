@@ -18,6 +18,7 @@ public:
 	// setter
 	virtual void	setText(std::string const & /*text*/){}
 	virtual void	setColor(int, int, int) {}
+	virtual void	setTransparency(int) {}
 
 	// getter
 	virtual int		getWidth() const {return 0;}

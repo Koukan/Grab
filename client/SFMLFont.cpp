@@ -50,7 +50,20 @@ void	SFMLFont::setText(std::string const & text)
 
 void	SFMLFont::setColor(int r, int g, int b)
 {
-  this->_str.SetColor(sf::Color(r, g, b));
+  sf::Color base = this->_str.GetColor();
+
+  base.r = r;
+  base.g = g;
+  base.b = b;
+  this->_str.SetColor(base);
+}
+
+void	SFMLFont::setTransparency(int a)
+{
+  sf::Color base = this->_str.GetColor();
+
+  base.a = a;
+  this->_str.SetColor(base);
 }
 
 int	SFMLFont::getWidth() const
