@@ -24,15 +24,9 @@ private:
 public:
 	struct ShipInfo
 	{
-#if defined (_WIN32)
-		std::string const shipName;
-		std::string const spriteName;
-		std::string const bulletFileName;
-#else
 		std::string shipName;
 		std::string spriteName;
 		std::string bulletFileName;
-#endif
 		float speed;
 		int fireFrequency;
 	};
