@@ -25,10 +25,12 @@ public:
   int getWidth() const;
   int getHeight() const;
   bool getEnable() const;
+  bool getHide() const;
 
   void setWidth(int width);
   void setHeight(int height);
   void setEnable(bool enable);
+  void setHide(bool hide);
 
 protected:
 
@@ -36,6 +38,7 @@ protected:
   int _height;
   bool _isFocused;
   bool _enable;
+  bool _hide;
   GUICommand::PlayerType _playerType;
 };
 

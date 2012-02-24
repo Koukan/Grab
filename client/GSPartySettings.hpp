@@ -3,6 +3,7 @@
 #include <string>
 #include "GameState.hpp"
 #include "Modes.hpp"
+#include "GUIElement.hpp"
 
 class GSPartySettings : public Core::GameState
 {
@@ -21,5 +22,6 @@ private:
   std::string	_nbPlayers;
   Modes::Mode	_mode;
   std::string	_map;
-  bool		_online;
+  bool			_online;
+  Core::GUIElement	*_playerList;
 };

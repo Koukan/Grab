@@ -5,14 +5,14 @@
 CORE_USE_NAMESPACE
 
 GUIElement::GUIElement(int x, int y, int width, int height, GUILayout *layout, GUICommand::PlayerType playerType)
-  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _playerType(playerType)
+  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _hide(false), _playerType(playerType)
 {
   if (layout)
     layout->insertElementAtEnd(*this);
 }
 
 GUIElement::GUIElement(int x, int y, int width, int height, GUICommand::PlayerType playerType)
-  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _playerType(playerType)
+  : DrawableObject(x, y), _width(width), _height(height), _isFocused(false), _enable(true), _hide(false), _playerType(playerType)
 {
 	GameStateManager::get().getCurrentState().getGUI().insertElementAtEnd(*this);
 }
@@ -66,4 +66,14 @@ void GUIElement::setEnable(bool enable)
 bool GUIElement::getEnable() const
 {
   return this->_enable;
+}
+
+bool GUIElement::getHide() const
+{
+	return (this->_hide);
+}
+
+void GUIElement::setHide(bool hide)
+{
+	this->_hide = hide;
 }
