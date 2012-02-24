@@ -53,7 +53,7 @@ NET_END_NAMESPACE
 #  define	SHUT_RDWR SD_BOTH
 # endif		/* !SHUT_WR */
 
-# if	!defined (__socklen_t_defined) && !defined (_SOCKLEN_T_DECLARED)
+# if	!defined (__socklen_t_defined) && !defined (_SOCKLEN_T_DECLARED) && !defined (__APPLE__) && !defined (__MACOSX__)
 typedef int	socklen_t;
 # endif		/* !__socklen_t_defined && _SOCKLEN_T_DECLARED */
 

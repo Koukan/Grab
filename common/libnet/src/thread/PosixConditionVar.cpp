@@ -1,8 +1,8 @@
+#include "ConditionVar.hpp"
 #if defined (__unix__)
 #include <time.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include "ConditionVar.hpp"
 
 NET_USE_NAMESPACE
 

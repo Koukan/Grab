@@ -8,6 +8,12 @@
 #ifndef NETDEF_HPP_
 #define NETDEF_HPP_
 
+#if defined (__APPLE__)
+#define	__unix__
+#elif defined (__MACOSX__)
+#define __unix__
+#endif
+
 #ifndef NET_DLLREQ
 	#if defined (NETDLL)
 		#if defined (_WIN32)
