@@ -27,8 +27,10 @@ bool RectHitBox::collideCircle(CircleHitBox &circle)
 	return (HitBox::CircleCollideRect(circle, *this));
 }
 
+#include <iostream>
 bool RectHitBox::collideRect(RectHitBox &rect)
 {
+  std::cout << "here" << std::endl;
 	return (rect.getX() > this->_x - rect.getWidthRect() && rect.getX() < this->_x + this->_width &&
 		rect.getY() > this->_y - rect.getHeightRect() && rect.getY() < this->_y + this->_height);
 }

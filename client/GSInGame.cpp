@@ -13,7 +13,7 @@
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4])
 	: GameState("Game", true), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _selectedShips(selectedShips), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
-	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0),  _rangeBegin(0), _rangeEnd(0),
+	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
 }
@@ -33,6 +33,7 @@ void		GSInGame::preload()
   this->addGroup("background3", 3);
   this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+  this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
 
   // load xml
   this->load("resources/intro.xml");
@@ -40,6 +41,13 @@ void		GSInGame::preload()
   this->load("resources/shots.xml");
   this->load("resources/enemies.xml");
   this->load("resources/destruction.xml");
+
+  addBulletParser("resources/BulletSimple.xml", "single");
+  addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
+  addBulletParser("resources/BulletBomb.xml", "bomb");
+  addBulletParser("resources/BulletWall.xml", "wall");
+  addBulletParser("resources/BulletRandom.xml", "random");
+  addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
@@ -66,7 +74,12 @@ void		GSInGame::onStart()
   this->addGameObject(obj1, "background2");
 
   if (!_online)
-    this->createShips();
+    {
+      Core::HitBox *hitbox = new Core::RectHitBox(500, 500, 100, 100);
+      this->createShips();
+      ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
+      this->addGameObject(monster, "monster");
+    }
 }
 
 void		GSInGame::update(double elapsedTime)
@@ -343,13 +356,15 @@ void		GSInGame::loadMonster(GameCommand const &event)
   	{
 		ConcreteObject *monster = new ConcreteObject(sprite, *hitbox, event.vx, event.vy);
 		monster->setId(event.idObject);
-		this->addGameObject(static_cast<Core::GameObject *>(monster), "monster");
+		this->addGameObject(monster, "monster");
   	}
   }
 }
 
 void		GSInGame::loadShoot(GameCommand const &event)
 {
+  static_cast<Ship*>(this->_ship)->launchGrab("grab"); // tmp test
+
   Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *obj = new ConcreteObject(this->getSprite("default shot"), *hitbox, event.vx, event.vy);
   obj->setId(event.idObject);
@@ -394,7 +409,8 @@ void		GSInGame::createShips()
       (*it)->setShip(ship);
       ship->registerInGameObjectManager("players", "grabs");
     }
-
+  _ship = (*_players.begin())->getShip(); //tmp
+  //_idPlayer = _ship->getId();
 }
 
 uint32_t	GSInGame::getNextId()

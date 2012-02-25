@@ -76,6 +76,7 @@ void		PhysicManager::move(GameObjectManager::groupsMap const &groups, double tim
 	groups.begin()->second->getState().deleteObjects();
 }
 
+#include <iostream>
 void		PhysicManager::collide(GameObjectManager::groupsMap const &groups,
 				       GameObjectManager::collisionGroupsMap const &collisionGroups)
 {
@@ -85,6 +86,7 @@ void		PhysicManager::collide(GameObjectManager::groupsMap const &groups,
 	for (GameObjectManager::collisionGroupsMap::const_iterator itCol = collisionGroups.begin();
 		 itCol != collisionGroups.end(); itCol++)
 	{
+	  std::cout << "PhysicManager collide [" << itCol->first.first << " " << itCol->first.second << "]" << std::endl;
 		temp = groups.find(itCol->first.first);
 		if (temp != groups.end())
 		{
