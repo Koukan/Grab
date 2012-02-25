@@ -45,10 +45,10 @@ GameLogic::~GameLogic()
 void		GameLogic::update(double elapseTime)
 {
 	this->handle(elapseTime);
-	if (_gameStarted)
-	{
-		this->createEnnemies(elapseTime);
-	}
+	//if (_gameStarted)
+	//{
+			//this->createEnnemies(elapseTime);
+			//}
 }
 // loadBullet -> serverresourcemanager::get().addBulletParser(nom de fichier, id_ref) creer un BCommand(id_ref, *this, ...)
 // modifier BCommand pour id_resource en fonction du sprite
