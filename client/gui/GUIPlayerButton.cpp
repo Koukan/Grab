@@ -6,12 +6,12 @@ GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int 
 	: Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, Core::GUICommand::ALL), _bindPlayer(bindPlayer), _isSelect(false),
 	_isReady(false), _bindState(GUIPlayerButton::NONE), _player(player), _nbPending(nbPending), _nbReady(nbReady), _sprite(sprite),
 	_font(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
-	_bindFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)), _bindIndex(0)
+	_bindFont(Core::GameStateManager::get().getCurrentState().getFont("bindFont"/*fontName*/)), _bindIndex(0)
 {
 	this->changeToEmpty();
 	if (this->_bindFont)
 	{
-/*		this->_bindFont->setColor(0, 100, 255);*/
+		this->_bindFont->setTransparency(100);
 		this->_bindFont->setText("bind");
 	}
 
@@ -35,17 +35,19 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 		if (this->_isSelect && command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED &&
 			(command.direction == Core::GUICommand::LEFT || command.direction == Core::GUICommand::RIGHT))
 		{
+			if (this->_isReady)
+				return (true);
 			if (this->_bindState == GUIPlayerButton::NONE)
 			{
 				this->_bindState = GUIPlayerButton::SELECTED;
 				if (this->_bindFont)
-					this->_bindFont->setColor(0, 100, 255);
+					this->_bindFont->setTransparency(255);
 			}
 			else if (this->_bindState == GUIPlayerButton::SELECTED)
 			{
 				this->_bindState = GUIPlayerButton::NONE;
 				if (this->_bindFont)
-					this->_bindFont->setColor(255, 255, 255);
+					this->_bindFont->setTransparency(100);
 			}
 			return (true);
 		}
@@ -54,6 +56,8 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 		{
 			if (command.action == Core::GUICommand::SELECT)
 			{
+				if (this->_isReady)
+					return (true);
 				if (!this->_isSelect)
 				{
 					this->changeToSelect(command.playerType);
@@ -141,7 +145,7 @@ void GUIPlayerButton::draw(double elapseTime)
 	if (this->_font)
 		this->_font->draw(static_cast<int>(0 + (this->_sprite.getWidth() - this->_font->getWidth()) / 2),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 - 5), elapseTime);
-	if (this->_isSelect && this->_bindFont)
+	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(0 + this->_sprite.getWidth() + 40),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 - 5), elapseTime);
 }
@@ -152,19 +156,21 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 	if (this->_font)
 		this->_font->draw(static_cast<int>(x + (this->_sprite.getWidth() - this->_font->getWidth()) / 2),
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 - 5), elapseTime);
-	if (this->_isSelect && this->_bindFont)
+	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() + 40),
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 - 5), elapseTime);
 }
 
 void	GUIPlayerButton::changeToEmpty()
 {
+	this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
 	if (this->_font)
 		this->_font->setText("Empty");
 }
 
 void	GUIPlayerButton::changeToSelect(Core::GUICommand::PlayerType type)
 {
+	this->_sprite.updateState(Core::ButtonSprite::SELECTED);
 	if (this->_font)
 	{
 		if (type == Core::GUICommand::KEYBOARD)
