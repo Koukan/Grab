@@ -42,6 +42,8 @@ private:
   	void		releaseInputLeftRight(Core::InputCommand const &event);
 	void		releaseInputSpace(Core::InputCommand const &/*event*/);
 
+	void		registerShipCallbacks();
+
 	// HandleCommand
 
 	void		destroy(GameCommand const &event);

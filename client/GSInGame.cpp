@@ -11,7 +11,7 @@
 #include "Rules.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4])
-	: GameState("Game", true), _idPlayer(0),
+	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _selectedShips(selectedShips), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
@@ -55,19 +55,58 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
 }
 
+void		GSInGame::registerShipCallbacks()
+{
+  for (std::list<Player *>::const_iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+  {
+	  if ((*it)->getType() == Player::KEYBOARD)
+	  {
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputUp,
+			  static_cast<int>(Core::Keyboard::Up));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputDown,
+			  static_cast<int>(Core::Keyboard::Down));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputLeft,
+			  static_cast<int>(Core::Keyboard::Left));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputRight,
+			  static_cast<int>(Core::Keyboard::Right));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedUp,
+			  static_cast<int>(Core::Keyboard::Up));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedDown,
+			  static_cast<int>(Core::Keyboard::Down));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedLeft,
+			  static_cast<int>(Core::Keyboard::Left));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedRight,
+			  static_cast<int>(Core::Keyboard::Right));
+		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
+			  *this, &GSInGame::inputEscape,
+			  static_cast<int>((*it)->getAction(Player::PAUSE).Key.Code));
+	  }
+	  else
+	  {
+		  this->getInput().registerInputCallback(Core::InputCommand::JoystickMoved,
+			  *(*it)->getShip(), &Ship::inputJoystickMoved, -1, (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
+			  *this, &GSInGame::inputEscape,
+			  static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button),
+			  (*it)->getType() - 1);
+	  }
+  }
+}
+
 void		GSInGame::onStart()
 {
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputEscape, static_cast<int>(Core::Keyboard::Escape));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputUp, static_cast<int>(Core::Keyboard::Up));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputDown, static_cast<int>(Core::Keyboard::Down));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputLeft, static_cast<int>(Core::Keyboard::Left));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputRight, static_cast<int>(Core::Keyboard::Right));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Core::Keyboard::Up));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputUpDown, static_cast<int>(Core::Keyboard::Down));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Core::Keyboard::Left));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputLeftRight, static_cast<int>(Core::Keyboard::Right));
+  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::inputEscape, static_cast<int>(Core::Keyboard::Escape));
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
+
   // add gui
   ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
@@ -80,6 +119,8 @@ void		GSInGame::onStart()
       ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
       this->addGameObject(monster, "monster");
     }
+
+  this->registerShipCallbacks();
 }
 
 void		GSInGame::update(double elapsedTime)

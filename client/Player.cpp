@@ -11,6 +11,8 @@ Player::Player(Player::type type, Ship* ship)
 		this->_actions[Player::FIRE].Key.Code = Keyboard::Space;
 		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::KeyPressed;
 		this->_actions[Player::SPECIAL_FIRE].Key.Code = Keyboard::LControl;
+		this->_actions[Player::PAUSE].Type = InputCommand::KeyReleased;
+		this->_actions[Player::PAUSE].Key.Code = Keyboard::Escape;
 	}
 	else
 	{
@@ -18,6 +20,8 @@ Player::Player(Player::type type, Ship* ship)
 		this->_actions[Player::FIRE].JoystickButton.Button = 0;
 		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::JoystickButtonPressed;
 		this->_actions[Player::SPECIAL_FIRE].JoystickButton.Button = 2;
+		this->_actions[Player::PAUSE].Type = InputCommand::JoystickButtonReleased;
+		this->_actions[Player::PAUSE].JoystickButton.Button = 7;
 	}
 }
 

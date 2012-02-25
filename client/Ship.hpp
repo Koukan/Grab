@@ -3,6 +3,7 @@
 #include <vector>
 #include "ConcreteObject.hpp"
 #include "Sprite.hpp"
+#include "Input.hpp"
 
 class Grab;
 
@@ -23,6 +24,16 @@ public:
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
   void addGrab(Grab* grab);
+  
+  void inputUp(Core::InputCommand const &cmd);
+  void inputDown(Core::InputCommand const &cmd);
+  void inputLeft(Core::InputCommand const &cmd);
+  void inputRight(Core::InputCommand const &cmd);
+  void inputReleasedUp(Core::InputCommand const &cmd);
+  void inputReleasedDown(Core::InputCommand const &cmd);
+  void inputReleasedLeft(Core::InputCommand const &cmd);
+  void inputReleasedRight(Core::InputCommand const &cmd);
+  void inputJoystickMoved(Core::InputCommand const &cmd);
 
 private:
   float			_speed;
@@ -30,6 +41,22 @@ private:
   std::vector<Grab *> _grabs;
   unsigned int _nbMaxGrabs; // can be up to 4 by choosing a special power
   bool _grabLaunched;
+
+  // ship control
+  enum Actions
+  {
+	  UP,
+	  DOWN,
+	  LEFT,
+	  RIGHT,
+	  NBACTIONS
+  };
+
+  float			_joyPosX;
+  float			_joyPosY;
+  bool			_actions[Ship::NBACTIONS];
+
+  void handleActions();
 
 public:
   struct ShipInfo
