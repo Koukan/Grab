@@ -12,6 +12,7 @@
 #include "ScrollingSprite.hpp"
 #include "Game.hpp"
 #include "GUIBindButton.hpp"
+#include "BulletCommand.hpp"
 
 GSMainMenu::GSMainMenu()
   : Core::GameState("mainMenu")
@@ -28,6 +29,14 @@ void	GSMainMenu::onStart()
 
   // load xml
   this->load("resources/intro.xml");
+
+  // test
+  //this->load("resources/shots.xml");
+  //this->load("resources/enemies.xml");
+  //this->addBulletParser("resources/BulletWall.xml", "test");
+  //this->getBulletParser("test")->dump();
+  //Core::GameObject	*test = new Core::BulletCommand("test", *this, 1024, 300);
+  //addGameObject(test, "test", 50);
 
   // add gui
 
@@ -46,6 +55,7 @@ void	GSMainMenu::onStart()
   Core::GameStateManager::get().loadState<GSModeSelection>("modeSelection");
   Core::GameStateManager::get().loadState<GSJoinGame>("joinGame");
   Core::GameStateManager::get().loadState<GSOptions>("options");
+
 }
 
 void	GSMainMenu::modeSelection()

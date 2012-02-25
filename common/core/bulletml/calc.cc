@@ -85,6 +85,7 @@ typedef double NumType;
 #include "formula.h"
 #include "formula-variables.h"
 
+
 int yyerror(char const * s);
 int yylex();
 
@@ -109,7 +110,7 @@ namespace {
 
 
 /* Line 268 of yacc.c  */
-#line 113 "y.tab.c"
+#line 114 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -165,7 +166,7 @@ typedef int YYSTYPE;
 
 
 /* Line 343 of yacc.c  */
-#line 169 "y.tab.c"
+#line 170 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -456,8 +457,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    53,    53,    54,    57,    58,    61,    65,    69,    73,
-      77,    81,    85,    89,    93,    97
+       0,    54,    54,    55,    58,    59,    62,    66,    70,    74,
+      78,    82,    86,    90,    94,    98
 };
 #endif
 
@@ -1397,14 +1398,14 @@ yyreduce:
         case 5:
 
 /* Line 1806 of yacc.c  */
-#line 58 "calc.yy"
+#line 59 "calc.yy"
     { formula = f((yyvsp[(1) - (2)])); return 0; }
     break;
 
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 61 "calc.yy"
+#line 62 "calc.yy"
     {
 	        (yyval) = formulas.size();
 	        formulas.push_back(new CalcFormula(new CalcNumber((yyvsp[(1) - (1)]))));
@@ -1414,7 +1415,7 @@ yyreduce:
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 65 "calc.yy"
+#line 66 "calc.yy"
     {
 	        (yyval) = formulas.size();
             formulas.push_back(new CalcFormula(new CalcRandom()));
@@ -1424,7 +1425,7 @@ yyreduce:
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 69 "calc.yy"
+#line 70 "calc.yy"
     {
 			(yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(new CalcRank()));
@@ -1434,7 +1435,7 @@ yyreduce:
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 73 "calc.yy"
+#line 74 "calc.yy"
     {
 			(yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(new CalcParam(paramId)));
@@ -1444,7 +1445,7 @@ yyreduce:
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 77 "calc.yy"
+#line 78 "calc.yy"
     {
 		    (yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(f((yyvsp[(1) - (3)])), op_add, f((yyvsp[(3) - (3)]))));
@@ -1454,7 +1455,7 @@ yyreduce:
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 81 "calc.yy"
+#line 82 "calc.yy"
     {
 		    (yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(f((yyvsp[(1) - (3)])), op_sub, f((yyvsp[(3) - (3)]))));
@@ -1464,7 +1465,7 @@ yyreduce:
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 85 "calc.yy"
+#line 86 "calc.yy"
     {
 		    (yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(f((yyvsp[(1) - (3)])), op_mul, f((yyvsp[(3) - (3)]))));
@@ -1474,7 +1475,7 @@ yyreduce:
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 89 "calc.yy"
+#line 90 "calc.yy"
     {
 		    (yyval) = formulas.size();
 			formulas.push_back(new CalcFormula(f((yyvsp[(1) - (3)])), op_div, f((yyvsp[(3) - (3)]))));
@@ -1484,7 +1485,7 @@ yyreduce:
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 93 "calc.yy"
+#line 94 "calc.yy"
     {
 		    (yyval) = (yyvsp[(2) - (2)]);
 			f((yyvsp[(2) - (2)]))->setHeadSub();
@@ -1494,7 +1495,7 @@ yyreduce:
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 97 "calc.yy"
+#line 98 "calc.yy"
     {
 		    (yyval) = (yyvsp[(2) - (3)]);
 		}
@@ -1503,7 +1504,7 @@ yyreduce:
 
 
 /* Line 1806 of yacc.c  */
-#line 1507 "y.tab.c"
+#line 1508 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1580,7 +1581,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (const_cast<char*>(yymsgp));
+        yyerror (yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -1734,7 +1735,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 101 "calc.yy"
+#line 102 "calc.yy"
 
 
 /**

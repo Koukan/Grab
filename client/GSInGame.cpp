@@ -103,7 +103,8 @@ void		GSInGame::registerShipCallbacks()
 
 void		GSInGame::onStart()
 {
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::inputEscape, static_cast<int>(Core::Keyboard::Escape));
+  if (!this->_online)
+    this->preload();
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
 
@@ -300,17 +301,18 @@ void		GSInGame::spawn(GameCommand const &event)
     {Resources::SHOOT, &GSInGame::loadShoot}
   };
 
-  for (size_t i = 0;
-       i < sizeof(methods) / sizeof(*methods); i++)
-    {
-      if (static_cast<Resources::type>(event.idResource) == methods[i].name)
+	//Sprite	*sprite = this->getSprite(event.idResource);
+
+	for (size_t i = 0; i < sizeof(methods) / sizeof(*methods); i++)
 	{
-	  (this->*methods[i].method)(event);
-	  if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
-	    {
-	      this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
-	    }
-	}
+		if (static_cast<Resources::type>(event.idResource) == methods[i].name)
+		{
+			(this->*methods[i].method)(event);
+			if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
+			{
+				this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
+			}
+		}
     }
 }
 
@@ -404,7 +406,7 @@ void		GSInGame::loadMonster(GameCommand const &event)
 
 void		GSInGame::loadShoot(GameCommand const &event)
 {
-  static_cast<Ship*>(this->_ship)->launchGrab("grab"); // tmp test
+  static_cast<Ship*>(this->_ship)->launchGrab("grabs"); // tmp test
 
   Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *obj = new ConcreteObject(this->getSprite("default shot"), *hitbox, event.vx, event.vy);
