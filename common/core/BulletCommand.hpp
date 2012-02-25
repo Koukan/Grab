@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Net.hpp"
 #include "bulletmlrunner.h"
 #include "Sprite.hpp"
 #include "PhysicObject.hpp"
@@ -20,14 +21,16 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
     BulletCommand(BulletMLState &state, GameState &gstate, HitBox &box,
 		  double vx = 0, double vy = 0);
     virtual ~BulletCommand();
-    virtual double	getBulletDirection();
+
+	// BulletMLRunner overloaded
+	virtual double	getBulletDirection();
     virtual double	getAimDirection();
     virtual double	getBulletSpeed();
     virtual double	getDefaultSpeed();
     virtual double	getRank();
+	virtual double	getRand();
     virtual void	createSimpleBullet(double direction, double speed);
-    virtual void	createBullet(BulletMLState* state,
-		    		     double direction, double speed);
+    virtual void	createBullet(BulletMLState* state, double direction, double speed);
     virtual int		getTurn();
     virtual void	doVanish();
     virtual void	doChangeDirection(double direction);
@@ -36,9 +39,16 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
     virtual void	doAccelY(double speedy);
     virtual double	getBulletSpeedX();
     virtual double	getBulletSpeedY();
+
+
+	void			setRank(double rank);
     virtual void	move(double time);
+	void			setSeed(uint32_t seed);
+	uint32_t		getSeed() const;
+	Bullet			*getChild(uint32_t id) const;
 
   protected:
+	typedef std::map<uint32_t, Bullet*>	BulletMap;
 	enum		Shape
 	{
 		Circle,
@@ -46,6 +56,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	};
 
 	void			setSpeedDirection();
+	void			insertChild(Bullet &bullet);
 
 	double			_direction;
 	double			_speed;
@@ -55,8 +66,12 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	Shape			_shape;
 	uint32_t		_width;
 	uint32_t		_height;
+	double			_rank;
+	uint32_t		_nextId;
+	BulletMap		_childs;
 	std::string		_simpleSprite;
 	std::string		_simpleGroup;
+	Net::MTRand		_rand;
 };
 
 CORE_END_NAMESPACE

@@ -17,6 +17,7 @@ GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int 
 
 	this->_bindActions.push_back("Fire");
 	this->_bindActions.push_back("Special Fire");
+	this->_bindActions.push_back("Pause");
 }
 
 GUIPlayerButton::~GUIPlayerButton()

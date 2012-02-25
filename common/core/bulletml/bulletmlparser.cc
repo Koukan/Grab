@@ -66,6 +66,21 @@ CORE_NAMESPACE::Resource		*BulletMLParser::clone() const
 	return const_cast<BulletMLParser*>(this);
 }
 
+void								BulletMLParser::dump() const
+{
+	for (BulletMap::const_iterator it = bulletMap_.begin();
+		 it != bulletMap_.end(); it++)
+	{
+		std::cout << (*it)->getLabel() << std::endl;
+		std::cout << "\tgroup: " << (*it)->getGroup() << std::endl;
+	}
+}
+
+std::vector<BulletMLNode*> const	&BulletMLParser::getBullets() const
+{
+	return this->bulletMap_;
+}
+
 BulletMLNode* BulletMLParser::getBulletRef(int id) {
 	BulletMLError::doAssert((int)bulletMap_.size() > id && bulletMap_[id] != 0,
 		   "bulletRef key doesn't exist.");

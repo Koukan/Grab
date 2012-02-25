@@ -9,7 +9,7 @@
 #include "Game.hpp"
 
 GSPauseMenu::GSPauseMenu()
-  : Core::GameState("mainMenu")
+  : Core::GameState("mainMenu", true)
 {
 };
 

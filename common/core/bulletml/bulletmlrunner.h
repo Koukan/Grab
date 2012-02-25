@@ -204,7 +204,7 @@ private:
 
 protected:
 	std::vector<BulletMLRunnerImpl*>	impl_;
-	std::stack<BulletMLState*>			state_;
+	std::stack<BulletMLState*>		state_;
 };
 
 #endif // ! BULLETRUNNER_H_

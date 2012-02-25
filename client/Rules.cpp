@@ -19,8 +19,11 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
   std::cout << "grab collide !" << std::endl;
   Grab& grab = static_cast<Grab&>(o1);
+  Core::BulletCommand *bullet = new Core::BulletCommand("bomb", Core::GameStateManager::get().getCurrentState(), grab.getX(), grab.getY(), grab.getVx(), grab.getVy()); // tmp
 
-  grab.setBulletScript(new Core::BulletCommand("simple", Core::GameStateManager::get().getCurrentState(), grab.getX(), grab.getY(), grab.getVx(), grab.getVy())); // tmp
+  grab.setBulletScript(bullet);
+  Core::GameStateManager::get().getCurrentState().addGameObject(bullet, "shot");
   grab.getShip().setGrabLaunched(false);
+  grab.getShip().addGrab(&grab);
   o2.erase();
 }

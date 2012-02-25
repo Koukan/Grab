@@ -7,6 +7,8 @@
 
 CORE_BEGIN_NAMESPACE
 
+class BulletCommand;
+
 class CORE_DLLREQ Bullet : public PhysicObject
 {
   public:
@@ -16,11 +18,21 @@ class CORE_DLLREQ Bullet : public PhysicObject
 	   double vx = 0, double vy = 0);
     virtual ~Bullet();
     virtual void	draw(double elapseTime);
-    void		setSprite(ResourceManager &resource, std::string const &name);
-    void		setSprite(Sprite *sprite);
+
+	// setter
+    void			setSprite(ResourceManager &resource, std::string const &name);
+    void			setSprite(Sprite *sprite);
+	void			setParent(BulletCommand *bullet);
+	void			setBulletId(uint32_t id);
+
+	// getter
+	BulletCommand	*getParent() const;
+	uint32_t		getBulletId() const;
 
   protected:
-    Sprite	*_sprite;
+    Sprite			*_sprite;
+	BulletCommand	*_parent;
+	uint32_t		_bulletId;
 };
 
 CORE_END_NAMESPACE

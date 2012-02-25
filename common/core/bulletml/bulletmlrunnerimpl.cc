@@ -100,7 +100,8 @@ BulletMLRunnerImpl::BulletMLRunnerImpl(BulletMLState* state,
       actIte_(0), end_(false), runner_(runner)
 {
 	if (state->getParameter().get() != 0) {
-		parameters_ = state->getParameter();
+			std::cout << "Use Parameters in BulletMLRunnerImpl" << std::endl;
+			parameters_ = state->getParameter();
 	}
 
 

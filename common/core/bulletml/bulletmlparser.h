@@ -36,6 +36,8 @@ public:
      * ƒ‰ƒxƒ‹‚©‚ç‚±‚ê‚ç‚Ì‚ÝŽæ‚ê‚ê‚Î—Ç‚¢
      */
     //@{
+	DECLSPEC void			dump() const;
+    DECLSPEC std::vector<BulletMLNode*> const	&getBullets() const;
     DECLSPEC BulletMLNode* getBulletRef(int id);
     DECLSPEC BulletMLNode* getActionRef(int id);
     DECLSPEC BulletMLNode* getFireRef(int id);

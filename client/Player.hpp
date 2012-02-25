@@ -18,7 +18,9 @@ public:
   enum Action
   {
 	  FIRE = 0,
-	  SPECIAL_FIRE
+	  SPECIAL_FIRE,
+	  PAUSE,
+	  NBACTIONS
   };
 
   Player(Player::type type, Ship *ship = 0);
@@ -33,6 +35,6 @@ public:
 
 private:
 	Player::type _type;
-  Core::InputCommand _actions[2];
+  Core::InputCommand _actions[NBACTIONS];
 	Ship*	     _ship;
 };

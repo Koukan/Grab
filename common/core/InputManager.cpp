@@ -21,13 +21,18 @@ void    InputManager::handleInput(const InputCommand &ev)
   for (std::list<CallbackElem*>::iterator it = (*res).second.begin();
 		  it != (*res).second.end(); it++)
   {
-    if ((*it)->key == -1)
+    if ((*it)->key == -1 && (*it)->joystickId == -1)
       (*it)->callback->call(ev);
-	else if ((ev.Type == InputCommand::KeyPressed || ev.Type == InputCommand::KeyReleased) && (*it)->key == ev.Key.Code)
+	if ((ev.Type == InputCommand::KeyPressed || ev.Type == InputCommand::KeyReleased) && ((*it)->key == -1 || (*it)->key == ev.Key.Code))
 		(*it)->callback->call(ev);
-	else if ((ev.Type == InputCommand::MouseButtonPressed || ev.Type == InputCommand::MouseButtonReleased) && (*it)->key == ev.MouseButton.Button)
+	else if ((ev.Type == InputCommand::MouseButtonPressed || ev.Type == InputCommand::MouseButtonReleased) && ((*it)->key == -1 || (*it)->key == ev.MouseButton.Button))
 		(*it)->callback->call(ev);
-	else if ((ev.Type == InputCommand::JoystickButtonPressed || ev.Type == InputCommand::JoystickButtonReleased) && (*it)->key == (int)ev.JoystickButton.Button)
+	else if ((ev.Type == InputCommand::JoystickButtonPressed || ev.Type == InputCommand::JoystickButtonReleased) &&
+		((*it)->joystickId == -1 || (*it)->joystickId == (int)ev.JoystickButton.JoystickId) &&
+		((*it)->key == -1 || (*it)->key == (int)ev.JoystickButton.Button))
+		(*it)->callback->call(ev);
+	else if (ev.Type == InputCommand::JoystickMoved &&
+		((*it)->joystickId == -1 || (*it)->joystickId == (int)ev.JoystickMove.JoystickId))
 		(*it)->callback->call(ev);
     if (_flush == true)
     {
