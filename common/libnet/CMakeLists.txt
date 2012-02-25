@@ -24,6 +24,7 @@ set(INCLUDES_NET
 	${NET_INCLUDE_DIR}Error.hpp
 	${NET_INCLUDE_DIR}InetAddr.hpp
 	${NET_INCLUDE_DIR}KqueuePolicy.hpp
+	${NET_INCLUDE_DIR}MTRand.hpp
 	${NET_INCLUDE_DIR}Net.hpp
 	${NET_INCLUDE_DIR}NetDef.hpp
 	${NET_INCLUDE_DIR}NetHandler.hpp
@@ -72,6 +73,7 @@ set(SRCS_NET
 	${NET_SRCS_DIR}PoolObject.cpp
 	${NET_SRCS_DIR}EpollPolicy.cpp
 	${NET_SRCS_DIR}KqueuePolicy.cpp
+	${NET_SRCS_DIR}MTRand.cpp
 	${NET_SRCS_DIR}WFMOPolicy.cpp
 	${NET_SRCS_DIR}Packet.cpp
 	${NET_SRCS_DIR}DataBlock.cpp

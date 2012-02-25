@@ -246,17 +246,18 @@ void		GSInGame::spawn(GameCommand const &event)
     {Resources::SHOOT, &GSInGame::loadShoot}
   };
 
-  for (size_t i = 0;
-       i < sizeof(methods) / sizeof(*methods); i++)
-    {
-      if (static_cast<Resources::type>(event.idResource) == methods[i].name)
+	//Sprite	*sprite = this->getSprite(event.idResource);
+
+	for (size_t i = 0; i < sizeof(methods) / sizeof(*methods); i++)
 	{
-	  (this->*methods[i].method)(event);
-	  if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
-	    {
-	      this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
-	    }
-	}
+		if (static_cast<Resources::type>(event.idResource) == methods[i].name)
+		{
+			(this->*methods[i].method)(event);
+			if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
+			{
+				this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
+			}
+		}
     }
 }
 
