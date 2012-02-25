@@ -57,6 +57,8 @@ void		GSInGame::preload()
 
 void		GSInGame::onStart()
 {
+  if (!this->_online)
+    this->preload();
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputEscape, static_cast<int>(Core::Keyboard::Escape));
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputUp, static_cast<int>(Core::Keyboard::Up));
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputDown, static_cast<int>(Core::Keyboard::Down));
@@ -363,7 +365,7 @@ void		GSInGame::loadMonster(GameCommand const &event)
 
 void		GSInGame::loadShoot(GameCommand const &event)
 {
-  static_cast<Ship*>(this->_ship)->launchGrab("grab"); // tmp test
+  static_cast<Ship*>(this->_ship)->launchGrab("grabs"); // tmp test
 
   Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *obj = new ConcreteObject(this->getSprite("default shot"), *hitbox, event.vx, event.vy);

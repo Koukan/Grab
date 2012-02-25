@@ -49,13 +49,10 @@ void Ship::registerInGameObjectManager(std::string const &shipGroup,
     }
 }
 
-#include <iostream>
 void Ship::launchGrab(std::string const &group)
 {
-  std::cout << "launchGrab" << std::endl;;
   if (/*!_grabLaunched &&*/ _grabs.size() < _nbMaxGrabs)
     {
-      std::cout << " " << "true" << std::endl;
       Grab* grab = new Grab("bullet", *(new Core::RectHitBox(this->getX(), this->getY(), 100, 100)), 0, -100, *this);
       Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
       _grabLaunched = true;
