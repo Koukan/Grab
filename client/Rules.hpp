@@ -2,12 +2,9 @@
 
 #include "GameObject.hpp"
 
-class Rules
+namespace Rules
 {
-  public:
-	static void		wallTouchObject(Core::GameObject&, Core::GameObject&);
-	static void		shotTouchMonster(Core::GameObject&, Core::GameObject&);
-
-  private:
-    Rules();
+	void		wallTouchObject(Core::GameObject&, Core::GameObject&);
+	void		shotTouchMonster(Core::GameObject&, Core::GameObject&);
+	void		grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2);
 };

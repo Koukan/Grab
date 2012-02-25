@@ -1,4 +1,5 @@
 #include "Ship.hpp"
+#include "Grab.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
 
@@ -10,26 +11,25 @@ Ship::ShipInfo const Ship::shipsList[] = {
 
 unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
 
-Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/, float speed, int fireFrequency, int r, int g, int b)
+Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/, float speed, int fireFrequency, int r, int g, int b, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency)
+    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false)
 {
 	if (this->_sprite)
 		this->_sprite->setColor(r, g, b);
 }
 
-Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4])
+Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency)
-
+    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false)
 {
 	if (this->_sprite)
 		this->_sprite->setColor(r, g, b);
 
 	Grab *grab;
-	for (unsigned int i = 0; i < 4; ++i)
+	for (unsigned int i = 0; i < nbMaxGrabs; ++i)
 	  {
-	    grab = new Grab("weapon", *(new Core::CircleHitBox(grabs[i].first, grabs[i].second, 5)), 0, 0);
+	    grab = new Grab("weapon", *(new Core::CircleHitBox(grabs[i].first, grabs[i].second, 5)), 0, 0, *this);
 	_grabs.push_back(grab);
 	  }
 }
@@ -49,4 +49,28 @@ void Ship::registerInGameObjectManager(std::string const &shipGroup,
     }
 }
 
+void Ship::launchGrab(std::string const &group)
+{
+  if (/*!_grabLaunched &&*/ _grabs.size() < _nbMaxGrabs)
+    {
+      Grab* grab = new Grab("bullet", *(new Core::RectHitBox(this->getX(), this->getY(), 100, 100)), 0, -100, *this);
+      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+      _grabLaunched = true;
+    }
+}
 
+void Ship::setGrabLaunched(bool grabLaunched)
+{
+  _grabLaunched = grabLaunched;
+}
+
+bool Ship::getGrabLaunched() const
+{
+  return (_grabLaunched);
+}
+
+void Ship::addGrab(Grab *grab)
+{
+  if (grab)
+    _grabs.push_back(grab);
+}
