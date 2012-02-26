@@ -22,7 +22,6 @@ Core::Resource	*SFMLSprite::clone() const
 
 void		SFMLSprite::update(double elapsedTime)
 {
-	std::cout << this->_frameRate << " " << elapsedTime << std::endl;
 	if (this->_frameRate == -1 || elapsedTime == 0)
 		return ;
 	unsigned int	size = this->_rect.size();
