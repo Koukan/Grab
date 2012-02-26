@@ -4,6 +4,7 @@
 #include "ScrollingSprite.hpp"
 #include "GameStateManager.hpp"
 #include "GSMainMenu.hpp"
+#include "RendererManager.hpp"
 
 GSPreload::GSPreload() : Core::GameState("Preload")
 {
@@ -25,9 +26,11 @@ void	GSPreload::onStart()
 {
   this->load("resources/intro.xml");
 
-  ScrollingSprite *obj = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::HORIZONTAL, -0.02);
-  obj->pushSprite("space background");
-  obj->pushSprite("space background 2");
-  obj->pushSprite("space background 3");
+  ScrollingSprite *obj = new ScrollingSprite(0, 0, RendererManager::get().getWidth(),
+	  RendererManager::get().getHeight(), ScrollingSprite::HORIZONTAL, 0);
+  //obj->pushSprite("space background");
+  //obj->pushSprite("space background 2");
+  //obj->pushSprite("space background 3");
+  obj->pushSprite("space background 4");
   this->addGameObject(obj, "background", 1);
 }

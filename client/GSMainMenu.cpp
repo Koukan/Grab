@@ -14,6 +14,7 @@
 #include "Game.hpp"
 #include "GUIBindButton.hpp"
 #include "BulletCommand.hpp"
+#include "RendererManager.hpp"
 
 GSMainMenu::GSMainMenu()
   : Core::GameState("mainMenu")
@@ -46,11 +47,13 @@ void	GSMainMenu::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
-  layout->setY((768 - layout->getHeight()) / 2);
+  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
+	  (RendererManager::get().getHeight() - 100) / 2,
+	  300, 300, 10, 100, "up arrow", "down arrow");
+  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
   Core::Sprite *sp = this->getSprite("logo");
-  sp->setX(280);
-  sp->setY(100);
+  sp->setX((RendererManager::get().getWidth() - sp->getWidth()) / 2);
+  sp->setY(50);
   this->addGameObject(sp, "gui", 20);
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::modeSelection, "Create Game", "buttonFont", *sprite, layout);
