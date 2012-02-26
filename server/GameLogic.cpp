@@ -9,6 +9,8 @@
 #include "ServerResourceManager.hpp"
 #include "BCommand.hpp"
 #include "Rules.hpp"
+#include "GlobalResourceManager.hpp"
+#include "MapProvider.hpp"
 
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
@@ -19,7 +21,8 @@ GameLogic::GameLogic(Game &game)
 	addBulletParser("resources/BulletWall.xml", "wall");
 	addBulletParser("resources/BulletRandom.xml", "random");
 	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-
+	Core::GlobalResourceManager::get().addProvider(*new MapProvider());
+	this->load("resources/map/level1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
 	this->addGroup("ship", 0);
@@ -90,6 +93,21 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
+	else if (gc.name == "spawnmonster")
+	{
+		BCommand	*bullet = new BCommand(gc.data, *this, 1100, gc.x, 0, 0);
+		this->addGameObject(bullet);	
+		GameCommand *answer = new GameCommand("Spawn");
+		answer->idResource = bullet->getId();
+		answer->idObject = this->getBulletParser(gc.data)->getResourceId();
+		answer->x = gc.x;
+		answer->y = gc.y;
+		answer->vx = gc.vx;
+		answer->vy = gc.vy;
+		answer->game = &_game;
+		answer->player = gc.player;
+		Core::CommandDispatcher::get().pushCommand(*answer);
+	}
 	return false;
 }
 
@@ -119,6 +137,7 @@ void		GameLogic::startGame()
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 		y += step;
 	}
+	this->addGameObject(static_cast<Map*>(this->getResource("level1", 4)));
 	this->_gameStarted = true;
 }
 
