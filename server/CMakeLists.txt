@@ -42,6 +42,10 @@ set(SRCS
 	GameManager.hpp
 	GameTask.cpp
 	GameTask.hpp
+	Map.hpp
+	Map.cpp
+	MapProvider.hpp
+	MapProvider.cpp
 	NetworkModule.cpp
 	NetworkModule.hpp
 	PacketCommand.cpp

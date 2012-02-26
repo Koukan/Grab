@@ -4,7 +4,7 @@
 #include "PacketCommand.hpp"
 #include "PacketType.hpp"
 
-NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5)
+NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5) , _initudp(false)
 {
 	Core::CommandDispatcher::get().registerHandler(*this);
 }
@@ -20,18 +20,25 @@ void	    NetworkModule::init()
 	this->_port = Game::get().getPort();
 	if (this->_port.empty())
 		this->_port = "25557";
-  	this->_udp.setReactor(this->_reactor);
-	Net::InetAddr     tmp("25557");
-	if (this->_udp.getIOHandler().setup(tmp) == -1)
-		Net::printLastError();
-	else
-		this->_udp.init();
 }
 
 bool		NetworkModule::connect()
 {
   Net::InetAddr		addr(this->_ip, this->_port);
 
+  if (!_initudp)
+  {	
+  	this->_udp.setReactor(this->_reactor);
+	Net::InetAddr     tmp("25557");
+	if (this->_udp.getIOHandler().setup(tmp) == -1)
+	{
+		Net::printLastError();
+		return false;
+	}
+	else
+		this->_udp.init();
+	_initudp = true;
+  }
   if (this->_connector.setup(addr, this->_reactor, false) < 0)
   {
 	Net::printLastError();

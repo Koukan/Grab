@@ -5,6 +5,8 @@
 #include "GlobalResourceManager.hpp"
 #include "ResourceManager.hpp"
 #include "bulletmlrunner.h"
+#include "GlobalResourceManager.hpp"
+#include "MapProvider.hpp"
 
 Server::Server()
 {
@@ -20,6 +22,7 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	Core::ResourceManager		test;
 
 	Core::GlobalResourceManager::get().init();
+	Core::GlobalResourceManager::get().addProvider(*new MapProvider());
 	//Core::GlobalResourceManager::get().addBulletParser("resources/BulletSinusoidal.xml", "test", test);
 	//BulletMLRunner plop = BulletMLRunner(Core::GlobalResourceManager::get().getBulletParser("test"));
 	this->Core::ModuleManager::init();

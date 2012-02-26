@@ -20,5 +20,6 @@ class GameCommand : public Core::Command
 	int16_t				vy;
 	Player				*player;
 	Game				*game;
+	std::string			data;
 };
 
