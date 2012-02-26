@@ -20,7 +20,7 @@ public:
 	void				setId(uint32_t id);
 	virtual void		setX(double x);
 	virtual void		setY(double y);
-	virtual void		setPosition(double x, double y);
+	virtual void		setPosition(double x, double y, double z = 0);
 	void				setGroup(Group *group);
 
 	// getter

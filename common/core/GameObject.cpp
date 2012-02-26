@@ -54,10 +54,11 @@ void		GameObject::setY(double y)
   _y = y;
 }
 
-void		GameObject::setPosition(double x, double y)
+void		GameObject::setPosition(double x, double y, double z)
 {
 	_x = x;
 	_y = y;
+	_z = z;
 }
 
 void		GameObject::setGroup(Group *group)
