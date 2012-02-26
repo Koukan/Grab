@@ -78,8 +78,8 @@ public:
       this->_sprite.draw(x, y, elapseTime);
     if (this->_font)
       {
-	this->_font->draw(x + (this->_width - this->_font->getWidth()) / 2,
-			  y + (this->_height - this->_font->getHeight()) / 2 - 5, elapseTime);
+	this->_font->draw(x + (this->_width - this->_font->getWidth()) / 2 - 10,
+			  y + (this->_height - this->_font->getHeight()) / 2 + 2, elapseTime);
       }
   }
 

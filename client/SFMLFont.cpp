@@ -5,7 +5,7 @@
 SFMLFont::SFMLFont(std::string const &fileName, unsigned int size)
   : _window(RendererManager::get().getWindow())
 {
-	this->_font.LoadFromFile(fileName);
+	this->_font.LoadFromFile(fileName, 40);
 	this->_str.SetFont(this->_font);
 	#if (SFML_VERSION_MAJOR == 2)
 		this->_str.SetCharacterSize(size);
