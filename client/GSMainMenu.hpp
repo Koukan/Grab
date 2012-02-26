@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameState.hpp"
+#include "Sound.hpp"
 
 class GSMainMenu : public Core::GameState
 {
@@ -9,10 +10,15 @@ public:
   ~GSMainMenu();
 
   void	onStart();
+  void	onChange();
+  void	onResume();
 
   void	modeSelection();
   void	inGameTest();
   void	joinGame();
   void	options();
   void	quitGame();
+
+private:
+ 	Core::Sound		*_sound;
 };

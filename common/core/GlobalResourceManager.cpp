@@ -8,6 +8,7 @@
 #include "SpriteProvider.hpp"
 #include "FontProvider.hpp"
 #include "BulletResourceManager.hpp"
+#include "SoundProvider.hpp"
 
 CORE_USE_NAMESPACE
 
@@ -132,6 +133,16 @@ BulletMLParser	*GlobalResourceManager::getBulletParser(uint32_t id) const
 	if (this->_bulletProvider)
 		return static_cast<BulletMLParser*>(this->_bulletProvider->getResource(id));
 	return 0;
+}
+
+Sound           *GlobalResourceManager::getSound(std::string const &name) const
+{
+	return static_cast<Sound*>(this->getResource(name, 5));
+}
+
+Sound           *GlobalResourceManager::getSound(uint32_t id) const
+{
+	return static_cast<Sound*>(this->getResource(id, 5));
 }
 
 Resource	*GlobalResourceManager::getResource(std::string const &name, std::string const &providerName) const

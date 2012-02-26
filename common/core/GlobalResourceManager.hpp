@@ -4,6 +4,7 @@
 #include "tinyxml.h"
 #include "Sprite.hpp"
 #include "Font.hpp"
+#include "Sound.hpp"
 #include "bulletmlparser.h"
 #include "XMLProvider.hpp"
 #include "Singleton.hpp"
@@ -33,6 +34,8 @@ class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Single
 	CoreFont		*getFont(uint32_t id) const;
 	BulletMLParser	*getBulletParser(std::string const &name) const;
 	BulletMLParser	*getBulletParser(uint32_t id) const;
+	Sound           *getSound(std::string const &name) const;
+	Sound           *getSound(uint32_t id) const;
 	Resource		*getResource(std::string const &name, std::string const &provider) const;
 	Resource		*getResource(std::string const &name, uint8_t type) const;
 	Resource		*getResource(uint32_t id, uint8_t type) const;

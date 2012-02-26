@@ -13,7 +13,7 @@ class Group;
 class CORE_DLLREQ GameObject : public Net::PoolObject
 {
 public:
-	GameObject(double x = 0, double y = 0, Group *group = 0);
+	GameObject(double x = 0, double y = 0, double z = 0, Group *group = 0);
 	virtual ~GameObject();
 
 	// setter
@@ -35,6 +35,7 @@ public:
 protected:
 	double			_x;
 	double 			_y;
+	double			_z;
 	bool			_delete;
 	uint32_t		_id;
 	Group			*_group;

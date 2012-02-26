@@ -72,6 +72,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}Resource.hpp
 	${CORE_DIR}ResourceManager.hpp
 	${CORE_DIR}SharedLoader.hpp
+	${CORE_DIR}SoundProvider.hpp
 	${CORE_DIR}Sprite.hpp
 	${CORE_DIR}SpriteProvider.hpp
 	${CORE_DIR}TimeEffectManager.hpp
@@ -115,6 +116,7 @@ set(SRCS_CORE
 	${CORE_DIR}PolyHitBox.cpp
 	${CORE_DIR}RectHitBox.cpp
 	${CORE_DIR}Resource.cpp
+	${CORE_DIR}SoundProvider.cpp
 	${CORE_DIR}SpriteProvider.cpp
 	${CORE_DIR}ResourceManager.cpp
 	${CORE_DIR}XMLProvider.cpp

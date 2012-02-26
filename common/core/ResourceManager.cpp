@@ -46,6 +46,11 @@ BulletMLParser	*ResourceManager::getBulletParser(std::string const &name) const
 	return GlobalResourceManager::get().getBulletParser(name);
 }
 
+Sound			*ResourceManager::getSound(std::string const &name) const
+{
+	return GlobalResourceManager::get().getSound(name);
+}
+
 Resource	*ResourceManager::getResource(std::string const &name, uint8_t type) const
 {
 	return GlobalResourceManager::get().getResource(name, type);

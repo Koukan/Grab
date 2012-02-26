@@ -4,8 +4,8 @@
 
 CORE_USE_NAMESPACE
 
-GameObject::GameObject(double x, double y, Group *group)
-	: _x(x), _y(y), _delete(false), _id(0), _group(group)
+GameObject::GameObject(double x, double y, double z, Group *group)
+	: _x(x), _y(y), _z(z), _delete(false), _id(0), _group(group)
 {}
 
 GameObject::~GameObject(void)
