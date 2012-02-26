@@ -9,8 +9,7 @@
 #include "ServerResourceManager.hpp"
 #include "BCommand.hpp"
 #include "Rules.hpp"
-#include "GlobalResourceManager.hpp"
-#include "MapProvider.hpp"
+#include "Map.hpp"
 
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
@@ -21,8 +20,7 @@ GameLogic::GameLogic(Game &game)
 	addBulletParser("resources/BulletWall.xml", "wall");
 	addBulletParser("resources/BulletRandom.xml", "random");
 	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-	Core::GlobalResourceManager::get().addProvider(*new MapProvider());
-	this->load("resources/map/level1.xml");
+	this->load("resources/map/map1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
 	this->addGroup("ship", 0);
