@@ -20,7 +20,7 @@ public:
       this->unfocus();
   }
 
-  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(Core::GUIElement const &), Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+  GUIList(Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, int x, int y, T &instance, void (T::*func)(Core::GUIElement &), Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
     : Core::GUIElement(x, y, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), playerType),
       _leftArrow(left_arrow), _rightArrow(right_arrow),
       _instance(&instance), _func(func), _focusElement(_elements.begin())
@@ -31,7 +31,7 @@ public:
       this->unfocus();
       }
 
-  GUIList(T &instance, void (T::*func)(Core::GUIElement const &), Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, Core::GUILayout *layout, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
+  GUIList(T &instance, void (T::*func)(Core::GUIElement &), Core::ButtonSprite &left_arrow, Core::ButtonSprite &right_arrow, Core::GUILayout *layout, Core::GUICommand::PlayerType playerType = Core::GUICommand::ALL)
     : Core::GUIElement(0, 0, left_arrow.getWidth() + right_arrow.getWidth() + 10, left_arrow.getHeight(), layout, playerType),
       _leftArrow(left_arrow), _rightArrow(right_arrow), _instance(&instance), _func(func), _focusElement(_elements.begin())
   {
@@ -181,7 +181,7 @@ private:
   Core::ButtonSprite				_leftArrow;
   Core::ButtonSprite				_rightArrow;
   T *					_instance;
-  void					(T::*_func)(Core::GUIElement const &);
+  void					(T::*_func)(Core::GUIElement &);
   std::list<Core::GUIElement *>		_elements;
   std::list<Core::GUIElement *>::iterator	_focusElement;
 };

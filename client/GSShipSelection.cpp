@@ -22,7 +22,7 @@ void	GSShipSelection::onStart()
 
   // add gui
 
-  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "default button", "pressed button");
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 

@@ -56,12 +56,12 @@ void	GSPartySettings::createParty()
     }
 }
 
-void	GSPartySettings::nbPlayerList(Core::GUIElement const &nb)
+void	GSPartySettings::nbPlayerList(Core::GUIElement &nb)
 {
   this->_nbPlayers = static_cast<GUIButton<GSPartySettings> const &>(nb).getName();
 }
 
-void	GSPartySettings::multiMode(Core::GUIElement const &/*mode*/)
+void	GSPartySettings::multiMode(Core::GUIElement &/*mode*/)
 {
   this->_playerList->setHide(_online);
   _online = !_online;

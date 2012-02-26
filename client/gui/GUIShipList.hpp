@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GUIList.hpp"
-#include "GUIButton.hpp"
+#include "GUIShipButton.hpp"
 #include "Player.hpp"
 #include "Ship.hpp"
 #include <vector>
@@ -16,10 +16,13 @@ public:
 
 	virtual bool handleGUICommand(Core::GUICommand const &command);
 
-	void changeShip(Core::GUIElement const &);
+	void changeShip(Core::GUIElement &);
 	void selectShip();
+	
+	virtual void draw(double elapseTime);
+	virtual void draw(int x, int y, double elapseTime);
 
-public:
+private:
 	GSShipSelection			&_shipSelection;
   Ship::ShipInfo					&_ship;
   Player const &_player;
@@ -27,6 +30,8 @@ public:
 	unsigned int			&_nbReady;
 	unsigned int			_nbPlayers;
 	bool					_shipSelected;
+	GUIShipButton<GUIShipList> *_elem;
+	int						_oldWidth;
 
 	void addButtons(Core::ButtonSprite &middle);
 };

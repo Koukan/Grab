@@ -22,6 +22,11 @@ public:
 		return (this->_shipNb);
 	}
 
+	Core::ButtonSprite &getSprite()
+	{
+		return (this->_sprite);
+	}
+
 private:
 	unsigned int _shipNb;
 };
