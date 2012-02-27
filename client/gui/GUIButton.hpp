@@ -68,8 +68,8 @@ public:
       this->_sprite.draw(static_cast<int>(this->_x), static_cast<int>(this->_y), elapseTime);
     if (this->_font)
       {
-	this->_font->draw(static_cast<int>(this->_x + (this->_width - this->_font->getWidth()) / 2),
-			  static_cast<int>(this->_y + (this->_height - this->_font->getHeight()) / 2 - 5), elapseTime);
+	this->_font->draw(static_cast<int>(this->_x + (this->_width - this->_font->getWidth()) / 2) - 7,
+			  static_cast<int>(this->_y + (this->_height - this->_font->getHeight()) / 2 + 2), elapseTime);
       }
   }
 
@@ -78,7 +78,7 @@ public:
       this->_sprite.draw(x, y, elapseTime);
     if (this->_font)
       {
-	this->_font->draw(x + (this->_width - this->_font->getWidth()) / 2 - 10,
+	this->_font->draw(x + (this->_width - this->_font->getWidth()) / 2 - 7,
 			  y + (this->_height - this->_font->getHeight()) / 2 + 2, elapseTime);
       }
   }

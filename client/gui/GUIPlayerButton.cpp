@@ -143,22 +143,22 @@ void GUIPlayerButton::draw(double elapseTime)
 {
 	this->_sprite.draw(0, 0, elapseTime);
 	if (this->_font)
-		this->_font->draw(static_cast<int>(0 + (this->_sprite.getWidth() - this->_font->getWidth()) / 2),
-		static_cast<int>(0 + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 - 5), elapseTime);
+		this->_font->draw(static_cast<int>(0 + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
+		static_cast<int>(0 + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
 	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(0 + this->_sprite.getWidth() + 40),
-		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 - 5), elapseTime);
+		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 }
 
 void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 {
 	this->_sprite.draw(x, y, elapseTime);
 	if (this->_font)
-		this->_font->draw(static_cast<int>(x + (this->_sprite.getWidth() - this->_font->getWidth()) / 2),
-		static_cast<int>(y + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 - 5), elapseTime);
+		this->_font->draw(static_cast<int>(x + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
+		static_cast<int>(y + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
 	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() + 40),
-		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 - 5), elapseTime);
+		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 }
 
 void	GUIPlayerButton::changeToEmpty()

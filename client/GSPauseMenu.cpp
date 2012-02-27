@@ -7,6 +7,7 @@
 #include "GUIVLayout.hpp"
 #include "Sprite.hpp"
 #include "Game.hpp"
+#include "RendererManager.hpp"
 
 GSPauseMenu::GSPauseMenu()
   : Core::GameState("mainMenu", true)
@@ -44,8 +45,9 @@ void	GSPauseMenu::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
-  layout->setY((768 - layout->getHeight()) / 2);
+  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
+	  (RendererManager::get().getHeight() - 100) / 2, 300, 300, 20);
+  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
   Core::Sprite *s = this->getSprite("black background");
   s->setX(0);
   s->setY(0);

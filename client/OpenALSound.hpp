@@ -1,8 +1,8 @@
 #ifndef			__OPENALSOUND_HPP__
 # define		__OPENALSOUND_HPP__
 
-#include <AL/al.h>
-#include <AL/alc.h>
+#include <al.h>
+#include <alc.h>
 #include <string>
 #include "Sound.hpp"
 

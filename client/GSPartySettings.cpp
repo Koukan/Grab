@@ -15,6 +15,7 @@
 #include "GSShipSelection.hpp"
 #include "GSBindPlayer.hpp"
 #include "Converter.hpp"
+#include "RendererManager.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
   : Core::GameState("partySettings", true), _mode(mode), _map(map), _online(true)
@@ -74,8 +75,8 @@ void	GSPartySettings::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 0);
-  layout->setY((768 - layout->getHeight()) / 2);
+  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2, (RendererManager::get().getHeight() - 100) / 2, 300, 300, 0);
+  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");

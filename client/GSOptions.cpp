@@ -10,6 +10,7 @@
 #include "Game.hpp"
 #include "GSJoinGame.hpp"
 #include "NetworkModule.hpp"
+#include "RendererManager.hpp"
 
 GSOptions::GSOptions()
   : Core::GameState("mainMenu", true)
@@ -27,8 +28,9 @@ void	GSOptions::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
-  layout->setY((768 - layout->getHeight()) / 3);
+  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
+	  (RendererManager::get().getHeight() - 100) / 2, 300, 300, 20);
+  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 3);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUILabel("Player Name", "buttonFont", "", layout);

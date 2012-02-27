@@ -3,6 +3,7 @@
 #include "GUIPlayerButton.hpp"
 #include "GUIVLayout.hpp"
 #include "GameStateManager.hpp"
+#include "RendererManager.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
   : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0)
@@ -24,8 +25,9 @@ void GSBindPlayer::onStart()
 
 	// add gui
 
-	Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
-	layout->setY((768 - layout->getHeight()) / 2);
+	Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
+		(RendererManager::get().getHeight() - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
+	layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
 	layout->setDispatch(true);
 
 	Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");

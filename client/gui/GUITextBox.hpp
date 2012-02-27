@@ -89,8 +89,8 @@ public:
     if (this->_font)
       {
 	this->_font->setText(this->_text);
-	this->_font->draw(static_cast<int>(this->_x + ((this->_sprite.getWidth() - this->_font->getWidth()) / 2)),
-			  static_cast<int>(this->_y + ((this->_sprite.getHeight() - this->_font->getHeight()) / 2) - 5), elapseTime);
+	this->_font->draw(static_cast<int>(this->_x + ((this->_sprite.getWidth() - this->_font->getWidth()) / 2)) - 7,
+			  static_cast<int>(this->_y + ((this->_sprite.getHeight() - this->_font->getHeight()) / 2) + 2), elapseTime);
       }
   }
 
@@ -100,8 +100,8 @@ public:
     if (this->_font)
       {
 	this->_font->setText(this->_text);
-	this->_font->draw(x + ((this->_sprite.getWidth() - this->_font->getWidth()) / 2),
-			  y + ((this->_sprite.getHeight() - this->_font->getHeight()) / 2) - 5, elapseTime);
+	this->_font->draw(x + ((this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
+			  y + ((this->_sprite.getHeight() - this->_font->getHeight()) / 2) + 2, elapseTime);
       }
   }
 

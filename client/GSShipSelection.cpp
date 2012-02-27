@@ -2,6 +2,7 @@
 #include "GUIVLayout.hpp"
 #include "GUIShipList.hpp"
 #include "GSInGame.hpp"
+#include "RendererManager.hpp"
 
 GSShipSelection::GSShipSelection(std::list<Player *> const *players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online) :
   Core::GameState("shipSelection", true), _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbReady(0), _online(online)
@@ -26,7 +27,7 @@ void	GSShipSelection::onStart()
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 
-  Core::GUILayout *layout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 300, 20);
+  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2, (RendererManager::get().getHeight() - 100) / 2, 300, 300, 20);
   layout->setDispatch(true);
 
   unsigned int i = 0;

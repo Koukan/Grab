@@ -15,6 +15,7 @@
 #include "NetworkModule.hpp"
 #include "Converter.hpp"
 #include "GameButton.hpp"
+#include "RendererManager.hpp"
 
 GSJoinGame::GSJoinGame()
   : Core::GameState("joinGame", true), _isListed(false)
@@ -37,13 +38,14 @@ void	GSJoinGame::onStart()
 	  //CommandDispatcher::get().pushCommand(*(new GameCommand("Spawn")));
       Core::CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
       
-      this->_hlayout = new GUIHLayout(300, 768 / 2, 0, 0, 50);
+      this->_hlayout = new GUIHLayout(300, RendererManager::get().getHeight() / 2, 0, 0, 50);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_hlayout);
       this->_vlayout = new GUIVLayout(0, 0, 300, 700, 20, 0, 8, "up arrow", "down arrow");
     }
   else
     {
-      this->_vlayout = new GUIVLayout(1024 / 2, (768 - 100) / 2, 300, 700, 50);
+      this->_vlayout = new GUIVLayout(RendererManager::get().getWidth() / 2,
+		  (RendererManager::get().getHeight() - 100) / 2, 300, 700, 50);
       new GUILabel("Connection failed", "buttonFont", "", this->_vlayout);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_vlayout);
     }
