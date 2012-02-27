@@ -5,6 +5,11 @@ set(TARGET_NAME grab_client)
 
 set(EXECUTABLE_OUTPUT_PATH ../)
 
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/;${CMAKE_MODULE_PATH}")
+##### Linking openal
+find_package(OpenAL)
+find_package(sndfile)
+
 ##### Linking the sfml libraries
 IF(WIN32)
 set(TYPE "Windows")
@@ -106,6 +111,10 @@ set(SRCS
 	main.cpp
 	NetworkModule.cpp
 	NetworkModule.hpp
+	OpenALSoundProvider.cpp
+	OpenALSoundProvider.hpp
+	OpenALSound.cpp
+	OpenALSound.hpp
 	PacketCommand.cpp
 	PacketCommand.hpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
@@ -178,6 +187,8 @@ add_executable(
 include_directories (
 	${INCLUDES_COMMON_DIR}
 	${SFML_INCLUDE_DIR}
+	${OPENAL_INCLUDE_DIR}
+	${SNDFILE_INCLUDE_DIR}
 	${NET_INCLUDE_DIR}
 	${NET_MUTEX_INCLUDE_DIR}
 	${CORE_DIR}
@@ -205,6 +216,8 @@ ENDIF(WIN32)
 target_link_libraries(
 	${TARGET_NAME}
 	${SFML_LIBRARIES}
+	${OPENAL_LIBRARY}
+	${SNDFILE_LIBRARY}
 	${CMAKE_THREAD_LIBS_INIT}
 	core
 	net

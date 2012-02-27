@@ -12,6 +12,7 @@
 #include "GlobalResourceManager.hpp"
 #include "SFMLSpriteProvider.hpp"
 #include "SFMLFontProvider.hpp"
+#include "OpenALSoundProvider.hpp"
 
 const std::string Game::PREF_FILE = ".preferences";
 int Game::NB_CHAR_NAME = 7;
@@ -44,6 +45,7 @@ void		Game::init()
   Core::GlobalResourceManager::get().init();
   Core::GlobalResourceManager::get().addProvider(*new SFMLSpriteProvider);
   Core::GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
+  Core::GlobalResourceManager::get().addProvider(*new OpenALSoundProvider);
 
   // add Module
   this->loadModule(Core::CommandDispatcher::get());

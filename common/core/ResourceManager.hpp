@@ -4,6 +4,7 @@
 #include "Resource.hpp"
 #include "Sprite.hpp"
 #include "Font.hpp"
+#include "Sound.hpp"
 #include "bulletmlparser.h"
 #include "CoreDef.hpp"
 
@@ -25,6 +26,7 @@ class ResourceManager
 	Sprite						*getSprite(std::string const &name) const;
 	CoreFont					*getFont(std::string const &name) const;
 	BulletMLParser				*getBulletParser(std::string const &name) const;
+	Sound	                    *getSound(std::string const &name) const;
 	Resource					*getResource(std::string const &name, uint8_t type) const;
 	Sprite						*getSprite(uint32_t id) const;
 	CoreFont					*getFont(uint32_t id) const;
