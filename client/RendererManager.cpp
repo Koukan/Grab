@@ -48,7 +48,7 @@ void				RendererManager::update(double elapsedTime)
 				Core::Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)
 				{
-				  static_cast<Core::DrawableObject*>(*oit)->draw(time);
+					static_cast<Core::DrawableObject*>(*oit)->draw(time);
 				}
 			}
 		}

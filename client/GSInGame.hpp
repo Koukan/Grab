@@ -15,12 +15,14 @@
 class GSInGame : public Core::GameState
 {
 public:
-  GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4]);
+	GSInGame(std::list<Player *> const &players, Modes::Mode mode,
+			 std::string const &map, unsigned int nbPlayers, bool online,
+			 Ship::ShipInfo const (&selectedShips)[4]);
 	~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
 	virtual void	update(double elapsedTime = 0);
-  virtual bool	handleCommand(Core::Command const &command);
+	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 
 private:
@@ -57,7 +59,7 @@ private:
 
   	void		throwShip();
 
-  void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
+	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
 	void		displayScores();
 
 	void		loadP1(GameCommand const &event);
@@ -69,22 +71,22 @@ private:
 
 	uint32_t	getNextId();
 
-  void		createShips();
+	void		createShips();
 
-	uint16_t	_idPlayer;
-	std::list<Player *> const &_players;
-	Modes::Mode _mode;
-	std::string const _map;
-	unsigned int _nbPlayers;
-	bool _online;
-  Ship::ShipInfo const (&_selectedShips)[4];
-	std::vector<uint32_t> _scores;
-  std::vector<Core::CoreFont*>    _scoreFonts;
-  std::vector<Core::CoreFont*>    _nameFonts;
-  Core::PhysicObject	*_ship;
-	uint32_t	_rangeBegin;
-	uint32_t	_rangeEnd;
-	uint32_t	_currentId;
-	bool		_fire;
-	double		_elapsedTime;
+	uint16_t						_idPlayer;
+	std::list<Player *> const		&_players;
+	Modes::Mode						_mode;
+	std::string const				_map;
+	unsigned int					_nbPlayers;
+	bool							_online;
+	Ship::ShipInfo const			(&_selectedShips)[4];
+	std::vector<uint32_t>			_scores;
+	std::vector<Core::CoreFont*>    _scoreFonts;
+	std::vector<Core::CoreFont*>    _nameFonts;
+	Core::PhysicObject				*_ship;
+	uint32_t						_rangeBegin;
+	uint32_t						_rangeEnd;
+	uint32_t						_currentId;
+	bool							_fire;
+	double							_elapsedTime;
 };

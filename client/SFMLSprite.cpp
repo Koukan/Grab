@@ -4,7 +4,7 @@
 
 SFMLSprite::SFMLSprite(double x, double y)
 	: _window(RendererManager::get().getWindow()), _frameRate(-1),
-	  _lastTime(0), _currentTime(0), _repeat(false), _pingpong(false),
+	  _currentTime(0), _repeat(false), _pingpong(false),
 	  _up(true), _currentFrame(0), _tx(0), _ty(0)
 {
 	this->setX(x);
@@ -29,14 +29,12 @@ void		SFMLSprite::update(double elapsedTime)
 					 this->_currentFrame >= (size - 1)))
 		return ;
 	this->_currentTime += elapsedTime;
-	double		tmp = this->_currentTime - this->_lastTime;
-	double		time = this->_frameRate / size;
-	uint32_t	nbr;
-	unsigned int			nb = this->_currentFrame;
-	if (tmp > time)
+	double			time = this->_frameRate / size;
+	unsigned int	nb = this->_currentFrame;
+	if (this->_currentTime > time)
 	{
-		nbr = static_cast<int>(tmp) / static_cast<int>(time);
-		this->_lastTime += time * nbr;
+		uint32_t nbr = static_cast<int>(this->_currentTime) / static_cast<int>(time);
+		this->_currentTime -= time * nbr;
 		if (this->_pingpong)
 		{
 			while (nbr)
@@ -104,6 +102,7 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 	uint32_t		nb;
 	uint32_t		x;
 
+	_rect.clear();
 	for (; nby != 0; nby--)
 	{
 		x = left;

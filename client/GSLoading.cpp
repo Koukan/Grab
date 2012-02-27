@@ -90,8 +90,8 @@ void	GSLoading::onStart()
 	font->setY(350);
 	font->setText("Loading");
 	this->addGameObject(font, "gui", 20);
-//	_ingame = new GSInGame(this->_nbPlayers);
-	_ingame->preload();
+	//_ingame = new GSInGame(this->_nbPlayers);
+	//_ingame->preload();
 
   /*this->addBulletParser("resources/BulletBossMetroid.xml", "Test");
   BulletCommand *bullet = new BulletCommand("Test", *this, 1100, 300);
