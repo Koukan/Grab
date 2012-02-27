@@ -32,7 +32,6 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 	private:
 		sf::RenderWindow			*_window;
 		double						_frameRate;
-		double						_lastTime;
 		double						_currentTime;
 		bool						_repeat;
 		bool						_pingpong;

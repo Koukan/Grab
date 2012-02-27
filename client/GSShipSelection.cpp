@@ -41,8 +41,8 @@ void	GSShipSelection::back()
 {
 }
 
-void GSShipSelection::changeToInGame()
+void	GSShipSelection::changeToInGame()
 {
-  Core::GameState *inGame = new GSInGame(*this->_players, this->_mode, this->_map, this->_nbPlayers, this->_online, _selectedShips);
+	Core::GameState *inGame = new GSInGame(*this->_players, this->_mode, this->_map, this->_nbPlayers, this->_online, _selectedShips);
 	Core::GameStateManager::get().pushState(*inGame);
 }

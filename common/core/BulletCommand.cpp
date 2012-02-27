@@ -150,12 +150,14 @@ void		BulletCommand::createBullet(BulletMLState* state,
 		bullet = new BulletCommand(*state, _state, *box, vx, vy);
 		this->_state.addGameObject(bullet, state->getGroup());
 		this->insertChild(*bullet);
+		bullet->setSeed(this->_rand());
 	}
 	else
 	{
 		bullet = new BulletCommand(*state, _state, _x, _y, vx, vy);
 		this->_state.addGameObject(bullet, state->getGroup());
 		this->insertChild(*bullet);
+		bullet->setSeed(this->_rand());
 	}
 	delete state;
 }

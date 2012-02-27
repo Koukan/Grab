@@ -3,9 +3,8 @@
 
 CORE_BEGIN_NAMESPACE
 
-GSManager::GSManager() : Module("GSManager")
+GSManager::GSManager() : Module("GSManager", 20)
 {
-	this->_targetRate = 20;
 }
 
 GSManager::~GSManager()

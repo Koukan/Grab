@@ -18,8 +18,8 @@ Server::~Server()
 
 bool			Server::initServer(std::string const &port, size_t nbthread)
 {
-	NetworkModule		&network = NetworkModule::get();
-	Core::ResourceManager		test;
+	NetworkModule			&network = NetworkModule::get();
+	Core::ResourceManager	test;
 
 	Core::GlobalResourceManager::get().init();
 	Core::GlobalResourceManager::get().addProvider(*new MapProvider());
