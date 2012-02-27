@@ -23,8 +23,8 @@ RendererManager::~RendererManager()
 
 void				RendererManager::init()
 {
-	this->_width = 1024;
-	this->_height = 768;
+	this->_width = 1280;
+	this->_height = 720;
 }
 
 void				RendererManager::update(double elapsedTime)

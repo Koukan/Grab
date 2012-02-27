@@ -38,6 +38,7 @@ void		SFMLSpriteProvider::addImage(std::string const &path, Core::Sprite &sprite
 		#endif
 		if (!texture->LoadFromFile(path))
 			std::cerr << "Image at " << path << " was not found." << std::endl;
+		texture->SetSmooth(false);
 		this->_images[path] = texture;
 		this->_use[path] = 1;
 		SETTEXTURE(*texture);
