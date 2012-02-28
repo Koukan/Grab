@@ -29,3 +29,8 @@ void		ConcreteObject::setSprite(Core::Sprite* sprite)
     delete _sprite;
   _sprite = sprite;
 }
+
+Core::Sprite const & ConcreteObject::getSprite() const
+{
+  return *_sprite;
+}
