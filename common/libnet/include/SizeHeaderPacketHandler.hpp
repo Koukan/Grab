@@ -16,21 +16,16 @@ template <typename IOType = SocketStream>
 class SizeHeaderPacketHandler : public PacketHandler<IOType>
 {
 public:
-	SizeHeaderPacketHandler(size_t size = 2048) : PacketHandler<IOType>(size), _left(0), _header(*new Packet(sizeof(uint16_t)))
+	SizeHeaderPacketHandler(size_t size = 2048) : PacketHandler<IOType>(size), _left(0)
 	{}
 	
-	~SizeHeaderPacketHandler()
-	{
-		delete &_header;
-	}
-
 	virtual int handleInput(Socket &)
 	{	
 		int	ret	= 0;
 		do
 		{
 			if (_left == 0)
-				ret = this->_iohandler.recvPacket(this->_header, 0, sizeof(_left));
+				ret = this->_iohandler.recv((char*)&this->_header, sizeof(_left));
 			else
 				ret = this->_iohandler.recvPacket(*this->_inpacket, 0, _left);
 			if (ret <= 0)
@@ -42,8 +37,7 @@ public:
 			}
 			if (_left == 0)
 			{
-				this->_header >> _left;
-				this->_header.reset();
+				_left = ::ntohs(_header); 
 				continue ;
 			}
 			_left -= ret;
@@ -74,7 +68,7 @@ public:
 
 private:
 	uint16_t			_left;
-	Packet				&_header;
+	uint16_t			_header;
 };
 
 NET_END_NAMESPACE
