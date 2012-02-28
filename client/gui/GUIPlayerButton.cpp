@@ -32,7 +32,7 @@ GUIPlayerButton::~GUIPlayerButton()
 	    delete this->_bindFont;
 }
 
-bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
+bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 {
 	if (this->_bindState != GUIPlayerButton::BINDING)
 	{
@@ -62,8 +62,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 					this->_ship = Ship::shipsListSize - 1;
 				else
 					this->_ship--;
-				this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
-				this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+				this->changeShip();
 				return (true);
 			}
 			else if (command.direction == Core::GUICommand::DOWN)
@@ -72,8 +71,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 					this->_ship = 0;
 				else
 					this->_ship++;
-				this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
-				this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+				this->changeShip();
 				return (true);
 			}
 		}
@@ -86,17 +84,21 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 					return (true);
 				if (!this->_isSelect)
 				{
-					this->changeToSelect(command.playerType);
-					this->_player = new Player(static_cast<Player::type>(command.playerType));
-					this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
-					++this->_nbPending;
-					this->_isSelect = true;
-					this->_playerType = command.playerType;
+					if (this->_bindPlayer.isOnline())
+					{
+						this->_bindPlayer.addDemand(command.playerType);
+					}
+					else
+					{
+						this->_playerType = command.playerType;
+						this->_player = new Player(static_cast<Player::type>(command.playerType));
+						this->changeToSelect();
+					}
 				}
 				else
 				{
 					if (this->_bindState == GUIPlayerButton::NONE)
-						this->changeToReady(this->_playerType);
+						this->changeToReady();
 					else
 					{
 						this->_bindState = GUIPlayerButton::BINDING;
@@ -111,9 +113,8 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				if (this->_isReady)
 				{
 					--this->_nbReady;
-					this->changeToSelect(this->_playerType);
+					this->changeToSelect();
 					this->_isReady = false;
-					++this->_nbPending;
 				}
 				else
 				{
@@ -121,10 +122,9 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 					this->_player = 0;
 					--this->_nbPending;
 					if (this->_nbPending == 0 && this->_nbReady > 0)
-						this->_bindPlayer.goToShipSelection();
+						this->_bindPlayer.goToInGame();
 					this->changeToEmpty();
 					this->_playerType = Core::GUICommand::ALL;
-					this->_isSelect = false;
 				}
 				return (true);
 			}
@@ -166,7 +166,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 	return (false);
 }
 
-void GUIPlayerButton::draw(double elapseTime)
+void	GUIPlayerButton::draw(double elapseTime)
 {
 	this->_sprite.draw(0, 0, elapseTime);
 	if (this->_font)
@@ -199,25 +199,33 @@ void	GUIPlayerButton::changeToEmpty()
 	this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
 	if (this->_font)
 		this->_font->setText("Empty");
+	this->_isSelect = false;
 }
 
-void	GUIPlayerButton::changeToSelect(Core::GUICommand::PlayerType type)
+void	GUIPlayerButton::changeToSelect()
 {
 	this->_sprite.updateState(Core::ButtonSprite::SELECTED);
 	if (this->_font)
 	{
-		if (type == Core::GUICommand::KEYBOARD)
+		if (this->_playerType == Core::GUICommand::ONLINE)
+			this->_font->setText("Online : Start ?");
+		else if (this->_playerType == Core::GUICommand::KEYBOARD)
 			this->_font->setText("Keyboard : Start ?");
 		else
 			this->_font->setText("Joystick : Start ?");
 	}
+	this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+	++this->_nbPending;
+	this->_isSelect = true;
 }
 
-void	GUIPlayerButton::changeToReady(Core::GUICommand::PlayerType type)
+void	GUIPlayerButton::changeToReady()
 {
 	if (this->_font)
 	{
-		if (type == Core::GUICommand::KEYBOARD)
+		if (this->_playerType == Core::GUICommand::ONLINE)
+			this->_font->setText("Online : Ready");
+		else if (this->_playerType == Core::GUICommand::KEYBOARD)
 			this->_font->setText("Keyboard : Ready");
 		else
 			this->_font->setText("Joystick : Ready");
@@ -225,6 +233,12 @@ void	GUIPlayerButton::changeToReady(Core::GUICommand::PlayerType type)
 	--this->_nbPending;
 	++this->_nbReady;
 	if (this->_nbPending == 0)
-		this->_bindPlayer.goToShipSelection();
+		this->_bindPlayer.goToInGame();
 	this->_isReady = true;
+}
+
+void	GUIPlayerButton::changeShip()
+{
+	this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
+	this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
 }
