@@ -52,6 +52,8 @@ set(SRCS
 	NetworkModule.hpp
 	PacketCommand.cpp
 	PacketCommand.hpp
+	Player.cpp
+	Player.hpp
 	ResourceCommand.hpp
 	Rules.cpp
 	Rules.hpp

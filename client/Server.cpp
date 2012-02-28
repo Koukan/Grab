@@ -40,7 +40,7 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::rangeId,
 			&Server::resourceId,
 			&Server::demandPlayerPacket,
-			NULL,
+			&Server::addPlayerPacket,
 			&Server::removePlayerPacket
 	};
 	uint8_t			type;

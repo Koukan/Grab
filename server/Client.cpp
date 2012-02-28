@@ -13,7 +13,14 @@ Client::~Client()
 {
 	NetworkModule::get().removeUDPClient(*this);
 	if (this->_game)
+	{
 		this->_game->removeClient(*this);
+		for (std::list<Player*>::iterator it = this->_players.begin();
+			 it != this->_players.end(); it++)
+		{
+			this->_game->removePlayer((*it)->getId());
+		}
+	}
 }
 
 void		Client::init()
@@ -46,9 +53,9 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			NULL,
 			NULL,
 			NULL,
-			&Client::demandClient,
+			&Client::demandPlayer,
 			NULL,
-			&Client::removeClient
+			&Client::removePlayer
 	};
 	uint8_t			type;
 
@@ -192,8 +199,7 @@ int		Client::createGame(Net::Packet &packet)
 	Core::Logger::logger << "Game created with "<< int(maxClient) << " players";
 	if (game)
 	{
-			//game->addClient(*this);
-		this->setGame(*game);
+		game->addClient(*this);
 		return 1;
 	}
 	return this->sendError(Error::SERVER_FULL);
@@ -204,35 +210,53 @@ int		Client::requireResource(Net::Packet &)
 	return 1;
 }
 
-int		Client::demandClient(Net::Packet &packet)
+int		Client::demandPlayer(Net::Packet &packet)
 {
 	uint32_t		id;
 
 	packet >> id;
 	if (this->_game)
 	{
-		int i = this->_game->addClient();
-		if (i != -1)
+		Player *player = this->_game->addPlayer();
+		if (player != 0)
 		{
+			this->_players.push_back(player);
 			Net::Packet		answer(6);
 			answer << static_cast<uint8_t>(TCP::DEMANDPLAYER);
 			answer << id;
-			answer << static_cast<uint8_t>(i);
+			answer << static_cast<uint8_t>(player->getId());
 			this->handleOutputPacket(answer);
+			Net::Packet		broadcast(2);
+			broadcast << static_cast<uint8_t>(TCP::ADDPLAYER);
+			broadcast << static_cast<uint8_t>(player->getId());
+			NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
 			return 1;
 		}
 	}
 	return 0;
 }
 
-int		Client::removeClient(Net::Packet &packet)
+int		Client::removePlayer(Net::Packet &packet)
 {
 	uint8_t		nb;
 
 	packet >> nb;
+	for (std::list<Player*>::iterator it = this->_players.begin();
+		 it != this->_players.end(); it++)
+	{
+		if ((*it)->getId() == nb)
+		{
+			this->_players.erase(it);
+			break ;
+		}
+	}
 	if (this->_game)
 	{
-		this->_game->removeClient(nb);
+		this->_game->removePlayer(nb);
+		Net::Packet		broadcast(2);
+		broadcast << static_cast<uint8_t>(TCP::REMOVEPLAYER);
+		broadcast << static_cast<uint8_t>(nb);
+		NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
 		return 1;
 	}
 	return 0;

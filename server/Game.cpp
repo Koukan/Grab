@@ -13,6 +13,7 @@ Game::Game(uint16_t id, uint8_t maxClients)
 	  _id(id), _maxClients(maxClients), _readyClients(0)
 {
 	Server::get().loadModule(*this);
+	::memset(this->_players, 0, sizeof(this->_players));
 }
 
 Game::~Game()
@@ -82,31 +83,34 @@ bool		Game::addClient(Client &player)
 	return false;
 }
 
-int			Game::addClient()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		if (this->_test[i] == false)
-		{
-			this->_test[i] = true;
-			return i;
-		}
-	}
-	return -1;
-}
-
-void		Game::removeClient(int i)
-{
-	if (i < 4 && i >= 0)
-		this->_test[i] = false;
-}
-
 void		Game::removeClient(Client &player)
 {
 	std::list<Client*>::iterator it = std::find(this->_list.begin(), this->_list.end(), &player);
 
 	if (it != this->_list.end())
 		this->_list.erase(it);
+}
+
+Player		*Game::addPlayer()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (this->_players[i] == 0)
+		{
+			this->_players[i] = new Player(i);
+			return this->_players[i];
+		}
+	}
+	return 0;
+}
+
+void		Game::removePlayer(int i)
+{
+	if (i < 4 && i >= 0)
+	{
+		delete this->_players[i];
+		this->_players[i] = 0;
+	}
 }
 
 size_t		Game::nbClients() const

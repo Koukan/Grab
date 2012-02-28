@@ -4,6 +4,7 @@
 #include "Module.hpp"
 #include "GameLogic.hpp"
 #include "Net.hpp"
+#include "Player.hpp"
 
 class Game : public Core::Module
 {
@@ -15,9 +16,9 @@ class Game : public Core::Module
 	virtual void	destroy();
 	void			updateGameState(double elapsedTime);
 	bool			addClient(Client &player);
-	int				addClient();
-	void			removeClient(int i);
 	void			removeClient(Client &player);
+	Player			*addPlayer();
+	void			removePlayer(int i);
 	size_t			nbClients() const;
 	bool			isFull() const;
 	uint16_t		getId() const;
@@ -37,7 +38,7 @@ class Game : public Core::Module
 	uint8_t				_maxClients;
 	size_t				_readyClients;
 	std::list<Client*>	_list;
-	bool				_test[4]; // a modifier
+	Player				*_players[4]; // a modifier
 	Net::Mutex			_mutex;
 	friend class GameLogic;
 };
