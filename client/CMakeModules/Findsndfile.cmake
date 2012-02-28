@@ -22,6 +22,7 @@ FIND_PATH(SNDFILE_INCLUDE_DIR sndfile.h
     /opt/local/include # DarwinPorts
     /opt/csw/include # Blastwave
     /opt/include
+	C:\\Program\ Files\ \(x86\)\\Mega-Nerd\\libsndfile\\include
 	C:\\Program\ Files\\Mega-Nerd\\libsndfile\\include
     [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;OSG_ROOT]/include
     /usr/freeware/include
@@ -42,6 +43,8 @@ find_library(SNDFILE_LIBRARY
     /opt/local/lib
     /opt/csw/lib
     /opt/lib
+    C:\\Program\ Files\ \(x86\)\\Mega-Nerd\\libsndfile\\lib
+    C:\\Program\ Files\ \(x86\)\\Mega-Nerd\\libsndfile\\bin
     C:\\Program\ Files\\Mega-Nerd\\libsndfile\\lib
     C:\\Program\ Files\\Mega-Nerd\\libsndfile\\bin
     [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;OSG_ROOT]/lib
