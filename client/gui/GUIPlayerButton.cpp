@@ -2,13 +2,15 @@
 #include "GameStateManager.hpp"
 #include "GSBindPlayer.hpp"
 #include "Ship.hpp"
+#include "GameCommand.hpp"
+#include "CommandDispatcher.hpp"
 
-GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout)
+GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout, uint32_t nb)
 	: Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, Core::GUICommand::ALL), _bindPlayer(bindPlayer), _isSelect(false),
 	_isReady(false), _bindState(GUIPlayerButton::NONE), _player(player), _nbPending(nbPending), _nbReady(nbReady), _ship(0), _sprite(sprite),
 	_font(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
 	_bindFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
-	_shipFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)), _bindIndex(0)
+	_shipFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)), _bindIndex(0), _nb(nb)
 {
 	this->changeToEmpty();
 	if (this->_bindFont)
@@ -118,8 +120,6 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				}
 				else
 				{
-					delete this->_player;
-					this->_player = 0;
 					--this->_nbPending;
 					if (this->_nbPending == 0 && this->_nbReady > 0)
 						this->_bindPlayer.goToInGame();
@@ -207,6 +207,12 @@ void	GUIPlayerButton::changeToEmpty()
 	if (this->_font)
 		this->_font->setText("Empty");
 	this->_isSelect = false;
+	if (this->_player)
+	{
+		delete this->_player;
+		this->_player = 0;
+		this->_bindPlayer.removePlayer(this->_nb, this->_playerType);
+	}
 }
 
 void	GUIPlayerButton::changeToSelect()

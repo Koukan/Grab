@@ -39,6 +39,8 @@ class Player : public Net::SizeHeaderPacketHandler<>
 	int			player(Net::Packet &packet);
 	int			createGame(Net::Packet &packet);
 	int			requireResource(Net::Packet &packet);
+	int			demandPlayer(Net::Packet &packet);
+	int			removePlayer(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();

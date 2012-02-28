@@ -4,6 +4,8 @@
 #include "GUIVLayout.hpp"
 #include "GameStateManager.hpp"
 #include "RendererManager.hpp"
+#include "GameCommand.hpp"
+#include "CommandDispatcher.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
   : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
@@ -33,7 +35,26 @@ void	GSBindPlayer::onStart()
 	Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 
 	for (unsigned int i = 0; i < this->_nbPlayers; ++i)
-		new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout);
+		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
+}
+
+bool	GSBindPlayer::handleCommand(Core::Command const &command)
+{
+	Method		tab[] = {
+		{"answerBind", &GSBindPlayer::answerBind},
+		{"addPlayer", &GSBindPlayer::addPlayer},
+		{"removePlayer", &GSBindPlayer::removePlayer}
+	};
+
+	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
+	{
+		if (tab[i].name == command.name)
+		{
+			(this->*(tab[i].func))(command);
+			return true;
+		}
+	}
+	return false;
 }
 
 void	GSBindPlayer::goToInGame()
@@ -56,5 +77,77 @@ bool	GSBindPlayer::isOnline() const
 
 void	GSBindPlayer::addDemand(Core::GUICommand::PlayerType type)
 {
-	this->_demands.push_back(Demand(_id++, type));
+	for (DemandMap::const_iterator it = this->_demands.begin();
+		 it != this->_demands.end(); it++)
+	{
+		if (it->second == type)
+			return ;
+	}
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("demandPlayer", _id));
+	this->_demands[_id++] = type;
+}
+
+void	GSBindPlayer::answerBind(Core::Command const &command)
+{
+	GameCommand const &cmd = static_cast<GameCommand const&>(command);
+	DemandMap::iterator it = this->_demands.find(cmd.idObject);
+
+	if (it != this->_demands.end())
+	{
+		uint32_t	i = 0;
+		for (std::list<GUIPlayerButton*>::const_iterator lit = this->_buttons.begin();
+			 lit != this->_buttons.end(); lit++)
+		{
+			if (i == cmd.idResource)
+			{
+				(*lit)->addOnlinePlayer(it->second);
+				break ;
+			}
+			i++;
+		}
+		this->_demands.erase(it);
+	}
+}
+
+void	GSBindPlayer::addPlayer(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const&>(command);
+	uint32_t			i = 0;
+
+	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
+		 it != this->_buttons.end(); it++)
+	{
+		if (i == cmd.idObject)
+		{
+			(*it)->addOnlinePlayer(Core::GUICommand::ONLINE);
+			return ;
+		}
+		i++;
+	}
+}
+
+void	GSBindPlayer::removePlayer(uint32_t nb, Core::GUICommand::PlayerType type)
+{
+	if (this->_online)
+	{
+		Core::CommandDispatcher::get().pushCommand(*new GameCommand("unBindPlayer", nb));
+		this->_demands.erase(type);
+	}
+}
+
+void	GSBindPlayer::removePlayer(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const&>(command);
+	uint32_t			i = 0;
+
+	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
+		 it != this->_buttons.end(); it++)
+	{
+		if (i == cmd.idObject)
+		{
+			(*it)->changeToEmpty();
+			return ;
+		}
+		i++;
+	}
 }

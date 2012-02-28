@@ -82,6 +82,25 @@ bool		Game::addPlayer(Player &player)
 	return false;
 }
 
+int			Game::addPlayer()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (this->_test[i] == false)
+		{
+			this->_test[i] = true;
+			return i;
+		}
+	}
+	return -1;
+}
+
+void		Game::removePlayer(int i)
+{
+	if (i < 4)
+		this->_test[i] = false;
+}
+
 void		Game::removePlayer(Player &player)
 {
 	std::list<Player*>::iterator it = std::find(this->_list.begin(), this->_list.end(), &player);
@@ -113,7 +132,7 @@ uint8_t     Game::getMaxPlayers() const
 void		Game::addReadyPlayer()
 {
 	_readyPlayers++;
-	 if (this->_maxPlayers == this->_readyPlayers)
+	if (this->_maxPlayers == this->_readyPlayers)
 	{
 		this->_readyPlayers = 0;
 		this->startGame();

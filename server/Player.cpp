@@ -38,7 +38,17 @@ int			Player::handleInputPacket(Net::Packet &packet)
 			&Player::player,
 			&Player::createGame,
 			NULL,
-			&Player::requireResource
+			&Player::requireResource,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			&Player::demandPlayer,
+			NULL,
+			&Player::removePlayer
 	};
 	uint8_t			type;
 
@@ -112,11 +122,13 @@ Net::Packet const	*Player::getPacket(uint32_t id) const
 int		Player::connection(Net::Packet &packet)
 {
 	Net::Packet		answer(1);
+	Net::InetAddr	addr;
 
 	packet >> _name;
 	answer << static_cast<uint8_t>(TCP::ETABLISHED);
 	this->handleOutputPacket(answer);
-	Core::Logger::logger << "Player " << _name << " connected";
+	this->getRemoteAddr(addr);
+	Core::Logger::logger << addr.getHost() << " connected";
 	return 1;
 }
 
@@ -180,7 +192,8 @@ int		Player::createGame(Net::Packet &packet)
 	Core::Logger::logger << "Game created by " << int(maxPlayer);
 	if (game)
 	{
-		game->addPlayer(*this);
+			//game->addPlayer(*this);
+		this->setGame(*game);
 		return 1;
 	}
 	return this->sendError(Error::SERVER_FULL);
@@ -189,6 +202,40 @@ int		Player::createGame(Net::Packet &packet)
 int		Player::requireResource(Net::Packet &)
 {
 	return 1;
+}
+
+int		Player::demandPlayer(Net::Packet &packet)
+{
+	uint32_t		id;
+
+	packet >> id;
+	if (this->_game)
+	{
+		int i = this->_game->addPlayer();
+		if (i != -1)
+		{
+			Net::Packet		answer(6);
+			answer << static_cast<uint8_t>(TCP::DEMANDPLAYER);
+			answer << id;
+			answer << static_cast<uint8_t>(i);
+			this->handleOutputPacket(answer);
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int		Player::removePlayer(Net::Packet &packet)
+{
+	uint8_t		nb;
+
+	packet >> nb;
+	if (this->_game)
+	{
+		this->_game->removePlayer(nb);
+		return 1;
+	}
+	return 0;
 }
 
 GameLogic           &Player::getGameLogic()

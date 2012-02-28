@@ -15,6 +15,8 @@ class Game : public Core::Module
 	virtual void	destroy();
 	void			updateGameState(double elapsedTime);
 	bool			addPlayer(Player &player);
+	int				addPlayer();
+	void			removePlayer(int i);
 	void			removePlayer(Player &player);
 	size_t			nbPlayers() const;
 	bool			isFull() const;
@@ -35,6 +37,7 @@ class Game : public Core::Module
 	uint8_t				_maxPlayers;
 	size_t				_readyPlayers;
 	std::list<Player*>	_list;
+	bool				_test[4]; // a modifier
 	Net::Mutex			_mutex;
 	friend class GameLogic;
 };
