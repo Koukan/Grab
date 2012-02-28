@@ -259,9 +259,18 @@ int		Client::updatePlayer(Net::Packet &packet)
 {
 	if (this->_game)
 	{
-		Net::Packet	*pack = packet.clone();
-		NetworkModule::get().sendTCPPacket(*pack, _game->getClients(), this);
-		delete pack;
+		Net::Packet		broadcast(4);
+		uint8_t			nb;
+		bool			ready;
+
+		broadcast << static_cast<uint8_t>(TCP::UPDATEPLAYER);
+		packet >> nb;
+		broadcast << nb;
+		packet >> nb;
+		broadcast << nb;
+		packet >> ready;
+		broadcast << ready;
+		NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
 		return 1;
 	}
 	return 0;
