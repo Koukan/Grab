@@ -22,8 +22,8 @@ public:
 	GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout);
 	~GUIPlayerButton();
 
-	virtual bool handleGUICommand(Core::GUICommand const &command);
-	virtual void draw(double elapseTime);
+	virtual bool	handleGUICommand(Core::GUICommand const &command);
+	virtual void	draw(double elapseTime);
 	virtual void	draw(int x, int y, double elapseTime);
 
 private:
@@ -43,6 +43,7 @@ private:
 	unsigned int				_bindIndex;
 
 	void	changeToEmpty();
-	void	changeToSelect(Core::GUICommand::PlayerType type);
-	void	changeToReady(Core::GUICommand::PlayerType type);
+	void	changeToSelect();
+	void	changeToReady();
+	void	changeShip();
 };

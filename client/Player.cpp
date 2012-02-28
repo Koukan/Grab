@@ -29,38 +29,37 @@ Player::~Player()
 {
 }
 
-Player::type Player::getType() const
-{
-	return (this->_type);
-}
-
-void Player::setType(Player::type type)
+void			Player::setType(Player::type type)
 {
 	this->_type = type;
 }
 
-InputCommand &Player::getAction(Player::Action action)
-{
-	return (this->_actions[action]);
-}
-
-void	Player::setShip(Ship *ship)
+void			Player::setShip(Ship *ship)
 {
 	this->_ship = ship;
 }
 
-Ship	*Player::getShip() const
-{
-	return (this->_ship);
-}
-
-void		Player::setShipInfo(Ship::ShipInfo const *info)
+void			Player::setShipInfo(Ship::ShipInfo const *info)
 {
 	this->_shipInfo = info;
 }
 
-Ship::ShipInfo const	*Player::getShipInfo() const
+Player::type	Player::getType() const
 {
-	return (_shipInfo);
+	return (this->_type);
 }
 
+Ship			*Player::getShip() const
+{
+	return (this->_ship);
+}
+
+Ship::ShipInfo const	*Player::getShipInfo() const
+{
+	return (this->_shipInfo);
+}
+
+InputCommand	&Player::getAction(Player::Action action)
+{
+	return (this->_actions[action]);
+}

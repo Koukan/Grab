@@ -15,6 +15,7 @@ public:
       JOYSTICK2,
       JOYSTICK3,
       JOYSTICK4,
+	  ONLINE,
 	  ALL
 	};
 
@@ -24,7 +25,7 @@ public:
       ACTION,
 	  KEY
     };
-  
+
   enum ButtonAction
     {
       PRESSED,
@@ -39,7 +40,7 @@ public:
       UP,
       DOWN
     };
-  
+
    enum ActionState
      {
 		 SELECT,

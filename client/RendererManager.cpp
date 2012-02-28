@@ -1,7 +1,3 @@
-//#if defined (_WIN32)
-//#include <windows.h>
-//#endif
-
 #include "RendererManager.hpp"
 #include "GameStateManager.hpp"
 #include "DrawableObject.hpp"
@@ -71,29 +67,14 @@ void				RendererManager::flip()
 	_window->Display();
 }
 
-//CL_GraphicContext	&RendererManager::getGC()
-//{
-	//return _gc;
-//}
-
 sf::RenderWindow	*RendererManager::getWindow()
 {
 	if (!_window)
 	{
-		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "R-Type", sf::Style::Fullscreen);
+		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "R-Type"/*, sf::Style::Fullscreen*/);
 	}
 	return _window;
 }
-
-//CL_GUIManager		&RendererManager::getGUIManager()
-//{
-	//return _gui_manager;
-//}
-
-//CL_GUIComponent		*RendererManager::getMainWindow()
-//{
-	//return _window2;
-//}
 
 int					RendererManager::getWidth() const
 {
