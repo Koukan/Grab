@@ -28,6 +28,7 @@ class Game : public Core::Module
 	void			sendUDPPacket(Net::Packet &packet, Client *player = 0);
 	GameLogic		&getGameLogic();
 	std::list<Client*> const	&getClients() const;
+	Player	* const *getPlayers() const;
 
   private:
 	void			broadcastStatus(Client &player, int status);
@@ -37,6 +38,7 @@ class Game : public Core::Module
 	uint16_t			_id;
 	uint8_t				_maxClients;
 	size_t				_readyClients;
+	uint8_t				_nbPlayers;
 	std::list<Client*>	_list;
 	Player				*_players[4]; // a modifier
 	Net::Mutex			_mutex;

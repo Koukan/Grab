@@ -135,7 +135,7 @@ int		Client::connection(Net::Packet &packet)
 	answer << static_cast<uint8_t>(TCP::ETABLISHED);
 	this->handleOutputPacket(answer);
 	this->getRemoteAddr(addr);
-	Core::Logger::logger << addr.getHost() << " connected";
+	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " connected";
 	return 1;
 }
 
@@ -170,7 +170,18 @@ int		Client::connectGame(Net::Packet &packet)
 	{
 		if (game->addClient(*this))
 		{
-			Core::Logger::logger << "Client " << _name << " join game" << id;
+			Core::Logger::logger << "Client join game" << id;
+			Player	* const *players = game->getPlayers();
+			for (size_t i = 0; i < 4; i++)
+			{
+				if (players[i] != 0)
+				{
+					Net::Packet		answer(2);
+					answer << static_cast<uint8_t>(TCP::ADDPLAYER);
+					answer << static_cast<uint8_t>(i);
+					this->handleOutputPacket(answer);
+				}
+			}
 			return 1;
 		}
 		return this->sendError(Error::GAME_FULL);

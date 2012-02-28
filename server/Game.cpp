@@ -10,7 +10,7 @@
 
 Game::Game(uint16_t id, uint8_t maxClients)
   : Core::Module("Game" + id, 20), _logic(*this),
-	  _id(id), _maxClients(maxClients), _readyClients(0)
+	  _id(id), _maxClients(maxClients), _readyClients(0), _nbPlayers(0)
 {
 	Server::get().loadModule(*this);
 	::memset(this->_players, 0, sizeof(this->_players));
@@ -50,7 +50,7 @@ void		Game::updateGameState(double elapsedTime)
 
 bool		Game::addClient(Client &player)
 {
-	if (this->_list.size() < this->_maxClients)
+	if (this->nbClients() < this->_maxClients)
 	{
 		player.setId(this->_list.size());
 		this->_list.push_back(&player);
@@ -98,6 +98,7 @@ Player		*Game::addPlayer()
 		if (this->_players[i] == 0)
 		{
 			this->_players[i] = new Player(i);
+			_nbPlayers++;
 			return this->_players[i];
 		}
 	}
@@ -109,13 +110,14 @@ void		Game::removePlayer(int i)
 	if (i < 4 && i >= 0)
 	{
 		delete this->_players[i];
+		_nbPlayers--;
 		this->_players[i] = 0;
 	}
 }
 
 size_t		Game::nbClients() const
 {
-	return _list.size();
+	return _nbPlayers;
 }
 
 bool		Game::isFull() const
@@ -146,6 +148,11 @@ void		Game::addReadyClient()
 std::list<Client*> const &Game::getClients() const
 {
 	return this->_list;
+}
+
+Player	* const *Game::getPlayers() const
+{
+	return this->_players;
 }
 
 GameLogic	&Game::getGameLogic()
