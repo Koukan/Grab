@@ -103,8 +103,6 @@ set(SRCS
 	GSMainMenu.hpp
 	GSPartySettings.cpp
 	GSPartySettings.hpp
-	GSShipSelection.cpp
-	GSShipSelection.hpp
 	InputModule.cpp
 	InputModule.hpp
 	Modes.hpp
@@ -154,9 +152,6 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIHLayout.cpp
 	${GUI_SRC_DIR}/GUIVLayout.hpp
 	${GUI_SRC_DIR}/GUIHLayout.hpp
-	${GUI_SRC_DIR}/GUIShipList.cpp
-	${GUI_SRC_DIR}/GUIShipList.hpp
-	${GUI_SRC_DIR}/GUIShipButton.hpp
 )
 
 IF(WIN32)

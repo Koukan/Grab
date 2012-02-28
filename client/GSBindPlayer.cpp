@@ -1,5 +1,5 @@
 #include "GSBindPlayer.hpp"
-#include "GSShipSelection.hpp"
+#include "GSInGame.hpp"
 #include "GUIPlayerButton.hpp"
 #include "GUIVLayout.hpp"
 #include "GameStateManager.hpp"
@@ -45,6 +45,6 @@ void GSBindPlayer::goToShipSelection()
 		if (this->_players[i])
 			players->push_back(this->_players[i]);
 	}
-	Core::GameState *shipSelection = new GSShipSelection(players, this->_mode, this->_map, this->_nbPlayers, _online);
-	Core::GameStateManager::get().pushState(*shipSelection);
+	Core::GameStateManager::get().pushState(
+		*new GSInGame(*players, this->_mode, this->_map, this->_nbPlayers, _online));
 }

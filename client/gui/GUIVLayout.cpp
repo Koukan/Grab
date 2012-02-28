@@ -22,17 +22,19 @@ GUIVLayout::~GUIVLayout()
 
 bool GUIVLayout::handleGUICommand(Core::GUICommand const &command)
 {
+	if (this->GUILayout::handleGUICommand(command))
+		return true;
 	if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::UP)
-    {
-      this->prevElement();
-      return (true);
-    }
-  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::DOWN)
-    {
-      this->nextElement();
-      return (true);
-    }
-  return (this->GUILayout::handleGUICommand(command));
+	{
+		this->prevElement();
+		return (true);
+	}
+	else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::DOWN)
+	{
+		this->nextElement();
+		return (true);
+	}
+	return false;
 }
 
 void GUIVLayout::draw(double elapseTime)

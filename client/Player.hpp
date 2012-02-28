@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Input.hpp"
+#include "Ship.hpp"
 
-class Ship;
 class Player
 {
 public:
@@ -26,15 +26,18 @@ public:
   Player(Player::type type, Ship *ship = 0);
   ~Player();
 
-  Player::type getType() const;
-  void setType(Player::type type);
-  Core::InputCommand &getAction(Player::Action action);
+  Player::type			getType() const;
+  void					setType(Player::type type);
+  Core::InputCommand	&getAction(Player::Action action);
 
-  void	setShip(Ship *ship);
-  Ship *getShip() const;
+  void					setShip(Ship *ship);
+  Ship					*getShip() const;
+  void					setShipInfo(Ship::ShipInfo const *info);
+  Ship::ShipInfo const	*getShipInfo() const;
 
 private:
-	Player::type _type;
-  Core::InputCommand _actions[NBACTIONS];
-	Ship*	     _ship;
+	Player::type			_type;
+	Core::InputCommand		_actions[NBACTIONS];
+	Ship					*_ship;
+	Ship::ShipInfo const	*_shipInfo;
 };

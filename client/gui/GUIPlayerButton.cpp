@@ -1,12 +1,14 @@
 #include "GUIPlayerButton.hpp"
 #include "GameStateManager.hpp"
 #include "GSBindPlayer.hpp"
+#include "Ship.hpp"
 
 GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout)
 	: Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, Core::GUICommand::ALL), _bindPlayer(bindPlayer), _isSelect(false),
-	_isReady(false), _bindState(GUIPlayerButton::NONE), _player(player), _nbPending(nbPending), _nbReady(nbReady), _sprite(sprite),
+	_isReady(false), _bindState(GUIPlayerButton::NONE), _player(player), _nbPending(nbPending), _nbReady(nbReady), _ship(0), _sprite(sprite),
 	_font(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
-	_bindFont(Core::GameStateManager::get().getCurrentState().getFont("bindFont"/*fontName*/)), _bindIndex(0)
+	_bindFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)),
+	_shipFont(Core::GameStateManager::get().getCurrentState().getFont(fontName)), _bindIndex(0)
 {
 	this->changeToEmpty();
 	if (this->_bindFont)
@@ -14,6 +16,8 @@ GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int 
 		this->_bindFont->setTransparency(100);
 		this->_bindFont->setText("bind");
 	}
+	if (this->_shipFont)
+		this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
 
 	this->_bindActions.push_back("Fire");
 	this->_bindActions.push_back("Special Fire");
@@ -32,24 +36,46 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 {
 	if (this->_bindState != GUIPlayerButton::BINDING)
 	{
-		if (this->_isSelect && command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED &&
-			(command.direction == Core::GUICommand::LEFT || command.direction == Core::GUICommand::RIGHT))
+		if (this->_isSelect && command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED)
 		{
 			if (this->_isReady)
 				return (true);
-			if (this->_bindState == GUIPlayerButton::NONE)
+			if (command.direction == Core::GUICommand::LEFT || command.direction == Core::GUICommand::RIGHT)
 			{
-				this->_bindState = GUIPlayerButton::SELECTED;
-				if (this->_bindFont)
-					this->_bindFont->setTransparency(255);
+				if (this->_bindState == GUIPlayerButton::NONE)
+				{
+					this->_bindState = GUIPlayerButton::SELECTED;
+					if (this->_bindFont)
+						this->_bindFont->setTransparency(255);
+				}
+				else if (this->_bindState == GUIPlayerButton::SELECTED)
+				{
+					this->_bindState = GUIPlayerButton::NONE;
+					if (this->_bindFont)
+						this->_bindFont->setTransparency(100);
+				}
+				return (true);
 			}
-			else if (this->_bindState == GUIPlayerButton::SELECTED)
+			else if (command.direction == Core::GUICommand::UP)
 			{
-				this->_bindState = GUIPlayerButton::NONE;
-				if (this->_bindFont)
-					this->_bindFont->setTransparency(100);
+				if (this->_ship == 0)
+					this->_ship = Ship::shipsListSize - 1;
+				else
+					this->_ship--;
+				this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
+				this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+				return (true);
 			}
-			return (true);
+			else if (command.direction == Core::GUICommand::DOWN)
+			{
+				if (this->_ship == Ship::shipsListSize - 1)
+					this->_ship = 0;
+				else
+					this->_ship++;
+				this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
+				this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+				return (true);
+			}
 		}
 		else if (command.type == Core::GUICommand::ACTION &&
 			command.buttonAction == Core::GUICommand::RELEASED)
@@ -148,6 +174,9 @@ void GUIPlayerButton::draw(double elapseTime)
 	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(0 + this->_sprite.getWidth() + 40),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
+	if (this->_isSelect && this->_shipFont)
+		this->_shipFont->draw(static_cast<int>(0 - this->_sprite.getWidth() - 40),
+		static_cast<int>(0 + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 
 void	GUIPlayerButton::draw(int x, int y, double elapseTime)
@@ -159,6 +188,9 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 	if (!this->_isReady && this->_isSelect && this->_bindFont)
 		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() + 40),
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
+	if (this->_isSelect && this->_shipFont)
+		this->_shipFont->draw(static_cast<int>(x - this->_sprite.getWidth() - 40),
+		static_cast<int>(y + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 
 void	GUIPlayerButton::changeToEmpty()

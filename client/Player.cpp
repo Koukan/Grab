@@ -3,7 +3,7 @@
 CORE_USE_NAMESPACE
 
 Player::Player(Player::type type, Ship* ship)
-  : _type(type), _ship(ship)
+  : _type(type), _ship(ship), _shipInfo(0)
 {
 	if (type == Player::KEYBOARD)
 	{
@@ -46,10 +46,21 @@ InputCommand &Player::getAction(Player::Action action)
 
 void	Player::setShip(Ship *ship)
 {
-  _ship = ship;
+	this->_ship = ship;
 }
 
 Ship	*Player::getShip() const
 {
-  return (_ship);
+	return (this->_ship);
 }
+
+void		Player::setShipInfo(Ship::ShipInfo const *info)
+{
+	this->_shipInfo = info;
+}
+
+Ship::ShipInfo const	*Player::getShipInfo() const
+{
+	return (_shipInfo);
+}
+

@@ -16,8 +16,7 @@ class GSInGame : public Core::GameState
 {
 public:
 	GSInGame(std::list<Player *> const &players, Modes::Mode mode,
-			 std::string const &map, unsigned int nbPlayers, bool online,
-			 Ship::ShipInfo const (&selectedShips)[4]);
+			 std::string const &map, unsigned int nbPlayers, bool online);
 	~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
@@ -79,7 +78,6 @@ private:
 	std::string const				_map;
 	unsigned int					_nbPlayers;
 	bool							_online;
-	Ship::ShipInfo const			(&_selectedShips)[4];
 	std::vector<uint32_t>			_scores;
 	std::vector<Core::CoreFont*>    _scoreFonts;
 	std::vector<Core::CoreFont*>    _nameFonts;

@@ -10,9 +10,9 @@
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
 
-GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, Ship::ShipInfo const (&selectedShips)[4])
+GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
-	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _selectedShips(selectedShips), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")), 
+	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
@@ -197,7 +197,7 @@ void		GSInGame::displayScores()
       this->_scoreFonts[i]->setColor(255, 0, 0);
       this->_scoreFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_scoreFonts[i]->getWidth() / 2, 720);
       this->addGameObject(this->_scoreFonts[i], "score", 20);
-    }  
+    }
 }
 
 void		GSInGame::inputUp(Core::InputCommand const &/*event*/)
@@ -443,12 +443,14 @@ void		GSInGame::createShips()
 	{255, 255, 0}
       };
 
-  Ship *ship;
-  unsigned int i = 0;
+  Ship					*ship;
+  Ship::ShipInfo const	*shipInfo;
+  unsigned int			i = 0;
   for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
     {
-      ship = new Ship(_selectedShips[i].spriteName, _selectedShips[i].bulletFileName, _selectedShips[i].speed,
-		      _selectedShips[i].fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+		shipInfo = (*it)->getShipInfo();
+		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
+		      shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
       (*it)->setShip(ship);
       ship->registerInGameObjectManager("players", "grabs");
     }

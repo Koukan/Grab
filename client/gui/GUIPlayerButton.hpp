@@ -31,12 +31,14 @@ private:
 	bool						_isSelect;
 	bool						_isReady;
 	BindState					_bindState;
-	Player				*&_player;
+	Player						*&_player;
 	int							&_nbPending;
 	int							&_nbReady;
+	size_t						_ship;
 	Core::ButtonSprite			_sprite;
 	Core::CoreFont				*_font;
 	Core::CoreFont				*_bindFont;
+	Core::CoreFont				*_shipFont;
 	std::vector<std::string>	_bindActions;
 	unsigned int				_bindIndex;
 

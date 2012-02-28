@@ -18,17 +18,19 @@ GUIHLayout::~GUIHLayout()
 
 bool GUIHLayout::handleGUICommand(Core::GUICommand const &command)
 {
-  if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::LEFT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Left*/)
-    {
-      this->prevElement();
-      return (true);
-    }
-  else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::RIGHT /*command.Type == InputCommand::KeyPressed && command.Key.Code == Keyboard::Right*/)
-    {
-      this->nextElement();
-      return (true);
-    }
-  return (this->GUILayout::handleGUICommand(command));
+	if (this->GUILayout::handleGUICommand(command))
+		return true;
+	if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::LEFT)
+	{
+		this->prevElement();
+		return (true);
+	}
+	else if (command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED && command.direction == Core::GUICommand::RIGHT)
+	{
+		this->nextElement();
+		return (true);
+	}
+	return false;
 }
 
 void GUIHLayout::draw(double elapseTime)

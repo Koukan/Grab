@@ -12,7 +12,6 @@
 #include "GSManager.hpp"
 #include "GSLoading.hpp"
 #include "GSPartySettings.hpp"
-#include "GSShipSelection.hpp"
 #include "GSBindPlayer.hpp"
 #include "Converter.hpp"
 #include "RendererManager.hpp"
@@ -82,7 +81,7 @@ void	GSPartySettings::onStart()
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "right list arrow", "pressed right list arrow");
 
-  Core::GUIElement *elem = new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
+  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
 
   GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, 0);
 /*  if (_mode == Modes::STORY)*/
