@@ -36,6 +36,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
+  this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
 
   // load xml
   this->load("resources/intro.xml");
@@ -426,8 +427,6 @@ void		GSInGame::loadMonster(GameCommand const &event)
 
 void		GSInGame::loadShoot(GameCommand const &event)
 {
-  static_cast<Ship*>(this->_ship)->launchGrab("grabs"); // tmp test
-
   Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
   ConcreteObject *obj = new ConcreteObject(this->getSprite("default shot"), *hitbox, event.vx, event.vy);
   obj->setId(event.idObject);

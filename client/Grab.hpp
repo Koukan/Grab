@@ -15,6 +15,7 @@ public:
 
   void			setBulletScript(std::string const &bulletName);
   Ship			&getShip() const;
+  bool			getReturnToShip() const;
 
   virtual void		move(double elapsedTime);
 private:

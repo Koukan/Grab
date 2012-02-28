@@ -144,7 +144,7 @@ void		SFMLSprite::draw(int x, int y, double elapsedTime)
 int	SFMLSprite::getWidth() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-		return (static_cast<int>(this->GetLocalBounds().Width));
+		return (static_cast<int>(this->GetGlobalBounds().Width));
 	#else
 		return (static_cast<int>(this->GetSize().x));
 	#endif
@@ -153,7 +153,7 @@ int	SFMLSprite::getWidth() const
 int	SFMLSprite::getHeight() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-		return (static_cast<int>(this->GetLocalBounds().Height));
+		return (static_cast<int>(this->GetGlobalBounds().Height));
 	#else
 		return (static_cast<int>(this->GetSize().y));
 	#endif
