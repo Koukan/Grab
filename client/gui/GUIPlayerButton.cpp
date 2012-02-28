@@ -88,6 +88,7 @@ bool GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				{
 					this->changeToSelect(command.playerType);
 					this->_player = new Player(static_cast<Player::type>(command.playerType));
+					this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
 					++this->_nbPending;
 					this->_isSelect = true;
 					this->_playerType = command.playerType;
