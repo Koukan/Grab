@@ -18,6 +18,10 @@ Client::~Client()
 		for (std::list<Player*>::iterator it = this->_players.begin();
 			 it != this->_players.end(); it++)
 		{
+			Net::Packet		packet(2);
+			packet << static_cast<uint8_t>(TCP::REMOVEPLAYER);
+			packet << static_cast<uint8_t>((*it)->getId());
+			NetworkModule::get().sendTCPPacket(packet, this->_game->getClients(), this);
 			this->_game->removePlayer((*it)->getId());
 		}
 	}
