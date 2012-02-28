@@ -15,6 +15,7 @@ public:
   virtual void draw(double);
 
   void	setSprite(Core::Sprite* sprite);
+  Core::Sprite const &getSprite() const;
 
 protected:
   Core::Sprite		*_sprite;

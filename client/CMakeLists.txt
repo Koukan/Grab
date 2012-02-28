@@ -68,6 +68,8 @@ set(INCLUDES_COMMON_DIR "../common/")
 set(SRCS
 	${INCLUDES_CORE}
 	main.cpp
+	Cannon.hpp
+	Cannon.cpp
 	SFMLFont.cpp
 	SFMLFont.hpp
 	SFMLFontProvider.cpp
