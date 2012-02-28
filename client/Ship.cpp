@@ -14,11 +14,7 @@ Ship::ShipInfo const Ship::shipsList[] = {
 
 unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
 
-<<<<<<< HEAD
-Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, unsigned int nbMaxGrabs)
-=======
-Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/, float speed, int fireFrequency, int r, int g, int b, std::string const &group, unsigned int nbMaxGrabs)
->>>>>>> 6d625c20b9c58dc2eb3fe61bcb22f3e6e7f0041a
+Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
     _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName)
 {
@@ -27,28 +23,7 @@ Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/,
 
 	if (this->_sprite)
 		this->_sprite->setColor(r, g, b);
-<<<<<<< HEAD
-}
-
-Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], unsigned int nbMaxGrabs)
-  : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName)
-{
-	for (int i = 0; i < Ship::NBACTIONS; ++i)
-		this->_actions[i] = false;
-
-	if (this->_sprite)
-		this->_sprite->setColor(r, g, b);
-
-	Grab *grab;
-	for (unsigned int i = 0; i < nbMaxGrabs; ++i)
-	  {
-	    grab = new Grab("weapon", *(new Core::CircleHitBox(grabs[i].first, grabs[i].second, 5)), 0, 0, *this);
-	_grabs.push_back(grab);
-	  }
-=======
-      Core::GameStateManager::get().getCurrentState().addGameObject(this, group);
->>>>>>> 6d625c20b9c58dc2eb3fe61bcb22f3e6e7f0041a
+	Core::GameStateManager::get().getCurrentState().addGameObject(this, group);
 }
 
 Ship::~Ship()
