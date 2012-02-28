@@ -32,10 +32,10 @@ set(SRCS
 	${INCLUDES_CORE}
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp
+	${COMMON_INCLUDE_DIR}GameCommand.hpp
 	main.cpp
 	Game.cpp
 	Game.hpp
-	GameCommand.hpp
 	GameLogic.cpp
 	GameLogic.hpp
 	GameManager.cpp

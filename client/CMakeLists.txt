@@ -80,7 +80,6 @@ set(SRCS
 	Game.hpp
 	GameButton.cpp
 	GameButton.hpp
-	GameCommand.hpp
 	GameListCommand.hpp
 	GameListCommand.cpp
 	Grab.hpp
@@ -118,6 +117,7 @@ set(SRCS
 	PacketCommand.cpp
 	PacketCommand.hpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
+	${INCLUDES_COMMON_DIR}GameCommand.hpp
 	Player.cpp
 	Player.hpp
 	RendererManager.cpp

@@ -7,6 +7,7 @@
 #include "CommandDispatcher.hpp"
 #include "ScrollingSprite.hpp"
 #include "GameListCommand.hpp"
+#include "GameStateManager.hpp"
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
 

@@ -94,7 +94,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	else if (gc.name == "spawnmonster")
 	{
 		BCommand	*bullet = new BCommand(gc.data, *this, 1100, gc.x, 0, 0);
-		this->addGameObject(bullet);	
+		this->addGameObject(bullet);
 		GameCommand *answer = new GameCommand("Spawn");
 		answer->idResource = bullet->getId();
 		answer->idObject = this->getBulletParser(gc.data)->getResourceId();
