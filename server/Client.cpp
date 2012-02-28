@@ -54,7 +54,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			NULL,
 			NULL,
 			&Client::demandPlayer,
-			NULL,
+			&Client::updatePlayer,
 			&Client::removePlayer
 	};
 	uint8_t			type;
@@ -176,9 +176,11 @@ int		Client::connectGame(Net::Packet &packet)
 			{
 				if (players[i] != 0)
 				{
-					Net::Packet		answer(2);
-					answer << static_cast<uint8_t>(TCP::ADDPLAYER);
+					Net::Packet		answer(4);
+					answer << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 					answer << static_cast<uint8_t>(i);
+					answer << static_cast<uint8_t>(0);
+					answer << false;
 					this->handleOutputPacket(answer);
 				}
 			}
@@ -237,12 +239,24 @@ int		Client::demandPlayer(Net::Packet &packet)
 			answer << id;
 			answer << static_cast<uint8_t>(player->getId());
 			this->handleOutputPacket(answer);
-			Net::Packet		broadcast(2);
-			broadcast << static_cast<uint8_t>(TCP::ADDPLAYER);
+			Net::Packet		broadcast(4);
+			broadcast << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 			broadcast << static_cast<uint8_t>(player->getId());
+			broadcast << static_cast<uint8_t>(0);
+			broadcast << false;
 			NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
 			return 1;
 		}
+	}
+	return 0;
+}
+
+int		Client::updatePlayer(Net::Packet &packet)
+{
+	if (this->_game)
+	{
+		NetworkModule::get().sendTCPPacket(packet, _game->getClients(), this);
+		return 1;
 	}
 	return 0;
 }

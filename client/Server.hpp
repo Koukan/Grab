@@ -23,7 +23,7 @@ class Server : public Net::SizeHeaderPacketHandler<>
 	bool			rangeId(Net::Packet &packet);
 	bool			resourceId(Net::Packet &packet);
 	bool			demandPlayerPacket(Net::Packet &packet);
-	bool			addPlayerPacket(Net::Packet &packet);
+	bool			updatePlayerPacket(Net::Packet &packet);
 	bool			removePlayerPacket(Net::Packet &packet);
 
 	std::string		_name;

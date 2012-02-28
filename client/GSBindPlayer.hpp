@@ -17,13 +17,14 @@ public:
 	void			goToInGame();
 	void			addDemand(Core::GUICommand::PlayerType type);
 	void			removePlayer(uint32_t nb, Core::GUICommand::PlayerType type);
+	void			updatePlayer(uint32_t nb, uint32_t ship, bool ready);
 
 	bool			isOnline() const;
 
 private:
 	void			answerBind(Core::Command const &command);
-	void			addPlayer(Core::Command const &command);
 	void			removePlayer(Core::Command const &command);
+	void			updatePlayer(Core::Command const &command);
 
 	typedef std::map<uint32_t, Core::GUICommand::PlayerType> DemandMap;
 	struct	Method

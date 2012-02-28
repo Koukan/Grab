@@ -12,7 +12,7 @@ class GameCommand : public Core::Command
 		uint32_t idResource = 0, int16_t x = 0, int16_t y = 0,
 		int16_t vx = 0, int16_t vy = 0, float position = 0) : Command(name),
 		idObject(idObject), idResource(idResource), x(x), y(y), vx(vx), vy(vy),
-		position(position)
+		boolean(false),	position(position)
 		{}
     virtual ~GameCommand(){}
 
@@ -22,6 +22,7 @@ class GameCommand : public Core::Command
 	int16_t				y;
 	int16_t				vx;
 	int16_t				vy;
+	bool				boolean;
 	float				position;
 	Client				*player;
 	Game				*game;

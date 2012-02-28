@@ -25,8 +25,9 @@ public:
 	virtual bool	handleGUICommand(Core::GUICommand const &command);
 	virtual void	draw(double elapseTime);
 	virtual void	draw(int x, int y, double elapseTime);
-	virtual void	addOnlinePlayer(Core::GUICommand::PlayerType type);
+	virtual void	addPlayer(Core::GUICommand::PlayerType type);
 	void			changeToEmpty();
+	void			updatePlayer(uint32_t ship, bool ready);
 
 private:
 	GSBindPlayer				&_bindPlayer;

@@ -77,7 +77,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Player", &NetworkModule::playerCommand},
 		{"Spawn", &NetworkModule::spawnCommand},
 		{"demandPlayer", &NetworkModule::demandPlayerCommand},
-		{"unBindPlayer", &NetworkModule::unBindPlayerCommand}
+		{"unBindPlayer", &NetworkModule::unBindPlayerCommand},
+		{"updatePlayer", &NetworkModule::updatePlayerCommand}
 		/*must be completed */
 	};
 
@@ -200,6 +201,18 @@ void		NetworkModule::unBindPlayerCommand(Core::Command const &command)
 
 	packet << static_cast<uint8_t>(TCP::REMOVEPLAYER);
 	packet << static_cast<uint8_t>(cmd.idObject);
+	this->_server->handleOutputPacket(packet);
+}
+
+void		NetworkModule::updatePlayerCommand(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(4);
+
+	packet << static_cast<uint8_t>(TCP::UPDATEPLAYER);
+	packet << static_cast<uint8_t>(cmd.idObject);
+	packet << static_cast<uint8_t>(cmd.idResource);
+	packet << cmd.boolean;
 	this->_server->handleOutputPacket(packet);
 }
 

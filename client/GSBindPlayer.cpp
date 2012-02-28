@@ -42,7 +42,7 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 {
 	Method		tab[] = {
 		{"answerBind", &GSBindPlayer::answerBind},
-		{"addPlayer", &GSBindPlayer::addPlayer},
+		{"updatePlayerPacket", &GSBindPlayer::updatePlayer},
 		{"removePlayer", &GSBindPlayer::removePlayer}
 	};
 
@@ -100,29 +100,12 @@ void	GSBindPlayer::answerBind(Core::Command const &command)
 		{
 			if (i == cmd.idResource)
 			{
-				(*lit)->addOnlinePlayer(it->second);
+				(*lit)->addPlayer(it->second);
 				break ;
 			}
 			i++;
 		}
 		this->_demands.erase(it);
-	}
-}
-
-void	GSBindPlayer::addPlayer(Core::Command const &command)
-{
-	GameCommand const	&cmd = static_cast<GameCommand const&>(command);
-	uint32_t			i = 0;
-
-	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
-		 it != this->_buttons.end(); it++)
-	{
-		if (i == cmd.idObject)
-		{
-			(*it)->addOnlinePlayer(Core::GUICommand::ONLINE);
-			return ;
-		}
-		i++;
 	}
 }
 
@@ -146,6 +129,33 @@ void	GSBindPlayer::removePlayer(Core::Command const &command)
 		if (i == cmd.idObject)
 		{
 			(*it)->changeToEmpty();
+			return ;
+		}
+		i++;
+	}
+}
+
+void	GSBindPlayer::updatePlayer(uint32_t nb, uint32_t ship, bool ready)
+{
+	if (this->_online)
+	{
+		GameCommand *cmd = new GameCommand("updatePlayer", nb, ship);
+		cmd->boolean = ready;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
+}
+
+void	GSBindPlayer::updatePlayer(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const&>(command);
+	uint32_t			i = 0;
+
+	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
+		 it != this->_buttons.end(); it++)
+	{
+		if (i == cmd.idObject)
+		{
+			(*it)->updatePlayer(cmd.idResource, cmd.boolean);
 			return ;
 		}
 		i++;
