@@ -59,7 +59,7 @@ void GUILayout::insertElementAtBegin(GUIElement &elem)
   if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable() || (*this->_focusElement)->getHide())
     {
       std::list<GUIElement *>::iterator it = this->_elements.begin();
-      for (; it != this->_elements.end() && !(*it)->getEnable() && (*this->_focusElement)->getHide(); ++it);
+      for (; it != this->_elements.end() && (!(*it)->getEnable() || (*it)->getHide()); ++it);
       this->_focusElement = it;
       (*it)->focus();
     }
@@ -73,7 +73,7 @@ void GUILayout::insertElementAtEnd(GUIElement &elem)
   if (this->_focusElement == this->_elements.end() || !(*this->_focusElement)->getEnable() || (*this->_focusElement)->getHide())
     {
       std::list<GUIElement *>::iterator it = this->_elements.begin();
-      for (; it != this->_elements.end() && !(*it)->getEnable() && (*this->_focusElement)->getHide(); ++it);
+      for (; it != this->_elements.end() && (!(*it)->getEnable() || (*it)->getHide()); ++it);
 	  if (it != this->_elements.end())
 	  {
 	      this->_focusElement = it;

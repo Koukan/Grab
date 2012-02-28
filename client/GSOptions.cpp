@@ -29,7 +29,7 @@ void	GSOptions::onStart()
   // add gui
 
   Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
-	  (RendererManager::get().getHeight() - 100) / 2, 300, 300, 20);
+	  (RendererManager::get().getHeight() - 100) / 2, 300, 300, 5);
   layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 3);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
