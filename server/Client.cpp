@@ -255,7 +255,9 @@ int		Client::updatePlayer(Net::Packet &packet)
 {
 	if (this->_game)
 	{
-		NetworkModule::get().sendTCPPacket(packet, _game->getClients(), this);
+		Net::Packet	*pack = packet.clone();
+		NetworkModule::get().sendTCPPacket(*pack, _game->getClients(), this);
+		delete pack;
 		return 1;
 	}
 	return 0;
