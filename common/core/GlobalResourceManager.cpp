@@ -37,9 +37,11 @@ void		GlobalResourceManager::init()
 
 void		GlobalResourceManager::load(std::string const &path, ResourceManager &manager)
 {
-	if (!this->_document.LoadFile(path.c_str()))
+	TiXmlDocument           document;
+	std::cout << "load xml " << path << std::endl;
+	if (!document.LoadFile(path.c_str()))
 		throw std::runtime_error(path + ": not found");
-	this->handleXML(&this->_document, manager);
+	this->handleXML(&document, manager);
 }
 
 void		GlobalResourceManager::addProvider(XMLProvider &provider)
@@ -137,12 +139,12 @@ BulletMLParser	*GlobalResourceManager::getBulletParser(uint32_t id) const
 
 Sound           *GlobalResourceManager::getSound(std::string const &name) const
 {
-	return static_cast<Sound*>(this->getResource(name, 5));
+	return static_cast<Sound*>(this->getResource(name, 4));
 }
 
 Sound           *GlobalResourceManager::getSound(uint32_t id) const
 {
-	return static_cast<Sound*>(this->getResource(id, 5));
+	return static_cast<Sound*>(this->getResource(id, 4));
 }
 
 Resource	*GlobalResourceManager::getResource(std::string const &name, std::string const &providerName) const

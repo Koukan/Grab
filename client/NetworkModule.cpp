@@ -1,3 +1,4 @@
+#include "Game.hpp"
 #include "NetworkModule.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameListCommand.hpp"

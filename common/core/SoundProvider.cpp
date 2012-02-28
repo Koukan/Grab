@@ -5,7 +5,7 @@
 CORE_USE_NAMESPACE
 
 SoundProvider::SoundProvider()
-  : XMLProvider("sound", 5)
+  : XMLProvider("sound", 4)
 {
 }
 

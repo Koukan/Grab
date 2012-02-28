@@ -1,7 +1,7 @@
 #include "MapProvider.hpp"
 #include "Converter.hpp"
 
-MapProvider::MapProvider() : XMLProvider("map", 4)
+MapProvider::MapProvider() : XMLProvider("map", 5)
 {
 }
 
