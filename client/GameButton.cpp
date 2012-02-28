@@ -1,7 +1,7 @@
 #include "GameButton.hpp"
 #include "GameStateManager.hpp"
 #include "CommandDispatcher.hpp"
-#include "GSLoading.hpp"
+#include "GSBindPlayer.hpp"
 #include "GameCommand.hpp"
 
 GameButton::GameButton(int id, int nbPlayers, std::string const &name, Core::ButtonSprite const &sprite, Core::GUILayout *layout)
@@ -19,5 +19,5 @@ void GameButton::push()
   command->idObject = this->_id;
 
   Core::CommandDispatcher::get().pushCommand(*command);
-  Core::GameStateManager::get().changeState(*(new GSLoading(this->_nbPlayers)));
+  Core::GameStateManager::get().changeState(*(new GSBindPlayer(Modes::STORY, "", _nbPlayers, true)));
 }
