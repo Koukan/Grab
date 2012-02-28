@@ -7,11 +7,11 @@
 class Game;
 class Ship;
 
-class Player : public Net::SizeHeaderPacketHandler<>
+class Client : public Net::SizeHeaderPacketHandler<>
 {
   public:
-    Player();
-    virtual ~Player();
+    Client();
+    virtual ~Client();
 	virtual void		init();
 	virtual int			handleInputPacket(Net::Packet &packet);
 	void				setGame(Game &game);
@@ -39,8 +39,8 @@ class Player : public Net::SizeHeaderPacketHandler<>
 	int			player(Net::Packet &packet);
 	int			createGame(Net::Packet &packet);
 	int			requireResource(Net::Packet &packet);
-	int			demandPlayer(Net::Packet &packet);
-	int			removePlayer(Net::Packet &packet);
+	int			demandClient(Net::Packet &packet);
+	int			removeClient(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();

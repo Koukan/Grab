@@ -35,8 +35,8 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
-	//this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
-	//this->setCollisionGroups("ship", "players", &Rules::shotTouchPlayer);
+	//this->setCollisionGroups("shot", "players", &Rules::shotTouchClient);
+	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 }
 
 GameLogic::~GameLogic()
@@ -119,7 +119,7 @@ void		GameLogic::startGame()
 	double	y = 30;
 	double	step = 720 / this->_game._list.size();
 
-	for (std::list<Player*>::iterator it = this->_game._list.begin(); it != this->_game._list.end(); ++it)
+	for (std::list<Client*>::iterator it = this->_game._list.begin(); it != this->_game._list.end(); ++it)
 	{
 		Ship *tmp = new Ship(10, y, *it);
 	    (*it)->setShip(tmp);

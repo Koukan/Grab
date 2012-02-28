@@ -2,16 +2,16 @@
 
 #include <string>
 #include "Net.hpp"
-#include "Player.hpp"
+#include "Client.hpp"
 #include "Command.hpp"
 
 class PacketCommand : public Core::Command
 {
   public:
     PacketCommand(std::string const &name,
-				  Player &player, Net::Packet &packet);
+				  Client &player, Net::Packet &packet);
     virtual ~PacketCommand();
 
-	Player			&player;
+	Client			&player;
 	Net::Packet		&packet;
 };

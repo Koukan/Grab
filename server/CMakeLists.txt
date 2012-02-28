@@ -38,6 +38,8 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}MapProvider.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.cpp
 	main.cpp
+	Client.cpp
+	Client.hpp
 	Game.cpp
 	Game.hpp
 	GameLogic.cpp
@@ -50,8 +52,6 @@ set(SRCS
 	NetworkModule.hpp
 	PacketCommand.cpp
 	PacketCommand.hpp
-	Player.cpp
-	Player.hpp
 	ResourceCommand.hpp
 	Rules.cpp
 	Rules.hpp

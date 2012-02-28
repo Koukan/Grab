@@ -10,7 +10,7 @@ class GameManager
     GameManager();
     virtual ~GameManager();
 	Game			*getGame(uint16_t id);
-	Game			*createGame(uint8_t maxPlayers = 4);
+	Game			*createGame(uint8_t maxClients = 4);
 	gamesMap const	&getGameList() const;
 	void			removeGame(uint16_t id);
 	bool			gameExist(Game *game);

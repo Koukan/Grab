@@ -1,54 +1,54 @@
 #include "Logger.hpp"
-#include "Player.hpp"
+#include "Client.hpp"
 #include "Game.hpp"
 #include "Server.hpp"
 #include "NetworkModule.hpp"
 
-Player::Player() : Net::SizeHeaderPacketHandler<>(4096),
+Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
 		_id(0) , _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0)
 {
 }
 
-Player::~Player()
+Client::~Client()
 {
-	NetworkModule::get().removeUDPPlayer(*this);
+	NetworkModule::get().removeUDPClient(*this);
 	if (this->_game)
-		this->_game->removePlayer(*this);
+		this->_game->removeClient(*this);
 }
 
-void		Player::init()
+void		Client::init()
 {
-	NetworkModule::get().addUDPPlayer(*this);
+	NetworkModule::get().addUDPClient(*this);
 }
 
-int			Player::getRemoteAddr(Net::InetAddr &addr)
+int			Client::getRemoteAddr(Net::InetAddr &addr)
 {
 	return this->_iohandler.getRemoteAddr(addr);
 }
 
-int			Player::handleInputPacket(Net::Packet &packet)
+int			Client::handleInputPacket(Net::Packet &packet)
 {
-	static int			(Player::* const methods[])(Net::Packet&) = {
-			&Player::connection,
+	static int			(Client::* const methods[])(Net::Packet&) = {
+			&Client::connection,
 			NULL,
-			&Player::listGame,
-			NULL,
-			NULL,
-			&Player::connectGame,
-			&Player::player,
-			&Player::createGame,
-			NULL,
-			&Player::requireResource,
+			&Client::listGame,
 			NULL,
 			NULL,
+			&Client::connectGame,
+			&Client::player,
+			&Client::createGame,
+			NULL,
+			&Client::requireResource,
 			NULL,
 			NULL,
 			NULL,
 			NULL,
 			NULL,
-			&Player::demandPlayer,
 			NULL,
-			&Player::removePlayer
+			NULL,
+			&Client::demandClient,
+			NULL,
+			&Client::removeClient
 	};
 	uint8_t			type;
 
@@ -61,54 +61,54 @@ int			Player::handleInputPacket(Net::Packet &packet)
 	return 0;
 }
 
-void		Player::setGame(Game &game)
+void		Client::setGame(Game &game)
 {
 	this->_game = &game;
 }
 
-void		Player::setId(uint8_t id)
+void		Client::setId(uint8_t id)
 {
 	this->_id = id;
 }
 
-uint32_t	Player::getId() const
+uint32_t	Client::getId() const
 {
 	return this->_id;
 }
 
-std::string const   &Player::getName() const
+std::string const   &Client::getName() const
 {
 	return _name;
 }
 
-uint32_t	Player::getPacketId()
+uint32_t	Client::getPacketId()
 {
 	return this->_idPacket++;
 }
 
-void		Player::resetPacketId()
+void		Client::resetPacketId()
 {
 	this->_idPacket = 0;
 }
 
-Ship		*Player::getShip() const
+Ship		*Client::getShip() const
 {
 	return _ship;
 }
 
-void		Player::setShip(Ship *ship)
+void		Client::setShip(Ship *ship)
 {
 	_ship = ship;
 }
 
-void		Player::addPacket(uint32_t id, Net::Packet &packet)
+void		Client::addPacket(uint32_t id, Net::Packet &packet)
 {
 	this->_packets.push_back(std::make_pair(id, packet));
 	while (this->_packets.size() > 50)
 		this->_packets.pop_front();
 }
 
-Net::Packet const	*Player::getPacket(uint32_t id) const
+Net::Packet const	*Client::getPacket(uint32_t id) const
 {
 	for (packetsList::const_iterator it = this->_packets.end();
 		 it != this->_packets.begin() && it->first > id; it--)
@@ -119,7 +119,7 @@ Net::Packet const	*Player::getPacket(uint32_t id) const
 	return 0;
 }
 
-int		Player::connection(Net::Packet &packet)
+int		Client::connection(Net::Packet &packet)
 {
 	Net::Packet		answer(1);
 	Net::InetAddr	addr;
@@ -132,7 +132,7 @@ int		Player::connection(Net::Packet &packet)
 	return 1;
 }
 
-int		Player::listGame(Net::Packet&)
+int		Client::listGame(Net::Packet&)
 {
 	GameManager::gamesMap const &map = Server::get().getGameList();
 
@@ -142,8 +142,8 @@ int		Player::listGame(Net::Packet&)
 
 		tmp << static_cast<uint8_t>(TCP::GAME);
 		tmp << static_cast<uint16_t>(it->second->getId());
-		tmp << static_cast<uint8_t>(it->second->getMaxPlayers());
-		tmp << static_cast<uint8_t>(it->second->nbPlayers());
+		tmp << static_cast<uint8_t>(it->second->getMaxClients());
+		tmp << static_cast<uint8_t>(it->second->nbClients());
 		this->handleOutputPacket(tmp);
 	}
 	Server::get().unlock();
@@ -153,7 +153,7 @@ int		Player::listGame(Net::Packet&)
 	return 1;
 }
 
-int		Player::connectGame(Net::Packet &packet)
+int		Client::connectGame(Net::Packet &packet)
 {
 	uint16_t	id;
 	packet >> id;
@@ -161,9 +161,9 @@ int		Player::connectGame(Net::Packet &packet)
 
 	if (game)
 	{
-		if (game->addPlayer(*this))
+		if (game->addClient(*this))
 		{
-			Core::Logger::logger << "Player " << _name << " join game" << id;
+			Core::Logger::logger << "Client " << _name << " join game" << id;
 			return 1;
 		}
 		return this->sendError(Error::GAME_FULL);
@@ -171,7 +171,7 @@ int		Player::connectGame(Net::Packet &packet)
 	return this->sendError(Error::GAME_NOT_EXIST);
 }
 
-int		Player::player(Net::Packet &packet)
+int		Client::player(Net::Packet &packet)
 {
 	uint8_t	status;
 	std::string	name;
@@ -179,39 +179,39 @@ int		Player::player(Net::Packet &packet)
 	packet >> status;
 	packet >> name;
 	if (status == PlayerStatus::READY && _game)
-		_game->addReadyPlayer();
+		_game->addReadyClient();
 	return 1;
 }
 
-int		Player::createGame(Net::Packet &packet)
+int		Client::createGame(Net::Packet &packet)
 {
-	uint8_t		maxPlayer;
-	packet >> 	maxPlayer;
-	Game		*game = Server::get().createGame(maxPlayer);
+	uint8_t		maxClient;
+	packet >> maxClient;
+	Game		*game = Server::get().createGame(maxClient);
 
-	Core::Logger::logger << "Game created by " << int(maxPlayer);
+	Core::Logger::logger << "Game created with "<< int(maxClient) << " players";
 	if (game)
 	{
-			//game->addPlayer(*this);
+			//game->addClient(*this);
 		this->setGame(*game);
 		return 1;
 	}
 	return this->sendError(Error::SERVER_FULL);
 }
 
-int		Player::requireResource(Net::Packet &)
+int		Client::requireResource(Net::Packet &)
 {
 	return 1;
 }
 
-int		Player::demandPlayer(Net::Packet &packet)
+int		Client::demandClient(Net::Packet &packet)
 {
 	uint32_t		id;
 
 	packet >> id;
 	if (this->_game)
 	{
-		int i = this->_game->addPlayer();
+		int i = this->_game->addClient();
 		if (i != -1)
 		{
 			Net::Packet		answer(6);
@@ -225,25 +225,25 @@ int		Player::demandPlayer(Net::Packet &packet)
 	return 0;
 }
 
-int		Player::removePlayer(Net::Packet &packet)
+int		Client::removeClient(Net::Packet &packet)
 {
 	uint8_t		nb;
 
 	packet >> nb;
 	if (this->_game)
 	{
-		this->_game->removePlayer(nb);
+		this->_game->removeClient(nb);
 		return 1;
 	}
 	return 0;
 }
 
-GameLogic           &Player::getGameLogic()
+GameLogic           &Client::getGameLogic()
 {
 	return _game->getGameLogic();
 }
 
-int         		Player::sendError(Error::Type error)
+int         		Client::sendError(Error::Type error)
 {
 	Net::Packet		answer(7);
 
@@ -254,12 +254,12 @@ int         		Player::sendError(Error::Type error)
 	return 1;
 }
 
-uint64_t            Player::getLatency() const
+uint64_t            Client::getLatency() const
 {
 	return _latency;
 }
 
-void                Player::setLatency(uint64_t latency)
+void                Client::setLatency(uint64_t latency)
 {
 	_latency = latency;
 }

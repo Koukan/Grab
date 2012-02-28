@@ -81,7 +81,7 @@ void		NetworkModule::setPort(std::string const &port)
 	this->_port = port;
 }
 
-void		NetworkModule::addUDPPlayer(Player &player)
+void		NetworkModule::addUDPClient(Client &player)
 {
 	Net::InetAddr		addr;
 
@@ -93,7 +93,7 @@ void		NetworkModule::addUDPPlayer(Player &player)
 	}
 }
 
-void		NetworkModule::removeUDPPlayer(Player &player)
+void		NetworkModule::removeUDPClient(Client &player)
 {
 	Net::InetAddr		addr;
 
@@ -105,9 +105,9 @@ void		NetworkModule::removeUDPPlayer(Player &player)
 	}
 }
 
-Player 		*NetworkModule::getPlayerByAddr(Net::InetAddr const &addr) const
+Client 		*NetworkModule::getClientByAddr(Net::InetAddr const &addr) const
 {
-	std::map<Net::InetAddr, Player *>::const_iterator it = _players.find(addr);
+	std::map<Net::InetAddr, Client *>::const_iterator it = _players.find(addr);
 
 	return ((it != _players.end()) ? it->second : 0);
 }
@@ -128,7 +128,7 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.vx;
 		packet << cmd.vy;
-		this->sendUDPPacket(packet, cmd.game->getPlayers(),
+		this->sendUDPPacket(packet, cmd.game->getClients(),
 						 true, cmd.player);
 	}
 }
@@ -144,7 +144,7 @@ void		NetworkModule::destroyCommand(Core::Command const &command)
 		packet << static_cast<uint8_t>(UDP::DESTROY);
 		packet << 0;
 		packet << cmd.idObject;
-		this->sendUDPPacket(packet, cmd.game->getPlayers(),
+		this->sendUDPPacket(packet, cmd.game->getClients(),
 						 true, cmd.player);
 	}
 }
@@ -163,18 +163,18 @@ void		NetworkModule::moveCommand(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.vx;
 		packet << cmd.vy;
-		this->sendUDPPacket(packet, cmd.game->getPlayers(),
+		this->sendUDPPacket(packet, cmd.game->getClients(),
 						 false, cmd.player);
 	}
 }
 
 void		NetworkModule::sendUDPPacket(Net::Packet &packet,
-				std::list<Player*> const &list,
-				bool needId, Player *player)
+				std::list<Client*> const &list,
+				bool needId, Client *player)
 {
 	uint32_t	id;
 
-	for (std::list<Player*>::const_iterator it = list.begin();
+	for (std::list<Client*>::const_iterator it = list.begin();
 		 it != list.end(); it++)
 	{
 		if (player != *it)
@@ -196,9 +196,9 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 	}
 }
 
-void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Player*> const &list, Player *player)
+void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *player)
 {
-	for (std::list<Player*>::const_iterator it = list.begin(); it != list.end(); it++)
+	for (std::list<Client*>::const_iterator it = list.begin(); it != list.end(); it++)
 	{
 		if (player == *it)
 			continue ;
@@ -218,7 +218,7 @@ void        NetworkModule::statusCommand(Core::Command const &command)
 		packet << static_cast<uint16_t>(cmd.idObject);
 	   	packet << cmd.player->getName();
 		packet << cmd.player->getId();
-		this->sendTCPPacket(packet, cmd.game->getPlayers(), cmd.player);
+		this->sendTCPPacket(packet, cmd.game->getClients(), cmd.player);
 	}
 }
 
@@ -232,7 +232,7 @@ void		NetworkModule::startgameCommand(Core::Command const &command)
 
 		packet << static_cast<uint8_t>(TCP::GAMESTATE);
 		packet << static_cast<uint8_t>(0);
-		this->sendTCPPacket(packet, cmd.game->getPlayers(), 0);
+		this->sendTCPPacket(packet, cmd.game->getClients(), 0);
 	}
 }
 
@@ -240,7 +240,7 @@ void		NetworkModule::rangeId(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
-	for (std::map<Net::InetAddr, Player *>::const_iterator it = _players.begin(); it != _players.end(); it++)
+	for (std::map<Net::InetAddr, Client *>::const_iterator it = _players.begin(); it != _players.end(); it++)
 	{
 		if (cmd.player == it->second)
 		{
@@ -281,6 +281,6 @@ void		NetworkModule::sendPing()
 	pong << static_cast<uint8_t>(0);
 	pong << Net::Clock::getMsSinceEpoch();
 	for (GameManager::gamesMap::const_iterator it = map.begin(); it != map.end(); ++it)
-		this->sendUDPPacket(pong, (*it).second->getPlayers(), false, 0);
+		this->sendUDPPacket(pong, (*it).second->getClients(), false, 0);
 	Server::get().unlock();
 }
