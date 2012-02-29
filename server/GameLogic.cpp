@@ -91,7 +91,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
-	else if (gc.name == "spawnmonster")
+	else if (gc.name == "spawnspawner")
 	{
 		BCommand	*bullet = new BCommand(gc.data, *this, 1100, gc.x, 0, 0);
 		this->addGameObject(bullet);

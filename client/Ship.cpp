@@ -36,7 +36,7 @@ void Ship::launchGrab(std::string const &group)
 {
   if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 50)), 0, -200, *this, _speed * 2);
+     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 30)), 0, -200, *this, _speed * 2);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
@@ -52,10 +52,10 @@ bool Ship::getGrabLaunched() const
   return (_grabLaunched);
 }
 
-void Ship::addCannon(Cannon *cannon)
+void Ship::addCannon(Cannon &cannon, std::string const &group)
 {
-  if (cannon)
-    _cannons.push_back(cannon);
+  _cannons.push_back(&cannon);
+  Core::GameStateManager::get().getCurrentState().addGameObject(&cannon, group);
 }
 
 void Ship::handleActions()

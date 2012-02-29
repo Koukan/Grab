@@ -19,8 +19,8 @@ public:
 
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
-  void addCannon(Cannon *cannon);
-  
+  void addCannon(Cannon &cannon, std::string const &group);
+
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
   void inputLeft(Core::InputCommand const &cmd);

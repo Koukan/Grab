@@ -15,9 +15,19 @@ void	Grab::setBulletScript(std::string const &bulletName)
   _bullet = bulletName;
 }
 
+std::string const &Grab::getBulletScript() const
+{
+  return _bullet;
+}
+
 bool	Grab::getReturnToShip() const
 {
   return _returnToShip;
+}
+
+void	Grab::setReturnToShip(bool returnToShip)
+{
+  _returnToShip = returnToShip;
 }
 
 Ship	&Grab::getShip() const

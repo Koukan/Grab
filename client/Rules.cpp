@@ -3,6 +3,7 @@
 #include "GameCommand.hpp"
 #include "BulletCommand.hpp"
 #include "Grab.hpp"
+#include "Cannon.hpp"
 
 void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
@@ -19,14 +20,12 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
   std::cout << "grab collide !" << std::endl;
   Grab& grab = static_cast<Grab&>(o1);
-  /*  Core::BulletCommand *bullet = new Core::BulletCommand("bomb", Core::GameStateManager::get().getCurrentState(), grab.getX(), grab.getY(), grab.getVx(), grab.getVy()); // tmp
-
-  grab.setBulletScript(bullet);
-  Core::GameStateManager::get().getCurrentState().addGameObject(bullet, "shot");
-  grab.getShip().setGrabLaunched(false);
-  grab.getShip().addCannon(&grab);*/
-
-  o2.erase();
+  if (grab.getBulletScript().empty())
+    {
+      grab.setBulletScript("bomb");
+      grab.setReturnToShip(true);
+      o2.erase();
+    }
 }
 
 void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
@@ -36,6 +35,10 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
   if (grab.getReturnToShip())
     {
       Ship& ship = static_cast<Ship &>(o2);
+
+      std::cout << "[" << grab.getBulletScript() << "]" << std::endl;
+      if (!grab.getBulletScript().empty())
+	ship.addCannon(*(new Cannon(grab.getBulletScript(), ship)), "cannons");
       grab.erase();
       ship.setGrabLaunched(false);
     }
