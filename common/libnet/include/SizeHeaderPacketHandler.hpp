@@ -16,15 +16,23 @@ template <typename IOType = SocketStream>
 class SizeHeaderPacketHandler : public PacketHandler<IOType>
 {
 public:
-	SizeHeaderPacketHandler(size_t size = 2048) : PacketHandler<IOType>(size), _left(0)
+	SizeHeaderPacketHandler(size_t size = 2048) : PacketHandler<IOType>(size), _left(0), _header(*new Packet(sizeof(uint16_t)))
 	{}
 	
+	~SizeHeaderPacketHandler()
+	{
+		delete &_header;
+	}
+
 	virtual int handleInput(Socket &)
 	{	
 		int	ret	= 0;
 		do
 		{
-			ret = this->_iohandler.recvPacket(*this->_inpacket, 0, (_left == 0) ? sizeof(_left) : _left);
+			if (_left == 0)
+				ret = this->_iohandler.recvPacket(this->_header, 0, sizeof(_left));
+			else
+				ret = this->_iohandler.recvPacket(*this->_inpacket, 0, _left);
 			if (ret <= 0)
 			{
 				if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
@@ -34,15 +42,15 @@ public:
 			}
 			if (_left == 0)
 			{
-				(*this->_inpacket) >> _left;
+				this->_header >> _left;
+				this->_header.reset();
 				continue ;
 			}
 			_left -= ret;
 			if (_left == 0)
 			{
 				Packet	packet(*this->_inpacket);
-				packet.setSize(this->_inpacket->getWindex() - sizeof(_left));
-				packet.rd_ptr(sizeof(_left));
+				packet.setSize(this->_inpacket->getWindex());
 				if (this->handleInputPacket(packet) <= 0)
 					return -1;
 				this->_inpacket->reset();
@@ -66,6 +74,7 @@ public:
 
 private:
 	uint16_t			_left;
+	Packet				&_header;
 };
 
 NET_END_NAMESPACE
