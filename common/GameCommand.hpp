@@ -24,7 +24,7 @@ class GameCommand : public Core::Command
 	int16_t				vy;
 	bool				boolean;
 	float				position;
-	Client				*player;
+	Client				*client;
 	Game				*game;
 	std::string			data;
 	uint32_t			score;

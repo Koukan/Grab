@@ -43,7 +43,8 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 	Method		tab[] = {
 		{"answerBind", &GSBindPlayer::answerBind},
 		{"updatePlayerPacket", &GSBindPlayer::updatePlayer},
-		{"removePlayer", &GSBindPlayer::removePlayer}
+		{"removePlayer", &GSBindPlayer::removePlayer},
+		{"goToInGame", &GSBindPlayer::goToInGame}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -57,9 +58,14 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 	return false;
 }
 
+void	GSBindPlayer::goToInGame(Core::Command const &)
+{
+	this->goToInGame();
+}
+
 void	GSBindPlayer::goToInGame()
 {
-	std::list<Player *> *players = new std::list<Player *>();
+	std::list<Player *> *players = new std::list<Player *>;
 
 	for (int i = 0; i < 4; ++i)
 	{

@@ -47,11 +47,11 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	return 0;
 }
 
-int			UdpHandler::spawn(Net::Packet &packet, Client &player)
+int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 {
 	uint32_t	id_packet;
 
-	if (!player.getShip())
+	if (!client.getShip())
 		return 1;
 	GameCommand *gc = new GameCommand("spawn");
 	packet >> id_packet;
@@ -66,8 +66,8 @@ int			UdpHandler::spawn(Net::Packet &packet, Client &player)
 		gc->x += player.getLatency() * gc->vx;
 		gc->y += player.getLatency() * gc->vy;
 	}*/
-	gc->player = &player;
-	player.getGameLogic().pushCommand(*gc);
+	gc->client = &client;
+	client.getGameLogic().pushCommand(*gc);
 	return 1;
 }
 
@@ -76,13 +76,13 @@ int			UdpHandler::destroy(Net::Packet &, Client&)
 	return 0;
 }
 
-int			UdpHandler::move(Net::Packet &packet, Client &player)
+int			UdpHandler::move(Net::Packet &packet, Client &client)
 {
-	if (!player.getShip())
+	if (!client.getShip())
 		return 1;
 	GameCommand *gc = new GameCommand("move");
 	packet >> gc->idObject;
-	gc->idObject = player.getShip()->getId();
+	gc->idObject = client.getShip()->getId();
 	packet >> gc->x;
 	packet >> gc->y;
 	packet >> gc->vx;
@@ -92,8 +92,8 @@ int			UdpHandler::move(Net::Packet &packet, Client &player)
 		gc->x += player.getLatency() * gc->vx;
 		gc->y += player.getLatency() * gc->vy;
 	}*/
-	gc->player = &player;
-	player.getGameLogic().pushCommand(*gc);
+	gc->client = &client;
+	client.getGameLogic().pushCommand(*gc);
 	return 1;
 }
 
@@ -107,12 +107,12 @@ int			UdpHandler::statement(Net::Packet &, Client&)
 	return 0;
 }
 
-int         UdpHandler::retrieve(Net::Packet &packet, Client &player)
+int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 {
 	uint32_t	packet_id;
 
 	packet >> packet_id;
-	Net::Packet const *tmp = player.getPacket(packet_id);
+	Net::Packet const *tmp = client.getPacket(packet_id);
 	if (tmp)
 		this->handleOutputPacket(*tmp);
 	return 1;
@@ -129,8 +129,8 @@ int         UdpHandler::ping(Net::Packet &packet, Client &)
 	return 1;
 }
 
-int         UdpHandler::pong(Net::Packet &, Client &player)
+int         UdpHandler::pong(Net::Packet &, Client &client)
 {
-	player.setLatency((Net::Clock::getMsSinceEpoch() - _time_recv) / 2);
+	client.setLatency((Net::Clock::getMsSinceEpoch() - _time_recv) / 2);
 	return 1;
 }

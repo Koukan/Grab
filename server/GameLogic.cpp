@@ -57,26 +57,26 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	GameCommand	const &gc = static_cast<GameCommand const &>(command);
 	if (gc.name == "move")
 	{
-		Ship	*ship = gc.player->getShip();
+		Ship	*ship = gc.client->getShip();
 		ship->setX(gc.x);
 		ship->setY(gc.y);
 		ship->setVx(gc.vx);
 		ship->setVy(gc.vy);
 		GameCommand *answer = new GameCommand("Move");
-		answer->idObject = gc.player->getShip()->getId();
+		answer->idObject = gc.client->getShip()->getId();
 		answer->x = gc.x;
 		answer->y = gc.y;
 		answer->vx = gc.vx;
 		answer->vy = gc.vy;
 		answer->game = &_game;
-		answer->player = gc.player;
+		answer->client = gc.client;
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
 	else if (gc.name == "spawn")
 	{
-	  Core::CircleHitBox	*hitbox = new Core::CircleHitBox(gc.x, gc.y, 15);
-	  Core::Bullet			*bullet = new Core::Bullet(*hitbox, gc.vx, gc.vy);
+	  	Core::CircleHitBox		*hitbox = new Core::CircleHitBox(gc.x, gc.y, 15);
+	  	Core::Bullet			*bullet = new Core::Bullet(*hitbox, gc.vx, gc.vy);
 		bullet->setId(gc.idObject);
 		this->addGameObject(bullet, "playerfires", 9);
 		GameCommand *answer = new GameCommand("Spawn");
@@ -87,7 +87,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		answer->vx = gc.vx;
 		answer->vy = gc.vy;
 		answer->game = &_game;
-		answer->player = gc.player;
+		answer->client = gc.client;
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
@@ -103,7 +103,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		answer->vx = gc.vx;
 		answer->vy = gc.vy;
 		answer->game = &_game;
-		answer->player = gc.player;
+		answer->client = gc.client;
 		Core::CommandDispatcher::get().pushCommand(*answer);
 	}
 	return false;
@@ -117,9 +117,9 @@ Game		&GameLogic::getGame() const
 void		GameLogic::startGame()
 {
 	double	y = 30;
-	double	step = 720 / this->_game._list.size();
+	double	step = 720 / this->_game._clients.size();
 
-	for (std::list<Client*>::iterator it = this->_game._list.begin(); it != this->_game._list.end(); ++it)
+	for (std::list<Client*>::iterator it = this->_game._clients.begin(); it != this->_game._clients.end(); ++it)
 	{
 		Ship *tmp = new Ship(10, y, *it);
 	    (*it)->setShip(tmp);

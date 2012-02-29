@@ -104,7 +104,7 @@ bool		Server::treatGameStatePacket(Net::Packet &packet)
 	packet >> err;
 	if (err == GameStateEnum::BEGIN)
 	{
-	  Core::CommandDispatcher::get().pushCommand(*(new Core::Command("GameBegin")));
+	  Core::CommandDispatcher::get().pushCommand(*(new Core::Command("goToInGame")));
 	}
 	else
 	{

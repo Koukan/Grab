@@ -30,6 +30,11 @@ public:
 	void			updatePlayer(uint32_t ship, bool ready);
 
 private:
+	bool			selectCommand(Core::GUICommand const &command);
+	bool			backCommand();
+	bool			directionCommand(Core::GUICommand const &command);
+	bool			bindState(Core::GUICommand const &command);
+
 	GSBindPlayer				&_bindPlayer;
 	bool						_isSelect;
 	bool						_isReady;

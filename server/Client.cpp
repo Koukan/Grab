@@ -153,8 +153,8 @@ int		Client::listGame(Net::Packet&)
 
 		tmp << static_cast<uint8_t>(TCP::GAME);
 		tmp << static_cast<uint16_t>(it->second->getId());
-		tmp << static_cast<uint8_t>(it->second->getMaxClients());
-		tmp << static_cast<uint8_t>(it->second->nbClients());
+		tmp << static_cast<uint8_t>(it->second->getMaxPlayers());
+		tmp << static_cast<uint8_t>(it->second->nbPlayers());
 		this->handleOutputPacket(tmp);
 	}
 	Server::get().unlock();
@@ -202,8 +202,8 @@ int		Client::player(Net::Packet &packet)
 
 	packet >> status;
 	packet >> name;
-	if (status == PlayerStatus::READY && _game)
-		_game->addReadyClient();
+	//if (status == PlayerStatus::READY && _game)
+		//_game->addReadyPlayers();
 	return 1;
 }
 

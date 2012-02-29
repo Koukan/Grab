@@ -8,9 +8,9 @@
 #include "ResourceCommand.hpp"
 #include "Converter.hpp"
 
-Game::Game(uint16_t id, uint8_t maxClients)
+Game::Game(uint16_t id, uint8_t maxPlayers)
   : Core::Module("Game" + id, 20), _logic(*this),
-	  _id(id), _maxClients(maxClients), _readyClients(0), _nbPlayers(0)
+	  _id(id), _maxPlayers(maxPlayers), _readyPlayers(0), _nbPlayers(0)
 {
 	Server::get().loadModule(*this);
 	::memset(this->_players, 0, sizeof(this->_players));
@@ -26,7 +26,7 @@ void		Game::init()
 
 void		Game::update(double elapsedTime)
 {
-	if (this->_list.empty())
+	if (this->_clients.empty())
 	{
 		Server::get().removeGame(this->_id);
 		Net::ScopedLock		lock(this->_mutex);
@@ -48,22 +48,26 @@ void		Game::updateGameState(double elapsedTime)
 	this->_logic.update(elapsedTime);
 }
 
-bool		Game::addClient(Client &player)
+bool		Game::addClient(Client &client)
 {
-	if (this->nbClients() < this->_maxClients)
+	if (!this->isFull())
 	{
-		player.setId(this->_list.size());
-		this->_list.push_back(&player);
-		uint32_t	begin = this->_list.size() * 10000000 + 1000000001;
-		uint32_t	end = begin + 9999999;
-		std::string	id = "shootClient" + Net::Converter::toString(this->_list.size());
-		_logic.addGroup(id, 10, begin, end);
-		GameCommand	*cmd = new GameCommand("RangeId");
-		cmd->idObject = begin;
-		cmd->idResource = end;
-		cmd->x = this->_list.size() - 1;
-		cmd->player = &player;
-		Core::CommandDispatcher::get().pushCommand(*cmd);
+		client.setId(this->_clients.size());
+		this->_clients.push_back(&client);
+
+
+		// rangeId Packet must move in other function
+		//uint32_t	begin = this->_list.size() * 10000000 + 1000000001;
+		//uint32_t	end = begin + 9999999;
+		//std::string	id = "shootClient" + Net::Converter::toString(this->_list.size());
+		//_logic.addGroup(id, 10, begin, end);
+		//GameCommand	*cmd = new GameCommand("RangeId");
+		//cmd->idObject = begin;
+		//cmd->idResource = end;
+		//cmd->x = this->_list.size() - 1;
+		//cmd->client = &client;
+		//Core::CommandDispatcher::get().pushCommand(*cmd);
+		// end rangeId
 
 		// send Resource
 		std::list<Core::Resource*> const	& list = _logic.getResource();
@@ -71,24 +75,22 @@ bool		Game::addClient(Client &player)
 		 	 it != list.end(); it++)
 		{
 		   Core::CommandDispatcher::get().pushCommand(*new ResourceCommand("ResourceId", (*it)->getResourceType(),
-		 		(*it)->getResourceId(), (*it)->getResourceName(), &player));
+		 		(*it)->getResourceId(), (*it)->getResourceName(), &client));
 		}
 		// end Resource
 
-		player.setGame(*this);
-		//this->addReadyClient();
-		//this->broadcastStatus(player, 1);
+		client.setGame(*this);
 		return true;
 	}
 	return false;
 }
 
-void		Game::removeClient(Client &player)
+void		Game::removeClient(Client &client)
 {
-	std::list<Client*>::iterator it = std::find(this->_list.begin(), this->_list.end(), &player);
+	std::list<Client*>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), &client);
 
-	if (it != this->_list.end())
-		this->_list.erase(it);
+	if (it != this->_clients.end())
+		this->_clients.erase(it);
 }
 
 Player		*Game::addPlayer()
@@ -115,39 +117,29 @@ void		Game::removePlayer(int i)
 	}
 }
 
-size_t		Game::nbClients() const
+size_t		Game::nbPlayers() const
 {
 	return _nbPlayers;
 }
 
 bool		Game::isFull() const
 {
-	return this->nbClients() == _maxClients;
+	return this->nbPlayers() == this->_maxPlayers;
 }
 
 uint16_t	Game::getId() const
 {
-	return _id;
+	return this->_id;
 }
 
-uint8_t     Game::getMaxClients() const
+uint8_t     Game::getMaxPlayers() const
 {
-	return _maxClients;
-}
-
-void		Game::addReadyClient()
-{
-	_readyClients++;
-	if (this->_maxClients == this->_readyClients)
-	{
-		this->_readyClients = 0;
-		this->startGame();
-	}
+	return this->_maxPlayers;
 }
 
 std::list<Client*> const &Game::getClients() const
 {
-	return this->_list;
+	return this->_clients;
 }
 
 Player	* const *Game::getPlayers() const
@@ -160,19 +152,10 @@ GameLogic	&Game::getGameLogic()
   	return _logic;
 }
 
-void		Game::broadcastStatus(Client &player, int status)
-{
-		GameCommand *tmp = new GameCommand("Status");
-		tmp->game = this;
-		tmp->player = &player;
-		tmp->idObject = status;
-		Core::CommandDispatcher::get().pushCommand(*tmp);
-}
-
 void		Game::startGame()
 {
-		GameCommand *tmp = new GameCommand("Startgame");
-		tmp->game = this;
-		Core::CommandDispatcher::get().pushCommand(*tmp);
-		_logic.startGame();
+	GameCommand *tmp = new GameCommand("Startgame");
+	tmp->game = this;
+	Core::CommandDispatcher::get().pushCommand(*tmp);
+	_logic.startGame();
 }

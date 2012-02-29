@@ -39,137 +39,139 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 	if (this->_bindState != GUIPlayerButton::BINDING)
 	{
 		if (this->_isSelect && command.type == Core::GUICommand::DIRECTION && command.buttonAction == Core::GUICommand::PRESSED)
-		{
-			if (this->_isReady)
-				return (true);
-			if (command.direction == Core::GUICommand::LEFT || command.direction == Core::GUICommand::RIGHT)
-			{
-				if (this->_bindState == GUIPlayerButton::NONE)
-				{
-					this->_bindState = GUIPlayerButton::SELECTED;
-					if (this->_bindFont)
-						this->_bindFont->setTransparency(255);
-				}
-				else if (this->_bindState == GUIPlayerButton::SELECTED)
-				{
-					this->_bindState = GUIPlayerButton::NONE;
-					if (this->_bindFont)
-						this->_bindFont->setTransparency(100);
-				}
-				return (true);
-			}
-			else if (command.direction == Core::GUICommand::UP)
-			{
-				if (this->_ship == 0)
-					this->_ship = Ship::shipsListSize - 1;
-				else
-					this->_ship--;
-				this->changeShip();
-				this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
-				return (true);
-			}
-			else if (command.direction == Core::GUICommand::DOWN)
-			{
-				if (this->_ship == Ship::shipsListSize - 1)
-					this->_ship = 0;
-				else
-					this->_ship++;
-				this->changeShip();
-				this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
-				return (true);
-			}
-		}
-		else if (command.type == Core::GUICommand::ACTION &&
-			command.buttonAction == Core::GUICommand::RELEASED)
+			return this->directionCommand(command);
+		else if (command.type == Core::GUICommand::ACTION && command.buttonAction == Core::GUICommand::RELEASED)
 		{
 			if (command.action == Core::GUICommand::SELECT)
-			{
-				if (this->_isReady)
-					return (true);
-				if (!this->_isSelect)
-				{
-					if (this->_bindPlayer.isOnline())
-					{
-						this->_bindPlayer.addDemand(command.playerType);
-					}
-					else
-					{
-						this->_playerType = command.playerType;
-						this->_player = new Player(static_cast<Player::type>(command.playerType));
-						this->changeToSelect();
-					}
-				}
-				else
-				{
-					if (this->_bindState == GUIPlayerButton::NONE)
-					{
-						this->changeToReady();
-						this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
-					}
-					else
-					{
-						this->_bindState = GUIPlayerButton::BINDING;
-						if (this->_bindFont)
-							this->_bindFont->setText("bind \"" + this->_bindActions[this->_bindIndex] + "\"");
-					}
-				}
-				return (true);
-			}
+				return this->selectCommand(command);
 			else if (this->_isSelect && command.action == Core::GUICommand::BACK)
-			{
-				if (this->_isReady)
-				{
-					--this->_nbReady;
-					this->changeToSelect();
-					this->_isReady = false;
-					this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
-				}
-				else
-				{
-					--this->_nbPending;
-					if (this->_nbPending == 0 && this->_nbReady > 0)
-						this->_bindPlayer.goToInGame();
-					this->changeToEmpty();
-					this->_playerType = Core::GUICommand::ALL;
-				}
-				return (true);
-			}
+				return this->backCommand();
 		}
 	}
 	else if (command.type != Core::GUICommand::DIRECTION &&
 			command.buttonAction == Core::GUICommand::RELEASED)
+		return bindState(command);
+	return (false);
+}
+
+bool	GUIPlayerButton::selectCommand(Core::GUICommand const &command)
+{
+	if (this->_isReady)
+		return (true);
+	if (!this->_isSelect)
 	{
-		Core::InputCommand &cmd = this->_player->getAction(static_cast<Player::Action>(this->_bindIndex));
-		if (command.playerType == Core::GUICommand::KEYBOARD)
+		if (this->_bindPlayer.isOnline())
+			this->_bindPlayer.addDemand(command.playerType);
+		else
 		{
-			cmd.Type = Core::InputCommand::KeyReleased;
-			cmd.Key.Code = static_cast<Core::Keyboard::Key>(command.id);
+			this->_playerType = command.playerType;
+			this->_player = new Player(static_cast<Player::type>(command.playerType));
+			this->changeToSelect();
+		}
+	}
+	else
+	{
+		if (this->_bindState == GUIPlayerButton::NONE)
+		{
+			this->changeToReady();
+			this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
 		}
 		else
 		{
-			cmd.Type = Core::InputCommand::JoystickButtonReleased;
-			cmd.JoystickButton.JoystickId = static_cast<unsigned int>(command.playerType - 1);
-			cmd.JoystickButton.Button = command.id;
-		}
-		if (this->_bindIndex + 1 < this->_bindActions.size())
-		{
-			++this->_bindIndex;
+			this->_bindState = GUIPlayerButton::BINDING;
 			if (this->_bindFont)
 				this->_bindFont->setText("bind \"" + this->_bindActions[this->_bindIndex] + "\"");
 		}
-		else
+	}
+	return (true);
+}
+
+bool	GUIPlayerButton::backCommand()
+{
+	if (this->_isReady)
+	{
+		this->changeToSelect();
+		this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
+	}
+	else
+		this->changeToEmpty();
+	return (true);
+}
+
+bool	GUIPlayerButton::directionCommand(Core::GUICommand const &command)
+{
+	if (this->_isReady)
+		return (true);
+	if (command.direction == Core::GUICommand::LEFT || command.direction == Core::GUICommand::RIGHT)
+	{
+		if (this->_bindState == GUIPlayerButton::NONE)
 		{
-			this->_bindIndex = 0;
+			this->_bindState = GUIPlayerButton::SELECTED;
+			if (this->_bindFont)
+				this->_bindFont->setTransparency(255);
+		}
+		else if (this->_bindState == GUIPlayerButton::SELECTED)
+		{
 			this->_bindState = GUIPlayerButton::NONE;
 			if (this->_bindFont)
-			{
-				this->_bindFont->setColor(255, 255, 255);
-				this->_bindFont->setText("bind");
-			}
+				this->_bindFont->setTransparency(100);
 		}
 		return (true);
 	}
-	return (false);
+	else if (command.direction == Core::GUICommand::UP)
+	{
+		if (this->_ship == 0)
+			this->_ship = Ship::shipsListSize - 1;
+		else
+			this->_ship--;
+		this->changeShip();
+		this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
+		return (true);
+	}
+	else if (command.direction == Core::GUICommand::DOWN)
+	{
+		if (this->_ship == Ship::shipsListSize - 1)
+			this->_ship = 0;
+		else
+			this->_ship++;
+		this->changeShip();
+		this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
+		return (true);
+	}
+	return false;
+}
+
+bool	GUIPlayerButton::bindState(Core::GUICommand const &command)
+{
+	Core::InputCommand &cmd = this->_player->getAction(static_cast<Player::Action>(this->_bindIndex));
+	if (command.playerType == Core::GUICommand::KEYBOARD)
+	{
+		cmd.Type = Core::InputCommand::KeyReleased;
+		cmd.Key.Code = static_cast<Core::Keyboard::Key>(command.id);
+	}
+	else
+	{
+		cmd.Type = Core::InputCommand::JoystickButtonReleased;
+		cmd.JoystickButton.JoystickId = static_cast<unsigned int>(command.playerType - 1);
+		cmd.JoystickButton.Button = command.id;
+	}
+	if (this->_bindIndex + 1 < this->_bindActions.size())
+	{
+		++this->_bindIndex;
+		if (this->_bindFont)
+			this->_bindFont->setText("bind \"" + this->_bindActions[this->_bindIndex] + "\"");
+	}
+	else
+	{
+		this->_bindIndex = 0;
+		this->_bindState = GUIPlayerButton::NONE;
+		if (this->_bindFont)
+		{
+			this->_bindFont->setColor(255, 255, 255);
+			this->_bindFont->setText("bind");
+		}
+	}
+	return (true);
 }
 
 void	GUIPlayerButton::draw(double elapseTime)
@@ -178,7 +180,7 @@ void	GUIPlayerButton::draw(double elapseTime)
 	if (this->_font)
 		this->_font->draw(static_cast<int>(0 + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
-	if (!this->_isReady && this->_isSelect && this->_bindFont)
+	if (!this->_isReady && this->_isSelect && this->_bindFont && !this->_bindPlayer.isOnline())
 		this->_bindFont->draw(static_cast<int>(0 + this->_sprite.getWidth() + 40),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 	if (this->_isSelect && this->_shipFont)
@@ -192,7 +194,7 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 	if (this->_font)
 		this->_font->draw(static_cast<int>(x + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
-	if (!this->_isReady && this->_isSelect && this->_bindFont)
+	if (!this->_isReady && this->_isSelect && this->_bindFont && !this->_bindPlayer.isOnline())
 		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() + 40),
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 	if (this->_isSelect && this->_shipFont)
@@ -229,12 +231,16 @@ void	GUIPlayerButton::updatePlayer(uint32_t ship, bool ready)
 
 void	GUIPlayerButton::changeToEmpty()
 {
+	this->_playerType = Core::GUICommand::ALL;
 	this->_sprite.updateState(Core::ButtonSprite::DEFAULT);
 	if (this->_font)
 		this->_font->setText("Empty");
 	this->_isSelect = false;
 	if (this->_player)
 	{
+		--this->_nbPending;
+		if (this->_nbPending == 0 && this->_nbReady > 0 && !this->_bindPlayer.isOnline())
+			this->_bindPlayer.goToInGame();
 		delete this->_player;
 		this->_player = 0;
 		this->_bindPlayer.removePlayer(this->_nb, this->_playerType);
@@ -256,6 +262,11 @@ void	GUIPlayerButton::changeToSelect()
 	this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
 	++this->_nbPending;
 	this->_isSelect = true;
+	if (this->_isReady)
+	{
+		--this->_nbReady;
+		this->_isReady = false;
+	}
 }
 
 void	GUIPlayerButton::changeToReady()
@@ -271,7 +282,7 @@ void	GUIPlayerButton::changeToReady()
 	}
 	--this->_nbPending;
 	++this->_nbReady;
-	if (this->_nbPending == 0)
+	if (this->_nbPending == 0 && !this->_bindPlayer.isOnline())
 		this->_bindPlayer.goToInGame();
 	this->_isReady = true;
 }

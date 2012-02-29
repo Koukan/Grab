@@ -81,23 +81,23 @@ void		NetworkModule::setPort(std::string const &port)
 	this->_port = port;
 }
 
-void		NetworkModule::addUDPClient(Client &player)
+void		NetworkModule::addUDPClient(Client &client)
 {
 	Net::InetAddr		addr;
 
-	if (player.getRemoteAddr(addr) != -1)
+	if (client.getRemoteAddr(addr) != -1)
 	{
 		addr.setPort(25557);
-		_players[addr] = &player;
+		_players[addr] = &client;
 		this->_udp.addAddr(addr);
 	}
 }
 
-void		NetworkModule::removeUDPClient(Client &player)
+void		NetworkModule::removeUDPClient(Client &client)
 {
 	Net::InetAddr		addr;
 
-	if (player.getRemoteAddr(addr) != -1)
+	if (client.getRemoteAddr(addr) != -1)
 	{
 		addr.setPort(25557);
 		_players.erase(addr);
@@ -129,7 +129,7 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 		packet << cmd.vx;
 		packet << cmd.vy;
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 true, cmd.player);
+						 true, cmd.client);
 	}
 }
 
@@ -145,7 +145,7 @@ void		NetworkModule::destroyCommand(Core::Command const &command)
 		packet << 0;
 		packet << cmd.idObject;
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 true, cmd.player);
+						 true, cmd.client);
 	}
 }
 
@@ -164,7 +164,7 @@ void		NetworkModule::moveCommand(Core::Command const &command)
 		packet << cmd.vx;
 		packet << cmd.vy;
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 false, cmd.player);
+						 false, cmd.client);
 	}
 }
 
@@ -196,11 +196,11 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 	}
 }
 
-void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *player)
+void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client)
 {
 	for (std::list<Client*>::const_iterator it = list.begin(); it != list.end(); it++)
 	{
-		if (player == *it)
+		if (client == *it)
 			continue ;
 		(*it)->handleOutputPacket(packet);
 	}
@@ -216,9 +216,9 @@ void        NetworkModule::statusCommand(Core::Command const &command)
 
 		packet << static_cast<uint8_t>(TCP::PLAYER);
 		packet << static_cast<uint16_t>(cmd.idObject);
-	   	packet << cmd.player->getName();
-		packet << cmd.player->getId();
-		this->sendTCPPacket(packet, cmd.game->getClients(), cmd.player);
+	   	packet << cmd.client->getName();
+		packet << cmd.client->getId();
+		this->sendTCPPacket(packet, cmd.game->getClients(), cmd.client);
 	}
 }
 
@@ -242,7 +242,7 @@ void		NetworkModule::rangeId(Core::Command const &command)
 
 	for (std::map<Net::InetAddr, Client *>::const_iterator it = _players.begin(); it != _players.end(); it++)
 	{
-		if (cmd.player == it->second)
+		if (cmd.client == it->second)
 		{
 			Net::Packet	packet(10);
 
@@ -250,7 +250,7 @@ void		NetworkModule::rangeId(Core::Command const &command)
 			packet << static_cast<uint8_t>(cmd.x);
 			packet << static_cast<uint32_t>(cmd.idObject);
 			packet << static_cast<uint32_t>(cmd.idResource);
-			cmd.player->handleOutputPacket(packet);
+			cmd.client->handleOutputPacket(packet);
 			return ;
 		}
 	}
@@ -260,14 +260,14 @@ void		NetworkModule::resourceId(Core::Command const &command)
 {
 	ResourceCommand const	&cmd = static_cast<ResourceCommand const &>(command);
 
-	if (cmd.player)
+	if (cmd.client)
 	{
 		Net::Packet	packet(cmd.name.size() + 7);
 		packet << static_cast<uint8_t>(TCP::RESOURCEID);
 		packet << static_cast<uint8_t>(cmd.type);
 		packet << static_cast<uint32_t>(cmd.id);
 		packet << cmd.name;
-		cmd.player->handleOutputPacket(packet);
+		cmd.client->handleOutputPacket(packet);
 	}
 }
 
