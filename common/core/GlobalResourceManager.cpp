@@ -37,9 +37,11 @@ void		GlobalResourceManager::init()
 
 void		GlobalResourceManager::load(std::string const &path, ResourceManager &manager)
 {
-	if (!this->_document.LoadFile(path.c_str()))
+	TiXmlDocument           document;
+	std::cout << "load xml " << path << std::endl;
+	if (!document.LoadFile(path.c_str()))
 		throw std::runtime_error(path + ": not found");
-	this->handleXML(&this->_document, manager);
+	this->handleXML(&document, manager);
 }
 
 void		GlobalResourceManager::addProvider(XMLProvider &provider)

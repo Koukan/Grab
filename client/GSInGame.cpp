@@ -42,7 +42,7 @@ void		GSInGame::preload()
   this->load("resources/player.xml");
   this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
-  //this->load("resources/map1.xml");
+  this->load("resources/map1.xml");
   this->load("resources/destruction.xml");
 
   //addBulletParser("resources/BulletSimple.xml", "single");

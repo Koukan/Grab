@@ -70,7 +70,6 @@ class CORE_DLLREQ GlobalResourceManager : public XMLProvider, public Net::Single
 	BulletResourceManager	*_bulletProvider;
 	ProviderMap				_providers;
 	IdMap					_ids;
-	TiXmlDocument			_document;
 };
 
 CORE_END_NAMESPACE
