@@ -20,6 +20,7 @@ class Game : public Core::Module
 	Player			*addPlayer();
 	void			removePlayer(int i);
 	size_t			nbPlayers() const;
+	void			changePlayersStatus(int nb, int ship, bool ready);
 
 	//getter
 	bool						isFull() const;

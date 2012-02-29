@@ -109,11 +109,28 @@ Player		*Game::addPlayer()
 
 void		Game::removePlayer(int i)
 {
-	if (i < 4 && i >= 0)
+	if (i < 4 && i >= 0 && this->_players[i])
 	{
 		delete this->_players[i];
 		_nbPlayers--;
 		this->_players[i] = 0;
+	}
+}
+
+void		Game::changePlayersStatus(int i, int ship, bool ready)
+{
+	if (i < 4 && i >= 0 && this->_players[i] && !this->_players[i]->isReady())
+	{
+		if (ready && !this->_players[i]->isReady())
+		{
+			this->_readyPlayers++;
+			if (this->_readyPlayers == this->_maxPlayers)
+				;// start Game
+		}
+		else if (!ready && this->_players[i]->isReady())
+			this->_readyPlayers--;
+		this->_players[i]->setShipType(ship);
+		this->_players[i]->setReady(ready);
 	}
 }
 

@@ -183,8 +183,8 @@ int		Client::connectGame(Net::Packet &packet)
 					Net::Packet		answer(4);
 					answer << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 					answer << static_cast<uint8_t>(i);
-					answer << static_cast<uint8_t>(0);
-					answer << false;
+					answer << static_cast<uint8_t>(players[i]->getShipType());
+					answer << players[i]->isReady();
 					this->handleOutputPacket(answer);
 				}
 			}
@@ -261,14 +261,16 @@ int		Client::updatePlayer(Net::Packet &packet)
 	{
 		Net::Packet		broadcast(4);
 		uint8_t			nb;
+		uint8_t			ship;
 		bool			ready;
 
-		broadcast << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 		packet >> nb;
-		broadcast << nb;
-		packet >> nb;
-		broadcast << nb;
+		packet >> ship;
 		packet >> ready;
+		this->_game->changePlayersStatus(nb, ship, ready);
+		broadcast << static_cast<uint8_t>(TCP::UPDATEPLAYER);
+		broadcast << nb;
+		broadcast << ship;
 		broadcast << ready;
 		NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
 		return 1;
