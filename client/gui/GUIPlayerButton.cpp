@@ -65,6 +65,7 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				else
 					this->_ship--;
 				this->changeShip();
+				this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
 				return (true);
 			}
 			else if (command.direction == Core::GUICommand::DOWN)
@@ -74,6 +75,7 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				else
 					this->_ship++;
 				this->changeShip();
+				this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
 				return (true);
 			}
 		}
@@ -117,6 +119,7 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 					--this->_nbReady;
 					this->changeToSelect();
 					this->_isReady = false;
+					this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
 				}
 				else
 				{
@@ -194,11 +197,31 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 
-void	GUIPlayerButton::addOnlinePlayer(Core::GUICommand::PlayerType type)
+void	GUIPlayerButton::addPlayer(Core::GUICommand::PlayerType type)
 {
 	this->_playerType = type;
 	this->_player = new Player(static_cast<Player::type>(type));
 	this->changeToSelect();
+}
+
+void	GUIPlayerButton::updatePlayer(uint32_t ship, bool ready)
+{
+	this->_playerType = Core::GUICommand::ONLINE;
+	this->_ship = ship;
+	if (!this->_player)
+	{
+		this->_player = new Player(static_cast<Player::type>(Core::GUICommand::ONLINE));
+		this->changeToSelect();
+	}
+	if (this->_isReady && !ready)
+	{
+		--this->_nbReady;
+		this->_isReady = false;
+		this->changeToSelect();
+	}
+	else if (!this->_isReady && ready)
+		this->changeToReady();
+	this->changeShip();
 }
 
 void	GUIPlayerButton::changeToEmpty()

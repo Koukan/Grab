@@ -40,7 +40,7 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::rangeId,
 			&Server::resourceId,
 			&Server::demandPlayerPacket,
-			&Server::addPlayerPacket,
+			&Server::updatePlayerPacket,
 			&Server::removePlayerPacket
 	};
 	uint8_t			type;
@@ -175,12 +175,17 @@ bool		Server::demandPlayerPacket(Net::Packet &packet)
 	return true;
 }
 
-bool		Server::addPlayerPacket(Net::Packet &packet)
+bool		Server::updatePlayerPacket(Net::Packet &packet)
 {
 	uint8_t		nb;
+	GameCommand *cmd = new GameCommand("updatePlayerPacket");
 
 	packet >> nb;
-	Core::CommandDispatcher::get().pushCommand(*new GameCommand("addPlayer", nb));
+	cmd->idObject = nb;
+	packet >> nb;
+	cmd->idResource = nb;
+	packet >> cmd->boolean;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 	return true;
 }
 

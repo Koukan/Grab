@@ -45,6 +45,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		playerCommand(Core::Command const &command);
 	void		demandPlayerCommand(Core::Command const &command);
 	void		unBindPlayerCommand(Core::Command const &command);
+	void		updatePlayerCommand(Core::Command const &command);
 
 	struct	Method
 	{
