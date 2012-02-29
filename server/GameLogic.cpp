@@ -135,7 +135,7 @@ void		GameLogic::startGame()
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 		y += step;
 	}
-	this->addGameObject(static_cast<Map*>(this->getResource("level1", 4)));
+	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)));
 	this->_gameStarted = true;
 }
 

@@ -137,12 +137,12 @@ BulletMLParser	*GlobalResourceManager::getBulletParser(uint32_t id) const
 
 Sound           *GlobalResourceManager::getSound(std::string const &name) const
 {
-	return static_cast<Sound*>(this->getResource(name, 5));
+	return static_cast<Sound*>(this->getResource(name, 4));
 }
 
 Sound           *GlobalResourceManager::getSound(uint32_t id) const
 {
-	return static_cast<Sound*>(this->getResource(id, 5));
+	return static_cast<Sound*>(this->getResource(id, 4));
 }
 
 Resource	*GlobalResourceManager::getResource(std::string const &name, std::string const &providerName) const
