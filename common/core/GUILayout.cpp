@@ -52,9 +52,10 @@ void GUILayout::unfocus()
 
 void GUILayout::clear()
 {	
-  for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end(); ++it)
+  for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end();)
     {
       delete *it;
+	  it = _elements.erase(it);
    	}
 	_focusElement = _elements.begin();
 	_begin = _elements.begin();	
