@@ -35,6 +35,8 @@ public:
   void inputReleasedRight(Core::InputCommand const &cmd);
   void inputJoystickMoved(Core::InputCommand const &cmd);
 
+  void fire();
+
 private:
   float			_speed;
   int				_fireFrequency;
@@ -55,6 +57,7 @@ private:
   float			_joyPosX;
   float			_joyPosY;
   bool			_actions[Ship::NBACTIONS];
+  std::string	_bulletFileName;
 
   void handleActions();
 

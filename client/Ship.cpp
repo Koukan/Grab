@@ -5,16 +5,16 @@
 #include "CircleHitBox.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
-  {"noname 1", "player1", "", 300, 400},
-  {"noname 2", "player2", "", 300, 800},
-  {"noname 3", "player3", "", 300, 200}
+  {"noname 1", "player1", "bossMetroid", 300, 400},
+  {"noname 2", "player2", "bossMetroid", 300, 800},
+  {"noname 3", "player3", "bossMetroid", 300, 200}
 };
 
 unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
 
-Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/, float speed, int fireFrequency, int r, int g, int b, unsigned int nbMaxGrabs)
+Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0)
+    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName)
 {
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
@@ -25,7 +25,7 @@ Ship::Ship(std::string const &spriteName, std::string const &/*bulletFileName*/,
 
 Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0)
+    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName)
 {
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
@@ -199,4 +199,9 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 		this->_vx = 0;
 		this->_vy = 0;
 	}
+}
+
+void Ship::fire()
+{
+	
 }
