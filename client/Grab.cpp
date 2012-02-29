@@ -44,12 +44,12 @@ void	Grab::move(double time)
     }
   else
     {
-      double vx, vy;
+      double vx, vy, angle;
 
       vx = _ship.getX() + _ship.getSprite().getWidth() / 2 - _x + this->getSprite().getWidth() / 2;
       vy = _ship.getY() + _ship.getSprite().getHeight() / 2 - _y + this->getSprite().getHeight() / 2;
 
-      double angle = atan2(vy, vx);
+      angle = atan2(vy, vx);
 
       this->_vx = cos(angle) * _speed;
       this->_vy = sin(angle) * _speed;

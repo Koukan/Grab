@@ -9,6 +9,7 @@ public:
   Cannon(std::string const &parser, Ship& ship);
   ~Cannon();
 
+  virtual void move(double elaspedTime);
 private:
   Ship&	_ship;
 };

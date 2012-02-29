@@ -45,6 +45,8 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		this->_shape = BulletCommand::Circle;
 	else if (state.getShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
+	else
+		this->_shape = BulletCommand::UNKNOWN;
 	if (!state.getSprite().empty())
 		this->setSprite(_state, state.getSprite());
 	this->_simpleSprite = state.getBulletSprite();
@@ -63,6 +65,8 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		this->_shape = BulletCommand::Circle;
 	else if (state.getShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
+	else
+		this->_shape = BulletCommand::UNKNOWN;
 	if (!state.getSprite().empty())
 		this->setSprite(_state, state.getSprite());
 	this->_simpleSprite = state.getBulletSprite();
