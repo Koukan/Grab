@@ -194,6 +194,13 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 
+void	GUIPlayerButton::addOnlinePlayer(Core::GUICommand::PlayerType type)
+{
+	this->_playerType = type;
+	this->_player = new Player(static_cast<Player::type>(type));
+	this->changeToSelect();
+}
+
 void	GUIPlayerButton::changeToEmpty()
 {
 	this->_sprite.updateState(Core::ButtonSprite::DEFAULT);

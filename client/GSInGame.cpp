@@ -459,7 +459,6 @@ void		GSInGame::createShips()
 		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
 		      shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
       (*it)->setShip(ship);
-      ship->registerInGameObjectManager("players", "grabs");
     }
   _ship = (*_players.begin())->getShip(); //tmp
   //_idPlayer = _ship->getId();

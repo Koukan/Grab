@@ -5,14 +5,12 @@
 #include "Sprite.hpp"
 #include "Input.hpp"
 
-class Grab;
+class Cannon;
 
 class Ship : public ConcreteObject
 {
 public:
-  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, unsigned int nbMaxGrabs = 3);
-
-  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::pair<int, int> grabs[4], unsigned int nbMaxGrabs = 3);
+  Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group = "players", unsigned int nbMaxGrabs = 3);
 
   ~Ship();
 
@@ -23,7 +21,7 @@ public:
 
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
-  void addGrab(Grab* grab);
+  void addCannon(Cannon *cannon);
   
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
@@ -41,7 +39,7 @@ public:
 private:
   float			_speed;
   int				_fireFrequency;
-  std::vector<Grab *> _grabs;
+  std::vector<Cannon *> _cannons;
   unsigned int _nbMaxGrabs; // can be up to 4 by choosing a special power
   bool _grabLaunched;
 
