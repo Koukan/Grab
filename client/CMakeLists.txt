@@ -126,6 +126,8 @@ set(SRCS
 	PacketCommand.hpp
 	Player.cpp
 	Player.hpp
+	PlayerBullet.cpp
+	PlayerBullet.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	ResourceCommand.hpp

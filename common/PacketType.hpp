@@ -35,7 +35,10 @@ namespace TCP
 		GAMESTATE = 13,
 		TCP_ERROR = 14, // may be Error, but WinGDI.h already defines it on Windows
 		RANGEID = 15,
-		RESOURCEID = 16
+		RESOURCEID = 16,
+		DEMANDPLAYER = 17,
+		ADDPLAYER = 18,
+		REMOVEPLAYER = 19
 	};
 }
 

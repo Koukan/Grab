@@ -32,28 +32,20 @@ void	GSPartySettings::back()
 
 void	GSPartySettings::createParty()
 {
-  if (_online)
+	if (_online)
     {
-      if (NetworkModule::get().connect())
-	{
-	  Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
+		if (NetworkModule::get().connect())
+		{
+	  		Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
+			int nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
 
-	  int nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
-
-	  GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
-	  Core::CommandDispatcher::get().pushCommand(*cmd);
-	  Core::GameStateManager::get().changeState(*(new GSLoading(nbPlayers)));
+			GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
+			Core::CommandDispatcher::get().pushCommand(*cmd);
+			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", nbPlayers, _online));
 	}
     }
     else
-    {
-		Core::GameState *bindPlayers;
-		if (_online)
-			bindPlayers = new GSBindPlayer(this->_mode, "", Net::Converter::toInt<int>(this->_nbPlayers), _online);
-		else
-			bindPlayers = new GSBindPlayer(this->_mode, "", 4, _online);
-      Core::GameStateManager::get().pushState(*bindPlayers);
-    }
+		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", 4, _online));
 }
 
 void	GSPartySettings::nbPlayerList(Core::GUIElement &nb)

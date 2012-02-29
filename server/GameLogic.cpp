@@ -20,7 +20,7 @@ GameLogic::GameLogic(Game &game)
 	addBulletParser("resources/BulletWall.xml", "wall");
 	addBulletParser("resources/BulletRandom.xml", "random");
 	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-	this->load("resources/map/map1.xml");
+	//this->load("resources/map/map1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
 	this->addGroup("ship", 0);

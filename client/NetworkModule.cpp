@@ -28,7 +28,7 @@ bool		NetworkModule::connect()
   Net::InetAddr		addr(this->_ip, this->_port);
 
   if (!_initudp)
-  {	
+  {
   	this->_udp.setReactor(this->_reactor);
 	Net::InetAddr     tmp("25557");
 	if (this->_udp.getIOHandler().setup(tmp) == -1)
@@ -75,7 +75,9 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Move", &NetworkModule::moveCommand},
 		{"Retrieve", &NetworkModule::retrieveCommand},
 		{"Player", &NetworkModule::playerCommand},
-		{"Spawn", &NetworkModule::spawnCommand}
+		{"Spawn", &NetworkModule::spawnCommand},
+		{"demandPlayer", &NetworkModule::demandPlayerCommand},
+		{"unBindPlayer", &NetworkModule::unBindPlayerCommand}
 		/*must be completed */
 	};
 
@@ -179,6 +181,26 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 	packet << static_cast<uint16_t>(cmd.vx);
 	packet << static_cast<uint16_t>(cmd.vy);
 	this->sendPacketUDP(packet);
+}
+
+void		NetworkModule::demandPlayerCommand(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(5);
+
+	packet << static_cast<uint8_t>(TCP::DEMANDPLAYER);
+	packet << cmd.idObject;
+	this->_server->handleOutputPacket(packet);
+}
+
+void		NetworkModule::unBindPlayerCommand(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(5);
+
+	packet << static_cast<uint8_t>(TCP::REMOVEPLAYER);
+	packet << static_cast<uint8_t>(cmd.idObject);
+	this->_server->handleOutputPacket(packet);
 }
 
 void		NetworkModule::setName(std::string const &name)
