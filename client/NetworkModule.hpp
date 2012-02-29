@@ -43,7 +43,8 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		listGamesCommand(Core::Command const &command);
 	void		connectGameCommand(Core::Command const &command);
 	void		playerCommand(Core::Command const &command);
-		
+	void		demandPlayerCommand(Core::Command const &command);
+	void		unBindPlayerCommand(Core::Command const &command);
 
 	struct	Method
 	{

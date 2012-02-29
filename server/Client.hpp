@@ -3,15 +3,16 @@
 #include "Net.hpp"
 #include "GameLogic.hpp"
 #include "PacketType.hpp"
+#include "Player.hpp"
 
 class Game;
 class Ship;
 
-class Player : public Net::SizeHeaderPacketHandler<>
+class Client : public Net::SizeHeaderPacketHandler<>
 {
   public:
-    Player();
-    virtual ~Player();
+    Client();
+    virtual ~Client();
 	virtual void		init();
 	virtual int			handleInputPacket(Net::Packet &packet);
 	void				setGame(Game &game);
@@ -39,16 +40,19 @@ class Player : public Net::SizeHeaderPacketHandler<>
 	int			player(Net::Packet &packet);
 	int			createGame(Net::Packet &packet);
 	int			requireResource(Net::Packet &packet);
+	int			demandPlayer(Net::Packet &packet);
+	int			removePlayer(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();
 
-	uint8_t			_id;
-	std::string		_name;
-	Game			*_game;
-	Ship			*_ship;
-	uint32_t		_idPacket;
-	uint32_t		_idShip;
-	uint64_t		_latency;
-	packetsList		_packets;
+	uint8_t				_id;
+	std::string			_name;
+	Game				*_game;
+	Ship				*_ship;
+	uint32_t			_idPacket;
+	uint32_t			_idShip;
+	uint64_t			_latency;
+	packetsList			_packets;
+	std::list<Player*>	_players;
 };

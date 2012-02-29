@@ -19,13 +19,14 @@ public:
 		BINDING
 	};
 
-	GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout);
+	GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout, uint32_t nb);
 	~GUIPlayerButton();
 
 	virtual bool	handleGUICommand(Core::GUICommand const &command);
 	virtual void	draw(double elapseTime);
 	virtual void	draw(int x, int y, double elapseTime);
 	virtual void	addOnlinePlayer(Core::GUICommand::PlayerType type);
+	void			changeToEmpty();
 
 private:
 	GSBindPlayer				&_bindPlayer;
@@ -42,8 +43,8 @@ private:
 	Core::CoreFont				*_shipFont;
 	std::vector<std::string>	_bindActions;
 	unsigned int				_bindIndex;
+	uint32_t					_nb;
 
-	void	changeToEmpty();
 	void	changeToSelect();
 	void	changeToReady();
 	void	changeShip();

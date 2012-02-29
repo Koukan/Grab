@@ -20,16 +20,16 @@ Game		*GameManager::getGame(uint16_t id)
 	return 0;
 }
 
-Game		*GameManager::createGame(uint8_t maxPlayers)
+Game		*GameManager::createGame(uint8_t maxClients)
 {
-	if (maxPlayers == 0)
+	if (maxClients == 0)
 		return 0;
 
 	Net::ScopedLock lock(this->_mutex);
 
 	while (this->_games.find(this->_id) != this->_games.end())
 		this->_id++;
-	Game	*game = new Game(this->_id, maxPlayers);
+	Game	*game = new Game(this->_id, maxClients);
 	this->_games[this->_id++] = game;
 	return game;
 }

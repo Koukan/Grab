@@ -20,7 +20,7 @@ GameLogic::GameLogic(Game &game)
 	addBulletParser("resources/BulletWall.xml", "wall");
 	addBulletParser("resources/BulletRandom.xml", "random");
 	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-	this->load("resources/map/map1.xml");
+	//this->load("resources/map/map1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
 	this->addGroup("ship", 0);
@@ -35,8 +35,8 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
-	//this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
-	//this->setCollisionGroups("ship", "players", &Rules::shotTouchPlayer);
+	//this->setCollisionGroups("shot", "players", &Rules::shotTouchClient);
+	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 }
 
 GameLogic::~GameLogic()
@@ -119,7 +119,7 @@ void		GameLogic::startGame()
 	double	y = 30;
 	double	step = 720 / this->_game._list.size();
 
-	for (std::list<Player*>::iterator it = this->_game._list.begin(); it != this->_game._list.end(); ++it)
+	for (std::list<Client*>::iterator it = this->_game._list.begin(); it != this->_game._list.end(); ++it)
 	{
 		Ship *tmp = new Ship(10, y, *it);
 	    (*it)->setShip(tmp);

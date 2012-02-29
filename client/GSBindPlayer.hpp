@@ -4,6 +4,7 @@
 #include "Modes.hpp"
 #include "Player.hpp"
 
+class GUIPlayerButton;
 
 class GSBindPlayer : public Core::GameState
 {
@@ -11,30 +12,34 @@ public:
 	GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online);
 	~GSBindPlayer();
 
-	void			onStart();
+	virtual void	onStart();
+	virtual bool	handleCommand(Core::Command const &command);
 	void			goToInGame();
 	void			addDemand(Core::GUICommand::PlayerType type);
+	void			removePlayer(uint32_t nb, Core::GUICommand::PlayerType type);
 
 	bool			isOnline() const;
 
 private:
-	struct Demand
-	{
-		Demand(int id, Core::GUICommand::PlayerType type)
-			: id(id), type(type)
-		{}
+	void			answerBind(Core::Command const &command);
+	void			addPlayer(Core::Command const &command);
+	void			removePlayer(Core::Command const &command);
 
-		int								id;
-		Core::GUICommand::PlayerType	type;
+	typedef std::map<uint32_t, Core::GUICommand::PlayerType> DemandMap;
+	struct	Method
+	{
+		std::string const	name;
+		void	(GSBindPlayer::*func)(Core::Command const &);
 	};
 
-	Modes::Mode			_mode;
-	std::string const	_map;
-	unsigned int		_nbPlayers;
-	bool				_online;
-	Player				*_players[4];
-	int					_nbReady;
-	int					_nbPending;
-	int					_id;
-	std::list<Demand>	_demands;
+	Modes::Mode					_mode;
+	std::string const			_map;
+	unsigned int				_nbPlayers;
+	bool						_online;
+	Player						*_players[4];
+	int							_nbReady;
+	int							_nbPending;
+	uint32_t					_id;
+	DemandMap					_demands;
+	std::list<GUIPlayerButton*>	_buttons;
 };

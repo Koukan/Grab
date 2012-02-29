@@ -3,16 +3,16 @@
 #include "HitBox.hpp"
 #include "PhysicObject.hpp"
 
-class Player;
+class Client;
 
 class Ship : public Core::PhysicObject
 {
 public:
-	Ship(double x, double y, Player *player);
+	Ship(double x, double y, Client *player);
 	~Ship();
 
 private:
-	Player		*_player;
+	Client		*_player;
 };
 
 

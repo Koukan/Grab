@@ -31,7 +31,7 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	obj.erase();
 	}
 }
-void		Rules::shotTouchPlayer(Core::GameObject&o1, Core::GameObject&o2)
+void		Rules::shotTouchClient(Core::GameObject&o1, Core::GameObject&o2)
 {
 	GameCommand *cmd = new GameCommand("Destroy");
 	cmd->idObject = o1.getId();

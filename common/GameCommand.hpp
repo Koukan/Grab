@@ -2,7 +2,7 @@
 
 #include "Command.hpp"
 
-class Player;
+class Client;
 class Game;
 
 class GameCommand : public Core::Command
@@ -23,7 +23,7 @@ class GameCommand : public Core::Command
 	int16_t				vx;
 	int16_t				vy;
 	float				position;
-	Player				*player;
+	Client				*player;
 	Game				*game;
 	std::string			data;
 	uint32_t			score;

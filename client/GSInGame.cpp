@@ -448,7 +448,6 @@ void		GSInGame::rangeid(GameCommand const &event)
 
 void		GSInGame::spawnmonster(GameCommand const &event)
 {
-	std::cout << "spwanmonster " << event.data << std::endl; 
 	Core::BulletCommand		*monster = new Core::BulletCommand(event.data, *this);
 	this->updatePositions(event, *monster);
 	this->addGameObject(monster, "monster");

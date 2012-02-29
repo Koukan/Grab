@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Net.hpp"
-#include "Player.hpp"
+#include "Client.hpp"
 
 class UdpHandler : public Net::UdpPacketHandler
 {
@@ -13,14 +13,14 @@ public:
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
 private:
-	int			spawn(Net::Packet &packet, Player&);
-	int			destroy(Net::Packet &packet, Player&);
-	int			move(Net::Packet &packet, Player&);
-	int			score(Net::Packet &packet, Player&);
-	int			statement(Net::Packet &packet, Player&);
-	int         retrieve(Net::Packet &packet, Player&);
-	int			ping(Net::Packet &packet, Player&);
-	int         pong(Net::Packet &packet, Player&);
+	int			spawn(Net::Packet &packet, Client&);
+	int			destroy(Net::Packet &packet, Client&);
+	int			move(Net::Packet &packet, Client&);
+	int			score(Net::Packet &packet, Client&);
+	int			statement(Net::Packet &packet, Client&);
+	int         retrieve(Net::Packet &packet, Client&);
+	int			ping(Net::Packet &packet, Client&);
+	int         pong(Net::Packet &packet, Client&);
 
 	uint64_t	_time_recv;
 };

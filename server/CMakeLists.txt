@@ -38,6 +38,8 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}MapProvider.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.cpp
 	main.cpp
+	Client.cpp
+	Client.hpp
 	Game.cpp
 	Game.hpp
 	GameLogic.cpp

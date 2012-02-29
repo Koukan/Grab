@@ -8,11 +8,12 @@
 #include "ResourceCommand.hpp"
 #include "Converter.hpp"
 
-Game::Game(uint16_t id, uint8_t maxPlayers)
+Game::Game(uint16_t id, uint8_t maxClients)
   : Core::Module("Game" + id, 20), _logic(*this),
-	  _id(id), _maxPlayers(maxPlayers), _readyPlayers(0)
+	  _id(id), _maxClients(maxClients), _readyClients(0)
 {
 	Server::get().loadModule(*this);
+	::memset(this->_players, 0, sizeof(this->_players));
 }
 
 Game::~Game()
@@ -47,15 +48,15 @@ void		Game::updateGameState(double elapsedTime)
 	this->_logic.update(elapsedTime);
 }
 
-bool		Game::addPlayer(Player &player)
+bool		Game::addClient(Client &player)
 {
-	if (this->_list.size() < this->_maxPlayers)
+	if (this->_list.size() < this->_maxClients)
 	{
 		player.setId(this->_list.size());
 		this->_list.push_back(&player);
 		uint32_t	begin = this->_list.size() * 10000000 + 1000000001;
 		uint32_t	end = begin + 9999999;
-		std::string	id = "shootPlayer" + Net::Converter::toString(this->_list.size());
+		std::string	id = "shootClient" + Net::Converter::toString(this->_list.size());
 		_logic.addGroup(id, 10, begin, end);
 		GameCommand	*cmd = new GameCommand("RangeId");
 		cmd->idObject = begin;
@@ -75,29 +76,51 @@ bool		Game::addPlayer(Player &player)
 		// end Resource
 
 		player.setGame(*this);
-		//this->addReadyPlayer();
+		//this->addReadyClient();
 		//this->broadcastStatus(player, 1);
 		return true;
 	}
 	return false;
 }
 
-void		Game::removePlayer(Player &player)
+void		Game::removeClient(Client &player)
 {
-	std::list<Player*>::iterator it = std::find(this->_list.begin(), this->_list.end(), &player);
+	std::list<Client*>::iterator it = std::find(this->_list.begin(), this->_list.end(), &player);
 
 	if (it != this->_list.end())
 		this->_list.erase(it);
 }
 
-size_t		Game::nbPlayers() const
+Player		*Game::addPlayer()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (this->_players[i] == 0)
+		{
+			this->_players[i] = new Player(i);
+			return this->_players[i];
+		}
+	}
+	return 0;
+}
+
+void		Game::removePlayer(int i)
+{
+	if (i < 4 && i >= 0)
+	{
+		delete this->_players[i];
+		this->_players[i] = 0;
+	}
+}
+
+size_t		Game::nbClients() const
 {
 	return _list.size();
 }
 
 bool		Game::isFull() const
 {
-	return this->nbPlayers() == _maxPlayers;
+	return this->nbClients() == _maxClients;
 }
 
 uint16_t	Game::getId() const
@@ -105,22 +128,22 @@ uint16_t	Game::getId() const
 	return _id;
 }
 
-uint8_t     Game::getMaxPlayers() const
+uint8_t     Game::getMaxClients() const
 {
-	return _maxPlayers;
+	return _maxClients;
 }
 
-void		Game::addReadyPlayer()
+void		Game::addReadyClient()
 {
-	_readyPlayers++;
-	 if (this->_maxPlayers == this->_readyPlayers)
+	_readyClients++;
+	if (this->_maxClients == this->_readyClients)
 	{
-		this->_readyPlayers = 0;
+		this->_readyClients = 0;
 		this->startGame();
 	}
 }
 
-std::list<Player*> const &Game::getPlayers() const
+std::list<Client*> const &Game::getClients() const
 {
 	return this->_list;
 }
@@ -130,7 +153,7 @@ GameLogic	&Game::getGameLogic()
   	return _logic;
 }
 
-void		Game::broadcastStatus(Player &player, int status)
+void		Game::broadcastStatus(Client &player, int status)
 {
 		GameCommand *tmp = new GameCommand("Status");
 		tmp->game = this;
