@@ -28,3 +28,15 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 
   o2.erase();
 }
+
+void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
+{
+  Grab& grab = static_cast<Grab&>(o1);
+
+  if (grab.getReturnToShip())
+    {
+      Ship& ship = static_cast<Ship &>(o2);
+      grab.erase();
+      ship.setGrabLaunched(false);
+    }
+}

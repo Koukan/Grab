@@ -34,12 +34,12 @@ Ship::~Ship()
 
 void Ship::launchGrab(std::string const &group)
 {
-  //if (/*!_grabLaunched &&*/ _cannons.size() < _nbMaxGrabs)
-  //  {
-  //    Grab* grab = new Grab("bullet", *(new Core::RectHitBox(this->getX(), this->getY(), 100, 100)), 0, -100, *this, _speed * 2);
-  //    Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
-  //    _grabLaunched = true;
-  //  }
+  if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
+   {
+     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 50)), 0, -200, *this, _speed * 2);
+     Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+     _grabLaunched = true;
+   }
 }
 
 void Ship::setGrabLaunched(bool grabLaunched)
@@ -199,6 +199,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 
 void Ship::inputFire(Core::InputCommand const &cmd)
 {
+  this->launchGrab("grabs"); // tmp test
 	if (this->_playerBullet)
 		this->_playerBullet->isFiring(true);
 }

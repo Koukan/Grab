@@ -4,5 +4,5 @@
 
 class Cannon : public Core::BulletCommand
 {
- 
+  //  Cannon();
 };

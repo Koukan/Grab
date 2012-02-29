@@ -9,7 +9,7 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ CircleHitBox : public HitBox
 {
 public:
-	CircleHitBox(double x, double y, double range);
+	CircleHitBox(double x, double y, double radius);
 	~CircleHitBox(void);
 
 	int getWidth() const;

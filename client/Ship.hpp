@@ -15,9 +15,6 @@ public:
 
   ~Ship();
 
-  
-  void registerInGameObjectManager(std::string const &shipGroup,
-				   std::string const &grabsGroup);
   void launchGrab(std::string const &group = "grabs");
 
   void setGrabLaunched(bool grabLaunched);
