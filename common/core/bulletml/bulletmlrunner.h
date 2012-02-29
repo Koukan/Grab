@@ -27,7 +27,19 @@ public:
 	DECLSPEC BulletMLState(BulletMLParser* bulletml,
 						   const std::vector<BulletMLNode*>& node,
 						   bullet_shared_ptr<BulletMLParameter> para)
-		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para), width_(1), height_(1) {}
+		: bulletml_(bulletml), node_(node.begin(), node.end()), para_(para), width_(1), height_(1)
+	{
+		simpleWidth_ = 1;
+		simpleHeight_ = 1;
+		_hx = 0;
+		_hy = 0;
+		_shx = 0;
+		_shy = 0;
+		damage_ = 0;
+		life_ = 1;
+		simpleDamage_ = 0;
+		simpleLife_ = 1;
+	}
 
 	DECLSPEC BulletMLParser* getBulletML() { return bulletml_; }
 	DECLSPEC const std::vector<BulletMLNode*>& getNode() const { return node_; }

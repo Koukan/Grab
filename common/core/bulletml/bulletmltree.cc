@@ -58,8 +58,21 @@ BulletMLNode::Name BulletMLNode::string2name(const std::string& str) {
 }
 
 BulletMLNode::BulletMLNode(const std::string& name)
-	: name_(string2name(name)), type_(none) {
+	: name_(string2name(name)), type_(none)
+{
     setReleaseDuty(true);
+	width_ = 1;
+	height_ = 1;
+	simpleWidth_ = 1;
+	simpleHeight_ = 1;
+	_hx = 0;
+	_hy = 0;
+	_shx = 0;
+	_shy = 0;
+	damage_ = 0;
+	simpleDamage_ = 0;
+	life_ = 1;
+	simpleLife_ = 0;
 }
 
 BulletMLNode::~BulletMLNode() {}
