@@ -37,7 +37,6 @@ void	GSJoinGame::onStart()
       Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
 	  //CommandDispatcher::get().pushCommand(*(new GameCommand("Spawn")));
       Core::CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
-      
 
       this->_hlayout = new GUIHLayout(300, RendererManager::get().getHeight() / 2, 0, 0, 50);
       this->_vlayout = new GUIVLayout(0, 0, 300, 700, 20, this->_hlayout, 8, "up arrow", "down arrow");
@@ -50,7 +49,7 @@ void	GSJoinGame::onStart()
     {
       this->_vlayout = new GUIVLayout(RendererManager::get().getWidth() / 2,
 		  (RendererManager::get().getHeight() - 100) / 2, 300, 700, 50);
-      new GUILabel("Connection failed", "buttonFont", "", this->_vlayout);
+      new GUILabel("Connection to the server failed", "buttonFont", "", this->_vlayout);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_vlayout);
     }
 }

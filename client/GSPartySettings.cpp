@@ -17,7 +17,7 @@
 #include "RendererManager.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
-  : Core::GameState("partySettings", true), _mode(mode), _map(map), _online(true)
+  : Core::GameState("partySettings", true), _mode(mode), _map(map), _online(true), _error(0)
 {
 }
 
@@ -42,7 +42,18 @@ void	GSPartySettings::createParty()
 			GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
 			Core::CommandDispatcher::get().pushCommand(*cmd);
 			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", nbPlayers, _online));
-	}
+		}
+		else
+		{
+			if (!this->_error)
+			{
+				this->_error = this->getFont("buttonFont");
+				this->addGameObject(this->_error, "font", 10);
+			}
+			this->_error->setText("Connection to the server failed");
+			this->_error->setX((RendererManager::get().getWidth() - this->_error->getWidth()) / 2);
+			this->_error->setY(100);
+		}
     }
     else
 		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", 4, _online));

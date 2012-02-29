@@ -19,9 +19,10 @@ public:
   void	onStart();
 
 private:
-  std::string	_nbPlayers;
-  Modes::Mode	_mode;
-  std::string	_map;
-  bool			_online;
+  std::string		_nbPlayers;
+  Modes::Mode		_mode;
+  std::string		_map;
+  bool				_online;
+  Core::CoreFont	*_error;
   Core::GUIElement	*_playerList;
 };

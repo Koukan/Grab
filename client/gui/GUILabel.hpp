@@ -13,10 +13,11 @@ public:
   GUILabel(std::string const &name, std::string const &font, std::string const &sprite, Core::GUILayout *layout);
   ~GUILabel();
 
-  virtual bool handleGUICommand(Core::GUICommand const &command);
+  virtual bool	handleGUICommand(Core::GUICommand const &command);
   virtual void	draw(double elapseTime);
   virtual void	draw(int x, int y, double elapseTime);
   virtual void	setText(std::string const &str);
+  void			setColor(int r, int g, int b, int t = 255);
 
 private:
   Core::Sprite *_sprite;

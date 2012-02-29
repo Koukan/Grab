@@ -74,3 +74,12 @@ void	GUILabel::setText(std::string const &str)
   if (this->_font)
     this->_font->setText(str);
 }
+
+void	GUILabel::setColor(int r, int g, int b, int t)
+{
+	if (this->_font)
+	{
+		this->_font->setColor(r, g, b);
+		this->_font->setTransparency(t);
+	}
+}
