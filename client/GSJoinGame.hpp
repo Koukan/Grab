@@ -11,10 +11,12 @@ public:
   ~GSJoinGame();
 
   void	onStart();
-  void	returnMainMenu();
   bool	handleCommand(Core::Command const &command);
 
 private:
+  void	returnMainMenu();
+  void	refresh();
+
   GUIVLayout *_vlayout;
   GUIHLayout *_hlayout;
   Core::ButtonSprite const *_sprite;

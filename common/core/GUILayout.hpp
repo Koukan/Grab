@@ -19,6 +19,7 @@ public:
 
   virtual void focus();
   virtual void unfocus();
+  virtual void clear();
 
   void setDispatch(bool dispatch);
   bool isEmpty() const;

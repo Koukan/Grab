@@ -38,9 +38,13 @@ void	GSJoinGame::onStart()
 	  //CommandDispatcher::get().pushCommand(*(new GameCommand("Spawn")));
       Core::CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
       
+
       this->_hlayout = new GUIHLayout(300, RendererManager::get().getHeight() / 2, 0, 0, 50);
-      new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_hlayout);
-      this->_vlayout = new GUIVLayout(0, 0, 300, 700, 20, 0, 8, "up arrow", "down arrow");
+      this->_vlayout = new GUIVLayout(0, 0, 300, 700, 20, this->_hlayout, 8, "up arrow", "down arrow");
+	  GUIVLayout *tmp = new GUIVLayout(RendererManager::get().getWidth() / 2, (RendererManager::get().getHeight() - 100) / 2, 100, 0, 50, this->_hlayout);
+
+      new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, tmp);
+      new GUIButton<GSJoinGame>(*this, &GSJoinGame::refresh, "Refresh", "buttonFont", *this->_sprite, tmp);
     }
   else
     {
@@ -54,6 +58,12 @@ void	GSJoinGame::onStart()
 void	GSJoinGame::returnMainMenu()
 {
   Core::GameStateManager::get().popState();
+}
+
+void	GSJoinGame::refresh()
+{
+  this->_vlayout->clear();
+  Core::CommandDispatcher::get().pushCommand(*(new GameCommand("ListGames")));
 }
 
 bool	GSJoinGame::handleCommand(Core::Command const &command)
@@ -71,13 +81,11 @@ bool	GSJoinGame::handleCommand(Core::Command const &command)
 	}
       else
 	{
-	  if (this->_isListed)
-	    this->_hlayout->insertElementAtBegin(*this->_vlayout);
-	  else
+	  if (!this->_isListed)
 	    {
-	      delete this->_vlayout;
+				//delete this->_vlayout;
 	      GUILabel *label = new GUILabel("No Games", "buttonFont", "", 0);
-	      this->_hlayout->insertElementAtBegin(*label);
+	      this->_vlayout->insertElementAtBegin(*label);
 	    }
 	}
       return (true);

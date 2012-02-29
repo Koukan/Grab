@@ -26,10 +26,7 @@ GUILayout::GUILayout(int x, int y, int width, int height, int padding, int nbEle
 
 GUILayout::~GUILayout()
 {
-  for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end(); ++it)
-    {
-      delete *it;
-    }
+  this->clear();
 }
 
 void GUILayout::focus()
@@ -51,6 +48,16 @@ void GUILayout::unfocus()
   this->GUIElement::unfocus();
 }
 
+void GUILayout::clear()
+{	
+  for (std::list<GUIElement *>::iterator it = this->_elements.begin(); it != this->_elements.end(); ++it)
+    {
+      delete *it;
+   	}
+	_focusElement = _elements.begin();
+	_begin = _elements.begin();	
+}
+
 void GUILayout::insertElementAtBegin(GUIElement &elem)
 {
   elem.unfocus();
@@ -61,7 +68,8 @@ void GUILayout::insertElementAtBegin(GUIElement &elem)
       std::list<GUIElement *>::iterator it = this->_elements.begin();
       for (; it != this->_elements.end() && (!(*it)->getEnable() || (*it)->getHide()); ++it);
       this->_focusElement = it;
-      (*it)->focus();
+	  if (it != this->_elements.end())
+      	(*it)->focus();
     }
 }
 
