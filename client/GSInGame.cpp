@@ -26,8 +26,10 @@ GSInGame::~GSInGame()
 
 void		GSInGame::preload()
 {
+  this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("grabs", 40);
+  this->addGroup("cannons", 39);
   this->addGroup("Wall", 0);
   this->addGroup("shot", 9);
   this->addGroup("monster", 10);
@@ -181,7 +183,7 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawn", &GSInGame::spawn},
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
-	{"spawnmonster", &GSInGame::spawnmonster}
+	{"spawnspawner", &GSInGame::spawnspawner}
   };
 
   for (size_t i = 0;
@@ -446,11 +448,11 @@ void		GSInGame::rangeid(GameCommand const &event)
   Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
 }
 
-void		GSInGame::spawnmonster(GameCommand const &event)
+void		GSInGame::spawnspawner(GameCommand const &event)
 {
-	Core::BulletCommand		*monster = new Core::BulletCommand(event.data, *this);
-	this->updatePositions(event, *monster);
-	this->addGameObject(monster, "monster");
+	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this);
+	this->updatePositions(event, *spawner);
+	this->addGameObject(spawner, "spawners");
 }
 
 void		GSInGame::createShips()

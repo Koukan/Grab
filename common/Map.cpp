@@ -44,7 +44,7 @@ void		Map::move(double time)
 	std::multimap<size_t, mapdata>::iterator it = _monsters.begin();
 	for (; it != _monsters.end() && it->first <= this->_y;)
 	{
-		cmd = new GameCommand("spawnmonster");
+		cmd = new GameCommand("spawnspawner");
 		cmd->y = this->_y - it->first; 
 		cmd->x = it->second.x;
 		cmd->data = it->second.name;

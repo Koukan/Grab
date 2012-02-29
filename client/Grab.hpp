@@ -14,8 +14,10 @@ public:
   ~Grab();
 
   void			setBulletScript(std::string const &bulletName);
+  std::string const&	getBulletScript() const;
   Ship			&getShip() const;
   bool			getReturnToShip() const;
+  void			setReturnToShip(bool returnToShip);
 
   virtual void		move(double elapsedTime);
 private:

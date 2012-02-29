@@ -52,7 +52,8 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	enum		Shape
 	{
 		Circle,
-		Rectangle
+		Rectangle,
+		UNKNOWN
 	};
 
 	void			setSpeedDirection();

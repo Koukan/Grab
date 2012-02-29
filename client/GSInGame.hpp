@@ -53,7 +53,7 @@ private:
 	void		life(GameCommand const &event);
 	void		move(GameCommand const &event);
 	void		rangeid(GameCommand const &event);
-	void		spawnmonster(GameCommand const &event);
+	void		spawnspawner(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 
