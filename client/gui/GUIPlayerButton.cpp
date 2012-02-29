@@ -102,7 +102,10 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 				else
 				{
 					if (this->_bindState == GUIPlayerButton::NONE)
+					{
 						this->changeToReady();
+						this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
+					}
 					else
 					{
 						this->_bindState = GUIPlayerButton::BINDING;
