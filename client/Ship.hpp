@@ -34,6 +34,7 @@ public:
   void inputReleasedLeft(Core::InputCommand const &cmd);
   void inputReleasedRight(Core::InputCommand const &cmd);
   void inputJoystickMoved(Core::InputCommand const &cmd);
+  void inputFire(Core::InputCommand const &cmd);
 
   void fire();
 

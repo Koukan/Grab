@@ -88,6 +88,9 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).Key.Code));
+		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
+			  *(*it)->getShip(), &Ship::inputFire,
+			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
 	  }
 	  else
 	  {
@@ -96,6 +99,10 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
+			  *(*it)->getShip(), &Ship::inputFire,
+			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 	  }
   }

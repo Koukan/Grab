@@ -3,6 +3,7 @@
 #include "Grab.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
+#include "BulletCommand.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
   {"noname 1", "player1", "bossMetroid", 300, 400},
@@ -201,7 +202,14 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 	}
 }
 
+void Ship::inputFire(Core::InputCommand const &cmd)
+{
+	this->fire();
+}
+
 void Ship::fire()
 {
-	
+	Core::GameState &state = Core::GameStateManager::get().getCurrentState();
+	Core::BulletCommand *bullet = new Core::BulletCommand(this->_bulletFileName, state, this->_x, this->_y);
+	state.addGameObject(bullet);
 }
