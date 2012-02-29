@@ -6,7 +6,7 @@
 #include "RendererManager.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
-  : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0)
+  : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
 {
 	this->_players[0] = 0;
 	this->_players[1] = 0;
@@ -18,7 +18,7 @@ GSBindPlayer::~GSBindPlayer()
 {
 }
 
-void GSBindPlayer::onStart()
+void	GSBindPlayer::onStart()
 {
 	// load xml
 	this->load("resources/intro.xml");
@@ -36,7 +36,7 @@ void GSBindPlayer::onStart()
 		new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout);
 }
 
-void GSBindPlayer::goToShipSelection()
+void	GSBindPlayer::goToInGame()
 {
 	std::list<Player *> *players = new std::list<Player *>();
 
@@ -47,4 +47,14 @@ void GSBindPlayer::goToShipSelection()
 	}
 	Core::GameStateManager::get().pushState(
 		*new GSInGame(*players, this->_mode, this->_map, this->_nbPlayers, _online));
+}
+
+bool	GSBindPlayer::isOnline() const
+{
+	return this->_online;
+}
+
+void	GSBindPlayer::addDemand(Core::GUICommand::PlayerType type)
+{
+	this->_demands.push_back(Demand(_id++, type));
 }

@@ -12,7 +12,8 @@ public:
       JOYSTICK1,
       JOYSTICK2,
       JOYSTICK3,
-      JOYSTICK4
+      JOYSTICK4,
+	  ONLINE
     };
 
   enum Action
@@ -26,14 +27,16 @@ public:
   Player(Player::type type, Ship *ship = 0);
   ~Player();
 
-  Player::type			getType() const;
+  //setter
   void					setType(Player::type type);
-  Core::InputCommand	&getAction(Player::Action action);
-
   void					setShip(Ship *ship);
-  Ship					*getShip() const;
   void					setShipInfo(Ship::ShipInfo const *info);
+
+  //getter
+  Player::type			getType() const;
+  Ship					*getShip() const;
   Ship::ShipInfo const	*getShipInfo() const;
+  Core::InputCommand	&getAction(Player::Action action);
 
 private:
 	Player::type			_type;
