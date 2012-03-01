@@ -30,6 +30,6 @@ void	Cannon::move(double time)
 #include <iostream>
 void	Cannon::draw(double time)
 {
-  //  std::cout << "drawww " << _x << " " << _y << std::endl;
+  std::cout << "drawww " << _x << " " << _y << std::endl;
   _sprite.draw(_x, _y, time);
 }

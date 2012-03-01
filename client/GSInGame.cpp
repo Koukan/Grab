@@ -29,7 +29,7 @@ void		GSInGame::preload()
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("grabs", 40);
-  this->addGroup("cannons", 39);
+  this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
   this->addGroup("shot", 9);
   this->addGroup("monster", 10);
