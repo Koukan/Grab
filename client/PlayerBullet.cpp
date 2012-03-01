@@ -12,19 +12,19 @@ inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
 		  double x, double y, double vx, double vy)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
 {
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
 	double x, double y, double vx, double vy)
-	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false)
+	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
 {
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
 	double vx, double vy)
-	: Core::BulletCommand(state, gstate, box, vx, vy), _groupName(groupName), _isFiring(false)
+	: Core::BulletCommand(state, gstate, box, vx, vy), _groupName(groupName), _isFiring(true)
 {
 }
 

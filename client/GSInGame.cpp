@@ -52,6 +52,7 @@ void		GSInGame::preload()
   addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
   addBulletParser("resources/BulletBomb.xml", "bomb");
   addBulletParser("resources/BulletWall.xml", "wall");
+  addBulletParser("resources/BulletSimple.xml", "simple");
   addBulletParser("resources/BulletRandom.xml", "random");
   addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
   addBulletParser("resources/player3.xml", "player3");
@@ -116,6 +117,10 @@ void		GSInGame::registerShipCallbacks()
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
 			  *(*it)->getShip(), &Ship::inputFire,
+			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 	  }
