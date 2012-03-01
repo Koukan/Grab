@@ -6,7 +6,7 @@
 #include "CircleHitBox.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
-  {"noname 1", "player1", "player3", 300, 400},
+  {"noname 1", "player1", "bossMetroid", 300, 400},
   {"noname 2", "player2", "player3", 300, 800},
   {"noname 3", "player3", "player3", 300, 200}
 };
