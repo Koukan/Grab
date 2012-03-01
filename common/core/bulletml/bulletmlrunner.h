@@ -45,6 +45,10 @@ public:
 	DECLSPEC void setSimpleShape(std::string const &shape) { this->simpleShape_ = shape; }
 	DECLSPEC void setSimpleWidth(uint32_t val) { this->simpleWidth_ = val; }
 	DECLSPEC void setSimpleHeight(uint32_t val) { this->simpleHeight_ = val; }
+	DECLSPEC void setHX(int x) { this->_hx = x; }
+	DECLSPEC void setHY(int y) { this->_hy = y; }
+	DECLSPEC void setSimpleX(int x) { this->_shx = x; }
+	DECLSPEC void setSimpleY(int y) { this->_shy = y; }
 	DECLSPEC void setDamage(uint32_t val) { this->damage_ = val; }
 	DECLSPEC void setLife(uint32_t val) { this->life_ = val; }
 	DECLSPEC void setSimpleDamage(uint32_t val) { this->simpleDamage_ = val; }
@@ -64,6 +68,10 @@ public:
 	DECLSPEC uint32_t			getSimpleRadius() const { return this->simpleWidth_; }
 	DECLSPEC uint32_t			getSimpleWidth() const { return this->simpleWidth_; }
 	DECLSPEC uint32_t			getSimpleHeight() const { return this->simpleHeight_; }
+	DECLSPEC int				getHitboxX() const { return this->_hx; }
+	DECLSPEC int				getHitboxY() const { return this->_hy; }
+	DECLSPEC int				getSimpleHitboxX() const { return this->_shx; }
+	DECLSPEC int				getSimpleHitboxY() const { return this->_shy; }
 	DECLSPEC uint32_t			getDamage() const { return this->damage_; }
 	DECLSPEC uint32_t			getLife() const { return this->life_; }
 	DECLSPEC uint32_t			getSimpleDamage() const { return this->simpleDamage_; }
@@ -80,10 +88,16 @@ private:
 	std::string								sprite_;
 	std::string								bulletGroup_;
 	std::string								bulletSprite_;
+	//hitbox
 	std::string								shape_;
 	std::string								simpleShape_;
 	uint32_t								simpleWidth_;
 	uint32_t								simpleHeight_;
+	int										_hx;
+	int										_hy;
+	int										_shx;
+	int										_shy;
+	//end hitbox
 	uint32_t								damage_;
 	uint32_t								life_;
 	uint32_t								simpleDamage_;

@@ -80,6 +80,10 @@ public:
 	void setSimpleShape(std::string const &shape) { this->simpleShape_ = shape; }
 	void setSimpleWidth(std::string const &width) { this->simpleWidth_ = strtol(width.c_str(), 0, 10); }
 	void setSimpleHeight(std::string const &height) { this->simpleHeight_ = strtol(height.c_str(), 0, 10); }
+	void setHX(std::string const &x) { this->_hx = strtol(x.c_str(), 0, 10); }
+	void setHY(std::string const &y) { this->_hy = strtol(y.c_str(), 0, 10); }
+	void setSimpleX(std::string const &x) { this->_shx = strtol(x.c_str(), 0, 10); }
+	void setSimpleY(std::string const &y) { this->_shy = strtol(y.c_str(), 0, 10); }
 	void setLife(std::string const &life) { this->life_ = strtol(life.c_str(), 0, 10); }
 	void setSimpleLife(std::string const &life) { this->simpleLife_ = strtol(life.c_str(), 0, 10); }
 	void setDamage(std::string const &damage) { this->damage_ = strtol(damage.c_str(), 0, 10); }
@@ -97,6 +101,10 @@ public:
 	std::string const &getSimpleShape() const { return this->simpleShape_; }
 	uint32_t getSimpleWidth() const { return this->simpleWidth_; }
 	uint32_t getSimpleHeight() const { return this->simpleHeight_; }
+	int		 getHitboxX() const { return this->_hx; }
+	int		 getHitboxY() const { return this->_hy; }
+	int		 getSimpleHitboxX() const { return this->_shx; }
+	int		 getSimpleHitboxY() const { return this->_shy; }
 	uint32_t getLife() const { return this->life_; }
 	uint32_t getSimpleLife() const { return this->simpleLife_; }
 	uint32_t getDamage() const { return this->damage_; }
@@ -112,12 +120,18 @@ protected:
 	std::string				sprite_;
 	std::string				bulletGroup_;
 	std::string				bulletSprite_;
+	//hitbox
 	std::string				shape_;
 	uint32_t				width_;
 	uint32_t				height_;
 	std::string				simpleShape_;
 	uint32_t				simpleWidth_;
 	uint32_t				simpleHeight_;
+	int						_hx;
+	int						_hy;
+	int						_shx;
+	int						_shy;
+	//end hitbox
 	uint32_t				damage_;
 	uint32_t				simpleDamage_;
 	uint32_t				life_;
