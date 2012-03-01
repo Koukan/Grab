@@ -58,7 +58,8 @@ void GUILayout::clear()
 	  it = _elements.erase(it);
    	}
 	_focusElement = _elements.begin();
-	_begin = _elements.begin();	
+	_begin = _elements.begin();
+	_enable = false;
 }
 
 void GUILayout::insertElementAtBegin(GUIElement &elem)

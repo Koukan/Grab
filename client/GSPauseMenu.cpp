@@ -22,6 +22,9 @@ void	GSPauseMenu::returnMainMenu()
 {
   Core::GameStateManager::get().popState();
   Core::GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
+  Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::resumeGame()
