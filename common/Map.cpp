@@ -49,7 +49,8 @@ void		Map::move(double time)
 		cmd->x = it->second.x;
 		cmd->data = it->second.name;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
-		it = _monsters.erase(it);	
+		_monsters.erase(it);
+		it = _monsters.begin();
 	}
 	for (it = _decorations.begin(); it != _decorations.end() && 
 					it->first <= this->_y;)
@@ -59,6 +60,7 @@ void		Map::move(double time)
 		cmd->x = it->second.x;
 		cmd->data = it->second.name;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
-		it = _decorations.erase(it);
+		_decorations.erase(it);
+		it = _decorations.begin();
 	}
 }

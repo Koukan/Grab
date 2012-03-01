@@ -1,4 +1,6 @@
+#include <cmath>
 #include "Grab.hpp"
+
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed) :
   ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed)
