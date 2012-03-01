@@ -37,7 +37,7 @@ public:
 			}
 			if (_left == 0)
 			{
-				_left = ::ntohs(_header); 
+				_left = ntohs(_header); 
 				continue ;
 			}
 			_left -= ret;
