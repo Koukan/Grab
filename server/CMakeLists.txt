@@ -32,20 +32,20 @@ set(SRCS
 	${INCLUDES_CORE}
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp
+	${COMMON_INCLUDE_DIR}GameCommand.hpp
+	${COMMON_INCLUDE_DIR}Map.hpp
+	${COMMON_INCLUDE_DIR}Map.cpp
+	${COMMON_INCLUDE_DIR}MapProvider.hpp
+	${COMMON_INCLUDE_DIR}MapProvider.cpp
 	main.cpp
 	Game.cpp
 	Game.hpp
-	GameCommand.hpp
 	GameLogic.cpp
 	GameLogic.hpp
 	GameManager.cpp
 	GameManager.hpp
 	GameTask.cpp
 	GameTask.hpp
-	Map.hpp
-	Map.cpp
-	MapProvider.hpp
-	MapProvider.cpp
 	NetworkModule.cpp
 	NetworkModule.hpp
 	PacketCommand.cpp

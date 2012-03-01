@@ -67,6 +67,14 @@ set(INCLUDES_COMMON_DIR "../common/")
 
 set(SRCS
 	${INCLUDES_CORE}
+	${INCLUDES_COMMON_DIR}PacketType.hpp
+	${INCLUDES_COMMON_DIR}Resources.hpp
+	${INCLUDES_COMMON_DIR}Resources.cpp
+	${INCLUDES_COMMON_DIR}GameCommand.hpp
+	${INCLUDES_COMMON_DIR}Map.hpp
+	${INCLUDES_COMMON_DIR}Map.cpp
+	${INCLUDES_COMMON_DIR}MapProvider.hpp
+	${INCLUDES_COMMON_DIR}MapProvider.cpp
 	main.cpp
 	Cannon.hpp
 	Cannon.cpp
@@ -80,7 +88,6 @@ set(SRCS
 	Game.hpp
 	GameButton.cpp
 	GameButton.hpp
-	GameCommand.hpp
 	GameListCommand.hpp
 	GameListCommand.cpp
 	Grab.hpp
@@ -117,15 +124,12 @@ set(SRCS
 	OpenALSound.hpp
 	PacketCommand.cpp
 	PacketCommand.hpp
-	${INCLUDES_COMMON_DIR}PacketType.hpp
 	Player.cpp
 	Player.hpp
 	PlayerBullet.cpp
 	PlayerBullet.hpp
 	RendererManager.cpp
 	RendererManager.hpp
-	${INCLUDES_COMMON_DIR}Resources.hpp
-	${INCLUDES_COMMON_DIR}Resources.cpp
 	ResourceCommand.hpp
 	Rules.cpp
 	Rules.hpp

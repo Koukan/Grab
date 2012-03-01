@@ -94,7 +94,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	else if (gc.name == "spawnmonster")
 	{
 		BCommand	*bullet = new BCommand(gc.data, *this, 1100, gc.x, 0, 0);
-		this->addGameObject(bullet);	
+		this->addGameObject(bullet);
 		GameCommand *answer = new GameCommand("Spawn");
 		answer->idResource = bullet->getId();
 		answer->idObject = this->getBulletParser(gc.data)->getResourceId();
@@ -135,7 +135,7 @@ void		GameLogic::startGame()
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 		y += step;
 	}
-	this->addGameObject(static_cast<Map*>(this->getResource("level1", 4)));
+	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)));
 	this->_gameStarted = true;
 }
 

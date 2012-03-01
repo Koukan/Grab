@@ -7,8 +7,10 @@
 #include "CommandDispatcher.hpp"
 #include "ScrollingSprite.hpp"
 #include "GameListCommand.hpp"
+#include "GameStateManager.hpp"
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
+#include "Map.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -39,16 +41,21 @@ void		GSInGame::preload()
   this->load("resources/intro.xml");
   this->load("resources/player.xml");
   this->load("resources/shots.xml");
-  this->load("resources/enemies.xml");
+  //this->load("resources/enemies.xml");
+  this->load("resources/map1.xml");
   this->load("resources/destruction.xml");
 
-  addBulletParser("resources/BulletSimple.xml", "single");
+  //addBulletParser("resources/BulletSimple.xml", "single");
   addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
   addBulletParser("resources/BulletBomb.xml", "bomb");
   addBulletParser("resources/BulletWall.xml", "wall");
   addBulletParser("resources/BulletRandom.xml", "random");
   addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
   addBulletParser("resources/player3.xml", "player3");
+
+  //test map
+  this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
+
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
@@ -123,13 +130,13 @@ void		GSInGame::onStart()
   ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");
-
+ 	 
   if (!_online)
     {
       Core::HitBox *hitbox = new Core::RectHitBox(500, 500, 100, 100);
       this->createShips();
-      ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
-      this->addGameObject(monster, "monster");
+	  //ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
+	  //this->addGameObject(monster, "monster");
     }
 
   this->registerShipCallbacks();
@@ -137,6 +144,7 @@ void		GSInGame::onStart()
 
 void		GSInGame::update(double elapsedTime)
 {
+	return ;
 	if (this->_elapsedTime == 0)
 	{
 		if (this->_ship && this->_fire)
@@ -171,7 +179,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"score", &GSInGame::score},
 	{"spawn", &GSInGame::spawn},
 	{"move", &GSInGame::move},
-	{"rangeid", &GSInGame::rangeid}
+	{"rangeid", &GSInGame::rangeid},
+	{"spawnmonster", &GSInGame::spawnmonster}
   };
 
   for (size_t i = 0;
@@ -436,6 +445,14 @@ void		GSInGame::rangeid(GameCommand const &event)
   this->_nameFonts[this->_idPlayer]->setText(NetworkModule::get().getName());
   this->_nameFonts[this->_idPlayer]->setPosition((1024 / (this->_nbPlayers + 1)) * (this->_idPlayer+1) - this->_nameFonts[this->_idPlayer]->getWidth() / 2, 680);
   Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
+}
+
+void		GSInGame::spawnmonster(GameCommand const &event)
+{
+	std::cout << "spwanmonster " << event.data << std::endl; 
+	Core::BulletCommand		*monster = new Core::BulletCommand(event.data, *this);
+	this->updatePositions(event, *monster);
+	this->addGameObject(monster, "monster");
 }
 
 void		GSInGame::createShips()
