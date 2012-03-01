@@ -5,6 +5,7 @@ CORE_USE_NAMESPACE
 GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout *layout, int nbElements, GUICommand::PlayerType playerType)
   : GUIElement(x, y, width, height, layout, playerType), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
+	this->_enable = false;
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();
   if (this->_isFocused)
@@ -16,6 +17,7 @@ GUILayout::GUILayout(int x, int y, int width, int height, int padding, GUILayout
 GUILayout::GUILayout(int x, int y, int width, int height, int padding, int nbElements, GUICommand::PlayerType playerType)
   : GUIElement(x, y, width, height, playerType), _padding(padding), _nbElements(nbElements), _dispatch(false)
 {
+	this->_enable = false;
   this->_begin = this->_elements.begin();
   this->_focusElement = this->_elements.begin();
   if (this->_isFocused)
@@ -60,6 +62,8 @@ void GUILayout::clear()
 
 void GUILayout::insertElementAtBegin(GUIElement &elem)
 {
+	if (!this->_enable && elem.getEnable())
+		this->_enable = true;
   elem.unfocus();
   this->_elements.push_front(&elem);
   this->_begin = this->_elements.begin();
@@ -75,6 +79,8 @@ void GUILayout::insertElementAtBegin(GUIElement &elem)
 
 void GUILayout::insertElementAtEnd(GUIElement &elem)
 {
+	if (!this->_enable && elem.getEnable())
+		this->_enable = true;
 	elem.unfocus();
   this->_elements.push_back(&elem);
   this->_begin = this->_elements.begin();
