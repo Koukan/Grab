@@ -6,7 +6,7 @@
 #include "CircleHitBox.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
-  {"noname 1", "player1", "bossMetroid", 300, 400},
+  {"noname 1", "player1", "player3", 300, 400},
   {"noname 2", "player2", "player3", 300, 800},
   {"noname 3", "player3", "player3", 300, 200}
 };
@@ -16,10 +16,8 @@ unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship:
 Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
     _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName),
-	_playerBullet(new PlayerBullet(bulletFileName, Core::GameStateManager::get().getCurrentState(), "players", 0, 0))
+	_playerBullet(0)
 {
-	if (this->_playerBullet)
-		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
@@ -200,12 +198,19 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 void Ship::inputFire(Core::InputCommand const &cmd)
 {
   this->launchGrab("grabs"); // tmp test
-	if (this->_playerBullet)
-		this->_playerBullet->isFiring(true);
+  if (!this->_playerBullet)
+  {
+	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(), "players", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
+	  if (this->_playerBullet)
+		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+  }
 }
 
 void Ship::inputReleasedFire(Core::InputCommand const &cmd)
 {
 	if (this->_playerBullet)
-		this->_playerBullet->isFiring(false);
+	{
+		this->_playerBullet->erase();
+		this->_playerBullet = 0;
+	}
 }

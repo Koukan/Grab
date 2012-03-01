@@ -52,6 +52,7 @@ void		GSInGame::preload()
   addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
   addBulletParser("resources/BulletBomb.xml", "bomb");
   addBulletParser("resources/BulletWall.xml", "wall");
+  addBulletParser("resources/BulletSimple.xml", "simple");
   addBulletParser("resources/BulletRandom.xml", "random");
   addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
   addBulletParser("resources/player3.xml", "player3");
