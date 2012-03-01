@@ -36,7 +36,7 @@ Ship::~Ship()
 
 void Ship::launchGrab(std::string const &group)
 {
-  if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
+  if (!_grabLaunched /*&& _cannons.size() < _nbMaxGrabs*/)
    {
      Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 30)), 0, -200, *this, _speed * 2);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
@@ -59,10 +59,13 @@ float Ship::getSpeed() const
   return (_speed);
 }
 
-void Ship::addCannon(Cannon &cannon, std::string const &group)
+void Ship::addCannon(Cannon *cannon, std::string const &group)
 {
-  _cannons.push_back(&cannon);
-  Core::GameStateManager::get().getCurrentState().addGameObject(&cannon, group);
+  if (cannon)
+    {
+      _cannons.push_back(cannon);
+      Core::GameStateManager::get().getCurrentState().addGameObject(cannon, group);
+    }
 }
 
 void Ship::handleActions()
@@ -123,55 +126,55 @@ void Ship::handleActions()
 	}
 }
 
-void Ship::inputUp(Core::InputCommand const &cmd)
+void Ship::inputUp(Core::InputCommand const &/*cmd*/)
 {
 	this->_actions[Ship::UP] = true;
 	this->handleActions();
 }
 
-void Ship::inputDown(Core::InputCommand const &cmd)
+void Ship::inputDown(Core::InputCommand const &/*cmd*/)
 {
 	this->_actions[Ship::DOWN] = true;
 	this->handleActions();
 }
 
-void Ship::inputLeft(Core::InputCommand const &cmd)
+void Ship::inputLeft(Core::InputCommand const &/*cmd*/)
 {
 	this->_actions[Ship::LEFT] = true;
 	this->handleActions();
 }
 
-void Ship::inputRight(Core::InputCommand const &cmd)
+void Ship::inputRight(Core::InputCommand const &/*cmd*/)
 {
 	this->_actions[Ship::RIGHT] = true;
 	this->handleActions();
 }
 
-void Ship::inputReleasedUp(Core::InputCommand const &cmd)
+void Ship::inputReleasedUp(Core::InputCommand const& /*cmd*/)
 {
 	this->_actions[Ship::UP] = false;
 	this->handleActions();
 }
 
-void Ship::inputReleasedDown(Core::InputCommand const &cmd)
+void Ship::inputReleasedDown(Core::InputCommand const& /*cmd*/)
 {
 	this->_actions[Ship::DOWN] = false;
 	this->handleActions();
 }
 
-void Ship::inputReleasedLeft(Core::InputCommand const &cmd)
+void Ship::inputReleasedLeft(Core::InputCommand const& /*cmd*/)
 {
 	this->_actions[Ship::LEFT] = false;
 	this->handleActions();
 }
 
-void Ship::inputReleasedRight(Core::InputCommand const &cmd)
+void Ship::inputReleasedRight(Core::InputCommand const& /*cmd*/)
 {
 	this->_actions[Ship::RIGHT] = false;
 	this->handleActions();
 }
 
-void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
+void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 {
 	static float const limit = 50;
 
@@ -204,7 +207,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const &cmd)
 	}
 }
 
-void Ship::inputFire(Core::InputCommand const &cmd)
+void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
   this->launchGrab("grabs"); // tmp test
   if (!this->_playerBullet)
@@ -216,7 +219,7 @@ void Ship::inputFire(Core::InputCommand const &cmd)
   }
 }
 
-void Ship::inputReleasedFire(Core::InputCommand const &cmd)
+void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 {
 	if (this->_playerBullet)
 	{
