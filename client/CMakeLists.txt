@@ -5,15 +5,12 @@ set(TARGET_NAME grab_client)
 
 set(EXECUTABLE_OUTPUT_PATH ../)
 
-SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/;${CMAKE_MODULE_PATH}")
-##### Linking openal
-find_package(OpenAL)
-find_package(sndfile)
+#SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/;${CMAKE_MODULE_PATH}")
 
 ##### Linking the sfml libraries
 IF(WIN32)
 set(TYPE "Windows")
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 set(SFML_INCLUDE_DIR "C:/Development/Environment/SFML-1.6/include")
 set(SFMLDIR "C:/Development/Environment/SFML-1.6")
 set(SFML_STATIC_LIBRARIES TRUE)
@@ -43,6 +40,11 @@ set(SFML_LIBRARIES
 )
 ENDIF(WIN32)
 #####
+
+##### Linking openal
+find_package(OpenAL)
+find_package(sndfile)
+
 
 ##### Linking libnet
 set(NET_SRCS_DIR "../common/libnet/src/")
