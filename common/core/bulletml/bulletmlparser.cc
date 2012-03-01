@@ -194,6 +194,10 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					elem->setWidth(val);
 				else if (key == "height")
 					elem->setHeight(val);
+				else if (key == "x")
+					elem->setHX(val);
+				else if (key == "y")
+					elem->setHY(val);
 			}
 			else if (elem->getName() == BulletMLNode::simpleHitbox)
 			{
@@ -205,6 +209,10 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					elem->setSimpleWidth(val);
 				else if (key == "height")
 					elem->setSimpleHeight(val);
+				else if (key == "x")
+					elem->setSimpleX(val);
+				else if (key == "y")
+					elem->setSimpleY(val);
 			}
 			else if (elem->getName() == BulletMLNode::life)
 			{

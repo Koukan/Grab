@@ -1,3 +1,4 @@
+#include <cmath>
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "GlobalResourceManager.hpp"

@@ -34,7 +34,6 @@ PlayerBullet::~PlayerBullet()
 
 void	PlayerBullet::doAccelY(double speedy)
 {
-	std::cout << "call" << std::endl;
 	this->_vy = -speedy;
 	this->setSpeedDirection();
 }
@@ -75,8 +74,10 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 void		PlayerBullet::move(double time)
 {
 	if (this->_isFiring)
+	{
 		_turn += time * 50;
-	this->run();
+		this->run();
+	}
 	if (!this->_end)
 		PhysicObject::move(time);
 	else
@@ -86,12 +87,10 @@ void		PlayerBullet::move(double time)
 void			PlayerBullet::isFiring(bool firing)
 {
 	if (firing)
-	{
 		this->_isFiring = true;
-		this->_turn = 0;
-	}
 	else
 	{
 		this->_isFiring = false;
+		this->_turn = 0;
 	}
 }

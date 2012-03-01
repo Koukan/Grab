@@ -156,6 +156,8 @@ void BulletMLRunnerImpl::setHitBox(BulletMLState &state) {
 		state.setShape(box->getShape());
 		state.setWidth(box->getWidth());
 		state.setHeight(box->getHeight());
+		state.setHX(box->getHitboxX());
+		state.setHY(box->getHitboxY());
 }
 
 void BulletMLRunnerImpl::setSimpleHitBox(BulletMLState &state) {
@@ -165,6 +167,8 @@ void BulletMLRunnerImpl::setSimpleHitBox(BulletMLState &state) {
 		state.setSimpleShape(box->getSimpleShape());
 		state.setSimpleWidth(box->getSimpleWidth());
 		state.setSimpleHeight(box->getSimpleHeight());
+		state.setSimpleX(box->getSimpleHitboxX());
+		state.setSimpleY(box->getSimpleHitboxY());
 }
 
 void BulletMLRunnerImpl::setLife(BulletMLState &state) {
