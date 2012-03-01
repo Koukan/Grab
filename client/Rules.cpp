@@ -38,7 +38,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 
       std::cout << "[" << grab.getBulletScript() << "]" << std::endl;
       if (!grab.getBulletScript().empty())
-	ship.addCannon(*(new Cannon(grab.getBulletScript(), ship)), "cannons");
+	ship.addCannon(*(new Cannon(grab.getBulletScript(), ship, "shot")), "cannons");
       grab.erase();
       ship.setGrabLaunched(false);
     }

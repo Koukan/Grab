@@ -1,9 +1,12 @@
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
+#include "GlobalResourceManager.hpp"
 
-Cannon::Cannon(std::string const &parser, Ship &ship) :
+Cannon::Cannon(std::string const &parser, Ship &ship, std::string const& spriteName) :
   BulletCommand(parser, Core::GameStateManager::get().getCurrentState(),
-		ship.getX(), ship.getY(), ship.getVx(), ship.getVy()), _ship(ship)
+		ship.getX(), ship.getY(), ship.getVx(), ship.getVy()),
+  _ship(ship),
+  _sprite(*(Core::GlobalResourceManager::get().getSprite(spriteName)))
 {}
 
 Cannon::~Cannon()
@@ -18,7 +21,14 @@ void	Cannon::move(double time)
 
   angle = atan2(vy, vx);
 
-  this->_vx = cos(angle) * _speed;
-  this->_vy = sin(angle) * _speed;
-  this->BulletCommand::move(time);
+  this->_vx = cos(angle) * _ship.getSpeed();
+  this->_vy = sin(angle) * _ship.getSpeed();
+  Core::BulletCommand::move(time);
+}
+
+#include <iostream>
+void	Cannon::draw(double time)
+{
+  //  std::cout << "drawww " << _x << " " << _y << std::endl;
+  _sprite.draw(_x, _y, time);
 }

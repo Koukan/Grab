@@ -129,10 +129,9 @@ void		GSInGame::onStart()
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
 
-  // add gui
-  ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
+  /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
-  this->addGameObject(obj1, "background2");
+  this->addGameObject(obj1, "background2");*/
  	 
   if (!_online)
     {
