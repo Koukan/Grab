@@ -19,7 +19,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
     BulletCommand(BulletMLState &state, GameState &gstate,
 		  double x = 0, double y = 0, double vx = 0, double vy = 0);
     BulletCommand(BulletMLState &state, GameState &gstate, HitBox &box,
-		  double vx = 0, double vy = 0);
+		  double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
     virtual ~BulletCommand();
 
 	// BulletMLRunner overloaded
@@ -72,6 +72,8 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	BulletMap		_childs;
 	std::string		_simpleSprite;
 	std::string		_simpleGroup;
+	double			_simpleXHitbox;
+	double			_simpleYHitbox;
 	Net::MTRand		_rand;
 };
 

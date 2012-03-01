@@ -9,8 +9,8 @@
 class ConcreteObject : public Core::PhysicObject
 {
 public:
-  ConcreteObject(std::string const &spriteName, Core::HitBox & hitbox, double vx, double vy);
-  ConcreteObject(Core::Sprite *sprite, Core::HitBox & hitbox, double vx, double vy);
+  ConcreteObject(std::string const &spriteName, Core::HitBox & hitbox, double vx, double vy, double xHitboxOffset = 0, double yHitboxOffset = 0);
+  ConcreteObject(Core::Sprite *sprite, Core::HitBox & hitbox, double vx, double vy, double xHitboxOffset = 0, double yHitboxOffset = 0);
   virtual ~ConcreteObject();
   virtual void draw(double);
 

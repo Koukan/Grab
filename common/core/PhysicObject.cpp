@@ -4,8 +4,9 @@
 
 CORE_USE_NAMESPACE
 
-PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy) :
-  DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _static(false), _hitBox(&hitbox)
+PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy),
+	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _static(false), _hitBox(&hitbox)
 {
 }
 
@@ -24,6 +25,26 @@ double	PhysicObject::getVx() const
 double	PhysicObject::getVy() const
 {
   return (this->_vy);
+}
+
+double		PhysicObject::getXHitBoxOffset() const
+{
+	return (this->_xHitboxOffset);
+}
+
+double		PhysicObject::getYHitBoxOffset() const
+{
+	return (this->_yHitboxOffset);
+}
+
+void		PhysicObject::setXHitBoxOffset(double x)
+{
+	this->_xHitboxOffset = x;
+}
+
+void		PhysicObject::setYHitBoxOffset(double y)
+{
+	this->_yHitboxOffset = y;
 }
 
 HitBox	&PhysicObject::getHitBox() const
@@ -74,22 +95,22 @@ int		PhysicObject::getHeightElement()
 
 int		PhysicObject::getXElement()
 {
-	return (static_cast<int>(this->_x));
+	return (static_cast<int>(this->_x + this->_xHitboxOffset));
 }
 
 int		PhysicObject::getYElement()
 {
-	return (static_cast<int>(this->_y));
+	return (static_cast<int>(this->_y + this->_yHitboxOffset));
 }
 
 void	PhysicObject::collide(TreeElement &elem)
 {
 	PhysicObject 		&obj = static_cast<PhysicObject &>(elem);
 
-	this->_hitBox->setX(this->_x);
-	this->_hitBox->setY(this->_y);
-	obj.getHitBox().setX(obj.getX());
-	obj.getHitBox().setY(obj.getY());
+	this->_hitBox->setX(this->_x + this->_xHitboxOffset);
+	this->_hitBox->setY(this->_y + this->_yHitboxOffset);
+	obj.getHitBox().setX(obj.getX() + obj.getXHitBoxOffset());
+	obj.getHitBox().setY(obj.getY() + obj.getYHitBoxOffset());
 	if (this->_hitBox->collide(obj.getHitBox()))
 		this->getGroup()->getState().callCollision(*this, obj);
 }

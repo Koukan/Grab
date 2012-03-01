@@ -1,13 +1,15 @@
 #include "GameStateManager.hpp"
 #include "ConcreteObject.hpp"
 
-ConcreteObject::ConcreteObject(std::string const &spriteName, Core::HitBox &hitbox, double vx, double vy)
-  : Core::PhysicObject(hitbox, vx, vy), _sprite(Core::GameStateManager::get().getCurrentState().getSprite(spriteName))
+ConcreteObject::ConcreteObject(std::string const &spriteName, Core::HitBox &hitbox, double vx, double vy,
+	double xHitboxOffset, double yHitboxOffset)
+  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GameStateManager::get().getCurrentState().getSprite(spriteName))
 {
 }
 
-ConcreteObject::ConcreteObject(Core::Sprite *sprite, Core::HitBox &hitbox, double vx, double vy)
-  : Core::PhysicObject(hitbox, vx, vy), _sprite(sprite)
+ConcreteObject::ConcreteObject(Core::Sprite *sprite, Core::HitBox &hitbox, double vx, double vy,
+	double xHitboxOffset, double yHitboxOffset)
+  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(sprite)
 {
 }
 

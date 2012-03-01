@@ -22,7 +22,11 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, flo
 		this->_actions[i] = false;
 
 	if (this->_sprite)
+	{
 		this->_sprite->setColor(r, g, b);
+		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
+		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+	}
 	Core::GameStateManager::get().getCurrentState().addGameObject(this, group);
 }
 
@@ -205,7 +209,8 @@ void Ship::inputFire(Core::InputCommand const &cmd)
   this->launchGrab("grabs"); // tmp test
   if (!this->_playerBullet)
   {
-	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(), "players", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
+	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
+		  "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
   }

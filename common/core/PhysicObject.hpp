@@ -10,15 +10,19 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ PhysicObject : public DrawableObject, public TreeElement
 {
 public:
-  PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0);
+  PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
   virtual ~PhysicObject();
   virtual void	draw(double) {};
   virtual void	move(double time);
   double		getVx() const;
   double		getVy() const;
+  double		getXHitBoxOffset() const;
+  double		getYHitBoxOffset() const;
   HitBox		&getHitBox() const;
   void			setVx(double);
   void			setVy(double);
+  void			setXHitBoxOffset(double x);
+  void			setYHitBoxOffset(double y);
   void			setHitBox(HitBox &hitBox);
   void			setStatic(bool value = true);
 
@@ -32,6 +36,8 @@ public:
 protected:
 	double	_vx;
 	double	_vy;
+	double	_xHitboxOffset;
+	double	_yHitboxOffset;
 	bool	_static;
 	HitBox	*_hitBox;
 };

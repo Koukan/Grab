@@ -51,12 +51,14 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		this->setSprite(_state, state.getSprite());
 	this->_simpleSprite = state.getBulletSprite();
 	this->_simpleGroup = state.getBulletGroup();
+	this->_simpleXHitbox = state.getSimpleHitboxX();
+	this->_simpleYHitbox = state.getSimpleHitboxY();
 	this->setSpeedDirection();
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
-		HitBox &box, double vx, double vy)
-	: BulletMLRunner(&state), Bullet(box, vx, vy),
+		HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
 	  _nextId(1)
@@ -71,6 +73,8 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		this->setSprite(_state, state.getSprite());
 	this->_simpleSprite = state.getBulletSprite();
 	this->_simpleGroup = state.getBulletGroup();
+	this->_simpleXHitbox = state.getSimpleHitboxX();
+	this->_simpleYHitbox = state.getSimpleHitboxY();
 	this->setSpeedDirection();
 }
 
@@ -126,7 +130,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 	vy = speed * sin(dir);
 	if (box)
 	{
-		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy);
+		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
 		this->_state.addGameObject(bullet, this->_simpleGroup);
 		this->insertChild(*bullet);
 	}
@@ -151,7 +155,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	vy = speed * sin(dir);
 	if (box)
 	{
-		bullet = new BulletCommand(*state, _state, *box, vx, vy);
+		bullet = new BulletCommand(*state, _state, *box, vx, vy, state->getHitboxX(), state->getHitboxY());
 		this->_state.addGameObject(bullet, state->getGroup());
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());

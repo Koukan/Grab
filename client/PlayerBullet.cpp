@@ -23,8 +23,8 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
-	double vx, double vy)
-	: Core::BulletCommand(state, gstate, box, vx, vy), _groupName(groupName), _isFiring(true)
+	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	: Core::BulletCommand(state, gstate, box, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName), _isFiring(true)
 {
 }
 
@@ -32,10 +32,28 @@ PlayerBullet::~PlayerBullet()
 {
 }
 
-void	PlayerBullet::doAccelY(double speedy)
+void	PlayerBullet::createSimpleBullet(double direction, double speed)
 {
-	this->_vy = -speedy;
-	this->setSpeedDirection();
+	Core::HitBox		*box = 0;
+	double		vx, vy;
+	double		dir = dtor(direction);
+	Bullet		*bullet;
+
+	if (_shape == Core::BulletCommand::Circle)
+		box = new Core::CircleHitBox(_x, _y,
+			static_cast<double>(_width));
+	else if (_shape == Core::BulletCommand::Rectangle)
+		box = new Core::RectHitBox(_x, _y,
+			static_cast<double>(_width),
+			static_cast<double>(_height));
+	vx = speed * cos(dir);
+	vy = -speed * sin(dir);
+	if (box)
+	{
+		bullet = new Core::Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
+		this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
+		this->insertChild(*bullet);
+	}
 }
 
 void	PlayerBullet::createBullet(BulletMLState* state, double direction, double speed)
@@ -56,7 +74,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	vy = -speed * sin(dir);
 	if (box)
 	{
-		bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy);
+		bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
 		this->_state.addGameObject(bullet, this->_groupName);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());

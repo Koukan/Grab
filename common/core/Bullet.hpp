@@ -13,9 +13,9 @@ class CORE_DLLREQ Bullet : public PhysicObject
 {
   public:
     Bullet(double x = 0, double y = 0, double vx = 0, double vy = 0);
-    Bullet(HitBox &box, double vx = 0, double vy = 0);
+    Bullet(HitBox &box, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
     Bullet(ResourceManager &resource, std::string const &sprite, HitBox &box,
-	   double vx = 0, double vy = 0);
+	   double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
     virtual ~Bullet();
     virtual void	draw(double elapseTime);
 

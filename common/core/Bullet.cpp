@@ -10,14 +10,14 @@ Bullet::Bullet(double x, double y, double vx, double vy)
 {
 }
 
-Bullet::Bullet(HitBox &box, double vx, double vy)
-	: PhysicObject(box, vx, vy), _sprite(0), _parent(0), _bulletId(0)
+Bullet::Bullet(HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0)
 {
 }
 
 Bullet::Bullet(ResourceManager &resource, std::string const & sprite, HitBox &box,
-	       double vx, double vy)
-	: PhysicObject(box, vx, vy), _sprite(0), _parent(0), _bulletId(0)
+	       double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0)
 {
   try
   {

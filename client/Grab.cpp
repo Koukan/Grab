@@ -7,6 +7,11 @@ Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, doubl
 {
   //_static = true;
   //  _returnToShip = true;
+	if (this->_sprite)
+	{
+		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
+		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+	}
 }
 
 Grab::~Grab()
