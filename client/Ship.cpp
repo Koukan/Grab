@@ -50,6 +50,11 @@ bool Ship::getGrabLaunched() const
   return (_grabLaunched);
 }
 
+float Ship::getSpeed() const
+{
+  return (_speed);
+}
+
 void Ship::addCannon(Cannon &cannon, std::string const &group)
 {
   _cannons.push_back(&cannon);
