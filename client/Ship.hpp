@@ -4,6 +4,7 @@
 #include "ConcreteObject.hpp"
 #include "Sprite.hpp"
 #include "Input.hpp"
+#include "PlayerBullet.hpp"
 
 class Cannon;
 
@@ -33,8 +34,7 @@ public:
   void inputReleasedRight(Core::InputCommand const &cmd);
   void inputJoystickMoved(Core::InputCommand const &cmd);
   void inputFire(Core::InputCommand const &cmd);
-
-  void fire();
+  void inputReleasedFire(Core::InputCommand const &cmd);
 
 private:
   float			_speed;
@@ -57,6 +57,7 @@ private:
   float			_joyPosY;
   bool			_actions[Ship::NBACTIONS];
   std::string	_bulletFileName;
+  PlayerBullet	*_playerBullet;
 
   void handleActions();
 

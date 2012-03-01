@@ -48,6 +48,7 @@ void		GSInGame::preload()
   addBulletParser("resources/BulletWall.xml", "wall");
   addBulletParser("resources/BulletRandom.xml", "random");
   addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
+  addBulletParser("resources/player3.xml", "player3");
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
@@ -88,8 +89,11 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).Key.Code));
-		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
 			  *(*it)->getShip(), &Ship::inputFire,
+			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
 	  }
 	  else

@@ -2,14 +2,13 @@
 
 #include <vector>
 #include "HitBox.hpp"
-//#include "ClanLib/Display/Collision/collision_outline.h"
 
 CORE_BEGIN_NAMESPACE
 
 class RectHitBox;
 class CircleHitBox;
 
-class PolyHitBox : public HitBox
+class CORE_DLLREQ PolyHitBox : public HitBox
 {
 public:
 	PolyHitBox(double x, double y, std::vector<std::pair<double, double> > &points);

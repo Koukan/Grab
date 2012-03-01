@@ -120,6 +120,8 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}PacketType.hpp
 	Player.cpp
 	Player.hpp
+	PlayerBullet.cpp
+	PlayerBullet.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	${INCLUDES_COMMON_DIR}Resources.hpp
