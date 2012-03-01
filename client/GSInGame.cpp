@@ -119,6 +119,10 @@ void		GSInGame::registerShipCallbacks()
 			  *(*it)->getShip(), &Ship::inputFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
+			  *(*it)->getShip(), &Ship::inputReleasedFire,
+			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
+			  (*it)->getType() - 1);
 	  }
   }
 }
