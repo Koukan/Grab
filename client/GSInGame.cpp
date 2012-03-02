@@ -139,10 +139,13 @@ void		GSInGame::onStart()
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
 
+  GameState *state = Core::GameStateManager::get().getGameState("Preload");
+  if (state)
+	state->pause();
   /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");*/
- 	 
+
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
@@ -175,7 +178,11 @@ void		GSInGame::update(double elapsedTime)
 }
 
 void		GSInGame::onEnd()
-{}
+{
+  GameState *state = Core::GameStateManager::get().getGameState("Preload");
+  if (state)
+	state->play();
+}
 
 bool		GSInGame::handleCommand(Core::Command const &command)
 {

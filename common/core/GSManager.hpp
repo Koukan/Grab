@@ -32,6 +32,7 @@ public:
 
   //getter
   GameState		&getCurrentState();
+  GameState		*getGameState(std::string const &name) const;
   void			getGameState(std::list<GameState*> &list, GameState::Pause state = GameState::ALL) const;
   std::list<GameState *> const & getCurrentStates() const;
 
