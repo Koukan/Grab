@@ -230,16 +230,23 @@ GameObject	*GameObjectManager::getGameObject(uint32_t id)
 	return 0;
 }
 
-GameObjectManager::collisionGroupsMap const
-&GameObjectManager::getCollisionGroups(void) const
+GameObjectManager::collisionGroupsMap const &GameObjectManager::getCollisionGroups() const
 {
   return this->_collisionGroups;
 }
 
-GameObjectManager::groupsMap const
-&GameObjectManager::getGroups(void) const
+GameObjectManager::groupsMap const	&GameObjectManager::getGroups() const
 {
   return this->_groups;
+}
+
+Group			*GameObjectManager::getGroup(std::string const &name) const
+{
+	groupsMap::const_iterator it = this->_groups.find(name);
+
+	if (it != this->_groups.end())
+		return it->second;
+	return 0;
 }
 
 void			GameObjectManager::addDeleteObject(GameObject *obj)

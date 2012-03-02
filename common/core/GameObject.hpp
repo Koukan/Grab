@@ -22,23 +22,29 @@ public:
 	virtual void		setY(double y);
 	virtual void		setPosition(double x, double y, double z = 0);
 	void				setGroup(Group *group);
+	void				setRelativeObject(GameObject *obj);
 
 	// getter
-	uint32_t	getId() const;
-	double		getX() const;
-	double		getY() const;
-	Group		*getGroup() const;
-	bool		isDelete() const;
+	uint32_t			getId() const;
+	double				getX() const;
+	double				getY() const;
+	Group				*getGroup() const;
+	bool				isDelete() const;
+	GameObject			*getRelativeObject() const;
 
-	void		erase();
-
+	void				erase();
 protected:
-	double			_x;
-	double 			_y;
-	double			_z;
-	bool			_delete;
-	uint32_t		_id;
-	Group			*_group;
+	void				addGameObject(GameObject &obj);
+	void				removeGameObject(GameObject &obj);
+
+	double					_x;
+	double 					_y;
+	double					_z;
+	bool					_delete;
+	uint32_t				_id;
+	Group					*_group;
+	GameObject				*_relaviteObject;
+	std::list<GameObject*>	_objects;
 
 	friend class GameObjectManager;
 };

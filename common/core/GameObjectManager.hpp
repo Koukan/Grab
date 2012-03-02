@@ -100,6 +100,7 @@ class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 	GameObject					*getGameObject(uint32_t id);
     collisionGroupsMap const	&getCollisionGroups() const;
     groupsMap const				&getGroups() const;
+	Group						*getGroup(std::string const &name) const;
     bool						existingGroup(const std::string &group) const;
     bool						collisionGroups(const std::string &group1,
     							const std::string &group2, bool reverse = true) const;
