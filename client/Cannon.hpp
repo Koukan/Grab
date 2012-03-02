@@ -1,18 +1,27 @@
 #pragma once
 
-#include "BulletCommand.hpp"
+#include "ConcreteObject.hpp"
 #include "Ship.hpp"
 
-class Cannon : public Core::BulletCommand
+class Cannon : public ConcreteObject
 {
 public:
-  Cannon(std::string const &parser, Ship& ship, std::string const &spriteName);
+  Cannon(std::string const &parser, Ship& ship, std::string const &spriteName,
+	 std::string const &cannonGroup, std::string const &shootGroup,
+	 int offsetx = 0, int offsety = 0);
   ~Cannon();
 
-  virtual void move(double elaspedTime);
   virtual void draw(double elapsedTime);
 
+  void	fire();
+  void	stopFire();
+  PlayerBullet*	getBullet() const;
+
 private:
+  std::string const _parser;
   Ship&	_ship;
-  Core::Sprite _sprite;
+  std::string const _shotsGroup;
+  int	_offsetX;
+  int	_offsetY;
+  PlayerBullet*	_bullet;
 };

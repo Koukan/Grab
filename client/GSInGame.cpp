@@ -29,15 +29,17 @@ void		GSInGame::preload()
 {
   this->addGroup("spawners");
   this->addGroup("players", 40);
+  this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
-  this->addGroup("shot", 9);
+  this->addGroup("shot", 9); //what is it ??
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
   this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);

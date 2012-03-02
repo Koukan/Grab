@@ -15,7 +15,7 @@ unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship:
 
 Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName),
+    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),  _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName),
 	_playerBullet(0)
 {
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
@@ -36,7 +36,7 @@ Ship::~Ship()
 
 void Ship::launchGrab(std::string const &group)
 {
-  if (!_grabLaunched /*&& _cannons.size() < _nbMaxGrabs*/)
+  if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
    {
      Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 30)), 0, -200, *this, _speed * 2);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
@@ -59,12 +59,11 @@ float Ship::getSpeed() const
   return (_speed);
 }
 
-void Ship::addCannon(Cannon *cannon, std::string const &group)
+void Ship::addCannon(Cannon *cannon)
 {
   if (cannon)
     {
       _cannons.push_back(cannon);
-      Core::GameStateManager::get().getCurrentState().addGameObject(cannon, group);
     }
 }
 
@@ -107,23 +106,15 @@ void Ship::handleActions()
 	{
 		this->_vx = 0;
 		this->_vy = 0;
-		if (this->_playerBullet)
-		{
-			this->_playerBullet->setVx(0);
-			this->_playerBullet->setVy(0);
-		}
 	}
 	else
 	{
 		float distance = sqrt(static_cast<float>(vx * vx + vy * vy));
 		this->_vx = vx * this->_speed / distance;
 		this->_vy = vy * this->_speed / distance;
-		if (this->_playerBullet)
-		{
-			this->_playerBullet->setVx(this->_vx);
-			this->_playerBullet->setVy(this->_vy);
-		}
 	}
+	this->updateBulletTrajectory();
+	this->updateCannonsTrajectory();
 }
 
 void Ship::inputUp(Core::InputCommand const &/*cmd*/)
@@ -189,22 +180,14 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 		distance = ::sqrt(distance);
 		this->_vx = this->_joyPosX * this->_speed / distance;
 		this->_vy = this->_joyPosY * this->_speed / distance;
-		if (this->_playerBullet)
-		{
-			this->_playerBullet->setVx(this->_vx);
-			this->_playerBullet->setVy(this->_vy);
-		}
 	}
 	else
 	{
 		this->_vx = 0;
 		this->_vy = 0;
-		if (this->_playerBullet)
-		{
-			this->_playerBullet->setVx(0);
-			this->_playerBullet->setVy(0);
-		}
 	}
+	this->updateBulletTrajectory();
+	this->updateCannonsTrajectory();
 }
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
@@ -216,6 +199,8 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 		  "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+	  for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
+	    (*it)->fire();
   }
 }
 
@@ -226,4 +211,32 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 		this->_playerBullet->erase();
 		this->_playerBullet = 0;
 	}
+	for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
+	  (*it)->stopFire();
+}
+
+void Ship::updateCannonsTrajectory()
+{
+  PlayerBullet *bullet;
+
+  for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
+    {
+      (*it)->setVx(this->_vx);
+      (*it)->setVy(this->_vy);
+      bullet = (*it)->getBullet();
+      if (bullet)
+	{
+	  bullet->setVx(this->_vx);
+	  bullet->setVy(this->_vy);
+	}
+    }
+}
+
+void Ship::updateBulletTrajectory()
+{
+  if (this->_playerBullet)
+    {
+      this->_playerBullet->setVx(this->_vx);
+      this->_playerBullet->setVy(this->_vy);
+    }
 }

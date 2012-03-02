@@ -61,8 +61,5 @@ void	Grab::move(double time)
       this->_vx = cos(angle) * _speed;
       this->_vy = sin(angle) * _speed;
     }
-  if (!this->_static && (this->_vx || this->_vy))
-    {
-      this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
-    }
+  PhysicObject::move(time);
 }
