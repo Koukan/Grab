@@ -75,9 +75,9 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 		else if (name == "x")
 			x = Net::Converter::toInt<size_t>(attrib->Value());
 		else if (name == "vx")
-			vx = Net::Converter::toInt<size_t>(attrib->Value());
+			vx = Net::Converter::toInt<int>(attrib->Value());
 		else if (name == "vy")
-			vy = Net::Converter::toInt<size_t>(attrib->Value());
+			vy = Net::Converter::toInt<int>(attrib->Value());
 	}
 	if (!monstername.empty())
 		(_current->*func)(monstername, x, y, vx, vy);

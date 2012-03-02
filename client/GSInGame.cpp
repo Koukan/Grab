@@ -45,21 +45,21 @@ void		GSInGame::preload()
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
 
   // load xml
-  this->load("resources/intro.xml");
+  //this->load("resources/intro.xml");
   this->load("resources/player.xml");
-  this->load("resources/shots.xml");
+  //this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
   this->load("resources/map1.xml");
-  this->load("resources/destruction.xml");
+  //this->load("resources/destruction.xml");
 
   //addBulletParser("resources/BulletSimple.xml", "single");
-  addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
-  addBulletParser("resources/BulletBomb.xml", "bomb");
-  addBulletParser("resources/BulletWall.xml", "wall");
-  addBulletParser("resources/BulletSimple.xml", "simple");
-  addBulletParser("resources/BulletRandom.xml", "random");
-  addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-  addBulletParser("resources/player3.xml", "player3");
+  //addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
+  //addBulletParser("resources/BulletBomb.xml", "bomb");
+  //addBulletParser("resources/BulletWall.xml", "wall");
+  //addBulletParser("resources/BulletSimple.xml", "simple");
+  //addBulletParser("resources/BulletRandom.xml", "random");
+  //addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
+  //addBulletParser("resources/player3.xml", "player3");
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
@@ -144,8 +144,9 @@ void		GSInGame::onStart()
  	 
   if (!_online)
     {
-      Core::HitBox *hitbox = new Core::RectHitBox(500, 500, 100, 100);
+	  //Core::HitBox *hitbox = new Core::RectHitBox(500, 500, 100, 100);
       this->createShips();
+
 	  //ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
 	  //this->addGameObject(monster, "monster");
     }
@@ -497,6 +498,8 @@ void		GSInGame::createShips()
 		shipInfo = (*it)->getShipInfo();
 		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
 		      shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+		ship->setY(600);
+		ship->setX(i * 250);
       (*it)->setShip(ship);
     }
   _ship = (*_players.begin())->getShip(); //tmp
