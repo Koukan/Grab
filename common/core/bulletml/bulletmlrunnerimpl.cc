@@ -187,6 +187,15 @@ void BulletMLRunnerImpl::setDamage(BulletMLState &state) {
 		state.setSimpleDamage(box->getSimpleDamage());
 }
 
+void BulletMLRunnerImpl::setGeneric(BulletMLState &state) {
+    BulletMLNode* box = act_->getChild(BulletMLNode::genericstr);
+    if (box)
+		state.setGenericStr(box->getGenericStr());
+	box = act_->getChild(BulletMLNode::genericint);
+	if (box)
+		state.setGenericInt(box->getGenericInt());
+}
+
 bool BulletMLRunnerImpl::isTurnEnd() {
 	return isEnd() || actTurn_ > endTurn_;
 }
@@ -373,6 +382,7 @@ void BulletMLRunnerImpl::runBullet() {
 		setSimpleHitBox(*state);
 		setLife(*state);
 		setDamage(*state);
+		setGeneric(*state);
 		// end add
 
 		runner_->createBullet(state, dir_, spd_);

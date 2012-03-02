@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <memory>
 
+#include <map>
 #include <stdint.h>
 
 #include <vector>
@@ -25,7 +26,7 @@ public:
 	typedef enum { bullet, action, fire, changeDirection, changeSpeed, accel,
 				   wait, repeat, bulletRef, actionRef, fireRef, vanish,
 				   horizontal, vertical, term, times, direction, speed, param,
-				   bulletml, hitbox, simpleHitbox, life, damage, nameSize} Name;
+				   bulletml, hitbox, simpleHitbox, life, damage, genericstr, genericint, nameSize} Name;
 
 private:
 	static Type string2type(const std::string& str);
@@ -88,6 +89,8 @@ public:
 	void setSimpleLife(std::string const &life) { this->simpleLife_ = strtol(life.c_str(), 0, 10); }
 	void setDamage(std::string const &damage) { this->damage_ = strtol(damage.c_str(), 0, 10); }
 	void setSimpleDamage(std::string const &damage) { this->simpleDamage_ = strtol(damage.c_str(), 0, 10); }
+	void setGenericStr(std::string const &name, std::string const &value) { this->strMap_[name] = value; }
+	void setGenericInt(std::string const &name, int value) { this->intMap_[name] = value; }
 
 	// getter
 	std::string const &getLabel() const { return this->label_; }
@@ -109,6 +112,8 @@ public:
 	uint32_t getSimpleLife() const { return this->simpleLife_; }
 	uint32_t getDamage() const { return this->damage_; }
 	uint32_t getSimpleDamage() const { return this->simpleDamage_; }
+	std::map<std::string, std::string> const	&getGenericStr() { return this->strMap_; }
+	std::map<std::string, int> const			&getGenericInt() { return this->intMap_; }
 
 protected:
     Name					name_;
@@ -136,6 +141,8 @@ protected:
 	uint32_t				simpleDamage_;
 	uint32_t				life_;
 	uint32_t				simpleLife_;
+	std::map<std::string, std::string>	strMap_;
+	std::map<std::string, int>			intMap_;
 };
 
 /*

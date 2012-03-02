@@ -65,6 +65,8 @@ public:
 	DECLSPEC void setLife(uint32_t val) { this->life_ = val; }
 	DECLSPEC void setSimpleDamage(uint32_t val) { this->simpleDamage_ = val; }
 	DECLSPEC void setSimpleLife(uint32_t val) { this->simpleLife_ = val; }
+	DECLSPEC void setGenericStr(std::map<std::string, std::string> const &map) { this->strMap_ = map; }
+	DECLSPEC void setGenericInt(std::map<std::string, int> const &map) { this->intMap_ = map; }
 
 	// getter
 	DECLSPEC std::string const	&getLabel() const { return this->label_; }
@@ -88,6 +90,22 @@ public:
 	DECLSPEC uint32_t			getLife() const { return this->life_; }
 	DECLSPEC uint32_t			getSimpleDamage() const { return this->simpleDamage_; }
 	DECLSPEC uint32_t			getSimpleLife() const { return this->simpleLife_; }
+	DECLSPEC std::string		getGenericStr(std::string const &name) const
+	{
+		std::map<std::string, std::string>::const_iterator it = this->strMap_.find(name);
+
+		if (it != this->strMap_.end())
+			return it->second;
+		return "";
+	}
+	DECLSPEC int				getGenericInt(std::string const &name) const
+	{
+		std::map<std::string, int>::const_iterator it = this->intMap_.find(name);
+
+		if (it != this->intMap_.end())
+			return it->second;
+		return 0;
+	}
 
 private:
 	BulletMLParser*							bulletml_;
@@ -114,6 +132,8 @@ private:
 	uint32_t								life_;
 	uint32_t								simpleDamage_;
 	uint32_t								simpleLife_;
+	std::map<std::string, std::string>		strMap_;
+	std::map<std::string, int>				intMap_;
 };
 
 /// BulletML Çé¿çsÇ∑ÇÈÉNÉâÉX
