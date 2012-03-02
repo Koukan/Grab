@@ -41,9 +41,9 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
-	if (state.getShape() == "circle")
+	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
-	else if (state.getShape() == "rectangle")
+	else if (state.getSimpleShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
 	else
 		this->_shape = BulletCommand::UNKNOWN;
@@ -63,9 +63,9 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
-	if (state.getShape() == "circle")
+	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
-	else if (state.getShape() == "rectangle")
+	else if (state.getSimpleShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
 	else
 		this->_shape = BulletCommand::UNKNOWN;

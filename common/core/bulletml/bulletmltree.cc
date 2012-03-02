@@ -12,7 +12,7 @@ std::string BulletMLNode::name2string[nameSize] = {
 	"bullet", "action", "fire", "changeDirection", "changeSpeed", "accel",
 	"wait", "repeat", "bulletRef", "actionRef", "fireRef", "vanish",
 	"horizontal", "vertical", "term", "times", "direction", "speed", "param",
-	"bulletml", "hitbox", "life", "damage"
+	"bulletml", "hitbox", "life", "damage", "genericstr", "genericint"
 };
 
 BulletMLNode::Type BulletMLNode::string2type(const std::string& str) {
@@ -51,6 +51,8 @@ BulletMLNode::Name BulletMLNode::string2name(const std::string& str) {
 	else if (str == "simpleHitbox") return simpleHitbox;
 	else if (str == "life") return life;
 	else if (str == "damage") return damage;
+	else if (str == "genericstr") return genericstr;
+	else if (str == "genericint") return genericint;
 	else BulletMLError::doAssert(
 		std::string("BulletML parser: unknown tag ") + str + ".");
 

@@ -228,6 +228,14 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 				else if (key == "simple")
 					elem->setSimpleDamage(val);
 			}
+			else if (elem->getName() == BulletMLNode::genericstr)
+			{
+				elem->setGenericStr(key, val);
+			}
+			else if (elem->getName() == BulletMLNode::genericint)
+			{
+				elem->setGenericInt(key, ::strtol(val.c_str(), 0, 10));
+			}
 		}
 	}
 }
