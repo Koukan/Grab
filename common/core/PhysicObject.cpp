@@ -4,9 +4,10 @@
 
 CORE_USE_NAMESPACE
 
-PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset,
+		double xScrolling, double yScrolling)
 	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy),
-	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _static(false), _hitBox(&hitbox)
+	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _hitBox(&hitbox)
 {
 }
 
@@ -72,6 +73,16 @@ void	PhysicObject::setVy(double vy)
   this->_vy = vy;
 }
 
+void	PhysicObject::setScrollX(double scrollX)
+{
+	this->_scrollX = scrollX;
+}
+
+void	PhysicObject::setScrollY(double scrollY)
+{
+	this->_scrollY = scrollY;
+}
+
 void	PhysicObject::setHitBox(HitBox &hitBox)
 {
 	this->_hitBox = &hitBox;
@@ -79,8 +90,8 @@ void	PhysicObject::setHitBox(HitBox &hitBox)
 
 void	PhysicObject::move(double time)
 {
-	if (!this->_static && (this->_vx || this->_vy))
-		this->setPosition(this->_x + this->_vx * time, this->_y + this->_vy * time);
+	if (!this->_static && (this->_vx || this->_vy || this->_scrollX || this->_scrollY))
+		this->setPosition(this->_x + (this->_vx + this->_scrollX) * time, this->_y + (this->_vy + this->_scrollY) * time);
 }
 
 int		PhysicObject::getWidthElement()

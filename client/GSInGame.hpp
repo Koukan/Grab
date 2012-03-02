@@ -54,6 +54,7 @@ private:
 	void		move(GameCommand const &event);
 	void		rangeid(GameCommand const &event);
 	void		spawnspawner(GameCommand const &event);
+	void		spawndecoration(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 

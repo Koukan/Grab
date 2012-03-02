@@ -11,6 +11,7 @@
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
 #include "Map.hpp"
+#include "CircleHitBox.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -188,7 +189,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawn", &GSInGame::spawn},
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
-	{"spawnspawner", &GSInGame::spawnspawner}
+	{"spawnspawner", &GSInGame::spawnspawner},
+	{"spawndecoration", &GSInGame::spawndecoration}
   };
 
   for (size_t i = 0;
@@ -382,6 +384,7 @@ void		GSInGame::updatePositions(GameCommand const &event, Core::PhysicObject &ob
 	obj.setY(event.y);
 	obj.setVx(event.vx);
 	obj.setVy(event.vy);
+	obj.setScrollY(event.position);
 }
 
 void		GSInGame::loadP1(GameCommand const &event)
@@ -455,9 +458,17 @@ void		GSInGame::rangeid(GameCommand const &event)
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
-	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this);
+	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
+}
+
+void		GSInGame::spawndecoration(GameCommand const &event)
+{
+	ConcreteObject			*object = new ConcreteObject(event.data, *(new Core::CircleHitBox(event.x, event.y, 1)), event.vx, event.vy);
+	std::cout << "scroll " << event.position << std::endl;
+	object->setScrollY(event.position);
+	this->addGameObject(object, "decorations");
 }
 
 void		GSInGame::createShips()

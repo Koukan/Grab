@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "DrawableObject.hpp"
@@ -10,7 +9,7 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ PhysicObject : public DrawableObject, public TreeElement
 {
 public:
-  PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
+  PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0, double xScrolling = 0, double yScrolling = 0);
   virtual ~PhysicObject();
   virtual void	draw(double) {};
   virtual void	move(double time);
@@ -21,6 +20,8 @@ public:
   HitBox		&getHitBox() const;
   void			setVx(double);
   void			setVy(double);
+  void			setScrollX(double);
+  void			setScrollY(double);
   void			setXHitBoxOffset(double x);
   void			setYHitBoxOffset(double y);
   void			setHitBox(HitBox &hitBox);
@@ -38,6 +39,8 @@ protected:
 	double	_vy;
 	double	_xHitboxOffset;
 	double	_yHitboxOffset;
+	double	_scrollX;
+	double	_scrollY;
 	bool	_static;
 	HitBox	*_hitBox;
 };

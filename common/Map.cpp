@@ -15,24 +15,30 @@ Core::Resource    *Map::clone() const
 	return (new Map(*this));
 }
 
-void		Map::addMonster(std::string const &name, size_t x, size_t y)
+void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy)
 {
 	if (y >= this->_y)
 	{	
 		Map::mapdata	data;
 		data.name = name;
 		data.x = x;
+		data.vx = vx;
+		data.vy = vy;
+		data.vScrolling = this->_vy;
 		_monsters.insert(std::make_pair(y, data));
 	}
 }
 
-void    	Map::addDecoration(std::string const &name, size_t x, size_t y)
+void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy)
 {
 	if (y >= this->_y)
 	{	
 		Map::mapdata	data;
 		data.name = name;
 		data.x = x;
+		data.vx = vx;
+		data.vy = vy;
+		data.vScrolling = this->_vy;
 		_decorations.insert(std::make_pair(y, data));
 	}
 }
@@ -47,6 +53,9 @@ void		Map::move(double time)
 		cmd = new GameCommand("spawnspawner");
 		cmd->y = this->_y - it->first; 
 		cmd->x = it->second.x;
+		cmd->vx = it->second.vx;
+		cmd->vy = it->second.vy;
+		cmd->position = it->second.vScrolling;
 		cmd->data = it->second.name;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 		_monsters.erase(it);
@@ -55,9 +64,12 @@ void		Map::move(double time)
 	for (it = _decorations.begin(); it != _decorations.end() && 
 					it->first <= this->_y;)
 	{
-		cmd = new GameCommand("spawdecoration");
+		cmd = new GameCommand("spawndecoration");
 		cmd->y = this->_y - it->first;
 		cmd->x = it->second.x;
+		cmd->vx = it->second.vx;
+		cmd->vy = it->second.vy;
+		cmd->position = it->second.vScrolling;
 		cmd->data = it->second.name;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 		_decorations.erase(it);

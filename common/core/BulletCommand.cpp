@@ -131,6 +131,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 	if (box)
 	{
 		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
+		bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, this->_simpleGroup);
 		this->insertChild(*bullet);
 	}
@@ -156,6 +157,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	if (box)
 	{
 		bullet = new BulletCommand(*state, _state, *box, vx, vy, state->getHitboxX(), state->getHitboxY());
+		bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, state->getGroup());
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
@@ -163,6 +165,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	else
 	{
 		bullet = new BulletCommand(*state, _state, _x, _y, vx, vy);
+		bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, state->getGroup());
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());

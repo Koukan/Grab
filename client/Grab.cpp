@@ -1,6 +1,6 @@
 #include <cmath>
 #include "Grab.hpp"
-
+#include "RendererManager.hpp"
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed) :
   ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed)
@@ -46,7 +46,7 @@ void	Grab::move(double time)
 {
   if (!_returnToShip)
     {
-      if (_x < 0 || _x > 1024 || _y < 0 || _y > 728)
+      if (_x < 0 || _x > RendererManager::get().getWidth() || _y < 0 || _y > RendererManager::get().getHeight())
 	_returnToShip = true;
     }
   else
