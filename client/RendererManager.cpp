@@ -71,7 +71,7 @@ sf::RenderWindow	*RendererManager::getWindow()
 {
 	if (!_window)
 	{
-		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "R-Type"/*, sf::Style::Fullscreen*/);
+		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "Grab"/*, sf::Style::Fullscreen*/);
 	}
 	return _window;
 }
