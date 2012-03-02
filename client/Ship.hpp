@@ -20,7 +20,7 @@ public:
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
   float getSpeed() const;
-  void addCannon(Cannon *cannon, std::string const &group);
+  void addCannon(Cannon *cannon);
 
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
@@ -35,11 +35,13 @@ public:
   void inputReleasedFire(Core::InputCommand const &cmd);
 
 private:
+  typedef std::vector<Cannon *> cannonContainer;
+
   float			_speed;
-  int				_fireFrequency;
-  std::vector<Cannon *> _cannons;
-  unsigned int _nbMaxGrabs; // can be up to 4 by choosing a special power
-  bool _grabLaunched;
+  int			_fireFrequency;
+  cannonContainer	_cannons;
+  unsigned int		_nbMaxGrabs; // can be up to 4 by choosing a special power
+  bool			_grabLaunched;
 
   // ship control
   enum Actions
@@ -58,6 +60,8 @@ private:
   PlayerBullet	*_playerBullet;
 
   void handleActions();
+  void updateCannonsTrajectory();
+  void updateBulletTrajectory();
 
 public:
   struct ShipInfo

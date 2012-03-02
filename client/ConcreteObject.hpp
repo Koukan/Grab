@@ -1,5 +1,3 @@
-// herite de physicObject (ctor load sprite auto, draw dessine le sprite), enregistrer le monstre aupres de GameObjectManager
-
 #pragma once
 
 #include "PhysicObject.hpp"
