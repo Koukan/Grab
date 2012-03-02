@@ -23,7 +23,7 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
   Grab& grab = static_cast<Grab&>(o1);
   if (grab.getBulletScript().empty())
     {
-      grab.setBulletScript("player3");
+      grab.setBulletScript("bomb");
       grab.setReturnToShip(true);
       o2.erase();
     }

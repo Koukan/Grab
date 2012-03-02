@@ -10,7 +10,7 @@ class Grab : public ConcreteObject
 {
 public:
   Grab(std::string const &name, Core::HitBox& hitbox, double vx, double vy, Ship &ship,
-       float speed);
+       float speed, int offsetX = 0, int offsetY = 0);
   ~Grab();
 
   void			setBulletScript(std::string const &bulletName);
@@ -20,9 +20,17 @@ public:
   void			setReturnToShip(bool returnToShip);
 
   virtual void		move(double elapsedTime);
+
+  class GrabInfo
+  {
+
+  };
+
 private:
   std::string		_bullet;
   Ship&			_ship;
   bool			_returnToShip;
   float			_speed;
+  int			_offsetX;
+  int			_offsetY;
 };

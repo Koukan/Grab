@@ -9,7 +9,6 @@ Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100)
 Map::~Map()
 {}
 
-#include <iostream>
 Core::Resource    *Map::clone() const
 {
 	return (new Map(*this));
