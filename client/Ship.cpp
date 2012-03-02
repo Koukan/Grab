@@ -38,7 +38,9 @@ void Ship::launchGrab(std::string const &group)
 {
   if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 30)), 0, -200, *this, _speed * 2);
+     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 10)), 0, -200, *this, _speed * 2);
+	 grab->setXHitBoxOffset(-10);
+	 grab->setYHitBoxOffset(-10);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }

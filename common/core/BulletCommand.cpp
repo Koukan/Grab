@@ -38,7 +38,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		double x, double y, double vx, double vy)
 	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
 	if (state.getShape() == "circle")
@@ -60,7 +60,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
 	if (state.getShape() == "circle")
