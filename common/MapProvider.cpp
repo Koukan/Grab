@@ -58,11 +58,12 @@ void    MapProvider::handleDeco(TiXmlNode *parent, Core::ResourceManager &manage
 	this->handleElem(parent, manager, &Map::addDecoration);
 }
 
-void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int))
+void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool))
 {
 	std::string     name, monstername;
 	size_t          y = 0, x = 0;
 	int				vx = 0, vy = 0;
+	bool			scrollable = true;
 
 	for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute();
 		 attrib != 0; attrib = attrib->Next())
@@ -75,11 +76,13 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 		else if (name == "x")
 			x = Net::Converter::toInt<size_t>(attrib->Value());
 		else if (name == "vx")
-			vx = Net::Converter::toInt<size_t>(attrib->Value());
+			vx = Net::Converter::toInt<int>(attrib->Value());
 		else if (name == "vy")
-			vy = Net::Converter::toInt<size_t>(attrib->Value());
+			vy = Net::Converter::toInt<int>(attrib->Value());
+		else if (name == "scrollable" && attrib->Value() == "false")
+			scrollable = false;
 	}
 	if (!monstername.empty())
-		(_current->*func)(monstername, x, y, vx, vy);
+		(_current->*func)(monstername, x, y, vx, vy, scrollable);
 }
 

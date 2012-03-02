@@ -14,7 +14,7 @@ Core::Resource    *Map::clone() const
 	return (new Map(*this));
 }
 
-void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy)
+void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable)
 {
 	if (y >= this->_y)
 	{	
@@ -23,12 +23,15 @@ void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int v
 		data.x = x;
 		data.vx = vx;
 		data.vy = vy;
-		data.vScrolling = this->_vy;
+		if (scrollable)
+			data.vScrolling = this->_vy;
+		else
+			data.vScrolling = 0;
 		_monsters.insert(std::make_pair(y, data));
 	}
 }
 
-void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy)
+void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable)
 {
 	if (y >= this->_y)
 	{	
@@ -37,7 +40,10 @@ void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx,
 		data.x = x;
 		data.vx = vx;
 		data.vy = vy;
-		data.vScrolling = this->_vy;
+		if (scrollable)
+			data.vScrolling = this->_vy;
+		else
+			data.vScrolling = 0;
 		_decorations.insert(std::make_pair(y, data));
 	}
 }

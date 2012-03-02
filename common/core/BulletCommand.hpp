@@ -41,6 +41,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
     virtual double	getBulletSpeedY();
 
 
+	void			setFocus(std::string const &name);
 	void			setRank(double rank);
     virtual void	move(double time);
 	void			setSeed(uint32_t seed);
@@ -69,6 +70,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	uint32_t		_height;
 	double			_rank;
 	uint32_t		_nextId;
+	std::string		_focus;
 	BulletMap		_childs;
 	std::string		_simpleSprite;
 	std::string		_simpleGroup;

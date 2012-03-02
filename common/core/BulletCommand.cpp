@@ -19,7 +19,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	: BulletMLRunner(gstate.getBulletParser(parser)), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1)
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
 	this->setSpeedDirection();
 }
@@ -29,7 +29,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	: BulletMLRunner(&parser), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1)
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
 	this->setSpeedDirection();
 }
@@ -39,7 +39,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
-	  _nextId(1)
+	  _nextId(1), _focus("player")
 {
 	if (state.getShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -61,7 +61,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
-	  _nextId(1)
+	  _nextId(1), _focus("player")
 {
 	if (state.getShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -89,6 +89,42 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
+	if (!this->_relaviteObject)
+	{
+		Group *group = this->_state.getGroup(this->_focus);
+		if (group)
+		{
+			uint32_t	distance = static_cast<uint32_t>(-1);
+			GameObject	*obj = 0;
+			uint32_t	calc;
+			for (Group::gameObjectSet::const_iterator it = group->getObjects().begin();
+				 it != group->getObjects().end(); it++)
+			{
+				calc = (*it)->getX() * (*it)->getX() + (*it)->getY() * (*it)->getY();
+				if (calc < distance)
+				{
+					distance = calc;
+					obj = *it;
+				}
+			}
+			if (obj)
+				this->setRelativeObject(obj);
+		}
+	}
+	if (this->_relaviteObject)
+	{
+		double		x = this->_relaviteObject->getX() - this->getX();
+		double		y = this->_relaviteObject->getY() - this->getY();
+
+		if (x >= 0 && y >= 0)
+			return rtod(::atan(y / x));
+		else if (x < 0 && y >= 0)
+			return rtod(::atan(y / -x) + 90);
+		else if (x < 0 && y < 0)
+			return rtod(::atan(-y / -x) + 180);
+		else
+			return rtod(::atan(-y / x) + 270);
+	}
 	return 0;
 }
 
@@ -219,6 +255,11 @@ double		BulletCommand::getBulletSpeedY()
 	return this->_vy;
 }
 
+void		BulletCommand::setFocus(std::string const &name)
+{
+	this->_focus = name;
+}
+
 void		BulletCommand::setRank(double rank)
 {
 	this->_rank = rank;
@@ -255,8 +296,8 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 
 void		BulletCommand::setSpeedDirection()
 {
-	this->_direction = atan2(this->_vy, this->_vx);
-	this->_speed = sqrt(this->_vx * this->_vx + this->_vy * this->_vy);
+	this->_direction = atan2((double)this->_vy, (double)this->_vx);
+	this->_speed = sqrt((double)(this->_vx * this->_vx) + (double)(this->_vy * this->_vy));
 }
 
 void		BulletCommand::insertChild(Bullet &bullet)

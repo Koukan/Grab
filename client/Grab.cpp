@@ -1,8 +1,9 @@
 #include <cmath>
 #include "Grab.hpp"
 #include "RendererManager.hpp"
+#include "Ship.hpp"
 
-Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, int offsetX, int offsetY) :
+Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, double offsetX, double offsetY) :
   ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY)
 {
 	if (this->_sprite)
@@ -60,4 +61,14 @@ void	Grab::move(double time)
       this->_vy = sin(angle) * _speed;
     }
   PhysicObject::move(time);
+}
+
+double	Grab::getOffsetX() const
+{
+  return (this->_offsetX);
+}
+
+double	Grab::getOffsetY() const
+{
+  return (this->_offsetY);
 }

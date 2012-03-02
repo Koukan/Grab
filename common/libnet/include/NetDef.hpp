@@ -1,8 +1,9 @@
-/*
- * NetDef.hpp
- *
- *  Created on: Dec 8, 2011
- *      Author: snap
+/**
+ * @file NetDef.hpp
+ * @brief 
+ * @author Vivien Botton
+ * @version 1.0
+ * @date 2012-03-01
  */
 
 #ifndef NETDEF_HPP_

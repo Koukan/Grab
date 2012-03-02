@@ -1,22 +1,30 @@
 #include <math.h>
 #include "Ship.hpp"
-#include "Grab.hpp"
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
-  {"noname 1", "player1", "player3", 300, 400, },
-  {"noname 2", "player2", "player3", 300, 800},
-  {"noname 3", "player3", "player3", 300, 200}
+  {"Conqueror", "player1", "player3", 300, 400,
+   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER},
+  {"Voyageer", "player2", "player3", 300, 800,
+   Grab::MIDDLE_BOTTOM, Grab::LEFT_TOP_CORNER, Grab::RIGHT_TOP_CORNER},
+  {"Obliterator", "player3", "player3", 300, 200,
+   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER}
 };
 
 unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
 
-Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, float speed, int fireFrequency, int r, int g, int b, std::string const &group, unsigned int nbMaxGrabs)
+Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
+	   float speed, int fireFrequency, int r, int g, int b,
+	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
+	   std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),  _joyPosX(0), _joyPosY(0), _bulletFileName(bulletFileName),
-	_playerBullet(0)
+    _speed(speed), _fireFrequency(fireFrequency),
+    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+     _joyPosX(0), _joyPosY(0),
+    _bulletFileName(bulletFileName),
+    _playerBullet(0)
 {
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
@@ -28,6 +36,9 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName, flo
 		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
 	}
 	Core::GameStateManager::get().getCurrentState().addGameObject(this, group);
+	this->defineGrabPosition(grab1, 0);
+	this->defineGrabPosition(grab2, 1);
+	this->defineGrabPosition(grab3, 2);
 }
 
 Ship::~Ship()
@@ -38,7 +49,7 @@ void Ship::launchGrab(std::string const &group)
 {
   if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX(), this->getY(), 30)), 0, -200, *this, _speed * 2);
+     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX() + _sprite->getWidth() / 2, this->getY() + _sprite->getHeight() / 2, 30)), 0, -200, *this, _speed * 2, _grabsPositions[_cannons.size()].first, _grabsPositions[_cannons.size()].second);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
@@ -193,7 +204,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
   this->launchGrab("grabs"); // tmp test
-  if (!this->_playerBullet)
+  /*  if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
 		  "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
@@ -201,7 +212,7 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
 	    (*it)->fire();
-  }
+	    }*/
 }
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
@@ -239,4 +250,20 @@ void Ship::updateBulletTrajectory()
       this->_playerBullet->setVx(this->_vx);
       this->_playerBullet->setVy(this->_vy);
     }
+}
+
+void Ship::defineGrabPosition(Grab::Position position, unsigned int nGrab)
+{
+  if ((position & 8))
+    _grabsPositions[nGrab].first = -20;
+  else if ((position & 16))
+    _grabsPositions[nGrab].first = _sprite->getWidth() / 2;
+  else if ((position & 32))
+    _grabsPositions[nGrab].first = _sprite->getWidth() + 20;
+  if ((position & 1))
+    _grabsPositions[nGrab].second = -20;
+  else if ((position & 2))
+    _grabsPositions[nGrab].second = _sprite->getHeight() / 2;
+  else if ((position & 4))
+    _grabsPositions[nGrab].second = _sprite->getHeight() + 20;
 }
