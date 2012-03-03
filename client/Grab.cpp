@@ -3,6 +3,10 @@
 #include "RendererManager.hpp"
 #include "Ship.hpp"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, Ship& ship,
 	   double angle, float speed, unsigned int nGrab,
 	   double offsetX, double offsetY) :
