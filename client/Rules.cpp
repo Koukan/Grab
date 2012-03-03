@@ -35,10 +35,11 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
-  Grab& grab = static_cast<Grab&>(o1);
+  Grab			&grab = static_cast<Grab&>(o1);
+  Core::BulletCommand	&obj = static_cast<Core::BulletCommand&>(o2);
   if (grab.getBulletScript().empty())
     {
-      grab.setBulletScript("player3");
+      grab.setBulletScript(obj.getBulletScript());
       grab.setReturnToShip(true);
       o2.erase();
     }
