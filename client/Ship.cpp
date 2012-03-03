@@ -53,6 +53,13 @@ Ship::~Ship()
 {
 }
 
+void	Ship::move(double time)
+{
+	this->Core::PhysicObject::move(time);
+	this->updateBulletTrajectory();
+	this->updateCannonsTrajectory();
+}
+
 void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
   if (!_grabLaunched && nGrab < _nbMaxGrabs)
@@ -61,7 +68,7 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 							    this->getY(), 10)),
 			   *this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
      grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
-     Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+	 Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
 }
@@ -84,7 +91,10 @@ float Ship::getSpeed() const
 void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 {
   if (cannon && nGrab < _nbMaxGrabs)
+  {
     _cannons[nGrab] = cannon;
+	cannon->setColor(_colors[0], _colors[1], _colors[2]);
+  }
 }
 
 void Ship::handleActions()
@@ -244,7 +254,7 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 	    {
 	      if (_cannons[i])
-		_cannons[i]->fire();
+			_cannons[i]->fire();
 	    }
   }
 }
@@ -350,13 +360,13 @@ void Ship::updateCannonsTrajectory()
     {
       if (_cannons[i])
 	{
-	  _cannons[i]->setVx(this->_vx);
-	  _cannons[i]->setVy(this->_vy);
+	  _cannons[i]->setX(this->_x + _cannons[i]->getOffsetX());
+	  _cannons[i]->setY(this->_y + _cannons[i]->getOffsetY());
 	  bullet = _cannons[i]->getBullet();
 	  if (bullet)
 	    {
-	      bullet->setVx(this->_vx);
-	      bullet->setVy(this->_vy);
+	      bullet->setX(this->_x + _cannons[i]->getOffsetX());
+	      bullet->setY(this->_y + _cannons[i]->getOffsetY());
 	    }
 	}
     }
@@ -366,8 +376,8 @@ void Ship::updateBulletTrajectory()
 {
   if (this->_playerBullet)
     {
-      this->_playerBullet->setVx(this->_vx);
-      this->_playerBullet->setVy(this->_vy);
+      this->_playerBullet->setX(this->_x + this->getSprite().getWidth() / 2);
+      this->_playerBullet->setY(this->_y);
     }
 }
 

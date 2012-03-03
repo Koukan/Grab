@@ -25,9 +25,13 @@ void		SFMLSprite::update(double elapsedTime)
 	if (this->_frameRate == -1 || elapsedTime == 0)
 		return ;
 	unsigned int	size = this->_rect.size();
-	if (size < 2 || (!this->_pingpong && !this->_repeat &&
-					 this->_currentFrame >= (size - 1)))
+	if (size < 2 || (!this->_pingpong && !this->_repeat && this->_up &&
+					 this->_currentFrame >= (size - 1)) ||
+					(!this->_pingpong && !this->_repeat && !this->_up &&
+					this->_currentFrame == 0))
+	{
 		return ;
+	}
 	this->_currentTime += elapsedTime;
 	double			time = this->_frameRate / size;
 	int				nb = this->_currentFrame;
@@ -48,7 +52,9 @@ void		SFMLSprite::update(double elapsedTime)
 			}
 		}
 		else if (this->_repeat)
+		{
 			nb = (nb + nbr) % (size);
+		}
 		else if (this->_up)
 		{
 			nb += nbr;
@@ -123,14 +129,6 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 		}
 		top += spacey + height;
 	}
-	if (!this->_rect.empty())
-	{
-		#if (SFML_VERSION_MAJOR == 2)
-		this->SetTextureRect(this->_rect[0]);
-		#else
-		this->SetSubRect(this->_rect[0]/*this->_currentFrame*/);
-		#endif
-	}
 }
 
 void		SFMLSprite::setBack(bool val)
@@ -144,6 +142,14 @@ void		SFMLSprite::setBack(bool val)
 	{
 		this->_currentFrame = 0;
 		this->_up = true;
+	}
+	if (!this->_rect.empty())
+	{
+		#if (SFML_VERSION_MAJOR == 2)
+		this->SetTextureRect(this->_rect[this->_currentFrame]);
+		#else
+		this->SetSubRect(this->_rect[this->_currentFrame]);
+		#endif
 	}
 }
 
