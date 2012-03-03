@@ -78,13 +78,9 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 		else if (name == "vx")
 			vx = Net::Converter::toInt<int>(attrib->Value());
 		else if (name == "vy")
-<<<<<<< HEAD
-			vy = Net::Converter::toInt<size_t>(attrib->Value());
+			vy = Net::Converter::toInt<int>(attrib->Value());
 		else if (name == "scrollable" && attrib->Value() == "false")
 			scrollable = false;
-=======
-			vy = Net::Converter::toInt<int>(attrib->Value());
->>>>>>> 9042ae56f0881b1c6716916bb4b122207350312c
 	}
 	if (!monstername.empty())
 		(_current->*func)(monstername, x, y, vx, vy, scrollable);

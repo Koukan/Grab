@@ -113,8 +113,8 @@ double		BulletCommand::getAimDirection()
 	}
 	if (this->_relaviteObject)
 	{
-		int		x = this->_relaviteObject->getX() - this->getX();
-		int		y = this->_relaviteObject->getY() - this->getY();
+		double		x = this->_relaviteObject->getX() - this->getX();
+		double		y = this->_relaviteObject->getY() - this->getY();
 
 		if (x >= 0 && y >= 0)
 			return rtod(::atan(y / x));

@@ -52,18 +52,8 @@ void		GSInGame::preload()
   this->load("resources/map1.xml");
   //this->load("resources/destruction.xml");
 
-  //addBulletParser("resources/BulletSimple.xml", "single");
-<<<<<<< HEAD
-  addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
-  addBulletParser("resources/BulletBomb.xml", "bomb");
-  addBulletParser("resources/BulletWall.xml", "wall");
-  addBulletParser("resources/enemies/square.xml", "squareWall");
-  addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");
-  addBulletParser("resources/BulletSimple.xml", "simple");
-  addBulletParser("resources/BulletRandom.xml", "random");
-  addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-  addBulletParser("resources/player3.xml", "player3");
-=======
+  //addBulletParser("resources/enemies/square.xml", "squareWall");
+  //addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");
   //addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
   //addBulletParser("resources/BulletBomb.xml", "bomb");
   //addBulletParser("resources/BulletWall.xml", "wall");
@@ -71,7 +61,6 @@ void		GSInGame::preload()
   //addBulletParser("resources/BulletRandom.xml", "random");
   //addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
   //addBulletParser("resources/player3.xml", "player3");
->>>>>>> 9042ae56f0881b1c6716916bb4b122207350312c
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
