@@ -12,6 +12,7 @@
 #include "Rules.hpp"
 #include "Map.hpp"
 #include "CircleHitBox.hpp"
+#include "RendererManager.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -44,6 +45,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
@@ -76,6 +78,11 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
+
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -RendererManager::get().getWidth() + 30, RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-RendererManager::get().getHeight() + 30, 0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30, RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
 }
 
 void		GSInGame::registerShipCallbacks()
@@ -539,7 +546,7 @@ void		GSInGame::createShips()
 				shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b,
 				shipInfo->grab1, shipInfo->grab2, shipInfo->grab3);
 		ship->setY(600);
-		ship->setX(i * 250);
+		ship->setX(i * 250 + 150);
       (*it)->setShip(ship);
     }
   _ship = (*_players.begin())->getShip(); //tmp
