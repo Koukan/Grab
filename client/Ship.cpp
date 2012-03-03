@@ -68,7 +68,7 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 							    this->getY(), 10)),
 			   *this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
      grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
-     Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+	 Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
 }
@@ -91,7 +91,10 @@ float Ship::getSpeed() const
 void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 {
   if (cannon && nGrab < _nbMaxGrabs)
+  {
     _cannons[nGrab] = cannon;
+    cannon->setColor(_colors[0], _colors[1], _colors[2]);
+  }
 }
 
 void Ship::handleActions()
@@ -245,13 +248,13 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 						 "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 	  {
-			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-			Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+	    this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+	    Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  }
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 	    {
 	      if (_cannons[i])
-		_cannons[i]->fire();
+			_cannons[i]->fire();
 	    }
   }
 }
