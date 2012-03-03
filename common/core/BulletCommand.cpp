@@ -157,7 +157,6 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 			static_cast<double>(_height));
 	vx = speed * cos(dir);
 	vy = speed * sin(dir);
-	std::cout << "speed " << speed << "dir " << dir << ">>> vx " << vx << " vy " << vy << std::endl;
 	if (box)
 	{
 		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
