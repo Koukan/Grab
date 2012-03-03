@@ -111,6 +111,15 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).Key.Code));
 	  }
 	  else
 	  {

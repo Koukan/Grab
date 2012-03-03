@@ -3,8 +3,8 @@
 #include "RendererManager.hpp"
 #include "Ship.hpp"
 
-Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, double offsetX, double offsetY) :
-  ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY)
+Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, unsigned int nGrab, double offsetX, double offsetY) :
+  ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab)
 {
 	if (this->_sprite)
 	{
@@ -39,6 +39,11 @@ void	Grab::setReturnToShip(bool returnToShip)
 Ship	&Grab::getShip() const
 {
   return (_ship);
+}
+
+unsigned int Grab::getNum() const
+{
+  return (_nGrab);
 }
 
 void	Grab::move(double time)

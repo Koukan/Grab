@@ -45,11 +45,11 @@ Ship::~Ship()
 {
 }
 
-void Ship::launchGrab(std::string const &group)
+void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
-  if (!_grabLaunched && _cannons.size() < _nbMaxGrabs)
+  if (!_grabLaunched && _cannons.size() < _nbMaxGrabs && nGrab < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX() + _sprite->getWidth() / 2, this->getY() + _sprite->getHeight() / 2, 30)), 0, -200, *this, _speed * 2, _grabsPositions[_cannons.size()].first, _grabsPositions[_cannons.size()].second);
+     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX() + _sprite->getWidth() / 2, this->getY() + _sprite->getHeight() / 2, 30)), 0, -200, *this, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
@@ -203,8 +203,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
-  this->launchGrab("grabs"); // tmp test
-  /*  if (!this->_playerBullet)
+  if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
 		  "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
@@ -212,7 +211,7 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
 	    (*it)->fire();
-	    }*/
+  }
 }
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
@@ -226,19 +225,42 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 	  (*it)->stopFire();
 }
 
+void Ship::inputGrab1(Core::InputCommand const& /*cmd*/)
+{
+  this->launchGrab("grabs", 0);
+}
+
+void Ship::inputGrab2(Core::InputCommand const& /*cmd*/)
+{
+  this->launchGrab("grabs", 1);
+}
+
+void Ship::inputGrab3(Core::InputCommand const& /*cmd*/)
+{
+  this->launchGrab("grabs", 2);
+}
+
+void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
+{
+  this->launchGrab("grabs", 3);
+}
+
 void Ship::updateCannonsTrajectory()
 {
   PlayerBullet *bullet;
 
   for (cannonContainer::iterator it = _cannons.begin(); it != _cannons.end(); ++it)
     {
-      (*it)->setVx(this->_vx);
-      (*it)->setVy(this->_vy);
-      bullet = (*it)->getBullet();
-      if (bullet)
+      if (*it)
 	{
-	  bullet->setVx(this->_vx);
-	  bullet->setVy(this->_vy);
+	  (*it)->setVx(this->_vx);
+	  (*it)->setVy(this->_vy);
+	  bullet = (*it)->getBullet();
+	  if (bullet)
+	    {
+	      bullet->setVx(this->_vx);
+	      bullet->setVy(this->_vy);
+	    }
 	}
     }
 }

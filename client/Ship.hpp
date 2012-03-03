@@ -19,8 +19,6 @@ public:
 
   ~Ship();
 
-  void launchGrab(std::string const &group = "grabs");
-
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
   float getSpeed() const;
@@ -37,9 +35,15 @@ public:
   void inputJoystickMoved(Core::InputCommand const &cmd);
   void inputFire(Core::InputCommand const &cmd);
   void inputReleasedFire(Core::InputCommand const &cmd);
+  void inputGrab1(Core::InputCommand const &cmd);
+  void inputGrab2(Core::InputCommand const &cmd);
+  void inputGrab3(Core::InputCommand const &cmd);
+  void inputGrab4(Core::InputCommand const &cmd);
   void defineGrabPosition(Grab::Position position, unsigned int nGrab);
 
 private:
+  void launchGrab(std::string const &group, unsigned int nGrab);
+
   typedef std::vector<Cannon *> cannonContainer;
 
   float			_speed;
