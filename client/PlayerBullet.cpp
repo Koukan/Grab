@@ -54,7 +54,8 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	if (box)
 	{
 		bullet = new Core::Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
-		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+		if (bullet->getSprite())
+			bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 		this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
 		this->insertChild(*bullet);
 	}
