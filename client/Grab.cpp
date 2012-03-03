@@ -4,14 +4,8 @@
 #include "Ship.hpp"
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, unsigned int nGrab, double offsetX, double offsetY) :
-  ConcreteObject(spriteName, hitbox, vx, vy), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab)
-{
-	if (this->_sprite)
-	{
-		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
-		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
-	}
-}
+  ConcreteObject(spriteName, hitbox, vx, vy, -10, -10), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab)
+{}
 
 Grab::~Grab()
 {}

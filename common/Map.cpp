@@ -14,13 +14,14 @@ Core::Resource    *Map::clone() const
 	return (new Map(*this));
 }
 
-void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable)
+void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY)
 {
 	if (y >= this->_y)
 	{	
 		Map::mapdata	data;
 		data.name = name;
 		data.x = x;
+		data.y = spawnY;
 		data.vx = vx;
 		data.vy = vy;
 		if (scrollable)
@@ -31,13 +32,14 @@ void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int v
 	}
 }
 
-void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable)
+void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY)
 {
 	if (y >= this->_y)
 	{	
 		Map::mapdata	data;
 		data.name = name;
 		data.x = x;
+		data.y = spawnY;
 		data.vx = vx;
 		data.vy = vy;
 		if (scrollable)
@@ -56,7 +58,7 @@ void		Map::move(double time)
 	for (; it != _monsters.end() && it->first <= this->_y;)
 	{
 		cmd = new GameCommand("spawnspawner");
-		cmd->y = this->_y - it->first; 
+		cmd->y = this->_y - it->first + it->second.y;
 		cmd->x = it->second.x;
 		cmd->vx = it->second.vx;
 		cmd->vy = it->second.vy;
@@ -70,7 +72,7 @@ void		Map::move(double time)
 					it->first <= this->_y;)
 	{
 		cmd = new GameCommand("spawndecoration");
-		cmd->y = this->_y - it->first;
+		cmd->y = this->_y - it->first + it->second.y;
 		cmd->x = it->second.x;
 		cmd->vx = it->second.vx;
 		cmd->vy = it->second.vy;

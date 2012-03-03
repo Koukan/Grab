@@ -40,7 +40,8 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 	  if (!grab.getBulletScript().empty())
 	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
 				      "weapon", "cannons", "playerShots",
-				      grab.getOffsetX(), grab.getOffsetY()));
+				      grab.getOffsetX(), grab.getOffsetY()),
+			   grab.getNum());
 	  grab.erase();
 	  ship.setGrabLaunched(false);
 	}

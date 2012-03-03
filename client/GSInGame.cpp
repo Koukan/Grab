@@ -67,7 +67,7 @@ void		GSInGame::preload()
 
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 1000, 8000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
 }
@@ -137,6 +137,18 @@ void		GSInGame::registerShipCallbacks()
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB1).Type,
+			 *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB2).Type,
+			 *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB3).Type,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).JoystickButton.Button),
+			  (*it)->getType() - 1);
 	  }
   }
 }
@@ -148,10 +160,13 @@ void		GSInGame::onStart()
   this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
   this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
 
+  GameState *state = Core::GameStateManager::get().getGameState("Preload");
+  if (state)
+	state->pause();
   /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");*/
- 	 
+
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
@@ -184,7 +199,11 @@ void		GSInGame::update(double elapsedTime)
 }
 
 void		GSInGame::onEnd()
-{}
+{
+  GameState *state = Core::GameStateManager::get().getGameState("Preload");
+  if (state)
+	state->play();
+}
 
 bool		GSInGame::handleCommand(Core::Command const &command)
 {
@@ -465,8 +484,6 @@ void		GSInGame::rangeid(GameCommand const &event)
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
 	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
-	std::cout << event.data << " : vx " << event.vx << " vy " << event.vy << std::endl;
-	std::cout << event.data << " : vx " << spawner->getVx() << " vy " << spawner->getVy() << std::endl;
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
 }
@@ -474,7 +491,6 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 void		GSInGame::spawndecoration(GameCommand const &event)
 {
 	ConcreteObject			*object = new ConcreteObject(event.data, *(new Core::CircleHitBox(event.x, event.y, 1)), event.vx, event.vy);
-	std::cout << "scroll " << event.position << std::endl;
 	object->setScrollY(event.position);
 	this->addGameObject(object, "decorations");
 }

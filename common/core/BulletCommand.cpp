@@ -11,8 +11,8 @@
 
 CORE_USE_NAMESPACE
 
-inline static double dtor(double x) { return x * M_PI / 180; }
-inline static double rtod(double x) { return x * 180 / M_PI; }
+inline static double dtor(double x) { return x * M_PI / 180.0; }
+inline static double rtod(double x) { return x * 180.0 / M_PI; }
 
 BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 		double x, double y, double vx, double vy)
@@ -38,12 +38,12 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		double x, double y, double vx, double vy)
 	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
-	if (state.getShape() == "circle")
+	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
-	else if (state.getShape() == "rectangle")
+	else if (state.getSimpleShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
 	else
 		this->_shape = BulletCommand::UNKNOWN;
@@ -60,12 +60,12 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 		HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getWidth()), _height(state.getHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("player")
 {
-	if (state.getShape() == "circle")
+	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
-	else if (state.getShape() == "rectangle")
+	else if (state.getSimpleShape() == "rectangle")
 		this->_shape = BulletCommand::Rectangle;
 	else
 		this->_shape = BulletCommand::UNKNOWN;
@@ -116,14 +116,7 @@ double		BulletCommand::getAimDirection()
 		double		x = this->_relaviteObject->getX() - this->getX();
 		double		y = this->_relaviteObject->getY() - this->getY();
 
-		if (x >= 0 && y >= 0)
-			return rtod(::atan(y / x));
-		else if (x < 0 && y >= 0)
-			return rtod(::atan(y / -x) + 90);
-		else if (x < 0 && y < 0)
-			return rtod(::atan(-y / -x) + 180);
-		else
-			return rtod(::atan(-y / x) + 270);
+		return rtod(::atan2(y, x));
 	}
 	return 0;
 }
@@ -135,7 +128,7 @@ double		BulletCommand::getBulletSpeed()
 
 double		BulletCommand::getDefaultSpeed()
 {
-	return 1.0;
+	return 0.0;
 }
 
 double		BulletCommand::getRank()
@@ -164,6 +157,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 			static_cast<double>(_height));
 	vx = speed * cos(dir);
 	vy = speed * sin(dir);
+	std::cout << "speed " << speed << "dir " << dir << ">>> vx " << vx << " vy " << vy << std::endl;
 	if (box)
 	{
 		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);

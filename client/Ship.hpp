@@ -22,7 +22,7 @@ public:
   void setGrabLaunched(bool grabLaunched);
   bool getGrabLaunched() const;
   float getSpeed() const;
-  void addCannon(Cannon *cannon);
+  void addCannon(Cannon *cannon, unsigned int nGrab);
 
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
@@ -43,12 +43,11 @@ public:
 
 private:
   void launchGrab(std::string const &group, unsigned int nGrab);
-
-  typedef std::vector<Cannon *> cannonContainer;
+  void manageGrab(std::string const &group, unsigned int nGrab);
 
   float			_speed;
   int			_fireFrequency;
-  cannonContainer	_cannons;
+  Cannon*		_cannons[4];
   unsigned int		_nbMaxGrabs; // can be up to 4 by choosing a special power
   bool			_grabLaunched;
   std::pair<double, double> _grabsPositions[3];
