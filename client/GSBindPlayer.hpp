@@ -39,6 +39,7 @@ private:
 	unsigned int				_nbPlayers;
 	bool						_online;
 	Player						*_players[4];
+
 	int							_nbReady;
 	int							_nbPending;
 	uint32_t					_id;
