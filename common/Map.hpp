@@ -14,10 +14,13 @@ class	Map : public Core::Resource, public Core::PhysicObject
 		virtual	void				move(double time);
 		void	addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
 		void    addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
+		void    addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
 
 	protected:
+		void    addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
 		struct mapdata
 		{
+			std::string command;
 			std::string	name;
 			size_t		x;
 			int			y;
