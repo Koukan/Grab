@@ -21,6 +21,7 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 	double x, double y, double vx, double vy)
 	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
 {
+	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
 }
 
@@ -28,6 +29,7 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::
 	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: Core::BulletCommand(state, gstate, box, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName), _isFiring(true)
 {
+	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
 }
 
@@ -51,56 +53,65 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 			//static_cast<double>(_height));
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	if (box)
-	{
-		bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
-		if (bullet->getSprite())
-		  bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
-		this->insertChild(*bullet);
-	}
+	//if (box)
+	//{
+	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+	if (bullet->getSprite())
+		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+	this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
+	this->insertChild(*bullet);
+		//}
 }
 
 void	PlayerBullet::createBullet(BulletMLState* state, double direction, double speed)
 {
-	Core::HitBox			*box = 0;
 	double			vx, vy;
 	double			dir = dtor(direction);
 	PlayerBullet	*bullet;
 
-	if (state->getShape() == "circle")
-		box = new Core::CircleHitBox(_x, _y,
-			static_cast<double>(state->getRadius()));
-	else if (state->getShape() == "rectangle")
-		box = new Core::RectHitBox(_x, _y,
-			static_cast<double>(state->getWidth()),
-			static_cast<double>(state->getHeight()));
+	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
+	//if (state->getShape() == "circle")
+		//box = new Core::CircleHitBox(_x, _y,
+			//static_cast<double>(state->getRadius()));
+	//else if (state->getShape() == "rectangle")
+		//box = new Core::RectHitBox(_x, _y,
+			//static_cast<double>(state->getWidth()),
+			//static_cast<double>(state->getHeight()));
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	if (box)
-	{
-		bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
-		if (bullet->getSprite())
-		  bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		bullet->setColor(_colors[0], _colors[1], _colors[2]);
-		this->_state.addGameObject(bullet, this->_groupName);
-		this->insertChild(*bullet);
-		bullet->setSeed(this->_rand());
-	}
-	else
-	{
-		bullet = new PlayerBullet(*state, _state, this->_groupName, _x, _y, vx, vy);
-		if (bullet->getSprite())
-		  bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		bullet->setColor(_colors[0], _colors[1], _colors[2]);
-		this->_state.addGameObject(bullet, this->_groupName);
-		this->insertChild(*bullet);
-		bullet->setSeed(this->_rand());
-	}
+	//if (box)
+	//{
+	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
+	if (bullet->getSprite())
+		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+	bullet->setColor(_colors[0], _colors[1], _colors[2]);
+	this->_state.addGameObject(bullet, this->_groupName);
+	this->insertChild(*bullet);
+	bullet->setSeed(this->_rand());
+	//}
+	//else
+	//{
+		//bullet = new PlayerBullet(*state, _state, this->_groupName, _x, _y, vx, vy);
+		//if (bullet->getSprite())
+		  //bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+		//bullet->setColor(_colors[0], _colors[1], _colors[2]);
+		//this->_state.addGameObject(bullet, this->_groupName);
+		//this->insertChild(*bullet);
+		//bullet->setSeed(this->_rand());
+	//}
 	delete state;
 }
 
-void		PlayerBullet::move(double time)
+double	PlayerBullet::getAimDirection()
+{
+	double	tmp = this->BulletCommand::getAimDirection();
+
+	if (!this->_relativeObject)
+		return 270;
+	return tmp;
+}
+
+void	PlayerBullet::move(double time)
 {
 	if (this->_isFiring)
 	{
@@ -113,7 +124,7 @@ void		PlayerBullet::move(double time)
 		this->erase();
 }
 
-void			PlayerBullet::isFiring(bool firing)
+void	PlayerBullet::isFiring(bool firing)
 {
 	if (firing)
 		this->_isFiring = true;
@@ -124,7 +135,7 @@ void			PlayerBullet::isFiring(bool firing)
 	}
 }
 
-void			PlayerBullet::setColor(uint8_t r, uint8_t g, uint8_t b)
+void	PlayerBullet::setColor(uint8_t r, uint8_t g, uint8_t b)
 {
 	_colors[0] = r;
 	_colors[1] = g;
