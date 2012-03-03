@@ -13,14 +13,28 @@ void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
 
 void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 {
-	o1.erase();
-	o2.erase();
+	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
+	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
+	monster.setLife(monster.getLife() - shot.getDamage());
+	shot.erase();
+	if (monster.getLife() <= 0)
+		monster.erase();
 }
 
-#include <iostream>
+void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
+{
+	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead())
+	{
+		ship.setDead(true);
+		shot.erase();
+	}
+}
+
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
-  std::cout << "grab collide !" << std::endl;
   Grab& grab = static_cast<Grab&>(o1);
   if (grab.getBulletScript().empty())
     {
@@ -40,10 +54,11 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 
       if (&(grab.getShip()) == &ship)
 	{
-	  std::cout << "[" << grab.getBulletScript() << "]" << std::endl;
 	  if (!grab.getBulletScript().empty())
 	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
-				      "weapon", "cannons", "playerShots"));
+				      "weapon", "cannons", "playerShots",
+				      grab.getOffsetX(), grab.getOffsetY()),
+			   grab.getNum());
 	  grab.erase();
 	  ship.setGrabLaunched(false);
 	}
@@ -108,7 +123,7 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 				{
 					player.setX(x);
 					player.setY(y);
-					//static_cast<Ship &>(player);
+					static_cast<Ship &>(player).setDead(true);
 				}
 			}
 		}

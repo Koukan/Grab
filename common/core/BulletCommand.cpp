@@ -53,6 +53,10 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleGroup = state.getBulletGroup();
 	this->_simpleXHitbox = state.getSimpleHitboxX();
 	this->_simpleYHitbox = state.getSimpleHitboxY();
+	this->setDamage(state.getDamage());
+	this->setLife(state.getLife());
+	this->_simpleLife = state.getSimpleLife();
+	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 }
 
@@ -75,6 +79,10 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleGroup = state.getBulletGroup();
 	this->_simpleXHitbox = state.getSimpleHitboxX();
 	this->_simpleYHitbox = state.getSimpleHitboxY();
+	this->setDamage(state.getDamage());
+	this->setLife(state.getLife());
+	this->_simpleLife = state.getSimpleLife();
+	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 }
 
@@ -161,6 +169,8 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 	{
 		bullet = new Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
 		bullet->setScrollY(this->_scrollY);
+		bullet->setLife(this->_simpleLife);
+		bullet->setDamage(this->_simpleDamage);
 		this->_state.addGameObject(bullet, this->_simpleGroup);
 		this->insertChild(*bullet);
 	}

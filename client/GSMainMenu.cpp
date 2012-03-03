@@ -31,12 +31,6 @@ void	GSMainMenu::onStart()
 
   // load xml
   this->load("resources/intro.xml");
-  _sound = this->getSound("intro-sound");
-  if (_sound)
-  {
-	_sound->setLoop(true);
-	_sound->play();
-  }
   // test
   //this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
@@ -68,15 +62,11 @@ void	GSMainMenu::onStart()
 }
 
 void	GSMainMenu::onChange()
-{
-	if (_sound)
-		_sound->pause();		
+{	
 }
 
 void	GSMainMenu::onResume()
-{
-	if (_sound)
-		_sound->play();		
+{		
 }
 
 void	GSMainMenu::modeSelection()

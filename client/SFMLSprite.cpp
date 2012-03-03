@@ -30,7 +30,7 @@ void		SFMLSprite::update(double elapsedTime)
 		return ;
 	this->_currentTime += elapsedTime;
 	double			time = this->_frameRate / size;
-	unsigned int	nb = this->_currentFrame;
+	int				nb = this->_currentFrame;
 	if (this->_currentTime > time)
 	{
 		uint32_t nbr = static_cast<int>(this->_currentTime) / static_cast<int>(time);
@@ -40,20 +40,26 @@ void		SFMLSprite::update(double elapsedTime)
 			while (nbr)
 			{
 				nb += (this->_up) ? 1 : -1;
-				if (nb == size - 1)
+				if (static_cast<uint32_t>(nb) == size - 1)
 					this->_up = false;
-				else if (nb == 0)
+				else if (nb <= 0)
 					this->_up = true;
 				nbr--;
 			}
 		}
 		else if (this->_repeat)
 			nb = (nb + nbr) % (size);
+		else if (this->_up)
+		{
+			nb += nbr;
+			if (static_cast<uint32_t>(nb) > size)
+				nb = size;
+		}
 		else
 		{
-			nb = nb + nbr;
-			if (nb > size)
-				nb = size;
+			nb -= nbr;
+			if (nb < 0)
+				nb = 0;
 		}
 		this->_currentFrame = nb;
 		#if (SFML_VERSION_MAJOR == 2)
@@ -124,6 +130,20 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 		#else
 		this->SetSubRect(this->_rect[0]/*this->_currentFrame*/);
 		#endif
+	}
+}
+
+void		SFMLSprite::setBack(bool val)
+{
+	if (val)
+	{
+		this->_currentFrame = this->_rect.size() - 1;
+		this->_up = false;
+	}
+	else
+	{
+		this->_currentFrame = 0;
+		this->_up = true;
 	}
 }
 

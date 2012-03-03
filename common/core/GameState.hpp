@@ -31,6 +31,8 @@ public:
   virtual void	onEnd();
   virtual void	onChange();
   virtual void	onResume();
+  virtual void	onPause();
+  virtual void	onPlay();
   virtual void	update(double elapseTime = 0);
   void			pause(Pause paused = ALL);
   void			play();

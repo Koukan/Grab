@@ -28,6 +28,7 @@ public:
 							uint32_t /*width*/, uint32_t /*height*/,
 							uint32_t /*nbx*/, uint32_t /*nby*/,
 							uint32_t /*spacex*/, uint32_t /*spacey*/){}
+	virtual void	setBack(bool /*val*/){}
 
 	// getter
 	virtual int		getWidth() const { return 0; }

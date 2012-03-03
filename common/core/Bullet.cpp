@@ -60,12 +60,32 @@ void		Bullet::setBulletId(uint32_t id)
 	this->_bulletId = id;
 }
 
+void		Bullet::setLife(int32_t life)
+{
+	this->_life = life;
+}
+
+void		Bullet::setDamage(int32_t damage)
+{
+	this->_damage = damage;
+}
+
 BulletCommand	*Bullet::getParent() const
 {
 	return this->_parent;
 }
 
-uint32_t	Bullet::getBulletId() const
+uint32_t		Bullet::getBulletId() const
 {
 	return this->_bulletId;
+}
+
+int32_t		Bullet::getLife() const
+{
+	return this->_life;
+}
+
+int32_t		Bullet::getDamage() const
+{
+	return this->_damage;
 }

@@ -37,13 +37,20 @@ void		GSInGame::preload()
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
-  this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+<<<<<<< HEAD
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
+=======
+  this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
+>>>>>>> 6a49f4cf66a9df301c7f0d7ffa31feb1b7345caf
 
   // load xml
   //this->load("resources/intro.xml");
@@ -70,7 +77,7 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
 }
 
 void		GSInGame::registerShipCallbacks()
@@ -112,6 +119,15 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).Key.Code));
 	  }
 	  else
 	  {
@@ -128,6 +144,18 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB1).Type,
+			 *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB2).Type,
+			 *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB3).Type,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).JoystickButton.Button),
 			  (*it)->getType() - 1);
 	  }
   }
@@ -195,7 +223,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
-	{"spawndecoration", &GSInGame::spawndecoration}
+	{"spawndecoration", &GSInGame::spawndecoration},
+	{"spawnsound", &GSInGame::spawnsound}
   };
 
   for (size_t i = 0;
@@ -475,6 +504,13 @@ void		GSInGame::spawndecoration(GameCommand const &event)
 	this->addGameObject(object, "decorations");
 }
 
+void		GSInGame::spawnsound(GameCommand const &event)
+{
+	Core::Sound	*sound = this->getSound(event.data);
+	if (sound)
+		sound->play();
+}
+
 void		GSInGame::createShips()
 {
   // player colors
@@ -498,7 +534,8 @@ void		GSInGame::createShips()
     {
 		shipInfo = (*it)->getShipInfo();
 		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
-		      shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+				shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b,
+				shipInfo->grab1, shipInfo->grab2, shipInfo->grab3);
 		ship->setY(600);
 		ship->setX(i * 250);
       (*it)->setShip(ship);

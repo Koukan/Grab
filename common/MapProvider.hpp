@@ -11,10 +11,11 @@ class	MapProvider : public Core::XMLProvider
 			MapProvider();
 			virtual ~MapProvider();
 			virtual void    handleXML(TiXmlNode *, Core::ResourceManager &);
+
+	private:
 			void    		handleMonster(TiXmlNode *, Core::ResourceManager &);
 			void    		handleDeco(TiXmlNode *, Core::ResourceManager &);
-
-	private:	
+			void    		handleSound(TiXmlNode *, Core::ResourceManager &);
 			void    		handleElem(TiXmlNode *, Core::ResourceManager &, void (Map::*func)(std::string const &, size_t, size_t, int, int, bool, int));
 
 			Map			*_current;

@@ -18,7 +18,4 @@ public:
   void	joinGame();
   void	options();
   void	quitGame();
-
-private:
- 	Core::Sound		*_sound;
 };
