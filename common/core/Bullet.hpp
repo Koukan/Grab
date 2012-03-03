@@ -24,21 +24,21 @@ class CORE_DLLREQ Bullet : public PhysicObject
     void			setSprite(Sprite *sprite);
 	void			setParent(BulletCommand *bullet);
 	void			setBulletId(uint32_t id);
-	void			setLife(uint32_t life);
-	void			setDamage(uint32_t damage);
+	void			setLife(int32_t life);
+	void			setDamage(int32_t damage);
 
 	// getter
 	BulletCommand	*getParent() const;
 	uint32_t		getBulletId() const;
-	uint32_t		getLife() const;
-	uint32_t		getDamage() const;
+	int32_t		getLife() const;
+	int32_t		getDamage() const;
 
   protected:
     Sprite			*_sprite;
 	BulletCommand	*_parent;
 	uint32_t		_bulletId;
-	uint32_t		_life;
-	uint32_t		_damage;
+	int32_t		_life;
+	int32_t		_damage;
 };
 
 CORE_END_NAMESPACE
