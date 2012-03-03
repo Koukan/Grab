@@ -53,15 +53,13 @@ Ship::~Ship()
 {
 }
 
-#include <iostream>
 void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
   if (!_grabLaunched && nGrab < _nbMaxGrabs)
    {
-     std::cout << nGrab << " launched" << std::endl;
      Grab* grab = new Grab("grab", *(new Core::CircleHitBox(this->getX(),
-							    this->getY(), 10)), 0, -200,
-			   *this, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
+							    this->getY(), 10)),
+			   *this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
      grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
