@@ -52,13 +52,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
 
   // load xml
-  //this->load("resources/intro.xml");
-  this->load("resources/player.xml");
-  this->load("resources/grab.xml");
-  //this->load("resources/shots.xml");
-  //this->load("resources/enemies.xml");
   this->load("resources/map/map1.xml");
-  //this->load("resources/destruction.xml");
 
   //addBulletParser("resources/enemies/square.xml", "squareWall");
   //addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");

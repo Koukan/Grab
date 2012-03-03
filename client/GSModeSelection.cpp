@@ -20,7 +20,7 @@ void	GSModeSelection::onStart()
   this->addGroup("background", 1, 50000001, 59999999);
 
   // load xml
-  this->load("resources/intro.xml");
+  this->load("resources/xml/intro.xml");
 
   // add gui
 

@@ -29,7 +29,7 @@ GSJoinGame::~GSJoinGame()
 void	GSJoinGame::onStart()
 {
   // load xml
-  this->load("resources/intro.xml");
+  this->load("resources/xml/intro.xml");
 
   this->_sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   if (NetworkModule::get().connect())
