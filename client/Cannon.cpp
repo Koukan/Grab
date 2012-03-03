@@ -3,6 +3,7 @@
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
 
+#include <iostream>
 Cannon::Cannon(std::string const &parser, Ship &ship, std::string const& spriteName,
 	       std::string const &cannonGroup, std::string const &shotsGroup,
 	       double offsetx, double offsety) :

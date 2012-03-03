@@ -7,8 +7,8 @@ SFMLSprite::SFMLSprite(double x, double y)
 	  _currentTime(0), _repeat(false), _pingpong(false),
 	  _up(true), _currentFrame(0), _tx(0), _ty(0)
 {
-	this->setX(x);
-	this->setY(y);
+  this->_x = x;
+  this->_y = y;
 }
 
 SFMLSprite::~SFMLSprite()

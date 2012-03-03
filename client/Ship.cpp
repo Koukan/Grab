@@ -1,8 +1,9 @@
-#include <math.h>
+#include <cmath>
 #include "Ship.hpp"
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
+#include "SFMLSprite.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
   {"Conqueror", "player1", "player3", 300, 400,
@@ -22,7 +23,7 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
     _speed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
-     _joyPosX(0), _joyPosY(0),
+    _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName),
     _playerBullet(0)
 {
@@ -30,6 +31,9 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 	_cannons[1] = 0;
 	_cannons[2] = 0;
 	_cannons[3] = 0;
+	_colors[0] = r;
+	_colors[1] = g;
+	_colors[2] = b;
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
@@ -53,7 +57,10 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
   if (!_grabLaunched && nGrab < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("bullet", *(new Core::CircleHitBox(this->getX() + _sprite->getWidth() / 2, this->getY() + _sprite->getHeight() / 2, 10)), 0, -200, *this, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
+     Grab* grab = new Grab("grab", *(new Core::CircleHitBox(this->getX(),
+							    this->getY(), 10)),
+			   *this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
+     grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
    }
@@ -228,7 +235,7 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
   if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
-		  "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
+						 "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
@@ -292,6 +299,15 @@ void Ship::setDead(bool dead)
 	{
 		delete this->_playerBullet;
 		this->_playerBullet = 0;
+		for (size_t i = 0; i < _nbMaxGrabs; ++i)
+		{
+			if (_cannons[i])
+			{
+				_cannons[i]->stopFire();
+				_cannons[i]->erase();
+				_cannons[i] = 0;
+			}
+		}
 	}
 }
 
@@ -310,11 +326,17 @@ void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 {
   if (_cannons[nGrab])
     {
+	  _cannons[nGrab]->stopFire();
       _cannons[nGrab]->erase();
       _cannons[nGrab] = 0;
     }
   else
     this->launchGrab(group, nGrab);
+}
+
+void Ship::copyColor(Core::Sprite &sprite)
+{
+  static_cast<SFMLSprite &>(sprite).SetColor(static_cast<SFMLSprite *>(_sprite)->GetColor());
 }
 
 void Ship::updateCannonsTrajectory()

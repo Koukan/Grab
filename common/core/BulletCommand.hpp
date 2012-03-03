@@ -46,6 +46,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	void			setSeed(uint32_t seed);
 	uint32_t		getSeed() const;
 	Bullet			*getChild(uint32_t id) const;
+	std::string const	&getBulletScript() const;
 
   protected:
 	typedef std::map<uint32_t, Bullet*>	BulletMap;
@@ -77,6 +78,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	std::string		_simpleGroup;
 	double			_simpleXHitbox;
 	double			_simpleYHitbox;
+	std::string		_grabBullet;
 	Net::MTRand		_rand;
 };
 

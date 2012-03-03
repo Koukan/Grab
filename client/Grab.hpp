@@ -10,8 +10,9 @@ class Ship;
 class Grab : public ConcreteObject
 {
 public:
-  Grab(std::string const &name, Core::HitBox& hitbox, double vx, double vy, Ship &ship,
-       float speed, unsigned int nGrab, double offsetX = 0, double offsetY = 0);
+  Grab(std::string const &name, Core::HitBox& hitbox, Ship &ship,
+       double angle, float speed, unsigned int nGrab,
+       double offsetX = 0, double offsetY = 0);
   ~Grab();
 
   void			setBulletScript(std::string const &bulletName);
@@ -53,4 +54,5 @@ private:
   double		_offsetX;
   double		_offsetY;
   unsigned int		_nGrab;
+  unsigned int		_angle;
 };

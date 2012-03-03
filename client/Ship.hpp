@@ -23,6 +23,7 @@ public:
   bool getGrabLaunched() const;
   float getSpeed() const;
   void addCannon(Cannon *cannon, unsigned int nGrab);
+  void copyColor(Core::Sprite& sprite);
 
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
@@ -55,6 +56,7 @@ private:
   unsigned int	_nbMaxGrabs; // can be up to 4 by choosing a special power
   bool			_grabLaunched;
   std::pair<double, double> _grabsPositions[3];
+  int			_colors[3];
 
   // ship control
   enum Actions

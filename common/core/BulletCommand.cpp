@@ -21,6 +21,13 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
+	this->_shape = BulletCommand::Circle;
+	this->_simpleXHitbox = 0;
+	this->_simpleYHitbox = 0;
+	this->setDamage(1);
+	this->setLife(1);
+	this->_simpleLife = 1;
+	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 }
 
@@ -31,6 +38,13 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
+	this->_shape = BulletCommand::Circle;
+	this->_simpleXHitbox = 0;
+	this->_simpleYHitbox = 0;
+	this->setDamage(1);
+	this->setLife(1);
+	this->_simpleLife = 1;
+	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 }
 
@@ -58,6 +72,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleLife = state.getSimpleLife();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
+	this->_grabBullet = state.getGenericStr("grabbullet");
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
@@ -84,6 +99,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleLife = state.getSimpleLife();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
+	this->_grabBullet = state.getGenericStr("grabbullet");
 }
 
 BulletCommand::~BulletCommand()
@@ -295,6 +311,11 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 	if (it != this->_childs.end())
 		return it->second;
 	return 0;
+}
+
+std::string const &BulletCommand::getBulletScript() const
+{
+	return this->_grabBullet;
 }
 
 void		BulletCommand::setSpeedDirection()

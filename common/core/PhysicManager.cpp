@@ -29,7 +29,7 @@ void		PhysicManager::update(double elapsedTime)
 
 void		PhysicManager::apply(GameState &state, double elapsedTime)
 {
-	if (elapsedTime == 0 && (state.getPaused() & GameState::PHYSIC) != 0)
+	if (elapsedTime == 0 || (state.getPaused() & GameState::PHYSIC) != 0)
 		return ;
 	double		time;
 	double		tmptime;

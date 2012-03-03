@@ -52,6 +52,7 @@ void		GSInGame::preload()
   // load xml
   //this->load("resources/intro.xml");
   this->load("resources/player.xml");
+  this->load("resources/grab.xml");
   //this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
   this->load("resources/map/map1.xml");
@@ -317,7 +318,11 @@ void		GSInGame::releaseInputLeftRight(Core::InputCommand const &/*event*/)
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
+  if (!_online)
+    {
+      this->pause(PHYSIC);
+    }
+  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
 }
 
 void		GSInGame::inputSpace(Core::InputCommand const &/*event*/)
