@@ -138,7 +138,7 @@ double		BulletCommand::getRank()
 
 double		BulletCommand::getRand()
 {
-	return this->_rand();
+	return this->_rand() * (1. / 4294967295.);
 }
 
 void		BulletCommand::createSimpleBullet(double direction, double speed)
