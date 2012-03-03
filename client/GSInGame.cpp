@@ -215,9 +215,11 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
-	{"spawndecoration", &GSInGame::spawndecoration}
+	{"spawndecoration", &GSInGame::spawndecoration},
+	{"spawnsound", &GSInGame::spawnsound}
   };
 
+  std::cout << command.name << std::endl;
   for (size_t i = 0;
 		 i < sizeof(methods) / sizeof(*methods); ++i)
 	{
@@ -493,6 +495,14 @@ void		GSInGame::spawndecoration(GameCommand const &event)
 	ConcreteObject			*object = new ConcreteObject(event.data, *(new Core::CircleHitBox(event.x, event.y, 1)), event.vx, event.vy);
 	object->setScrollY(event.position);
 	this->addGameObject(object, "decorations");
+}
+
+void		GSInGame::spawnsound(GameCommand const &event)
+{
+	std::cout << "sound " << event.data << std::endl;
+	Core::Sound	*sound = this->getSound(event.data);
+	if (sound)
+		sound->play();
 }
 
 void		GSInGame::createShips()

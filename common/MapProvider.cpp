@@ -43,6 +43,8 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 				this->handleMonster(child, manager);
 			else if (name == "deco")
 				this->handleDeco(child, manager);
+			else if (name == "sound")
+				this->handleSound(child, manager);
 		}
 	}
 	_current = 0;
@@ -56,6 +58,11 @@ void    MapProvider::handleMonster(TiXmlNode *parent, Core::ResourceManager &man
 void    MapProvider::handleDeco(TiXmlNode *parent, Core::ResourceManager &manager)
 {
 	this->handleElem(parent, manager, &Map::addDecoration);
+}
+
+void    MapProvider::handleSound(TiXmlNode *parent, Core::ResourceManager &manager)
+{
+	this->handleElem(parent, manager, &Map::addSound);
 }
 
 void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, int))
