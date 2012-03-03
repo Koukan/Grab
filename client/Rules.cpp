@@ -69,64 +69,58 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 {
 	Core::PhysicObject &player = static_cast<Core::PhysicObject &>(o2);
 	Core::PhysicObject &wall = static_cast<Core::PhysicObject &>(o1);
-	int nbIter = 50;
+	Core::HitBox &phitbox = player.getHitBox();
+	Core::HitBox &whitbox = wall.getHitBox();
 
-	if (wall.getVx() || wall.getScrollX() || wall.getVy() || wall.getScrollY())
+	int nbIter = 20;
+
+	double px = player.getX() + player.getXHitBoxOffset();
+	double py = player.getY() + player.getYHitBoxOffset();
+	double pwidth = phitbox.getWidth();
+	double pheight = phitbox.getHeight();
+
+	double wx = wall.getX() + wall.getXHitBoxOffset();
+	double wy = wall.getY() + wall.getYHitBoxOffset();
+	double wwidth = whitbox.getWidth();
+	double wheight = whitbox.getHeight();
+
+	double xdist = (wx + wwidth / 2) - (px + pwidth / 2);
+	double ydist = (wy + wheight / 2) - (py + pheight / 2);
+
+	std::cout << wwidth << " " << wheight << std::endl;
+
+	if (xdist * xdist < ydist * ydist)
 	{
-		double vx, vy, norm, x = player.getX(), y = player.getY();
-		int i = 0;
-
-		vx = wall.getVx() + wall.getScrollX();
-		vy = wall.getVy() + wall.getScrollY();
-		norm = ::sqrt(vx * vx + vy * vy);
-		vx = vx / norm;
-		vy = vy / norm;
-
-		do
+		if (ydist > 0)
 		{
-			player.setX(player.getX() + vx);
-			player.setY(player.getY() + vy);
-			wall.getHitBox().setX(wall.getX() + wall.getXHitBoxOffset());
-			wall.getHitBox().setY(wall.getY() + wall.getYHitBoxOffset());
-			player.getHitBox().setX(player.getX() + player.getXHitBoxOffset());
-			player.getHitBox().setY(player.getY() + player.getYHitBoxOffset());
-			++i;
+			if (py + pheight - wy > nbIter)
+				static_cast<Ship &>(player).setDead(true);
+			player.setY(wy - pheight - player.getYHitBoxOffset());
+			//player.setVy(wall.getVy() + wall.getScrollY());
 		}
-		while (player.getHitBox().collide(wall.getHitBox()) && i < nbIter);
-		if (i == nbIter)
+		else
 		{
-			player.setX(x);
-			player.setY(y);
-			if (player.getVx() || player.getScrollX() || player.getVy() || player.getScrollY())
-			{
-				double vx, vy;
-				double norm;
-				i = 0;
-
-				vx = player.getVx() + player.getScrollX();
-				vy = player.getVy() + player.getScrollY();
-				norm = ::sqrt(vx * vx + vy * vy);
-				vx = vx / norm;
-				vy = vy / norm;
-
-				do
-				{
-					player.setX(player.getX() - vx);
-					player.setY(player.getY() - vy);
-					player.getHitBox().setX(player.getX() + player.getXHitBoxOffset());
-					player.getHitBox().setY(player.getY() + player.getYHitBoxOffset());
-					wall.getHitBox().setX(wall.getX() + wall.getXHitBoxOffset());
-					wall.getHitBox().setY(wall.getY() + wall.getYHitBoxOffset());
-					++i;
-				}
-				while (player.getHitBox().collide(wall.getHitBox()) && i < nbIter);
-				if (i == nbIter)
-				{
-					player.setX(x);
-					player.setY(y);
-					static_cast<Ship &>(player).setDead(true);
-				}
-			}
+			if (wy + wheight - py > nbIter)
+				static_cast<Ship &>(player).setDead(true);
+			player.setY(wy + wheight - player.getYHitBoxOffset());
+			//player.setVy(wall.getVy() + wall.getScrollY());
+		}
+	}
+	else
+	{
+		if (xdist > 0)
+		{
+			if (px + pwidth - wx > nbIter)
+				static_cast<Ship &>(player).setDead(true);
+			player.setX(wx - pwidth - player.getXHitBoxOffset());
+			//player.setVx(wall.getVx() + wall.getScrollX());
+		}
+		else
+		{
+			if (wx + wwidth - px > nbIter)
+				static_cast<Ship &>(player).setDead(true);
+			player.setX(wx + wwidth - player.getXHitBoxOffset());
+			//player.setVx(wall.getVx() + wall.getScrollX());
 		}
 	}
 }
