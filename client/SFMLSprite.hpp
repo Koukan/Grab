@@ -20,6 +20,7 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 		virtual void		setGrid(uint32_t top, uint32_t left, uint32_t width,
 								uint32_t height, uint32_t nbx, uint32_t nby,
 								uint32_t spacex, uint32_t spacey);
+		virtual void		setBack(bool val);
 
 		virtual void		setTransparency(float transparency);
 		virtual void		setColor(int r, int g, int b);
