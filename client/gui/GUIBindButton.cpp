@@ -4,7 +4,10 @@ GUIBindButton::GUIBindButton(int playerNb, std::string const &font, Core::Button
   : GUIButton(*this, &GUIBindButton::pushButton, "bind controls", font, sprite, x, y), _playerNb(playerNb)
 {
   this->_bindingList.push_back("\"fire\"");
-  this->_bindingList.push_back("\"grab\"");
+  this->_bindingList.push_back("\"grab1\"");
+  this->_bindingList.push_back("\"grab2\"");
+  this->_bindingList.push_back("\"grab3\"");
+  this->_bindingList.push_back("\"grab4\"");
   this->_bindingList.push_back("\"etc.\"");
   this->_iterator = this->_bindingList.end();
 }
@@ -13,7 +16,10 @@ GUIBindButton::GUIBindButton(int playerNb, std::string const &font, Core::Button
   : GUIButton(*this, &GUIBindButton::pushButton, "bind controls", font, sprite, layout), _playerNb(playerNb)
 {
   this->_bindingList.push_back("\"fire\"");
-  this->_bindingList.push_back("\"grab\"");
+  this->_bindingList.push_back("\"grab1\"");
+  this->_bindingList.push_back("\"grab2\"");
+  this->_bindingList.push_back("\"grab3\"");
+  this->_bindingList.push_back("\"grab4\"");
   this->_bindingList.push_back("\"etc.\"");
   this->_iterator = this->_bindingList.end();
 }

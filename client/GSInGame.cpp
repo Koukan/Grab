@@ -111,6 +111,15 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			  *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).Key.Code));
 	  }
 	  else
 	  {
@@ -127,6 +136,18 @@ void		GSInGame::registerShipCallbacks()
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
 			  *(*it)->getShip(), &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB1).Type,
+			 *(*it)->getShip(), &Ship::inputGrab1,
+			  static_cast<int>((*it)->getAction(Player::GRAB1).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB2).Type,
+			 *(*it)->getShip(), &Ship::inputGrab2,
+			  static_cast<int>((*it)->getAction(Player::GRAB2).JoystickButton.Button),
+			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB3).Type,
+			 *(*it)->getShip(), &Ship::inputGrab3,
+			  static_cast<int>((*it)->getAction(Player::GRAB3).JoystickButton.Button),
 			  (*it)->getType() - 1);
 	  }
   }
@@ -497,7 +518,8 @@ void		GSInGame::createShips()
     {
 		shipInfo = (*it)->getShipInfo();
 		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
-		      shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b);
+				shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b,
+				shipInfo->grab1, shipInfo->grab2, shipInfo->grab3);
 		ship->setY(600);
 		ship->setX(i * 250);
       (*it)->setShip(ship);
