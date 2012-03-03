@@ -31,6 +31,8 @@ public:
   int			getHeightElement();
   int			getXElement();
   int			getYElement();
+  double		getScrollX() const;
+  double		getScrollY() const;
   bool			isStatic() const;
   void			collide(TreeElement &elem);
 

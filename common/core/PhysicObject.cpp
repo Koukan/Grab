@@ -114,6 +114,16 @@ int		PhysicObject::getYElement()
 	return (static_cast<int>(this->_y + this->_yHitboxOffset));
 }
 
+double		PhysicObject::getScrollX() const
+{
+	return (this->_scrollX);
+}
+
+double		PhysicObject::getScrollY() const
+{
+	return (this->_scrollY);
+}
+
 void	PhysicObject::collide(TreeElement &elem)
 {
 	PhysicObject 		&obj = static_cast<PhysicObject &>(elem);
