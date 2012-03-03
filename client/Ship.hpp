@@ -40,6 +40,9 @@ public:
   void inputGrab3(Core::InputCommand const &cmd);
   void inputGrab4(Core::InputCommand const &cmd);
   void defineGrabPosition(Grab::Position position, unsigned int nGrab);
+  void setDead(bool dead);
+  bool isDead() const;
+  virtual void	draw(double elapsedTime);
 
 private:
   void launchGrab(std::string const &group, unsigned int nGrab);
@@ -47,8 +50,9 @@ private:
 
   float			_speed;
   int			_fireFrequency;
+  bool			_dead;
   Cannon*		_cannons[4];
-  unsigned int		_nbMaxGrabs; // can be up to 4 by choosing a special power
+  unsigned int	_nbMaxGrabs; // can be up to 4 by choosing a special power
   bool			_grabLaunched;
   std::pair<double, double> _grabsPositions[3];
 

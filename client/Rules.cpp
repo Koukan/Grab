@@ -20,6 +20,18 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 		monster.erase();
 }
 
+void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
+{
+	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead())
+	{
+		ship.setDead(true);
+		shot.erase();
+	}
+}
+
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
   Grab& grab = static_cast<Grab&>(o1);
