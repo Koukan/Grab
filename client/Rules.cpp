@@ -4,6 +4,7 @@
 #include "BulletCommand.hpp"
 #include "Grab.hpp"
 #include "Cannon.hpp"
+#include "Sprite.hpp"
 
 void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
@@ -27,6 +28,8 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
     {
       grab.setBulletScript("player3");
       grab.setReturnToShip(true);
+      grab.setSprite("grab-action");
+      grab.getShip().copyColor(grab.getSprite());
       o2.erase();
     }
 }

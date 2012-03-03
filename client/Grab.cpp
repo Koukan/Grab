@@ -5,7 +5,15 @@
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, double vx, double vy, Ship& ship, float speed, unsigned int nGrab, double offsetX, double offsetY) :
   ConcreteObject(spriteName, hitbox, vx, vy, -10, -10), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab)
-{}
+{
+  _x -= _sprite->getWidth() / 2;
+  _y -= _sprite->getHeight() / 2;
+  if (this->_sprite)
+    {
+      this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
+      this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+    }
+}
 
 Grab::~Grab()
 {}
@@ -51,8 +59,8 @@ void	Grab::move(double time)
     {
       double vx, vy, angle;
 
-      vx = _ship.getX() + _ship.getSprite().getWidth() / 2 - _x + this->getSprite().getWidth() / 2;
-      vy = _ship.getY() + _ship.getSprite().getHeight() / 2 - _y + this->getSprite().getHeight() / 2;
+      vx = _ship.getX() + _ship.getSprite().getWidth() / 2 - _x - _sprite->getWidth() / 2;
+      vy = _ship.getY() + _ship.getSprite().getHeight() / 2 - _y - _sprite->getHeight() / 2;
 
       angle = atan2(vy, vx);
 

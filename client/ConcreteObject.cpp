@@ -1,9 +1,9 @@
-#include "GameStateManager.hpp"
+#include "GlobalResourceManager.hpp"
 #include "ConcreteObject.hpp"
 
 ConcreteObject::ConcreteObject(std::string const &spriteName, Core::HitBox &hitbox, double vx, double vy,
 	double xHitboxOffset, double yHitboxOffset)
-  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GameStateManager::get().getCurrentState().getSprite(spriteName))
+  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GlobalResourceManager::get().getSprite(spriteName))
 {
 }
 
@@ -25,6 +25,13 @@ void			ConcreteObject::draw(double time)
 		this->_sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y), time);
 }
 
+void		ConcreteObject::setSprite(std::string const &spriteName)
+{
+  if (this->_sprite)
+    delete _sprite;
+  _sprite = Core::GlobalResourceManager::get().getSprite(spriteName);
+}
+
 void		ConcreteObject::setSprite(Core::Sprite* sprite)
 {
   if (this->_sprite)
@@ -33,6 +40,11 @@ void		ConcreteObject::setSprite(Core::Sprite* sprite)
 }
 
 Core::Sprite const & ConcreteObject::getSprite() const
+{
+  return *_sprite;
+}
+
+Core::Sprite& ConcreteObject::getSprite()
 {
   return *_sprite;
 }
