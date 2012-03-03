@@ -55,7 +55,7 @@ void				RendererManager::update(double elapsedTime)
 								Core::CircleHitBox &hitbox = dynamic_cast<Core::CircleHitBox&>(tmp->getHitBox());
 								#if (SFML_VERSION_MAJOR == 2)
 								sf::CircleShape  circle(hitbox.getRadius());
-								circle.SetOutlineColor(sf::Color(255, 140, 0));
+								circle.SetOutlineColor(sf::Color(255, 255, 255));
 								circle.SetFillColor(sf::Color(0, 0, 0,0));
 								circle.SetOutlineThickness(2.0);
 								circle.SetPosition(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset());

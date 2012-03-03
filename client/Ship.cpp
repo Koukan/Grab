@@ -194,7 +194,7 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
-  this->launchGrab("grabs"); // tmp test
+		//this->launchGrab("grabs"); // tmp test
   if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
