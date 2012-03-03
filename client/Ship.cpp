@@ -301,6 +301,15 @@ void Ship::setDead(bool dead)
 	{
 		delete this->_playerBullet;
 		this->_playerBullet = 0;
+		for (size_t i = 0; i < _nbMaxGrabs; ++i)
+		{
+			if (_cannons[i])
+			{
+				_cannons[i]->stopFire();
+				_cannons[i]->erase();
+				_cannons[i] = 0;
+			}
+		}
 	}
 }
 
@@ -319,6 +328,7 @@ void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 {
   if (_cannons[nGrab])
     {
+	  _cannons[nGrab]->stopFire();
       _cannons[nGrab]->erase();
       _cannons[nGrab] = 0;
     }
