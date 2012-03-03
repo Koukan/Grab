@@ -20,6 +20,10 @@ public:
   {
 	  FIRE = 0,
 	  SPECIAL_FIRE,
+	  GRAB1,
+	  GRAB2,
+	  GRAB3,
+	  GRAB4,
 	  PAUSE,
 	  NBACTIONS
   };

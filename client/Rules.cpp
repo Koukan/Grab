@@ -16,10 +16,8 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	o2.erase();
 }
 
-#include <iostream>
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
-  std::cout << "grab collide !" << std::endl;
   Grab& grab = static_cast<Grab&>(o1);
   if (grab.getBulletScript().empty())
     {
@@ -39,10 +37,11 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 
       if (&(grab.getShip()) == &ship)
 	{
-	  std::cout << "[" << grab.getBulletScript() << "]" << std::endl;
 	  if (!grab.getBulletScript().empty())
 	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
-				      "weapon", "cannons", "playerShots"));
+				      "weapon", "cannons", "playerShots",
+				      grab.getOffsetX(), grab.getOffsetY()),
+			   grab.getNum());
 	  grab.erase();
 	  ship.setGrabLaunched(false);
 	}

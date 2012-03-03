@@ -5,8 +5,8 @@
 
 Cannon::Cannon(std::string const &parser, Ship &ship, std::string const& spriteName,
 	       std::string const &cannonGroup, std::string const &shotsGroup,
-	       int offsetx, int offsety) :
-  ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX(), ship.getY(), 5)),
+	       double offsetx, double offsety) :
+  ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX() + offsetx, ship.getY() + offsety, 5)),
 		 ship.getVx(), ship.getVy()),
   _parser(parser),
   _ship(ship),
