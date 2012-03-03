@@ -12,14 +12,15 @@ class	Map : public Core::Resource, public Core::PhysicObject
 
 		virtual Core::Resource    *clone() const;
 		virtual	void				move(double time);
-		void	addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable);
-		void    addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable);
+		void	addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
+		void    addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, int spawnY);
 
 	protected:
 		struct mapdata
 		{
 			std::string	name;
 			size_t		x;
+			int			y;
 			int			vx;
 			int			vy;
 			int			vScrolling;

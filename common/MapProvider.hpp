@@ -15,7 +15,7 @@ class	MapProvider : public Core::XMLProvider
 			void    		handleDeco(TiXmlNode *, Core::ResourceManager &);
 
 	private:	
-			void    		handleElem(TiXmlNode *, Core::ResourceManager &, void (Map::*func)(std::string const &, size_t, size_t, int, int, bool));
+			void    		handleElem(TiXmlNode *, Core::ResourceManager &, void (Map::*func)(std::string const &, size_t, size_t, int, int, bool, int));
 
 			Map			*_current;
 };
