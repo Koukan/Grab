@@ -305,23 +305,23 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
 
 void Ship::setDead(bool dead)
 {
-	this->_dead = dead;
-	this->setVx(0);
-	this->setVy(0);
-	if (this->_playerBullet)
+  this->_dead = dead;
+  this->setVx(0);
+  this->setVy(0);
+  if (this->_playerBullet)
+    {
+      delete this->_playerBullet;
+      this->_playerBullet = 0;
+    }
+  for (size_t i = 0; i < _nbMaxGrabs; ++i)
+    {
+      if (_cannons[i])
 	{
-		delete this->_playerBullet;
-		this->_playerBullet = 0;
-		for (size_t i = 0; i < _nbMaxGrabs; ++i)
-		{
-			if (_cannons[i])
-			{
-				_cannons[i]->stopFire();
-				_cannons[i]->erase();
-				_cannons[i] = 0;
-			}
-		}
+	  _cannons[i]->stopFire();
+	  _cannons[i]->erase();
+	  _cannons[i] = 0;
 	}
+    }
 }
 
 bool Ship::isDead() const
