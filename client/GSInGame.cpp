@@ -73,14 +73,15 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
 
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -RendererManager::get().getWidth() + 30,
-	  RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-RendererManager::get().getHeight() + 30,
-	  0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
+  int const large = 30;
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
+	  RendererManager::get().getWidth(), large)), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,
+	  large, RendererManager::get().getHeight())), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30,
-	  RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
+	  RendererManager::get().getWidth(), large)), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0,
-	  RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
+	  large, RendererManager::get().getHeight())), "invisibleWalls");
 }
 
 void		GSInGame::registerShipCallbacks()
@@ -140,7 +141,7 @@ void		GSInGame::registerShipCallbacks()
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button),
 			  (*it)->getType() - 1);
-		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
+		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonPressed,
 			  *(*it)->getShip(), &Ship::inputFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);

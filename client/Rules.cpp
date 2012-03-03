@@ -124,4 +124,6 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 		player.setX(wx + wwidth - player.getXHitBoxOffset());
 	else
 		static_cast<Ship &>(player).setDead(true);
+	static_cast<Ship &>(player).updateBulletTrajectory();
+	static_cast<Ship &>(player).updateCannonsTrajectory();
 }

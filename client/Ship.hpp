@@ -45,6 +45,8 @@ public:
   void setDead(bool dead);
   bool isDead() const;
   virtual void	draw(double elapsedTime);
+  void updateCannonsTrajectory();
+  void updateBulletTrajectory();
 
 private:
   void launchGrab(std::string const &group, unsigned int nGrab);
@@ -77,8 +79,6 @@ private:
   PlayerBullet	*_playerBullet;
 
   void handleActions();
-  void updateCannonsTrajectory();
-  void updateBulletTrajectory();
 
 public:
   struct ShipInfo
