@@ -32,6 +32,7 @@ class CORE_DLLREQ Bullet : public PhysicObject
 	uint32_t		getBulletId() const;
 	int32_t		getLife() const;
 	int32_t		getDamage() const;
+	Sprite		*getSprite() const;
 
   protected:
     Sprite			*_sprite;

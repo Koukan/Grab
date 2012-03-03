@@ -14,7 +14,6 @@ Cannon::Cannon(std::string const &parser, Ship &ship, std::string const& spriteN
   _shotsGroup(shotsGroup),
   _offsetX(offsetx), _offsetY(offsety), _bullet(0)
 {
-  std::cout << _offsetX << " " << _offsetY << std::endl;
   Core::GameStateManager::get().getCurrentState().addGameObject(this, cannonGroup);
 }
 

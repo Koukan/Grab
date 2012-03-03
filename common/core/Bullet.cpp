@@ -92,3 +92,8 @@ int32_t		Bullet::getDamage() const
 {
 	return this->_damage;
 }
+
+Core::Sprite	*Bullet::getSprite() const
+{
+	return this->_sprite;
+}
