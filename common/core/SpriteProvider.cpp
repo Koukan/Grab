@@ -128,6 +128,7 @@ void	SpriteProvider::gridSprite(TiXmlElement *parent, Sprite *sprite)
 	int			width = 0, height = 0;
 	int			nbx = 0, nby = 0;
 	int			spacex = 0, spacey = 0;
+	bool		dir = false;
 	std::string name;
 
 	for (TiXmlAttribute *attrib = parent->FirstAttribute(); attrib != 0;
@@ -142,8 +143,11 @@ void	SpriteProvider::gridSprite(TiXmlElement *parent, Sprite *sprite)
 			this->get2Int(attrib->Value(), ",", nbx, nby);
 		else if (name == "spacing")
 			this->get2Int(attrib->Value(), ",", spacex, spacey);
+		else if (name == "direction" && attrib->Value() == "back")
+			dir = true;
 	}
 	sprite->setGrid(x, y, width, height, nbx, nby, spacex, spacey);
+	sprite->setBack(dir);
 }
 
 void		SpriteProvider::get2Int(std::string const &data,
