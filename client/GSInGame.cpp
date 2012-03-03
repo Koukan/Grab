@@ -49,7 +49,7 @@ void		GSInGame::preload()
   this->load("resources/player.xml");
   //this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
-  this->load("resources/map1.xml");
+  this->load("resources/map/map1.xml");
   //this->load("resources/destruction.xml");
 
   //addBulletParser("resources/enemies/square.xml", "squareWall");
@@ -463,8 +463,6 @@ void		GSInGame::rangeid(GameCommand const &event)
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
 	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
-	std::cout << event.data << " : vx " << event.vx << " vy " << event.vy << std::endl;
-	std::cout << event.data << " : vx " << spawner->getVx() << " vy " << spawner->getVy() << std::endl;
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
 }
@@ -472,7 +470,6 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 void		GSInGame::spawndecoration(GameCommand const &event)
 {
 	ConcreteObject			*object = new ConcreteObject(event.data, *(new Core::CircleHitBox(event.x, event.y, 1)), event.vx, event.vy);
-	std::cout << "scroll " << event.position << std::endl;
 	object->setScrollY(event.position);
 	this->addGameObject(object, "decorations");
 }
