@@ -35,9 +35,9 @@ public:
 		_hy = 0;
 		_shx = 0;
 		_shy = 0;
-		damage_ = 0;
+		damage_ = 1;
 		life_ = 1;
-		simpleDamage_ = 0;
+		simpleDamage_ = 1;
 		simpleLife_ = 1;
 	}
 

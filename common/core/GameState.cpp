@@ -29,6 +29,14 @@ void		GameState::onResume()
 {
 }
 
+void		GameState::onPause()
+{
+}
+
+void		GameState::onPlay()
+{
+}
+
 void		GameState::update(double)
 {
 }
@@ -36,11 +44,14 @@ void		GameState::update(double)
 void		GameState::pause(Pause paused)
 {
   this->_paused = paused;
+  if (paused != NONE)
+	 this->onPause();
 }
 
 void		GameState::play()
 {
   this->_paused = NONE;
+  this->onPlay();
 }
 
 GameState::Pause	GameState::getPaused() const

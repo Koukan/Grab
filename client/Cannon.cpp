@@ -3,17 +3,24 @@
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
 
+#include <iostream>
 Cannon::Cannon(std::string const &parser, Ship &ship, std::string const& spriteName,
 	       std::string const &cannonGroup, std::string const &shotsGroup,
 	       double offsetx, double offsety) :
-  ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX() + offsetx, ship.getY() + offsety, 5)),
+  ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX(), ship.getY(), 5)),
 		 ship.getVx(), ship.getVy()),
   _parser(parser),
   _ship(ship),
   _shotsGroup(shotsGroup),
   _offsetX(offsetx), _offsetY(offsety), _bullet(0)
 {
+  std::cout << _offsetX << " " << _offsetY << std::endl;
   Core::GameStateManager::get().getCurrentState().addGameObject(this, cannonGroup);
+  if (this->_sprite)
+    {
+      this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2 + offsetx;
+      this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2 + offsety;
+    }
 }
 
 Cannon::~Cannon()

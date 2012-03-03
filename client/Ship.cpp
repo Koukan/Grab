@@ -21,12 +21,19 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
 	   std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _cannons({0, 0, 0, 0}),
-    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _colors({r, g, b}),
-     _joyPosX(0), _joyPosY(0),
+    _speed(speed), _fireFrequency(fireFrequency), _dead(false),
+    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+    _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName),
     _playerBullet(0)
 {
+	_cannons[0] = 0;
+	_cannons[1] = 0;
+	_cannons[2] = 0;
+	_cannons[3] = 0;
+	_colors[0] = r;
+	_colors[1] = g;
+	_colors[2] = b;
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
@@ -46,12 +53,14 @@ Ship::~Ship()
 {
 }
 
+#include <iostream>
 void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
   if (!_grabLaunched && nGrab < _nbMaxGrabs)
    {
-     Grab* grab = new Grab("grab", *(new Core::CircleHitBox(this->getX() + _sprite->getWidth() / 2,
-							    this->getY() + _sprite->getHeight() / 2, 10)), 0, -200,
+     std::cout << nGrab << " launched" << std::endl;
+     Grab* grab = new Grab("grab", *(new Core::CircleHitBox(this->getX(),
+							    this->getY(), 10)), 0, -200,
 			   *this, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
      grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
      Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
@@ -132,54 +141,72 @@ void Ship::handleActions()
 
 void Ship::inputUp(Core::InputCommand const &/*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::UP] = true;
 	this->handleActions();
 }
 
 void Ship::inputDown(Core::InputCommand const &/*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::DOWN] = true;
 	this->handleActions();
 }
 
 void Ship::inputLeft(Core::InputCommand const &/*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::LEFT] = true;
 	this->handleActions();
 }
 
 void Ship::inputRight(Core::InputCommand const &/*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::RIGHT] = true;
 	this->handleActions();
 }
 
 void Ship::inputReleasedUp(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::UP] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedDown(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::DOWN] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedLeft(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::LEFT] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedRight(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	this->_actions[Ship::RIGHT] = false;
 	this->handleActions();
 }
 
 void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 {
+	if (this->_dead)
+		return ;
 	static float const limit = 50;
 
 	if (cmd.JoystickMove.Axis == Core::Joystick::X)
@@ -205,6 +232,8 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
   if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
@@ -221,6 +250,8 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
 	if (this->_playerBullet)
 	{
 		this->_playerBullet->erase();
@@ -235,22 +266,53 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 
 void Ship::inputGrab1(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
   this->manageGrab("grabs", 0);
 }
 
 void Ship::inputGrab2(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
   this->manageGrab("grabs", 1);
 }
 
 void Ship::inputGrab3(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
   this->manageGrab("grabs", 2);
 }
 
 void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
 {
+	if (this->_dead)
+		return ;
   this->manageGrab("grabs", 3);
+}
+
+void Ship::setDead(bool dead)
+{
+	this->_dead = dead;
+	this->setVx(0);
+	this->setVy(0);
+	if (this->_playerBullet)
+	{
+		delete this->_playerBullet;
+		this->_playerBullet = 0;
+	}
+}
+
+bool Ship::isDead() const
+{
+	return this->_dead;
+}
+
+void Ship::draw(double elapsedTime)
+{
+	if (!this->_dead)
+		this->ConcreteObject::draw(elapsedTime);
 }
 
 void Ship::manageGrab(std::string const &group, unsigned int nGrab)

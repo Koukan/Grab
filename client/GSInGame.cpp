@@ -37,12 +37,17 @@ void		GSInGame::preload()
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
-  this->setCollisionGroups("Wall", "shoot", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+  this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
 
   // load xml
   //this->load("resources/intro.xml");
@@ -70,7 +75,7 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, 1000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
 }
 
 void		GSInGame::registerShipCallbacks()
@@ -216,7 +221,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
-	{"spawndecoration", &GSInGame::spawndecoration}
+	{"spawndecoration", &GSInGame::spawndecoration},
+	{"spawnsound", &GSInGame::spawnsound}
   };
 
   for (size_t i = 0;
@@ -494,6 +500,13 @@ void		GSInGame::spawndecoration(GameCommand const &event)
 	ConcreteObject			*object = new ConcreteObject(event.data, *(new Core::CircleHitBox(event.x, event.y, 1)), event.vx, event.vy);
 	object->setScrollY(event.position);
 	this->addGameObject(object, "decorations");
+}
+
+void		GSInGame::spawnsound(GameCommand const &event)
+{
+	Core::Sound	*sound = this->getSound(event.data);
+	if (sound)
+		sound->play();
 }
 
 void		GSInGame::createShips()
