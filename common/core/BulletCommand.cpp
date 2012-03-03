@@ -124,6 +124,8 @@ double		BulletCommand::getAimDirection()
 			for (Group::gameObjectSet::const_iterator it = group->getObjects().begin();
 				 it != group->getObjects().end(); it++)
 			{
+				if ((*it)->isDelete())
+					continue;
 				calc = (*it)->getX() * (*it)->getX() + (*it)->getY() * (*it)->getY();
 				if (calc < distance)
 				{
@@ -144,6 +146,8 @@ double		BulletCommand::getAimDirection()
 
 		return rtod(::atan2(y, x));
 	}
+	else
+		return 90;
 	return 0;
 }
 
