@@ -53,6 +53,13 @@ Ship::~Ship()
 {
 }
 
+void	Ship::move(double time)
+{
+	this->Core::PhysicObject::move(time);
+	this->updateBulletTrajectory();
+	this->updateCannonsTrajectory();
+}
+
 void Ship::launchGrab(std::string const &group, unsigned int nGrab)
 {
   if (!_grabLaunched && nGrab < _nbMaxGrabs)
@@ -347,13 +354,13 @@ void Ship::updateCannonsTrajectory()
     {
       if (_cannons[i])
 	{
-	  _cannons[i]->setVx(this->_vx);
-	  _cannons[i]->setVy(this->_vy);
+	  _cannons[i]->setX(this->_x + _cannons[i]->getOffsetX());
+	  _cannons[i]->setY(this->_y + _cannons[i]->getOffsetY());
 	  bullet = _cannons[i]->getBullet();
 	  if (bullet)
 	    {
-	      bullet->setVx(this->_vx);
-	      bullet->setVy(this->_vy);
+	      bullet->setX(this->_x + _cannons[i]->getOffsetX());
+	      bullet->setY(this->_y + _cannons[i]->getOffsetY());
 	    }
 	}
     }
@@ -363,8 +370,8 @@ void Ship::updateBulletTrajectory()
 {
   if (this->_playerBullet)
     {
-      this->_playerBullet->setVx(this->_vx);
-      this->_playerBullet->setVy(this->_vy);
+      this->_playerBullet->setX(this->_x + this->getSprite().getWidth() / 2);
+      this->_playerBullet->setY(this->_y);
     }
 }
 

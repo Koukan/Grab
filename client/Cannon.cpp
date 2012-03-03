@@ -47,3 +47,13 @@ PlayerBullet*	Cannon::getBullet() const
 {
   return _bullet;
 }
+
+double		Cannon::getOffsetX() const
+{
+	return (this->_offsetX);
+}
+
+double		Cannon::getOffsetY() const
+{
+	return (this->_offsetY);
+}

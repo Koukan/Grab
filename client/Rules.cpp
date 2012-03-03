@@ -99,14 +99,12 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 			if (py + pheight - wy > nbIter)
 				static_cast<Ship &>(player).setDead(true);
 			player.setY(wy - pheight - player.getYHitBoxOffset());
-			//player.setVy(wall.getVy() + wall.getScrollY());
 		}
 		else
 		{
 			if (wy + wheight - py > nbIter)
 				static_cast<Ship &>(player).setDead(true);
 			player.setY(wy + wheight - player.getYHitBoxOffset());
-			//player.setVy(wall.getVy() + wall.getScrollY());
 		}
 	}
 	else
@@ -116,14 +114,12 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 			if (px + pwidth - wx > nbIter)
 				static_cast<Ship &>(player).setDead(true);
 			player.setX(wx - pwidth - player.getXHitBoxOffset());
-			//player.setVx(wall.getVx() + wall.getScrollX());
 		}
 		else
 		{
 			if (wx + wwidth - px > nbIter)
 				static_cast<Ship &>(player).setDead(true);
 			player.setX(wx + wwidth - player.getXHitBoxOffset());
-			//player.setVx(wall.getVx() + wall.getScrollX());
 		}
 	}
 }

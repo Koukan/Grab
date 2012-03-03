@@ -16,12 +16,14 @@ public:
   void	fire();
   void	stopFire();
   PlayerBullet*	getBullet() const;
+  double		getOffsetX() const;
+  double		getOffsetY() const;
 
 private:
   std::string const _parser;
   Ship&	_ship;
   std::string const _shotsGroup;
-  int	_offsetX;
-  int	_offsetY;
+  double	_offsetX;
+  double	_offsetY;
   PlayerBullet*	_bullet;
 };

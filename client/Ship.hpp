@@ -24,6 +24,7 @@ public:
   float getSpeed() const;
   void addCannon(Cannon *cannon, unsigned int nGrab);
   void copyColor(Core::Sprite& sprite);
+  virtual void	move(double time);
 
   void inputUp(Core::InputCommand const &cmd);
   void inputDown(Core::InputCommand const &cmd);
