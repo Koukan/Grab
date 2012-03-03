@@ -93,7 +93,7 @@ void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
   if (cannon && nGrab < _nbMaxGrabs)
   {
     _cannons[nGrab] = cannon;
-	cannon->setColor(_colors[0], _colors[1], _colors[2]);
+    cannon->setColor(_colors[0], _colors[1], _colors[2]);
   }
 }
 
@@ -248,8 +248,8 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 						 "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 	  {
-			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-			Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+	    this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+	    Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  }
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 	    {
