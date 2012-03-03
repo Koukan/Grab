@@ -255,8 +255,8 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 
 void		BulletCommand::setSpeedDirection()
 {
-	this->_direction = atan2(this->_vy, this->_vx);
-	this->_speed = sqrt(this->_vx * this->_vx + this->_vy * this->_vy);
+	this->_direction = atan2((double)this->_vy, (double)this->_vx);
+	this->_speed = sqrt((double)(this->_vx * this->_vx) + (double)(this->_vy * this->_vy));
 }
 
 void		BulletCommand::insertChild(Bullet &bullet)

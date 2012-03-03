@@ -56,6 +56,8 @@ void		GSInGame::preload()
   addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
   addBulletParser("resources/BulletBomb.xml", "bomb");
   addBulletParser("resources/BulletWall.xml", "wall");
+  addBulletParser("resources/enemies/square.xml", "squareWall");
+  addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");
   addBulletParser("resources/BulletSimple.xml", "simple");
   addBulletParser("resources/BulletRandom.xml", "random");
   addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
@@ -145,7 +147,7 @@ void		GSInGame::onStart()
   if (!_online)
     {
       Core::HitBox *hitbox = new Core::RectHitBox(500, 500, 100, 100);
-      this->createShips();
+//      this->createShips();
 	  //ConcreteObject *monster = new ConcreteObject("enemy plane", *hitbox, 10, 0);
 	  //this->addGameObject(monster, "monster");
     }
@@ -461,6 +463,8 @@ void		GSInGame::rangeid(GameCommand const &event)
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
 	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
+	std::cout << event.data << " : vx " << event.vx << " vy " << event.vy << std::endl;
+	std::cout << event.data << " : vx " << spawner->getVx() << " vy " << spawner->getVy() << std::endl;
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
 }
