@@ -34,18 +34,18 @@ PlayerBullet::~PlayerBullet()
 
 void	PlayerBullet::createSimpleBullet(double direction, double speed)
 {
-	Core::HitBox		*box = 0;
 	double		vx, vy;
 	double		dir = dtor(direction);
 	Bullet		*bullet;
 
-	if (_shape == Core::BulletCommand::Circle)
-		box = new Core::CircleHitBox(_x, _y,
-			static_cast<double>(_width));
-	else if (_shape == Core::BulletCommand::Rectangle)
-		box = new Core::RectHitBox(_x, _y,
-			static_cast<double>(_width),
-			static_cast<double>(_height));
+	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
+	//if (_shape == Core::BulletCommand::Circle)
+		//box = new Core::CircleHitBox(_x, _y,
+			//static_cast<double>(_width));
+	//else if (_shape == Core::BulletCommand::Rectangle)
+		//box = new Core::RectHitBox(_x, _y,
+			//static_cast<double>(_width),
+			//static_cast<double>(_height));
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	if (box)
