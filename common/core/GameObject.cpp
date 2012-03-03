@@ -12,6 +12,8 @@ GameObject::~GameObject(void)
 {
 	if (this->_group)
 		_group->removeObject(this);
+	if (this->_relaviteObject)
+		this->_relaviteObject->removeGameObject(*this);
 	for (std::list<GameObject*>::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
 		(*it)->setRelativeObject(0);
@@ -87,6 +89,9 @@ void		GameObject::erase()
 {
 	this->_delete = true;
 	this->_group->getState().addDeleteObject(this);
+	for (std::list<GameObject*>::iterator it = this->_objects.begin();
+		 it != this->_objects.end(); it++)
+		(*it)->setRelativeObject(0);
 }
 
 void		GameObject::addGameObject(GameObject &obj)
