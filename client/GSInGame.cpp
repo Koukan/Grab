@@ -43,14 +43,11 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
-<<<<<<< HEAD
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
-=======
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
->>>>>>> 6a49f4cf66a9df301c7f0d7ffa31feb1b7345caf
 
   // load xml
   //this->load("resources/intro.xml");

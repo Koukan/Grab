@@ -20,12 +20,16 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
 	   std::string const &group, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _dead(false), _cannons({0, 0, 0, 0}),
+    _speed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
      _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName),
     _playerBullet(0)
 {
+	_cannons[0] = 0;
+	_cannons[1] = 0;
+	_cannons[2] = 0;
+	_cannons[3] = 0;
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 

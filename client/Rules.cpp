@@ -69,7 +69,7 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 {
 	Core::PhysicObject &player = static_cast<Core::PhysicObject &>(o2);
 	Core::PhysicObject &wall = static_cast<Core::PhysicObject &>(o1);
-	int nbIter = 10;
+	int nbIter = 50;
 
 	if (wall.getVx() || wall.getScrollX() || wall.getVy() || wall.getScrollY())
 	{
@@ -90,7 +90,7 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 			wall.getHitBox().setY(wall.getY() + wall.getYHitBoxOffset());
 			player.getHitBox().setX(player.getX() + player.getXHitBoxOffset());
 			player.getHitBox().setY(player.getY() + player.getYHitBoxOffset());
-			i++;
+			++i;
 		}
 		while (player.getHitBox().collide(wall.getHitBox()) && i < nbIter);
 		if (i == nbIter)
@@ -117,6 +117,7 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 					player.getHitBox().setY(player.getY() + player.getYHitBoxOffset());
 					wall.getHitBox().setX(wall.getX() + wall.getXHitBoxOffset());
 					wall.getHitBox().setY(wall.getY() + wall.getYHitBoxOffset());
+					++i;
 				}
 				while (player.getHitBox().collide(wall.getHitBox()) && i < nbIter);
 				if (i == nbIter)
