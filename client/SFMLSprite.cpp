@@ -151,7 +151,11 @@ void		SFMLSprite::draw(double elapsedTime)
 {
 	this->update(elapsedTime);
 	this->SetPosition(static_cast<float>(this->_x + this->_tx * this->GetScale().x), static_cast<float>(this->_y + this->_ty * this->GetScale().y));
-	this->_window->Draw(*this);
+	//RendererManager::get().getShader().SetParameter("rt_w", this->getWidth());
+	//RendererManager::get().getShader().SetParameter("rt_h", this->getHeight());
+	//sf::RenderStates states;
+	//states.Shader = &RendererManager::get().getShader();
+	this->_window->Draw(*this/*, states*/);
 }
 
 void		SFMLSprite::draw(int x, int y, double elapsedTime)
