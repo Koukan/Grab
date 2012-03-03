@@ -30,6 +30,8 @@ void	Cannon::fire()
   if (!_bullet)
     {
       _bullet = new PlayerBullet(_parser, Core::GameStateManager::get().getCurrentState(), _shotsGroup, _x, _y, _vx, _vy);
+	  //if (_bullet->getSprite())
+			  //_bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
       Core::GameStateManager::get().getCurrentState().addGameObject(_bullet);
     }
 }
@@ -46,4 +48,11 @@ void	Cannon::stopFire()
 PlayerBullet*	Cannon::getBullet() const
 {
   return _bullet;
+}
+
+void	Cannon::setColor(uint8_t r, uint8_t g, uint8_t b)
+{
+	_colors[0] = r;
+	_colors[1] = g;
+	_colors[2] = b;
 }

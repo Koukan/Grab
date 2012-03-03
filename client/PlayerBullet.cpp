@@ -53,9 +53,9 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	vy = -speed * sin(dir);
 	if (box)
 	{
-		bullet = new Core::Bullet(_state, this->_simpleSprite, *box, vx, vy, this->_simpleXHitbox, this->_simpleYHitbox);
-		if (bullet->getSprite())
-			bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+		bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+		//if (bullet->getSprite())
+				//bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 		this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
 		this->insertChild(*bullet);
 	}
@@ -80,9 +80,9 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	if (box)
 	{
 		bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
-		if (bullet->getSprite())
-			bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		bullet->setColor(_colors[0], _colors[1], _colors[2]);
+		//if (bullet->getSprite())
+				//bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+		//bullet->setColor(_colors[0], _colors[1], _colors[2]);
 		this->_state.addGameObject(bullet, this->_groupName);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
@@ -90,9 +90,9 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	else
 	{
 		bullet = new PlayerBullet(*state, _state, this->_groupName, _x, _y, vx, vy);
-		if (bullet->getSprite())
-			bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		bullet->setColor(_colors[0], _colors[1], _colors[2]);
+		//if (bullet->getSprite())
+				//bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
+		//bullet->setColor(_colors[0], _colors[1], _colors[2]);
 		this->_state.addGameObject(bullet, this->_groupName);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());

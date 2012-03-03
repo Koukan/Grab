@@ -16,6 +16,7 @@ public:
   void	fire();
   void	stopFire();
   PlayerBullet*	getBullet() const;
+  void	setColor(uint8_t r, uint8_t g, uint8_t b);
 
 private:
   std::string const _parser;
@@ -24,4 +25,5 @@ private:
   int	_offsetX;
   int	_offsetY;
   PlayerBullet*	_bullet;
+  uint8_t	_colors[3];
 };
