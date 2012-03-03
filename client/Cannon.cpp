@@ -56,3 +56,12 @@ void	Cannon::setColor(uint8_t r, uint8_t g, uint8_t b)
 	_colors[1] = g;
 	_colors[2] = b;
 }
+double		Cannon::getOffsetX() const
+{
+	return (this->_offsetX);
+}
+
+double		Cannon::getOffsetY() const
+{
+	return (this->_offsetY);
+}
