@@ -25,7 +25,13 @@ bool		GSPreload::handleCommand(Core::Command const &)
 void	GSPreload::onStart()
 {
   this->load("resources/intro.xml");
-
+  _sound = this->getSound("intro-sound");
+  if (_sound)
+  {
+	  
+	_sound->setLoop(true);
+	_sound->play();
+  }
   ScrollingSprite *obj = new ScrollingSprite(0, 0, RendererManager::get().getWidth(),
 	  RendererManager::get().getHeight(), ScrollingSprite::HORIZONTAL, -0.02);
   //obj->pushSprite("space background");
@@ -33,4 +39,16 @@ void	GSPreload::onStart()
   //obj->pushSprite("space background 3");
   obj->pushSprite("space background 4");
   this->addGameObject(obj, "background", 1);
+}
+
+void	GSPreload::onPause()
+{
+	if (_sound)
+		_sound->pause();
+}
+
+void	GSPreload::onPlay()
+{
+	if (_sound)
+		_sound->play();
 }
