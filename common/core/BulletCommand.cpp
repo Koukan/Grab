@@ -21,6 +21,13 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
+	this->_shape = BulletCommand::Circle;
+	this->_simpleXHitbox = 0;
+	this->_simpleYHitbox = 0;
+	this->setDamage(1);
+	this->setLife(1);
+	this->_simpleLife = 1;
+	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 }
 
@@ -31,6 +38,13 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
 {
+	this->_shape = BulletCommand::Circle;
+	this->_simpleXHitbox = 0;
+	this->_simpleYHitbox = 0;
+	this->setDamage(1);
+	this->setLife(1);
+	this->_simpleLife = 1;
+	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 }
 
