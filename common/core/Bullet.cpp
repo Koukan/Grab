@@ -6,18 +6,21 @@
 CORE_USE_NAMESPACE
 
 Bullet::Bullet(double x, double y, double vx, double vy)
-	: PhysicObject(*new CircleHitBox(x, y, 1), vx, vy), _sprite(0), _parent(0), _bulletId(0)
+	: PhysicObject(*new CircleHitBox(x, y, 1), vx, vy), _sprite(0), _parent(0), _bulletId(0),
+	  _life(1), _damage(1)
 {
 }
 
 Bullet::Bullet(HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
-	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0)
+	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0),
+	  _life(1), _damage(1)
 {
 }
 
 Bullet::Bullet(ResourceManager &resource, std::string const & sprite, HitBox &box,
 	       double vx, double vy, double xHitboxOffset, double yHitboxOffset)
-	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0)
+	: PhysicObject(box, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(0), _parent(0), _bulletId(0),
+	  _life(1), _damage(1)
 {
   try
   {

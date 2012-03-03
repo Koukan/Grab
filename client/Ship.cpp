@@ -282,6 +282,13 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
 void Ship::setDead(bool dead)
 {
 	this->_dead = dead;
+	this->setVx(0);
+	this->setVy(0);
+	if (this->_playerBullet)
+	{
+		delete this->_playerBullet;
+		this->_playerBullet = 0;
+	}
 }
 
 bool Ship::isDead() const
