@@ -219,7 +219,6 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawnsound", &GSInGame::spawnsound}
   };
 
-  std::cout << command.name << std::endl;
   for (size_t i = 0;
 		 i < sizeof(methods) / sizeof(*methods); ++i)
 	{
@@ -499,7 +498,6 @@ void		GSInGame::spawndecoration(GameCommand const &event)
 
 void		GSInGame::spawnsound(GameCommand const &event)
 {
-	std::cout << "sound " << event.data << std::endl;
 	Core::Sound	*sound = this->getSound(event.data);
 	if (sound)
 		sound->play();
