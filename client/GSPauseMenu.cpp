@@ -10,7 +10,7 @@
 #include "RendererManager.hpp"
 
 GSPauseMenu::GSPauseMenu()
-  : Core::GameState("mainMenu", true)
+  : Core::GameState("pauseMenu", true)
 {
 };
 
@@ -29,16 +29,10 @@ void	GSPauseMenu::returnMainMenu()
 
 void	GSPauseMenu::resumeGame()
 {
+  GameState *state = Core::GameStateManager::get().getGameState("Game");
+  if (state)
+	state->play();
   Core::GameStateManager::get().popState();
-}
-
-void	GSPauseMenu::createParty()
-{
-  std::stringstream ss;
-
-  ss.clear();
-  ss << this->_nbPlayers;
-  std::cout << this->_nbPlayers << std::endl;
 }
 
 void	GSPauseMenu::onStart()

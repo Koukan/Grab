@@ -9,7 +9,6 @@ public:
   GSPauseMenu();
   ~GSPauseMenu();
 
-  void	createParty();
   void	returnMainMenu();
   void	resumeGame();
   void	onStart();

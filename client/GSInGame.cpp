@@ -318,7 +318,11 @@ void		GSInGame::releaseInputLeftRight(Core::InputCommand const &/*event*/)
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
+  if (!_online)
+    {
+      this->pause(PHYSIC);
+    }
+  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
 }
 
 void		GSInGame::inputSpace(Core::InputCommand const &/*event*/)
