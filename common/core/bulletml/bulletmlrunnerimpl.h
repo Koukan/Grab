@@ -131,6 +131,7 @@ private:
 	void setSimpleHitBox(BulletMLState &state);
 	void setDamage(BulletMLState &state);
 	void setLife(BulletMLState &state);
+	void setGeneric(BulletMLState &state);
 
     void shotInit() {
 		spd_.disValidate();
