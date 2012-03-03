@@ -41,6 +41,8 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
     {
       grab.setBulletScript(obj.getBulletScript());
       grab.setReturnToShip(true);
+      grab.setSprite("grab-action");
+      grab.getShip().copyColor(grab.getSprite());
       o2.erase();
     }
 }

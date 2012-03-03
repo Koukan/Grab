@@ -12,8 +12,10 @@ public:
   virtual ~ConcreteObject();
   virtual void draw(double);
 
+  void  setSprite(std::string const &spriteName);
   void	setSprite(Core::Sprite* sprite);
   Core::Sprite const &getSprite() const;
+  Core::Sprite &getSprite();
 
 protected:
   Core::Sprite		*_sprite;

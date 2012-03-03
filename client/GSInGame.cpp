@@ -52,6 +52,7 @@ void		GSInGame::preload()
   // load xml
   //this->load("resources/intro.xml");
   this->load("resources/player.xml");
+  this->load("resources/grab.xml");
   //this->load("resources/shots.xml");
   //this->load("resources/enemies.xml");
   this->load("resources/map/map1.xml");
