@@ -14,18 +14,21 @@ PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, s
 		  double x, double y, double vx, double vy)
 		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
 {
+	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
 	double x, double y, double vx, double vy)
 	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
 {
+	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
 	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: Core::BulletCommand(state, gstate, box, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName), _isFiring(true)
 {
+	this->setFocus("monster");
 }
 
 PlayerBullet::~PlayerBullet()

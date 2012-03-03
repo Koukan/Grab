@@ -19,7 +19,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	: BulletMLRunner(gstate.getBulletParser(parser)), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players")
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -36,7 +36,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	: BulletMLRunner(&parser), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("player")
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players")
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -53,7 +53,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("player")
+	  _nextId(1), _focus("players")
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -80,7 +80,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("player")
+	  _nextId(1), _focus("players")
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -137,8 +137,10 @@ double		BulletCommand::getAimDirection()
 	}
 	if (this->_relaviteObject)
 	{
-		double		x = this->_relaviteObject->getX() - this->getX();
-		double		y = this->_relaviteObject->getY() - this->getY();
+		PhysicObject	*ph = static_cast<PhysicObject*>(this->_relaviteObject);
+		HitBox			&hb = ph->getHitBox();
+		double			x = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
+		double			y = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
 
 		return rtod(::atan2(y, x));
 	}
