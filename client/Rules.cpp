@@ -87,39 +87,41 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 	double wwidth = whitbox.getWidth();
 	double wheight = whitbox.getHeight();
 
-	double xdist = (wx + wwidth / 2) - (px + pwidth / 2);
-	double ydist = (wy + wheight / 2) - (py + pheight / 2);
-
-	std::cout << wwidth << " " << wheight << std::endl;
-
-	if (xdist * xdist < ydist * ydist)
+	int id = 0;
+	double dist;
+	double tmpdist = py + pheight - wy;
+	if (tmpdist <= nbIter)
 	{
-		if (ydist > 0)
-		{
-			if (py + pheight - wy > nbIter)
-				static_cast<Ship &>(player).setDead(true);
-			player.setY(wy - pheight - player.getYHitBoxOffset());
-		}
-		else
-		{
-			if (wy + wheight - py > nbIter)
-				static_cast<Ship &>(player).setDead(true);
-			player.setY(wy + wheight - player.getYHitBoxOffset());
-		}
+		id = 1;
+		dist = tmpdist;
 	}
+	tmpdist = wy + wheight - py;
+	if (tmpdist <= nbIter && (id == 0 || tmpdist < dist))
+	{
+		id = 2;
+		dist = tmpdist;
+	}
+	tmpdist = px + pwidth - wx;
+	if (tmpdist <= nbIter && (id == 0 || tmpdist < dist))
+	{
+		id = 3;
+		dist = tmpdist;
+	}
+	tmpdist = wx + wwidth - px;
+	if (tmpdist <= nbIter && (id == 0 || tmpdist < dist))
+	{
+		id = 4;
+		dist = tmpdist;
+	}
+
+	if (id == 1)
+		player.setY(wy - pheight - player.getYHitBoxOffset());
+	else if (id == 2)
+		player.setY(wy + wheight - player.getYHitBoxOffset());
+	else if (id == 3)
+		player.setX(wx - pwidth - player.getXHitBoxOffset());
+	else if (id == 4)
+		player.setX(wx + wwidth - player.getXHitBoxOffset());
 	else
-	{
-		if (xdist > 0)
-		{
-			if (px + pwidth - wx > nbIter)
-				static_cast<Ship &>(player).setDead(true);
-			player.setX(wx - pwidth - player.getXHitBoxOffset());
-		}
-		else
-		{
-			if (wx + wwidth - px > nbIter)
-				static_cast<Ship &>(player).setDead(true);
-			player.setX(wx + wwidth - player.getXHitBoxOffset());
-		}
-	}
+		static_cast<Ship &>(player).setDead(true);
 }

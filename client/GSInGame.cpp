@@ -79,10 +79,14 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
 
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -RendererManager::get().getWidth() + 30, RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-RendererManager::get().getHeight() + 30, 0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30, RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -RendererManager::get().getWidth() + 30,
+	  RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-RendererManager::get().getHeight() + 30,
+	  0, RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30,
+	  RendererManager::get().getWidth(), RendererManager::get().getWidth())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0,
+	  RendererManager::get().getHeight(), RendererManager::get().getHeight())), "invisibleWalls");
 }
 
 void		GSInGame::registerShipCallbacks()
