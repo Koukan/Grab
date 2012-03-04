@@ -91,8 +91,9 @@ void		PhysicManager::collide(GameObjectManager::groupsMap const &groups,
 			itGroups = groups.find(itCol->first.second);
 			if (itGroups != groups.end())
 			  {
-			    for (it1 = itGroups->second->getObjects().begin(); it1 != itGroups->second->getObjects().end(); ++it1)
-				temp->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1), QuadTree::LEFT);
+			  //  for (it1 = itGroups->second->getObjects().begin(); it1 != itGroups->second->getObjects().end(); ++it1)
+					//temp->second->getQuadTree().collide(*static_cast<PhysicObject *>(*it1), QuadTree::LEFT);
+				temp->second->getQuadTree().collide(itGroups->second->getQuadTree(), QuadTree::LEFT);
 			  }
 		}
 	}

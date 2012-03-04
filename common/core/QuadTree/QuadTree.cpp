@@ -491,11 +491,6 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree::callInfo call) co
 	Node *checkpoint;
 	int nbChilds = 0;
 
-	if (!node->getElements().empty())
-	{
-		for (Node *tmp = node2; tmp; tmp = tmp->getParent())
-			this->collideElements(node->getElements(), tmp->getElements(), call);
-	}
 	for (int i = 0; i < 4; ++i)
 	{
 		Node *child = node2->getChilds()[i];
@@ -510,8 +505,16 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree::callInfo call) co
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			if (node->getChilds()[i])
-				this->collideNodes(node->getChilds()[i], checkpoint, call);
+			Node *child = node->getChilds()[i];
+			if (child)
+			{
+				if (!child->getElements().empty())
+				{
+					for (Node *tmp = checkpoint; tmp; tmp = tmp->getParent())
+						this->collideElements(child->getElements(), tmp->getElements(), call);
+				}
+				this->collideNodes(child, checkpoint, call);
+			}
 		}
 	}
 	else
@@ -519,9 +522,17 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree::callInfo call) co
 		for (int i = 0; i < 4; ++i)
 		{
 			Node *child = node->getChilds()[i];
-			if (child && this->collideRect(node2->getX(), node2->getY(), node2->getSize(), node2->getSize(),
-			child->getX(), child->getY(), child->getSize(), child->getSize()))
-				this->collideNodes(child, node2, call);
+			if (child)
+			{
+				if (!child->getElements().empty())
+				{
+					for (Node *tmp = node2; tmp; tmp = tmp->getParent())
+						this->collideElements(child->getElements(), tmp->getElements(), call);
+				}
+				if (this->collideRect(node2->getX(), node2->getY(), node2->getSize(), node2->getSize(),
+				child->getX(), child->getY(), child->getSize(), child->getSize()))
+					this->collideNodes(child, node2, call);
+			}
 		}
 	}
 }
@@ -552,7 +563,11 @@ void	QuadTree::collide(QuadTree const &quadTree, QuadTree::callInfo call) const
 		node2 = quadTree._mainNode->getChilds()[i];
 		if (node && node2 && this->collideRect(node->getX(), node->getY(), node->getSize(), node->getSize(),
 			node2->getX(), node2->getY(), node2->getSize(), node2->getSize()))
+		{
+			if (!node->getElements().empty() && !node2->getElements().empty())
+				this->collideElements(node->getElements(), node2->getElements(), call);
 			this->collideNodes(node, node2, call);
+		}
 	}
 }
 
