@@ -17,7 +17,7 @@ class Game : public Core::Module
 	void			updateGameState(double elapsedTime);
 	bool			addClient(Client &client);
 	void			removeClient(Client &client);
-	Player			*addPlayer();
+	Player			*addPlayer(Client &client);
 	void			removePlayer(int i);
 	size_t			nbPlayers() const;
 	void			changePlayersStatus(int nb, int ship, bool ready);

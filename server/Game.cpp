@@ -54,21 +54,6 @@ bool		Game::addClient(Client &client)
 	{
 		client.setId(this->_clients.size());
 		this->_clients.push_back(&client);
-
-
-		// rangeId Packet must move in other function
-		//uint32_t	begin = this->_list.size() * 10000000 + 1000000001;
-		//uint32_t	end = begin + 9999999;
-		//std::string	id = "shootClient" + Net::Converter::toString(this->_list.size());
-		//_logic.addGroup(id, 10, begin, end);
-		//GameCommand	*cmd = new GameCommand("RangeId");
-		//cmd->idObject = begin;
-		//cmd->idResource = end;
-		//cmd->x = this->_list.size() - 1;
-		//cmd->client = &client;
-		//Core::CommandDispatcher::get().pushCommand(*cmd);
-		// end rangeId
-
 		// send Resource
 		std::list<Core::Resource*> const	& list = _logic.getResource();
 		for (std::list<Core::Resource*>::const_iterator it = list.begin();
@@ -93,13 +78,13 @@ void		Game::removeClient(Client &client)
 		this->_clients.erase(it);
 }
 
-Player		*Game::addPlayer()
+Player		*Game::addPlayer(Client &client)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		if (this->_players[i] == 0)
 		{
-			this->_players[i] = new Player(i);
+			this->_players[i] = new Player(i, client);
 			_nbPlayers++;
 			return this->_players[i];
 		}
@@ -171,6 +156,22 @@ GameLogic	&Game::getGameLogic()
 
 void		Game::startGame()
 {
+	for (int i = 0; i < 4; ++i)
+	{
+		if (!_players[i])
+			continue ;
+		uint32_t	begin = (i + 1) * 10000000 + 1000000001;
+		uint32_t	end = begin + 9999999;
+		std::string	id = "shootClient" + Net::Converter::toString((i + 1));
+		_logic.addGroup(id, 10, begin, end);
+		GameCommand	*cmd = new GameCommand("RangeId");
+		cmd->idObject = begin;
+		cmd->idResource = end;
+		cmd->x = i;
+		cmd->client = &_players[i]->getClient();
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	// end rangeId
+	}
 	GameCommand *tmp = new GameCommand("Startgame");
 	tmp->game = this;
 	Core::CommandDispatcher::get().pushCommand(*tmp);

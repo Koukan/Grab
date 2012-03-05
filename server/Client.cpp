@@ -5,7 +5,7 @@
 #include "NetworkModule.hpp"
 
 Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
-		_id(0) , _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0)
+		_id(0), _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0)
 {
 }
 
@@ -234,7 +234,7 @@ int		Client::demandPlayer(Net::Packet &packet)
 	packet >> id;
 	if (this->_game)
 	{
-		Player *player = this->_game->addPlayer();
+		Player *player = this->_game->addPlayer(*this);
 		if (player != 0)
 		{
 			this->_players.push_back(player);

@@ -6,11 +6,12 @@
 
 class Game;
 class Ship;
+class Client;
 
 class Player
 {
   public:
-    Player(uint8_t id);
+    Player(uint8_t id, Client &client);
     virtual ~Player();
 
 	//getter
@@ -18,6 +19,7 @@ class Player
 	Ship				*getShip() const;
 	bool				isReady() const;
 	int					getShipType() const;
+	Client				&getClient() const;
 
 	//setter
 	void				setShip(Ship *ship);
@@ -26,6 +28,7 @@ class Player
 
   private:
 	uint8_t			_id;
+	Client			&_client;
 	bool			_ready;
 	int				_shipType;
 	Ship			*_ship;
