@@ -1,8 +1,9 @@
 #include "Player.hpp"
 #include "Ship.hpp"
+#include "Client.hpp"
 
-Player::Player(uint8_t id)
-	: _id(id), _ready(false), _shipType(0), _ship(0)
+Player::Player(uint8_t id, Client &client)
+	: _id(id), _client(client), _ready(false), _shipType(0), _ship(0)
 {
 }
 
@@ -43,4 +44,9 @@ void		Player::setReady(bool ready)
 void		Player::setShipType(int type)
 {
 	this->_shipType = type;
+}
+
+Client		&Player::getClient() const
+{
+	return _client;
 }

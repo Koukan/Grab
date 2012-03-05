@@ -23,6 +23,10 @@ void				RendererManager::init()
 {
 	this->_width = 1280;
 	this->_height = 720;
+	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
+	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);
+	//_shader.SetParameter("sceneTex", sf::Shader::CurrentTexture);
+	//_shader.SetParameter("vx_offset", 0.0f);
 }
 
 void				RendererManager::update(double elapsedTime)
@@ -114,6 +118,11 @@ sf::RenderWindow	*RendererManager::getWindow()
 		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "Grab"/*, sf::Style::Fullscreen*/);
 	}
 	return _window;
+}
+
+sf::Shader			&RendererManager::getShader()
+{
+	return _shader;
 }
 
 int					RendererManager::getWidth() const
