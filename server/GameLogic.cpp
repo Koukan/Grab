@@ -110,24 +110,6 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
-	double		x = 384;
-	double		step = 256;
-	Ship		*ship;
-	GameCommand	*cmd;
-
-	for (size_t i = 0; i < this->_game._maxPlayers; i++)
-	{
-		ship = new Ship(x, 700, *this->_game._players[i]);
-		this->addGameObject(ship, "players");
-		cmd = new GameCommand("ShipSpawn");
-		cmd->idResource = i;
-		cmd->idObject = ship->getId();
-		cmd->x = static_cast<int16_t>(ship->getX());
-		cmd->y = static_cast<int16_t>(ship->getY());
-		cmd->game = &_game;
-		Core::CommandDispatcher::get().pushCommand(*cmd);
-		x += step;
-	}
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)));
 	this->_gameStarted = true;
 }

@@ -7,6 +7,7 @@
 #include "GameCommand.hpp"
 #include "ResourceCommand.hpp"
 #include "Converter.hpp"
+#include "Ship.hpp"
 
 Game::Game(uint16_t id, uint8_t maxPlayers)
   : Core::Module("Game" + id, 20), _logic(*this),
@@ -156,6 +157,8 @@ GameLogic	&Game::getGameLogic()
 
 void		Game::startGame()
 {
+	GameCommand		*cmd;
+	// begin rangeId
 	for (int i = 0; i < 4; ++i)
 	{
 		if (!_players[i])
@@ -164,16 +167,37 @@ void		Game::startGame()
 		uint32_t	end = begin + 9999999;
 		std::string	id = "shootClient" + Net::Converter::toString((i + 1));
 		_logic.addGroup(id, 10, begin, end);
-		GameCommand	*cmd = new GameCommand("RangeId");
+		cmd = new GameCommand("RangeId");
 		cmd->idObject = begin;
 		cmd->idResource = end;
 		cmd->x = i;
 		cmd->client = &_players[i]->getClient();
 		Core::CommandDispatcher::get().pushCommand(*cmd);
-	// end rangeId
 	}
-	GameCommand *tmp = new GameCommand("Startgame");
-	tmp->game = this;
-	Core::CommandDispatcher::get().pushCommand(*tmp);
+	// end rangeId
+
+	// begin ship
+	double		x = 384;
+	double		step = 256;
+	Ship		*ship;
+
+	for (size_t i = 0; i < this->_maxPlayers; i++)
+	{
+		ship = new Ship(x, 700, *this->_players[i]);
+		_logic.addGameObject(ship, "players");
+		cmd = new GameCommand("ShipSpawn");
+		cmd->idResource = i;
+		cmd->idObject = ship->getId();
+		cmd->x = static_cast<int16_t>(ship->getX());
+		cmd->y = static_cast<int16_t>(ship->getY());
+		cmd->game = this;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+		x += step;
+	}
+	// end ship
+
+	cmd = new GameCommand("Startgame");
+	cmd->game = this;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 	_logic.startGame();
 }
