@@ -14,13 +14,7 @@
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
 {
-	addBulletParser("resources/BulletSimple.xml", "single");
-	addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
-	addBulletParser("resources/BulletBomb.xml", "bomb");
-	addBulletParser("resources/BulletWall.xml", "wall");
-	addBulletParser("resources/BulletRandom.xml", "random");
-	addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-	//this->load("resources/map/map1.xml");
+	this->load("resources/map/map1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
 	this->addGroup("ship", 0);
@@ -34,7 +28,7 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
-	this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
+	//this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
 	//this->setCollisionGroups("shot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 }
@@ -116,24 +110,23 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
-	double	y = 30;
-	double	step = 720 / this->_game._clients.size();
+	double		x = 384;
+	double		step = 256;
+	Ship		*ship;
+	GameCommand	*cmd;
 
-	for (std::list<Client*>::iterator it = this->_game._clients.begin(); it != this->_game._clients.end(); ++it)
+	for (size_t i = 0; i < this->_game._maxPlayers; i++)
 	{
-		Ship *tmp = new Ship(10, y, *it);
-	    (*it)->setShip(tmp);
-		this->addGameObject(tmp, "players", 10);
-		GameCommand	*cmd = new GameCommand("Spawn");
-		cmd->idResource = (*it)->getId();
-		cmd->idObject = tmp->getId();
-		cmd->x = static_cast<int16_t>(tmp->getX());
-		cmd->y = static_cast<int16_t>(tmp->getY());
-		cmd->vx = static_cast<int16_t>(tmp->getVx());
-		cmd->vy = static_cast<int16_t>(tmp->getVy());
+		ship = new Ship(x, 700, *this->_game._players[i]);
+		this->addGameObject(ship, "players");
+		cmd = new GameCommand("ShipSpawn");
+		cmd->idResource = i;
+		cmd->idObject = ship->getId();
+		cmd->x = static_cast<int16_t>(ship->getX());
+		cmd->y = static_cast<int16_t>(ship->getY());
 		cmd->game = &_game;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
-		y += step;
+		x += step;
 	}
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)));
 	this->_gameStarted = true;

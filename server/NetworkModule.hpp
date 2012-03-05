@@ -20,7 +20,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void			addUDPClient(Client &client);
 	void			removeUDPClient(Client &client);
 	Client			*getClientByAddr(Net::InetAddr const &addr) const;
-	void			sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client);
+	void			sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client = 0);
 
   private:
 	struct	Method
@@ -32,6 +32,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		spawnCommand(Core::Command const &command);
 	void		destroyCommand(Core::Command const &command);
 	void		moveCommand(Core::Command const &command);
+	void		shipSpawnCommand(Core::Command const &command);
 	void		sendUDPPacket(Net::Packet &packet,
 					std::list<Client*> const &list,
 					bool needId, Client *client);

@@ -41,7 +41,8 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::resourceId,
 			&Server::demandPlayerPacket,
 			&Server::updatePlayerPacket,
-			&Server::removePlayerPacket
+			&Server::removePlayerPacket,
+			&Server::shipSpawnPacket
 	};
 	uint8_t			type;
 
@@ -195,5 +196,19 @@ bool		Server::removePlayerPacket(Net::Packet &packet)
 
 	packet >> nb;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("removePlayer", nb));
+	return true;
+}
+
+bool		Server::shipSpawnPacket(Net::Packet &packet)
+{
+	uint8_t		player;
+	uint32_t	id;
+	int16_t		x, y;
+
+	packet >> player;
+	packet >> id;
+	packet >> x;
+	packet >> y;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("spawnShip", player, id, x, y));
 	return true;
 }

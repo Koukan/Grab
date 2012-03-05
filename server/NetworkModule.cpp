@@ -61,7 +61,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Status", &NetworkModule::statusCommand},
 		{"Startgame", &NetworkModule::startgameCommand},
 		{"RangeId", &NetworkModule::rangeId},
-		{"ResourceId", &NetworkModule::resourceId}
+		{"ResourceId", &NetworkModule::resourceId},
+		{"ShipSpawn", &NetworkModule::shipSpawnCommand}
 	};
 
 	for (size_t i = 0;
@@ -165,6 +166,22 @@ void		NetworkModule::moveCommand(Core::Command const &command)
 		packet << cmd.vy;
 		this->sendUDPPacket(packet, cmd.game->getClients(),
 						 false, cmd.client);
+	}
+}
+
+void		NetworkModule::shipSpawnCommand(Core::Command const &command)
+{
+	GameCommand const &cmd = static_cast<GameCommand const &>(command);
+
+	if (Server::get().gameExist(cmd.game))
+	{
+		Net::Packet		packet(10);
+		packet << static_cast<uint8_t>(TCP::SHIPSPAWN);
+		packet << static_cast<uint8_t>(cmd.idResource);
+		packet << static_cast<uint32_t>(cmd.idObject);
+		packet << static_cast<int16_t>(cmd.x);
+		packet << static_cast<int16_t>(cmd.y);
+		this->sendTCPPacket(packet, cmd.game->getClients());
 	}
 }
 

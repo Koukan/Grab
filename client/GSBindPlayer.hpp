@@ -26,6 +26,7 @@ private:
 	void			removePlayer(Core::Command const &command);
 	void			updatePlayer(Core::Command const &command);
 	void			goToInGame(Core::Command const &command);
+	void			shipSpawn(Core::Command const &command);
 
 	typedef std::map<uint32_t, Core::GUICommand::PlayerType> DemandMap;
 	struct	Method

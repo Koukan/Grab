@@ -25,6 +25,7 @@ class Server : public Net::SizeHeaderPacketHandler<>
 	bool			demandPlayerPacket(Net::Packet &packet);
 	bool			updatePlayerPacket(Net::Packet &packet);
 	bool			removePlayerPacket(Net::Packet &packet);
+	bool			shipSpawnPacket(Net::Packet &packet);
 
 	std::string		_name;
 	Game			*_game;

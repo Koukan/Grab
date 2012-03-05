@@ -3,18 +3,14 @@
 #include "HitBox.hpp"
 #include "PhysicObject.hpp"
 
-class Client;
+class Player;
 
 class Ship : public Core::PhysicObject
 {
 public:
-	Ship(double x, double y, Client *player);
+	Ship(double x, double y, Player &player);
 	~Ship();
 
 private:
-	Client		*_player;
+	Player		&_player;
 };
-
-
-
-
