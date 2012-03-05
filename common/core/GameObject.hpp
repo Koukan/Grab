@@ -43,7 +43,7 @@ protected:
 	bool					_delete;
 	uint32_t				_id;
 	Group					*_group;
-	GameObject				*_relaviteObject;
+	GameObject				*_relativeObject;
 	std::list<GameObject*>	_objects;
 
 	friend class GameObjectManager;
