@@ -17,7 +17,7 @@ class GSInGame : public Core::GameState
 public:
 	GSInGame(std::list<Player *> const &players, Modes::Mode mode,
 			 std::string const &map, unsigned int nbPlayers, bool online);
-	~GSInGame();
+	virtual ~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
 	virtual void	update(double elapsedTime = 0);

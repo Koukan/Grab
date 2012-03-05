@@ -59,6 +59,7 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Spawn", &NetworkModule::spawnCommand},
 		{"Destroy", &NetworkModule::destroyCommand},
 		{"Status", &NetworkModule::statusCommand},
+		{"Loadgame", &NetworkModule::loadgameCommand},
 		{"Startgame", &NetworkModule::startgameCommand},
 		{"RangeId", &NetworkModule::rangeId},
 		{"ResourceId", &NetworkModule::resourceId},
@@ -239,6 +240,19 @@ void        NetworkModule::statusCommand(Core::Command const &command)
 	}
 }
 
+void		NetworkModule::loadgameCommand(Core::Command const &command)
+{
+	GameCommand const &cmd = static_cast<GameCommand const &>(command);
+
+	if (Server::get().gameExist(cmd.game))
+	{
+		Net::Packet	packet(2);
+		packet << static_cast<uint8_t>(TCP::GAMESTATE);
+		packet << static_cast<uint8_t>(GameStateEnum::LOAD);
+		this->sendTCPPacket(packet, cmd.game->getClients());
+	}
+}
+
 void		NetworkModule::startgameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
@@ -248,8 +262,8 @@ void		NetworkModule::startgameCommand(Core::Command const &command)
 		Net::Packet	packet(2);
 
 		packet << static_cast<uint8_t>(TCP::GAMESTATE);
-		packet << static_cast<uint8_t>(0);
-		this->sendTCPPacket(packet, cmd.game->getClients(), 0);
+		packet << static_cast<uint8_t>(GameStateEnum::BEGIN);
+		this->sendTCPPacket(packet, cmd.game->getClients());
 	}
 }
 

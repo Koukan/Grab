@@ -12,11 +12,27 @@ class Cannon;
 class Ship : public ConcreteObject
 {
 public:
+  struct ShipInfo
+  {
+    std::string shipName;
+    std::string spriteName;
+    std::string bulletFileName;
+    float speed;
+    int fireFrequency;
+    Grab::Position grab1;
+    Grab::Position grab2;
+    Grab::Position grab3;
+  };
+  static ShipInfo const	shipsList[];
+  static unsigned int const shipsListSize;
+
+public:
   Ship(std::string const &spriteName, std::string const &bulletFileName,
        float speed, int fireFrequency, int r, int g, int b,
        Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
        std::string const &group = "players", unsigned int nbMaxGrabs = 3);
-
+  Ship(ShipInfo const &info, int r, int g, int b, std::string const &group = "players",
+	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
   void setGrabLaunched(bool grabLaunched);
@@ -79,19 +95,4 @@ private:
   PlayerBullet	*_playerBullet;
 
   void handleActions();
-
-public:
-  struct ShipInfo
-  {
-    std::string shipName;
-    std::string spriteName;
-    std::string bulletFileName;
-    float speed;
-    int fireFrequency;
-    Grab::Position grab1;
-    Grab::Position grab2;
-    Grab::Position grab3;
-  };
-  static ShipInfo const	shipsList[];
-  static unsigned int const shipsListSize;
 };

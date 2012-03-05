@@ -111,7 +111,7 @@ void		Game::changePlayersStatus(int i, int ship, bool ready)
 		{
 			this->_readyPlayers++;
 			if (this->_readyPlayers == this->_maxPlayers)
-				this->startGame();
+				this->loadGame();
 		}
 		else if (!ready && this->_players[i]->isReady())
 			this->_readyPlayers--;
@@ -155,9 +155,12 @@ GameLogic	&Game::getGameLogic()
   	return _logic;
 }
 
-void		Game::startGame()
+void		Game::loadGame()
 {
-	GameCommand		*cmd;
+	GameCommand		*cmd = new GameCommand("Loadgame");
+
+	cmd->game = this;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 	// begin rangeId
 	for (int i = 0; i < 4; ++i)
 	{
@@ -183,7 +186,7 @@ void		Game::startGame()
 
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
-		ship = new Ship(x, 700, *this->_players[i]);
+		ship = new Ship(x, 650, *this->_players[i]);
 		_logic.addGameObject(ship, "players");
 		cmd = new GameCommand("ShipSpawn");
 		cmd->idResource = i;
@@ -195,9 +198,25 @@ void		Game::startGame()
 		x += step;
 	}
 	// end ship
+}
+
+void		Game::startGame()
+{
+	GameCommand		*cmd;
 
 	cmd = new GameCommand("Startgame");
 	cmd->game = this;
 	Core::CommandDispatcher::get().pushCommand(*cmd);
 	_logic.startGame();
+}
+
+void		Game::ready()
+{
+	for (std::list<Client*>::const_iterator it = this->_clients.begin();
+		 it != this->_clients.end(); it++)
+	{
+		if (!(*it)->isReady())
+			return ;
+	}
+	this->startGame();
 }

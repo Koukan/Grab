@@ -37,6 +37,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 					std::list<Client*> const &list,
 					bool needId, Client *client);
 	void		statusCommand(Core::Command const &command);
+	void		loadgameCommand(Core::Command const &command);
 	void		startgameCommand(Core::Command const &command);
 	void		rangeId(Core::Command const &command);
 	void		resourceId(Core::Command const &command);

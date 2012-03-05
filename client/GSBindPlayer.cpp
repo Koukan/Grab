@@ -1,4 +1,5 @@
 #include "GSBindPlayer.hpp"
+#include "GSLoading.hpp"
 #include "GSInGame.hpp"
 #include "GUIPlayerButton.hpp"
 #include "GUIVLayout.hpp"
@@ -44,8 +45,7 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 		{"answerBind", &GSBindPlayer::answerBind},
 		{"updatePlayerPacket", &GSBindPlayer::updatePlayer},
 		{"removePlayer", &GSBindPlayer::removePlayer},
-		{"goToInGame", &GSBindPlayer::goToInGame},
-		{"shipSpawn", &GSBindPlayer::shipSpawn}
+		{"goToLoadGame", &GSBindPlayer::goToLoadGame}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -59,9 +59,16 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 	return false;
 }
 
-void	GSBindPlayer::goToInGame(Core::Command const &)
+void	GSBindPlayer::goToLoadGame(Core::Command const &)
 {
-	this->goToInGame();
+	std::list<Player *> *players = new std::list<Player *>;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		if (this->_players[i])
+			players->push_back(this->_players[i]);
+	}
+	Core::GameStateManager::get().pushState(*new GSLoading(*players, this->_mode, this->_map, this->_nbPlayers, this->_online));
 }
 
 void	GSBindPlayer::goToInGame()
@@ -74,50 +81,17 @@ void	GSBindPlayer::goToInGame()
 			players->push_back(this->_players[i]);
 	}
 	GSInGame	*state = new GSInGame(*players, this->_mode, this->_map, this->_nbPlayers, this->_online);
-	state->preload();
 	for (size_t i = 0; i < 4; ++i)
 	{
-		if (this->_players[i])
+		if (this->_players[i] && this->_players[i]->getShip())
 		{
-			state->addGameObject(this->_players[i]->getShip(),
+				state->addGameObject(this->_players[i]->getShip(),
 				(this->_players[i]->getType() != Player::type::ONLINE) ?
 				"players" : "playersOnline");
 		}
 	}
+	state->preload();
 	Core::GameStateManager::get().pushState(*state);
-}
-
-void	GSBindPlayer::shipSpawn(Core::Command const &command)
-{
-  // player colors
-  static struct {
-    int r;
-    int g;
-    int b;
-  } playerColors[] =
-      {
-	{255, 0, 0},
-	{0, 255, 0},
-	{0, 0, 255},
-	{255, 255, 0}
-      };
-
-	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
-
-	if (cmd.idResource < 4 && this->_players[cmd.idResource])
-	{
-		Ship::ShipInfo const	*info;
-		Ship					*ship;
-		info = this->_players[cmd.idResource]->getShipInfo();
-		ship = new Ship(info->spriteName,
-			info->bulletFileName, info->speed, info->fireFrequency,
-			playerColors[cmd.idResource].r, playerColors[cmd.idResource].g,
-			playerColors[cmd.idResource].b, info->grab1, info->grab2, info->grab3);
-		ship->setX(cmd.x);
-		ship->setY(cmd.y);
-		ship->setId(cmd.idObject);
-		this->_players[cmd.idResource]->setShip(ship);
-	}
 }
 
 bool	GSBindPlayer::isOnline() const
@@ -151,6 +125,8 @@ void	GSBindPlayer::answerBind(Core::Command const &command)
 			if (i == cmd.idResource)
 			{
 				(*lit)->addPlayer(it->second);
+				this->_players[i] = new Player(static_cast<Player::type>(it->second));
+				this->_players[i]->setShipInfo(&Ship::shipsList[0]);
 				break ;
 			}
 			i++;
@@ -179,6 +155,8 @@ void	GSBindPlayer::removePlayer(Core::Command const &command)
 		if (i == cmd.idObject)
 		{
 			(*it)->changeToEmpty();
+			delete this->_players[i];
+			this->_players[i] = 0;
 			return ;
 		}
 		i++;
@@ -206,6 +184,7 @@ void	GSBindPlayer::updatePlayer(Core::Command const &command)
 		if (i == cmd.idObject)
 		{
 			(*it)->updatePlayer(cmd.idResource, cmd.boolean);
+			this->_players[i]->setShipInfo(&Ship::shipsList[cmd.idResource]);
 			return ;
 		}
 		i++;

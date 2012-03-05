@@ -3,33 +3,36 @@
 #include <list>
 #include "GameState.hpp"
 #include "BulletCommand.hpp"
+#include "Player.hpp"
+#include "Modes.hpp"
 
 class GSInGame;
 
 class GSLoading : public Core::GameState
 {
-public:
-	GSLoading(int nbPlayers);
-	~GSLoading();
+	public:
+	GSLoading(std::list<Player *> const &players, Modes::Mode mode,
+			std::string const &map, unsigned int nbPlayers, bool online);
+	virtual ~GSLoading();
+
 	virtual void	onStart();
-	virtual	void	update(double elapseTime = 0);
 	virtual bool	handleCommand(Core::Command const &command);
 
-private:
-	struct Method
+	private:
+	template<typename T>
+	class Method
 	{
-	  std::string const		name;
+	public:
+	  T		name;
 	  void (GSLoading::*method)(Core::Command const &);
 	};
 
-	void			escape(const Core::InputCommand &event);
-	void			buttonClick();
-	void			listChoice(std::string const &name);
-	void			gameBeginCommand(Core::Command const &);
-	void			errorFullGameCommand(Core::Command const &);
-	void			resourceId(Core::Command const &);
+	// handleCommand
+	void			goToInGame(Core::Command const &command);
+	void			shipSpawn(Core::Command const &command);
 
-	Core::BulletCommand		*_bullet;
-	GSInGame				*_ingame;
-	int						_nbPlayers;
+	std::list<Player *> const	&_players;
+	unsigned int				_nbPlayers;
+	unsigned int				_nbShip;
+	GSInGame					&_game;
 };

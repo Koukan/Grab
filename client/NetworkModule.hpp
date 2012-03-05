@@ -46,6 +46,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		demandPlayerCommand(Core::Command const &command);
 	void		unBindPlayerCommand(Core::Command const &command);
 	void		updatePlayerCommand(Core::Command const &command);
+	void		readyCommand(Core::Command const &command);
 
 	struct	Method
 	{
@@ -55,7 +56,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 
 	bool					_initudp;
   	Net::DefaultSyncPolicy	_reactor;
-	UdpHandler	       		_udp;	
+	UdpHandler	       		_udp;
 	Net::Connector<Server>	_connector;
 	std::string				_name;
 	std::string	       		_port;

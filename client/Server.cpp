@@ -105,11 +105,15 @@ bool		Server::treatGameStatePacket(Net::Packet &packet)
 	packet >> err;
 	if (err == GameStateEnum::BEGIN)
 	{
-	  Core::CommandDispatcher::get().pushCommand(*(new Core::Command("goToInGame")));
+		Core::CommandDispatcher::get().pushCommand(*new Core::Command("goToInGame"));
+	}
+	else if (err == GameStateEnum::LOAD)
+	{
+		Core::CommandDispatcher::get().pushCommand(*new Core::Command("goToLoadGame"));
 	}
 	else
 	{
-	  Core::GameStateManager::get().popState();
+		Core::GameStateManager::get().popState();
 	}
 	return true;
 }
@@ -209,6 +213,6 @@ bool		Server::shipSpawnPacket(Net::Packet &packet)
 	packet >> id;
 	packet >> x;
 	packet >> y;
-	Core::CommandDispatcher::get().pushCommand(*new GameCommand("spawnShip", player, id, x, y));
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("shipSpawn", id, player, x, y));
 	return true;
 }

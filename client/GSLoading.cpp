@@ -1,111 +1,90 @@
 #include "GSLoading.hpp"
 #include "GSInGame.hpp"
-#include "Game.hpp"
-#include "Bullet.hpp"
-#include "Wall.hpp"
-#include "SFMLSpriteProvider.hpp"
-#include "SFMLFontProvider.hpp"
-#include "GUIButton.hpp"
-#include "GUIList.hpp"
-#include "GUIVLayout.hpp"
-#include "GUIHLayout.hpp"
-#include "ScrollingSprite.hpp"
+#include "GameCommand.hpp"
 #include "GameStateManager.hpp"
-#include "GSInGame.hpp"
-#include "ResourceCommand.hpp"
+#include "CommandDispatcher.hpp"
 
-GSLoading::GSLoading(int nbPlayers) : Core::GameState("Loading", true), _nbPlayers(nbPlayers)
+GSLoading::GSLoading(std::list<Player *> const &players, Modes::Mode mode,
+		std::string const &map, unsigned int nbPlayers, bool online)
+	: Core::GameState("Loading"), _players(players), _nbPlayers(nbPlayers), _nbShip(0),
+	  _game(*new GSInGame(players, mode, map, nbPlayers, online))
 {
-  //AudioManager::get().load("intro", "resource/sound/06-multiplayer-mouse-mania.ogg");
-  //AudioManager::get().play("intro", "test", "intro");
-  //AudioManager::get().setVolume("intro", "test", 1.0f);
 }
 
 GSLoading::~GSLoading()
-{}
-
-void	GSLoading::escape(const Core::InputCommand &)
-{
-  Core::GameStateManager::get().popState();
-  	Game::get().quit();
-}
-
-//void	GSLoading::click(const CL_InputEvent &event)
-//{
-//}
-
-void	GSLoading::update(double )
 {
 }
 
-void	GSLoading::buttonClick()
+void		GSLoading::onStart()
 {
-		//this->setComponentVisibility(false);
-
-}
-
-void	GSLoading::listChoice(std::string const &)
-{
-		//this->setComponentVisibility(false);
+	_game.preload();
 }
 
 bool		GSLoading::handleCommand(Core::Command const &command)
 {
-  static Method const	methods[] = {
-    {"GameBegin", &GSLoading::gameBeginCommand},
-    {"ErrorFullGame", &GSLoading::errorFullGameCommand},
-	{"ResourceId", &GSLoading::resourceId}
-  };
+	Method<std::string>	tab[] = {
+		{"goToInGame", &GSLoading::goToInGame},
+		{"shipSpawn", &GSLoading::shipSpawn}
+	};
 
-	for (size_t i = 0; i < sizeof(methods) / sizeof(*methods); ++i)
+	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
 	{
-		if (command.name == methods[i].name)
+		if (tab[i].name == command.name)
 		{
-			(this->*methods[i].method)(static_cast<GameCommand const &>(command));
+			(this->*(tab[i].method))(command);
 			return true;
 		}
 	}
-	return (_ingame->handleCommand(command));
 	return false;
 }
 
-void	GSLoading::errorFullGameCommand(Core::Command const &)
+void		GSLoading::goToInGame(Core::Command const &)
 {
-	delete _ingame;
-	Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().changeState(_game);
 }
 
-void	GSLoading::onStart()
+void		GSLoading::shipSpawn(Core::Command const &command)
 {
-	this->load("resources/intro.xml");
-	this->load("resources/player.xml");
+  // player colors
+  static struct {
+    int r;
+    int g;
+    int b;
+  } playerColors[] =
+      {
+	{255, 0, 0},
+	{0, 255, 0},
+	{0, 0, 255},
+	{255, 255, 0}
+      };
 
-	Core::Sprite *test = this->getSprite("player1");
-	test->setX(550);
-	test->setY(360);
-	this->addGameObject(test, "gui", 20);
+	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
+	uint32_t				i = 0;
 
-	Core::CoreFont *font = this->getFont("buttonFont");
-	font->setX(400);
-	font->setY(350);
-	font->setText("Loading");
-	this->addGameObject(font, "gui", 20);
-	//_ingame = new GSInGame(this->_nbPlayers);
-	//_ingame->preload();
-
-  /*this->addBulletParser("resources/BulletBossMetroid.xml", "Test");
-  BulletCommand *bullet = new BulletCommand("Test", *this, 1100, 300);
-  this->addGameObject(bullet, "ship");*/
-}
-
-void	GSLoading::gameBeginCommand(Core::Command const &)
-{
-	Core::GameStateManager::get().changeState(*_ingame);
-}
-
-void	GSLoading::resourceId(Core::Command const &command)
-{
-	ResourceCommand const &cmd = static_cast<ResourceCommand const &>(command);
-
-	_ingame->changeId(cmd.name, cmd.id, cmd.type);
+	for (std::list<Player*>::const_iterator it = this->_players.begin();
+		 it != this->_players.end(); it++)
+	{
+		if (cmd.idResource == i)
+		{
+			Ship::ShipInfo const	*info;
+			Ship					*ship;
+			info = (*it)->getShipInfo();
+			ship = new Ship(*info, playerColors[i].r, playerColors[i].g,
+				playerColors[i].b);
+			ship->setX(cmd.x);
+			ship->setY(cmd.y);
+			ship->setId(cmd.idObject);
+			if (!(*it)->getShip())
+				this->_nbShip++;
+			(*it)->setShip(ship);
+			if ((*it)->getType() != Player::type::ONLINE)
+				this->_game.addGameObject(ship, "players");
+			else
+				this->_game.addGameObject(ship, "playersOnline");
+			if (this->_nbShip == this->_nbPlayers)
+				Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
+			return ;
+		}
+		i++;
+	}
 }

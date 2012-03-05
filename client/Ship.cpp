@@ -34,7 +34,7 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 	_colors[0] = r;
 	_colors[1] = g;
 	_colors[2] = b;
-	for (int i = 0; i < Ship::NBACTIONS; ++i)
+			for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
 	if (this->_sprite)
@@ -47,6 +47,35 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 	this->defineGrabPosition(grab1, 0);
 	this->defineGrabPosition(grab2, 1);
 	this->defineGrabPosition(grab3, 2);
+}
+
+Ship::Ship(ShipInfo const &info, int r, int g, int b,
+		   std::string const &, unsigned int nbMaxGrabs)
+	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
+	  _speed(info.speed), _fireFrequency(info.fireFrequency), _dead(false),
+	  _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
+	  _playerBullet(0)
+{
+	_cannons[0] = 0;
+	_cannons[1] = 0;
+	_cannons[2] = 0;
+	_cannons[3] = 0;
+	_colors[0] = r;
+	_colors[1] = g;
+	_colors[2] = b;
+	for (int i = 0; i < Ship::NBACTIONS; ++i)
+		this->_actions[i] = false;
+
+	if (this->_sprite)
+	{
+		this->_sprite->setColor(r, g, b);
+		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
+		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+	}
+	this->defineGrabPosition(info.grab1, 0);
+	this->defineGrabPosition(info.grab2, 1);
+	this->defineGrabPosition(info.grab3, 2);
 }
 
 Ship::~Ship()

@@ -5,7 +5,7 @@
 #include "NetworkModule.hpp"
 
 Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
-		_id(0), _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0)
+		_id(0), _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0), _ready(false)
 {
 }
 
@@ -53,7 +53,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			NULL,
 			NULL,
 			NULL,
-			NULL,
+			&Client::gameState,
 			NULL,
 			NULL,
 			NULL,
@@ -227,6 +227,22 @@ int		Client::requireResource(Net::Packet &)
 	return 1;
 }
 
+int		Client::gameState(Net::Packet &packet)
+{
+	if (this->_game)
+	{
+		uint8_t		state;
+		packet >> state;
+		if (state == GameStateEnum::READY)
+		{
+			this->_ready = true;
+			this->_game->ready();
+			return 1;
+		}
+	}
+	return 0;
+}
+
 int		Client::demandPlayer(Net::Packet &packet)
 {
 	uint32_t		id;
@@ -328,4 +344,9 @@ uint64_t            Client::getLatency() const
 void                Client::setLatency(uint64_t latency)
 {
 	_latency = latency;
+}
+
+bool				Client::isReady() const
+{
+	return this->_ready;
 }

@@ -58,8 +58,10 @@ namespace	GameStateEnum
 {
 	enum	Type
 	{
-		BEGIN = 0,
-		END = 1
+		LOAD = 0,
+		BEGIN = 1,
+		READY = 2,
+		END = 3
 	};
 }
 
