@@ -17,11 +17,12 @@ public:
 
     virtual void	createSimpleBullet(double direction, double speed);
     virtual void	createBullet(BulletMLState* state, double direction, double speed);
+	virtual double	getAimDirection();
     virtual void	move(double time);
 	void			setColor(uint8_t r, uint8_t g, uint8_t b);
 
 private:
-	std::string const _groupName;
-	bool			_isFiring;
-	uint8_t			_colors[3];
+	std::string const	_groupName;
+	bool				_isFiring;
+	uint8_t				_colors[3];
 };

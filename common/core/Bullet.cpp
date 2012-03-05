@@ -34,7 +34,8 @@ Bullet::Bullet(ResourceManager &resource, std::string const & sprite, HitBox &bo
 
 Bullet::~Bullet()
 {
-  delete this->_sprite;
+	if (this->_sprite)
+		delete this->_sprite;
 }
 
 void		Bullet::draw(double elapsedTime)
@@ -45,11 +46,15 @@ void		Bullet::draw(double elapsedTime)
 
 void		Bullet::setSprite(ResourceManager &resource, std::string const &name)
 {
+	if (this->_sprite)
+		delete this->_sprite;
 	this->_sprite = resource.getSprite(name);
 }
 
 void		Bullet::setSprite(Sprite *sprite)
 {
+	if (this->_sprite)
+		delete this->_sprite;
 	this->_sprite = sprite;
 }
 

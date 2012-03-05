@@ -24,11 +24,10 @@ bool		GSPreload::handleCommand(Core::Command const &)
 
 void	GSPreload::onStart()
 {
-  this->load("resources/intro.xml");
+  this->load("resources/xml/intro.xml");
   _sound = this->getSound("intro-sound");
   if (_sound)
   {
-	  
 	_sound->setLoop(true);
 	_sound->play();
   }

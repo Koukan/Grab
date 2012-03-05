@@ -93,7 +93,7 @@ void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
   if (cannon && nGrab < _nbMaxGrabs)
   {
     _cannons[nGrab] = cannon;
-	cannon->setColor(_colors[0], _colors[1], _colors[2]);
+    cannon->setColor(_colors[0], _colors[1], _colors[2]);
   }
 }
 
@@ -248,8 +248,8 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 						 "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	  if (this->_playerBullet)
 	  {
-			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-			Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+	    this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+	    Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
 	  }
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 	    {
@@ -305,23 +305,23 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
 
 void Ship::setDead(bool dead)
 {
-	this->_dead = dead;
-	this->setVx(0);
-	this->setVy(0);
-	if (this->_playerBullet)
+  this->_dead = dead;
+  this->setVx(0);
+  this->setVy(0);
+  if (this->_playerBullet)
+    {
+      delete this->_playerBullet;
+      this->_playerBullet = 0;
+    }
+  for (size_t i = 0; i < _nbMaxGrabs; ++i)
+    {
+      if (_cannons[i])
 	{
-		delete this->_playerBullet;
-		this->_playerBullet = 0;
-		for (size_t i = 0; i < _nbMaxGrabs; ++i)
-		{
-			if (_cannons[i])
-			{
-				_cannons[i]->stopFire();
-				_cannons[i]->erase();
-				_cannons[i] = 0;
-			}
-		}
+	  _cannons[i]->stopFire();
+	  _cannons[i]->erase();
+	  _cannons[i] = 0;
 	}
+    }
 }
 
 bool Ship::isDead() const

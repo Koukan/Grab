@@ -73,7 +73,7 @@ void	GSPartySettings::multiMode(Core::GUIElement &/*mode*/)
 void	GSPartySettings::onStart()
 {
   // load xml
-  this->load("resources/intro.xml");
+  this->load("resources/xml/intro.xml");
 
   // add gui
 

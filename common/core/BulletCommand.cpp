@@ -113,7 +113,7 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
-	if (!this->_relaviteObject)
+	if (!this->_relativeObject)
 	{
 		Group *group = this->_state.getGroup(this->_focus);
 		if (group)
@@ -137,18 +137,16 @@ double		BulletCommand::getAimDirection()
 				this->setRelativeObject(obj);
 		}
 	}
-	if (this->_relaviteObject)
+	if (this->_relativeObject)
 	{
-		PhysicObject	*ph = static_cast<PhysicObject*>(this->_relaviteObject);
+		PhysicObject	*ph = static_cast<PhysicObject*>(this->_relativeObject);
 		HitBox			&hb = ph->getHitBox();
 		double			x = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
 		double			y = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
 
 		return rtod(::atan2(y, x));
 	}
-	else
-		return 90;
-	return 0;
+	return 90;
 }
 
 double		BulletCommand::getBulletSpeed()

@@ -12,6 +12,7 @@
 #include "Rules.hpp"
 #include "Map.hpp"
 #include "CircleHitBox.hpp"
+#include "RendererManager.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -44,19 +45,14 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
 
   // load xml
-  //this->load("resources/intro.xml");
-  this->load("resources/player.xml");
-  this->load("resources/grab.xml");
-  //this->load("resources/shots.xml");
-  //this->load("resources/enemies.xml");
   this->load("resources/map/map1.xml");
-  //this->load("resources/destruction.xml");
 
   //addBulletParser("resources/enemies/square.xml", "squareWall");
   //addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");
@@ -76,6 +72,16 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
+
+  int const large = 30;
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
+	  RendererManager::get().getWidth(), large)), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,
+	  large, RendererManager::get().getHeight())), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30,
+	  RendererManager::get().getWidth(), large)), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0,
+	  large, RendererManager::get().getHeight())), "invisibleWalls");
 }
 
 void		GSInGame::registerShipCallbacks()
@@ -135,7 +141,7 @@ void		GSInGame::registerShipCallbacks()
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button),
 			  (*it)->getType() - 1);
-		  this->getInput().registerInputCallback((*it)->getAction(Player::FIRE).Type,
+		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonPressed,
 			  *(*it)->getShip(), &Ship::inputFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
@@ -539,7 +545,7 @@ void		GSInGame::createShips()
 				shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b,
 				shipInfo->grab1, shipInfo->grab2, shipInfo->grab3);
 		ship->setY(600);
-		ship->setX(i * 250);
+		ship->setX(i * 250 + 150);
       (*it)->setShip(ship);
     }
   _ship = (*_players.begin())->getShip(); //tmp
