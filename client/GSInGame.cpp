@@ -285,8 +285,11 @@ void		GSInGame::rangeid(GameCommand const &event)
   Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
 }
 
+
 void		GSInGame::spawnend(GameCommand const &event)
-{}
+{
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, event.y, 1000, 8000)), "end");
+}
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
