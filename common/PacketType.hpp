@@ -11,7 +11,10 @@ namespace UDP
 		STATEMENT = 4,
 		RETRIEVE = 5,
 		PING = 6,
-		PONG = 7
+		PONG = 7,
+		FIRESTATE = 8,
+		UPDATECANNON = 9,
+		LAUNCHGRAB = 10
 	};
 }
 
