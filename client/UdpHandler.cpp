@@ -76,7 +76,6 @@ int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 
 int			UdpHandler::move(Net::Packet &packet, uint64_t)
 {
-	std::cout << "move" << std::endl;
 	GameCommand *gc = new GameCommand("move");
 	packet >> gc->idObject;
 	packet >> gc->x;

@@ -26,7 +26,10 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	{
 	  GameCommand *cmd2 = new GameCommand("Destroy");
 	  cmd2->idObject = obj.getId();
-	 cmd2->game = cmd->game;
+	  Core::Group *gr = o1.getGroup();
+	  Core::GameState const &state = gr->getState();
+	  GameLogic const &gl = static_cast<GameLogic const &>(state);
+	 cmd2->game = &gl.getGame();
 	 Core::CommandDispatcher::get().pushCommand(*cmd2);
 	obj.erase();
 	}
@@ -45,7 +48,10 @@ void		Rules::shotTouchClient(Core::GameObject&o1, Core::GameObject&o2)
 	Core::PhysicObject &obj = static_cast<Core::PhysicObject &>(o2);
 	GameCommand *cmd2 = new GameCommand("Destroy");
 	 cmd2->idObject = obj.getId();
-	 cmd2->game = cmd->game;
+	 Core::Group *gr = o1.getGroup();
+	Core::GameState const &state = gr->getState();
+	GameLogic const &gl = static_cast<GameLogic const &>(state);
+	 cmd2->game = &gl.getGame();
 	 Core::CommandDispatcher::get().pushCommand(*cmd2);
 	//obj.erase();
 }
