@@ -5,10 +5,23 @@
 #include "Grab.hpp"
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
+#include "CircleHitBox.hpp"
 #include <cmath>
 
-void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
+void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 {
+	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
+
+	Core::PhysicObject &monster = static_cast<Core::PhysicObject &>(o1);
+	Core::Bullet &shot = static_cast<Core::Bullet &>(o2);
+	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
+		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
+	explosion->setDeleteSprite(true);
+	Core::Sprite *sprite = &explosion->getSprite();
+	explosion->setX(shot.getX() + shot.getSprite()->getWidth() / 2 - sprite->getWidth() / 2);
+	explosion->setY(shot.getY() + shot.getSprite()->getHeight() / 2 - sprite->getHeight() / 2);
+	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
+	gameState.addGameObject(explosion, "sprites", 100);
 	o2.erase();
 }
 
@@ -19,14 +32,14 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	monster.setLife(monster.getLife() - shot.getDamage());
 
 	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
-	Core::Sprite *sprite = gameState.getSprite("fireImpact");
-	if (sprite)
-	{
-		sprite->setVanish(true);
-		sprite->setX(shot.getX() - shot.getSprite()->getWidth() / 2);
-		sprite->setY(shot.getY() - shot.getSprite()->getHeight() / 2);
-		gameState.addGameObject(sprite, "sprites", 100);
-	}
+	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
+		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
+	explosion->setDeleteSprite(true);
+	Core::Sprite *sprite = &explosion->getSprite();
+	explosion->setX(shot.getX() + shot.getSprite()->getWidth() / 2 - sprite->getWidth() / 2);
+	explosion->setY(shot.getY() + shot.getSprite()->getHeight() / 2 - sprite->getHeight() / 2);
+	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
+	gameState.addGameObject(explosion, "sprites", 100);
 
 	shot.erase();
 	if (monster.getLife() <= 0)
@@ -69,7 +82,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 
       if (&(grab.getShip()) == &ship)
 	{
-	  if (!grab.getBulletScript().empty())
+	  if (!grab.getBulletScript().empty() && !ship.isDead())
 	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
 				      "weapon", "cannons", "playerShots",
 				      grab.getOffsetX(), grab.getOffsetY()),
@@ -78,6 +91,13 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 	  ship.setGrabLaunched(false);
 	}
     }
+}
+
+void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
+{
+  Grab &grab = static_cast<Grab &>(o1);
+
+  grab.setReturnToShip(true);
 }
 
 void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)

@@ -45,9 +45,16 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 				this->handleDeco(child, manager);
 			else if (name == "sound")
 				this->handleSound(child, manager);
+			else if (name == "end")
+				this->handleEnd(child, manager);
 		}
 	}
 	_current = 0;
+}
+
+void    MapProvider::handleEnd(TiXmlNode *parent, Core::ResourceManager &manager)
+{
+	this->handleElem(parent, manager, &Map::addEnd);
 }
 
 void    MapProvider::handleMonster(TiXmlNode *parent, Core::ResourceManager &manager)
@@ -65,12 +72,12 @@ void    MapProvider::handleSound(TiXmlNode *parent, Core::ResourceManager &manag
 	this->handleElem(parent, manager, &Map::addSound);
 }
 
-void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, int))
+void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, bool, int))
 {
 	std::string     name, monstername;
 	size_t          y = 0, x = 0;
 	int				vx = 0, vy = 0, spawnY = 0;
-	bool			scrollable = true;
+	bool			scrollable = true, pause = false;
 
 	for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute();
 		 attrib != 0; attrib = attrib->Next())
@@ -90,8 +97,10 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 			scrollable = false;
 		else if (name == "spawnY")
 			spawnY = Net::Converter::toInt<int>(attrib->Value());
+		else if (name == "pause" && attrib->Value() == "true")
+			pause = true;
 	}
 	if (!monstername.empty())
-		(_current->*func)(monstername, x, y, vx, vy, scrollable, spawnY);
+	  (_current->*func)(monstername, x, y, vx, vy, scrollable, pause, spawnY);
 }
 

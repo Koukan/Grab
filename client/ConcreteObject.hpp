@@ -14,9 +14,12 @@ public:
 
   void  setSprite(std::string const &spriteName);
   void	setSprite(Core::Sprite* sprite);
+  void	setDeleteSprite(bool isDel);
   Core::Sprite const &getSprite() const;
   Core::Sprite &getSprite();
 
+
 protected:
   Core::Sprite		*_sprite;
+  bool				_deleteSprite;
 };

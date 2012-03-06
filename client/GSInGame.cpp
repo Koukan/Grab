@@ -17,7 +17,7 @@
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
-	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0), _rangeBegin(0), _rangeEnd(0),
+	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
 }
@@ -39,6 +39,7 @@ void		GSInGame::preload()
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
+  this->addGroup("end", 3);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
@@ -51,19 +52,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
   this->load("resources/map/map1.xml");
-
-  //addBulletParser("resources/enemies/square.xml", "squareWall");
-  //addBulletParser("resources/enemies/fixesquare.xml", "fixedSquareWall");
-  //addBulletParser("resources/BulletSinusoidal.xml", "sinusoidal");
-  //addBulletParser("resources/BulletBomb.xml", "bomb");
-  //addBulletParser("resources/BulletWall.xml", "wall");
-  //addBulletParser("resources/BulletSimple.xml", "simple");
-  //addBulletParser("resources/BulletRandom.xml", "random");
-  //addBulletParser("resources/BulletBossMetroid.xml", "bossMetroid");
-  //addBulletParser("resources/player3.xml", "player3");
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
@@ -168,9 +160,8 @@ void		GSInGame::registerShipCallbacks()
 
 void		GSInGame::onStart()
 {
-  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
-
+  if (!this->_online)
+    this->preload();
   GameState *state = Core::GameStateManager::get().getGameState("Preload");
   if (state)
 	state->pause();
@@ -183,32 +174,6 @@ void		GSInGame::onStart()
   this->registerShipCallbacks();
 }
 
-void		GSInGame::update(double elapsedTime)
-{
-	return ;
-	if (this->_elapsedTime == 0)
-	{
-		if (this->_ship && this->_fire)
-		{
-			GameCommand *cmd = new GameCommand("Spawn", this->getNextId(), Resources::SHOOT,
-			static_cast<int16_t>(this->_ship->getX()),
-			static_cast<int16_t>(this->_ship->getY()),
-			0,
-			-400);
-			this->spawn(*cmd);
-			Core::CommandDispatcher::get().pushCommand(*cmd);
-			this->_elapsedTime += 500;
-		}
-	}
-	else
-	{
-		if (this->_elapsedTime - elapsedTime < 0)
-			this->_elapsedTime = 0;
-		else
-			this->_elapsedTime -= elapsedTime;
-	}
-}
-
 void		GSInGame::onEnd()
 {
   GameState *state = Core::GameStateManager::get().getGameState("Preload");
@@ -219,15 +184,13 @@ void		GSInGame::onEnd()
 bool		GSInGame::handleCommand(Core::Command const &command)
 {
   static Method<std::string const> const	methods[] = {
-	{"destroy", &GSInGame::destroy},
-	{"life", &GSInGame::life},
 	{"score", &GSInGame::score},
-	{"spawn", &GSInGame::spawn},
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
 	{"spawndecoration", &GSInGame::spawndecoration},
-	{"spawnsound", &GSInGame::spawnsound}
+	{"spawnsound", &GSInGame::spawnsound},
+	{"spawnend", &GSInGame::spawnend}
   };
 
   for (size_t i = 0;
@@ -267,60 +230,6 @@ void		GSInGame::displayScores()
     }
 }
 
-void		GSInGame::inputUp(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVy(-200);
-      this->throwShip();
-    }
-}
-
-void		GSInGame::inputDown(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVy(200);
-      this->throwShip();
-    }
-}
-
-void		GSInGame::inputLeft(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVx(-200);
-      this->throwShip();
-    }
-}
-
-void		GSInGame::inputRight(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVx(200);
-      this->throwShip();
-    }
-}
-
-void		GSInGame::releaseInputUpDown(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVy(0);
-      this->throwShip();
-    }
-}
-
-void		GSInGame::releaseInputLeftRight(Core::InputCommand const &/*event*/)
-{
-  if (this->_ship)
-    {
-      this->_ship->setVx(0);
-      this->throwShip();
-    }
-}
-
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
   if (!_online)
@@ -328,79 +237,6 @@ void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
       this->pause(PHYSIC);
     }
   Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
-}
-
-void		GSInGame::inputSpace(Core::InputCommand const &/*event*/)
-{
-	this->_fire = true;
-}
-
-void		GSInGame::releaseInputSpace(Core::InputCommand const &/*event*/)
-{
-	this->_fire = false;
-}
-
-void		GSInGame::throwShip()
-{
-  GameCommand *cmd = new GameCommand("Move", this->_ship->getId(), 0,
-				     static_cast<int16_t>(this->_ship->getX()),
-				     static_cast<int16_t>(this->_ship->getY()),
-				     static_cast<int16_t>(this->_ship->getVx()),
-				     static_cast<int16_t>(this->_ship->getVy()));
-
-  Core::CommandDispatcher::get().pushCommand(*cmd); //send to network
-}
-
-void		GSInGame::spawn(GameCommand const &event)
-{
-  static Method<Resources::type> const	methods[] = {
-    {Resources::P1, &GSInGame::loadP1},
-    {Resources::P2, &GSInGame::loadP2},
-    {Resources::P3, &GSInGame::loadP3},
-    {Resources::P4, &GSInGame::loadP4},
-    {Resources::SINGLE_MONSTER, &GSInGame::loadMonster},
-    {Resources::BOMB_MONSTER, &GSInGame::loadMonster},
-    {Resources::SINUSOIDAL_MONSTER, &GSInGame::loadMonster},
-    {Resources::METROID_MONSTER, &GSInGame::loadMonster},
-    {Resources::BOSS_METROID, &GSInGame::loadMonster},
-    {Resources::RANDOM_MONSTER, &GSInGame::loadMonster},
-    {Resources::TRON_MONSTER, &GSInGame::loadMonster},
-    {Resources::DEFAULT_SHOT, &GSInGame::loadMonster},
-    {Resources::BOSS_SHOT, &GSInGame::loadMonster},
-    {Resources::ANIMATED_SHOT, &GSInGame::loadMonster},
-    {Resources::SHOT, &GSInGame::loadMonster},
-    {Resources::SHOOT, &GSInGame::loadShoot}
-  };
-
-	//Sprite	*sprite = this->getSprite(event.idResource);
-
-	for (size_t i = 0; i < sizeof(methods) / sizeof(*methods); i++)
-	{
-		if (static_cast<Resources::type>(event.idResource) == methods[i].name)
-		{
-			(this->*methods[i].method)(event);
-			if (static_cast<uint16_t>(event.idResource) == this->_idPlayer)
-			{
-				this->_ship = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
-			}
-		}
-    }
-}
-
-void		GSInGame::destroy(GameCommand const &event)
-{
-	Core::GameObject *tmp = this->getGameObject(event.idObject);
-	if (tmp)
-	{
-		if (this->_ship->getId() == event.idObject)
-			this->_ship = 0;
-		tmp->erase();
-	}
-}
-
-void		GSInGame::life(GameCommand const &/*event*/)
-{
-	//actions
 }
 
 void		GSInGame::score(GameCommand const &event)
@@ -428,54 +264,6 @@ void		GSInGame::updatePositions(GameCommand const &event, Core::PhysicObject &ob
 	obj.setScrollY(event.position);
 }
 
-void		GSInGame::loadP1(GameCommand const &event)
-{
-  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
-  ConcreteObject *player = new ConcreteObject(this->getSprite("player1"), *hitbox, event.vx, event.vy);
-  player->setId(event.idObject);
-  this->addGameObject(player, "players");
-}
-
-void		GSInGame::loadP2(GameCommand const &event)
-{
-  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
-  ConcreteObject *player = new ConcreteObject(this->getSprite("player2"), *hitbox, event.vx, event.vy);
-  player->setId(event.idObject);
-  this->addGameObject(player, "players");
-}
-
-void		GSInGame::loadP3(GameCommand const &event)
-{
-  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
-  ConcreteObject *player = new ConcreteObject(this->getSprite("player3"), *hitbox, event.vx, event.vy);
-  player->setId(event.idObject);
-  this->addGameObject(player, "players");
-}
-
-void		GSInGame::loadP4(GameCommand const &event)
-{
-  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
-  ConcreteObject *player = new ConcreteObject(this->getSprite("player4"), *hitbox, event.vx, event.vy);
-  player->setId(event.idObject);
-  this->addGameObject(player, "players");
-}
-
-void		GSInGame::loadMonster(GameCommand const &event)
-{
-  Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
-
-  if (event.idResource >= Resources::SINGLE_MONSTER)
-  {
-  	Core::Sprite *sprite = this->getSprite(Resources::monsters[event.idResource - Resources::SINGLE_MONSTER].sprite);
-  	if (sprite)
-  	{
-		ConcreteObject *monster = new ConcreteObject(sprite, *hitbox, event.vx, event.vy);
-		monster->setId(event.idObject);
-		this->addGameObject(monster, "monster");
-  	}
-  }
-}
-
 void		GSInGame::loadShoot(GameCommand const &event)
 {
   Core::HitBox *hitbox = new Core::RectHitBox(event.x, event.y, 2, 2);
@@ -496,6 +284,9 @@ void		GSInGame::rangeid(GameCommand const &event)
   this->_nameFonts[this->_idPlayer]->setPosition((1024 / (this->_nbPlayers + 1)) * (this->_idPlayer+1) - this->_nameFonts[this->_idPlayer]->getWidth() / 2, 680);
   Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
 }
+
+void		GSInGame::spawnend(GameCommand const &event)
+{}
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
@@ -547,8 +338,6 @@ void		GSInGame::createShips()
 		ship->setX(i * 250 + 150);
       (*it)->setShip(ship);
     }
-  _ship = (*_players.begin())->getShip(); //tmp
-  //_idPlayer = _ship->getId();
 }
 
 uint32_t	GSInGame::getNextId()
