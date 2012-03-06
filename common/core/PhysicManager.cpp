@@ -40,7 +40,7 @@ void		PhysicManager::apply(GameState &state, double elapsedTime)
 	tmptime = elapsedTime;
 	for (; tmptime >= 0; tmptime -= CUTTIME)
 	{
-		time = (((static_cast<int>(tmptime) / CUTTIME) > 0) ? CUTTIME : tmptime) / 1000;
+		time = ((static_cast<int>(tmptime) > CUTTIME) ? CUTTIME : tmptime) / 1000;
 		PhysicManager::move(groups, time);
 		PhysicManager::collide(groups, collisionGroups);
 	}
