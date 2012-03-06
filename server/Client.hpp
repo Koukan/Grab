@@ -21,8 +21,6 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	std::string const 	&getName() const;
 	uint32_t			getPacketId();
 	void				resetPacketId();
-	Ship				*getShip() const;
-	void				setShip(Ship *ship);
 	void				addPacket(uint32_t id, Net::Packet &packet);
 	GameLogic       	&getGameLogic();
 	Net::Packet const	*getPacket(uint32_t id) const;
@@ -31,6 +29,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	void				setLatency(uint64_t latency);
 	int					getRemoteAddr(Net::InetAddr &addr);
 	bool				isReady() const;
+	std::list<Player*> const	&getPlayers() const;
 
   private:
 	typedef std::list<std::pair<uint32_t, Net::Packet> >	packetsList;
@@ -52,7 +51,6 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	uint8_t				_id;
 	std::string			_name;
 	Game				*_game;
-	Ship				*_ship;
 	uint32_t			_idPacket;
 	uint32_t			_idShip;
 	uint64_t			_latency;

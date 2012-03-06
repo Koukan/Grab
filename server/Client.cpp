@@ -102,16 +102,6 @@ void		Client::resetPacketId()
 	this->_idPacket = 0;
 }
 
-Ship		*Client::getShip() const
-{
-	return _ship;
-}
-
-void		Client::setShip(Ship *ship)
-{
-	_ship = ship;
-}
-
 void		Client::addPacket(uint32_t id, Net::Packet &packet)
 {
 	this->_packets.push_back(std::make_pair(id, packet));
@@ -349,4 +339,9 @@ void                Client::setLatency(uint64_t latency)
 bool				Client::isReady() const
 {
 	return this->_ready;
+}
+
+std::list<Player*> const	&Client::getPlayers() const
+{
+	return this->_players;
 }
