@@ -21,6 +21,7 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 								uint32_t height, uint32_t nbx, uint32_t nby,
 								uint32_t spacex, uint32_t spacey);
 		virtual void		setBack(bool val);
+		virtual void		setVanish(bool vanish);
 
 		virtual void		setTransparency(float transparency);
 		virtual void		setColor(int r, int g, int b);
@@ -41,4 +42,5 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 		int							_tx;
 		int							_ty;
 		std::vector<sf::IntRect>	_rect;
+		bool						_vanish;
 };
