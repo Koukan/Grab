@@ -108,6 +108,11 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab)
      grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
 	 Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
      _grabLaunched = true;
+	 GameCommand	*cmd = new GameCommand("launchGrab");
+	 cmd->x = this->_x;
+	 cmd->y = this->_y;
+	 cmd->idObject = this->_id;
+	 Core::CommandDispatcher::get().pushCommand(*cmd);
    }
 }
 
@@ -128,11 +133,16 @@ float Ship::getSpeed() const
 
 void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 {
-  if (cannon && nGrab < _nbMaxGrabs)
-  {
-    _cannons[nGrab] = cannon;
-    cannon->setColor(_colors[0], _colors[1], _colors[2]);
-  }
+	if (cannon && nGrab < _nbMaxGrabs)
+	{
+		_cannons[nGrab] = cannon;
+		cannon->setColor(_colors[0], _colors[1], _colors[2]);
+		GameCommand *cmd = new GameCommand("updateCannon");
+		cmd->idObject = this->_id;
+		cmd->idResource = nGrab;
+		cmd->data = cannon->_parser;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
 }
 
 void Ship::handleActions()
@@ -295,6 +305,7 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 			_cannons[i]->fire();
 	    }
   }
+  Core::CommandDispatcher::get().pushCommand(*new GameCommand("beginFire", this->_id));
 }
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
@@ -311,6 +322,7 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 	    if (_cannons[i])
 	      _cannons[i]->stopFire();
 	  }
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("endFire", this->_id));
 }
 
 void Ship::inputGrab1(Core::InputCommand const& /*cmd*/)
@@ -380,6 +392,10 @@ void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 	  _cannons[nGrab]->stopFire();
       _cannons[nGrab]->erase();
       _cannons[nGrab] = 0;
+	  GameCommand	*cmd = new GameCommand("updateCannon");
+	  cmd->idObject = this->_id;
+	  cmd->idResource = nGrab;
+	  Core::CommandDispatcher::get().pushCommand(*cmd);
     }
   else
     this->launchGrab(group, nGrab);

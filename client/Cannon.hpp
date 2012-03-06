@@ -20,8 +20,9 @@ public:
   double		getOffsetX() const;
   double		getOffsetY() const;
 
-private:
   std::string const _parser;
+
+private:
   Ship&	_ship;
   std::string const _shotsGroup;
   double	_offsetX;
