@@ -63,7 +63,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		answer->vx = gc.vx;
 		answer->vy = gc.vy;
 		answer->game = &_game;
-		answer->client = gc.client;
+		answer->client = &reinterpret_cast<Player*>(gc.client)->getClient();
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}
