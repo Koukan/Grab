@@ -4,6 +4,7 @@
 #include "BulletCommand.hpp"
 #include "Grab.hpp"
 #include "Cannon.hpp"
+#include "GameStateManager.hpp"
 #include <cmath>
 
 void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
@@ -16,6 +17,17 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
 	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
 	monster.setLife(monster.getLife() - shot.getDamage());
+
+	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
+	Core::Sprite *sprite = gameState.getSprite("fireImpact");
+	if (sprite)
+	{
+		sprite->setVanish(true);
+		sprite->setX(shot.getX() - shot.getSprite()->getWidth() / 2);
+		sprite->setY(shot.getY() - shot.getSprite()->getHeight() / 2);
+		gameState.addGameObject(sprite, "sprites", 100);
+	}
+
 	shot.erase();
 	if (monster.getLife() <= 0)
 		monster.erase();
