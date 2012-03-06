@@ -51,13 +51,13 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	GameCommand	const &gc = static_cast<GameCommand const &>(command);
 	if (gc.name == "move")
 	{
-		Ship	*ship = gc.client->getShip();
+		Ship	*ship = reinterpret_cast<Player*>(gc.client)->getShip();
 		ship->setX(gc.x);
 		ship->setY(gc.y);
 		ship->setVx(gc.vx);
 		ship->setVy(gc.vy);
 		GameCommand *answer = new GameCommand("Move");
-		answer->idObject = gc.client->getShip()->getId();
+		answer->idObject = ship->getId();
 		answer->x = gc.x;
 		answer->y = gc.y;
 		answer->vx = gc.vx;
