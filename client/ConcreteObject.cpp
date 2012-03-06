@@ -3,13 +3,13 @@
 
 ConcreteObject::ConcreteObject(std::string const &spriteName, Core::HitBox &hitbox, double vx, double vy,
 	double xHitboxOffset, double yHitboxOffset)
-  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GlobalResourceManager::get().getSprite(spriteName))
+  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GlobalResourceManager::get().getSprite(spriteName)), _deleteSprite(false)
 {
 }
 
 ConcreteObject::ConcreteObject(Core::Sprite *sprite, Core::HitBox &hitbox, double vx, double vy,
 	double xHitboxOffset, double yHitboxOffset)
-  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(sprite)
+  : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(sprite), _deleteSprite(false)
 {
 }
 
@@ -19,10 +19,20 @@ ConcreteObject::~ConcreteObject()
 		delete this->_sprite;
 }
 
+void	ConcreteObject::setDeleteSprite(bool isDel)
+{
+	this->_deleteSprite = isDel;
+}
+
 void			ConcreteObject::draw(double time)
 {
 	if (this->_sprite)
-		this->_sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y), time);
+	{
+		if (this->_deleteSprite && this->_sprite->isFinished())
+			this->erase();
+		else
+			this->_sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y), time);
+	}
 }
 
 void		ConcreteObject::setSprite(std::string const &spriteName)

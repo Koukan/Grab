@@ -30,8 +30,10 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 
 		virtual int			getWidth() const;
 		virtual int			getHeight() const;
+		int					getColor(int i) const;
+		virtual bool		isFinished() const;
 
-	private:
+private:
 		sf::RenderWindow			*_window;
 		double						_frameRate;
 		double						_currentTime;
@@ -43,4 +45,5 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 		int							_ty;
 		std::vector<sf::IntRect>	_rect;
 		bool						_vanish;
+		bool						_finished;
 };

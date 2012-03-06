@@ -5,7 +5,7 @@
 SFMLSprite::SFMLSprite(double x, double y)
 	: _window(RendererManager::get().getWindow()), _frameRate(-1),
 	  _currentTime(0), _repeat(false), _pingpong(false),
-	  _up(true), _currentFrame(0), _tx(0), _ty(0), _vanish(false)
+	  _up(true), _currentFrame(0), _tx(0), _ty(0), _vanish(false), _finished(false)
 {
   this->_x = x;
   this->_y = y;
@@ -32,6 +32,8 @@ void		SFMLSprite::update(double elapsedTime)
 	{
 		if (this->_vanish)
 			this->erase();
+		if (size > 1)
+			this->_finished = true;
 		return ;
 	}
 	this->_currentTime += elapsedTime;
@@ -202,4 +204,20 @@ void	SFMLSprite::setColor(int r, int g, int b)
   base.g = g;
   base.b = b;
   this->SetColor(base);
+}
+
+int		SFMLSprite::getColor(int i) const
+{
+  sf::Color base = this->GetColor();
+
+  if (i == 0)
+	  return (base.r);
+  else if (i == 1)
+	  return (base.g);
+  return (base.b);
+}
+
+bool		SFMLSprite::isFinished() const
+{
+	return (this->_finished);
 }

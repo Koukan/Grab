@@ -40,7 +40,6 @@ class CORE_DLLREQ Bullet : public PhysicObject
 	uint32_t		_bulletId;
 	int32_t		_life;
 	int32_t		_damage;
-	uint8_t		_colors[3];
 };
 
 CORE_END_NAMESPACE
