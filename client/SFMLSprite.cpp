@@ -5,7 +5,7 @@
 SFMLSprite::SFMLSprite(double x, double y)
 	: _window(RendererManager::get().getWindow()), _frameRate(-1),
 	  _currentTime(0), _repeat(false), _pingpong(false),
-	  _up(true), _currentFrame(0), _tx(0), _ty(0)
+	  _up(true), _currentFrame(0), _tx(0), _ty(0), _vanish(false)
 {
   this->_x = x;
   this->_y = y;
@@ -30,6 +30,8 @@ void		SFMLSprite::update(double elapsedTime)
 					(!this->_pingpong && !this->_repeat && !this->_up &&
 					this->_currentFrame == 0))
 	{
+		if (this->_vanish)
+			this->erase();
 		return ;
 	}
 	this->_currentTime += elapsedTime;
@@ -52,21 +54,11 @@ void		SFMLSprite::update(double elapsedTime)
 			}
 		}
 		else if (this->_repeat)
-		{
 			nb = (nb + nbr) % (size);
-		}
 		else if (this->_up)
-		{
 			nb += nbr;
-			if (static_cast<uint32_t>(nb) > size)
-				nb = size;
-		}
 		else
-		{
 			nb -= nbr;
-			if (nb < 0)
-				nb = 0;
-		}
 		this->_currentFrame = nb;
 		#if (SFML_VERSION_MAJOR == 2)
 		this->SetTextureRect(this->_rect[this->_currentFrame]);
@@ -151,6 +143,11 @@ void		SFMLSprite::setBack(bool val)
 		this->SetSubRect(this->_rect[this->_currentFrame]);
 		#endif
 	}
+}
+
+void		SFMLSprite::setVanish(bool vanish)
+{
+	this->_vanish = vanish;
 }
 
 void		SFMLSprite::draw(double elapsedTime)
