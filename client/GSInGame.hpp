@@ -20,7 +20,6 @@ public:
 	virtual ~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
-	virtual void	update(double elapsedTime = 0);
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 
@@ -34,21 +33,11 @@ private:
 	};
 
 	void		inputEscape(Core::InputCommand const &event);
-	void		inputSpace(Core::InputCommand const &event);
-	void		inputUp(Core::InputCommand const &event);
- 	void		inputDown(Core::InputCommand const &event);
-  	void		inputLeft(Core::InputCommand const &event);
-  	void		inputRight(Core::InputCommand const &event);
-	void		releaseInputUpDown(Core::InputCommand const &event);
-  	void		releaseInputLeftRight(Core::InputCommand const &event);
-	void		releaseInputSpace(Core::InputCommand const &/*event*/);
-
 	void		registerShipCallbacks();
 
 	// HandleCommand
 
 	void		destroy(GameCommand const &event);
-	void		spawn(GameCommand const &event);
 	void		score(GameCommand const &event);
 	void		life(GameCommand const &event);
 	void		move(GameCommand const &event);
@@ -56,6 +45,7 @@ private:
 	void		spawnspawner(GameCommand const &event);
 	void		spawndecoration(GameCommand const &event);
 	void		spawnsound(GameCommand const &event);
+	void		spawnend(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 
@@ -64,12 +54,7 @@ private:
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
 	void		displayScores();
 
-	void		loadP1(GameCommand const &event);
-	void		loadP2(GameCommand const &event);
-	void		loadP3(GameCommand const &event);
-	void		loadP4(GameCommand const &event);
-	void		loadMonster(GameCommand const &event);
-	void		loadShoot(GameCommand const &event);
+  	void		loadShoot(GameCommand const &event);
 
 	uint32_t	getNextId();
 
