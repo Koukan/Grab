@@ -160,8 +160,6 @@ void		GSInGame::registerShipCallbacks()
 
 void		GSInGame::onStart()
 {
-  if (!this->_online)
-    this->preload();
   GameState *state = Core::GameStateManager::get().getGameState("Preload");
   if (state)
 	state->pause();
