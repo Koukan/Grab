@@ -30,9 +30,11 @@ public:
 							uint32_t /*spacex*/, uint32_t /*spacey*/){}
 	virtual void	setBack(bool /*val*/){}
 	virtual void	setVanish(bool) {}
+	virtual bool	isFinished() const { return 0; }
 
 	// getter
 	virtual int		getWidth() const { return 0; }
 	virtual int		getHeight() const { return 0; }
+	virtual int		getColor(int /*i*/) const { return 0; }
 };
 CORE_END_NAMESPACE
