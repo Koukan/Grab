@@ -113,7 +113,7 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
-	if (!this->_relativeObject)
+	if (!this->_relativeObject || this->_relativeObject->isDelete())
 	{
 		Group *group = this->_state.getGroup(this->_focus);
 		if (group)

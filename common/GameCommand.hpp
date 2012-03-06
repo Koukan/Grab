@@ -3,6 +3,7 @@
 #include "Command.hpp"
 
 class Client;
+class Player;
 class Game;
 
 class GameCommand : public Core::Command
@@ -24,7 +25,11 @@ class GameCommand : public Core::Command
 	int16_t				vy;
 	bool				boolean;
 	float				position;
-	Client				*client;
+	union
+	{
+		Client			*client;
+		Player			*player;
+	};
 	Game				*game;
 	std::string			data;
 	uint32_t			score;

@@ -16,7 +16,7 @@
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
-	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
+	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbDie(0), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
@@ -24,7 +24,6 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 
 GSInGame::~GSInGame()
 {}
-
 
 void		GSInGame::preload()
 {
@@ -188,7 +187,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawnspawner", &GSInGame::spawnspawner},
 	{"spawndecoration", &GSInGame::spawndecoration},
 	{"spawnsound", &GSInGame::spawnsound},
-	{"spawnend", &GSInGame::spawnend}
+	{"spawnend", &GSInGame::spawnend},
+	{"respawnplayer", &GSInGame::respawnplayer}
   };
 
   for (size_t i = 0;
@@ -226,6 +226,22 @@ void		GSInGame::displayScores()
       this->_scoreFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_scoreFonts[i]->getWidth() / 2, 720);
       this->addGameObject(this->_scoreFonts[i], "score", 20);
     }
+}
+
+void		GSInGame::playerDie(Player &)
+{
+	this->_nbDie++;
+	if (this->_nbDie == this->_nbPlayers)
+		this->gameover();
+}
+
+void		GSInGame::gameover()
+{
+	std::cout << "Game Over !!!" << std::endl;
+	Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState();
 }
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
@@ -310,6 +326,11 @@ void		GSInGame::spawnsound(GameCommand const &event)
 		sound->play();
 }
 
+void		GSInGame::respawnplayer(GameCommand const &event)
+{
+	event.player->respawn();
+}
+
 void		GSInGame::createShips()
 {
   // player colors
@@ -318,26 +339,22 @@ void		GSInGame::createShips()
     int r;
     int g;
     int b;
-  } playerColors[] =
-      {
-	{255, 0, 0},
-	{0, 255, 0},
-	{0, 0, 255},
-	{255, 255, 0}
-      };
+  } playerColors[] = {
+		{255, 0, 0},
+		{0, 255, 0},
+		{0, 0, 255},
+		{255, 255, 0}
+	};
 
   Ship					*ship;
-  Ship::ShipInfo const	*shipInfo;
   unsigned int			i = 0;
   for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
     {
-		shipInfo = (*it)->getShipInfo();
-		ship = new Ship(shipInfo->spriteName, shipInfo->bulletFileName, shipInfo->speed,
-				shipInfo->fireFrequency, playerColors[i].r, playerColors[i].g, playerColors[i].b,
-				shipInfo->grab1, shipInfo->grab2, shipInfo->grab3);
+		ship = new Ship(**it, *(*it)->getShipInfo(), playerColors[i].r,
+				playerColors[i].g, playerColors[i].b);
 		ship->setY(600);
 		ship->setX(i * 250 + 150);
-      (*it)->setShip(ship);
+		this->addGameObject(ship, "players");
     }
 }
 

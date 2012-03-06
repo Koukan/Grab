@@ -62,11 +62,11 @@ void	GSMainMenu::onStart()
 }
 
 void	GSMainMenu::onChange()
-{	
+{
 }
 
 void	GSMainMenu::onResume()
-{		
+{
 }
 
 void	GSMainMenu::modeSelection()

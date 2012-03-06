@@ -4,7 +4,8 @@
 
 CORE_USE_NAMESPACE
 
-CommandDispatcher::CommandDispatcher() : Module("CommandDispatcher", 5)
+CommandDispatcher::CommandDispatcher()
+	: Module("CommandDispatcher", 5)
 {
 }
 

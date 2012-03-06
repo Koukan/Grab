@@ -22,6 +22,7 @@ public:
 	virtual void	onEnd();
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
+	void			playerDie(Player &player);
 
 private:
 	template<typename T>
@@ -32,6 +33,7 @@ private:
 	  void (GSInGame::*method)(GameCommand const &);
 	};
 
+	void		gameover();
 	void		inputEscape(Core::InputCommand const &event);
 	void		registerShipCallbacks();
 
@@ -44,6 +46,7 @@ private:
 	void		spawndecoration(GameCommand const &event);
 	void		spawnsound(GameCommand const &event);
 	void		spawnend(GameCommand const &event);
+	void		respawnplayer(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
@@ -60,6 +63,7 @@ private:
 	Modes::Mode						_mode;
 	std::string const				_map;
 	unsigned int					_nbPlayers;
+	unsigned int					_nbDie;
 	bool							_online;
 	std::vector<uint32_t>			_scores;
 	std::vector<Core::CoreFont*>    _scoreFonts;

@@ -6,6 +6,7 @@
 #include "SFMLSprite.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
+#include "Player.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
   {"Conqueror", "player1", "player3", 300, 400,
@@ -18,16 +19,14 @@ Ship::ShipInfo const Ship::shipsList[] = {
 
 unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
 
-Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
+Ship::Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
 	   float speed, int fireFrequency, int r, int g, int b,
 	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
-	   std::string const &group, unsigned int nbMaxGrabs)
+	   unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-    _speed(speed), _fireFrequency(fireFrequency), _dead(false),
-    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
-    _joyPosX(0), _joyPosY(0),
-    _bulletFileName(bulletFileName),
-    _playerBullet(0)
+	_player(player), _speed(speed), _fireFrequency(fireFrequency), _dead(false),
+    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
+    _bulletFileName(bulletFileName), _playerBullet(0)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -45,17 +44,17 @@ Ship::Ship(std::string const &spriteName, std::string const &bulletFileName,
 		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
 		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
 	}
-	Core::GameStateManager::get().getCurrentState().addGameObject(this, group);
 	this->defineGrabPosition(grab1, 0);
 	this->defineGrabPosition(grab2, 1);
 	this->defineGrabPosition(grab3, 2);
+	player.setShip(this);
 }
 
-Ship::Ship(ShipInfo const &info, int r, int g, int b,
-		   std::string const &, unsigned int nbMaxGrabs)
+Ship::Ship(Player &player, ShipInfo const &info, int r, int g, int b,
+		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
-	  _speed(info.speed), _fireFrequency(info.fireFrequency), _dead(false),
-	  _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+	  _player(player), _speed(info.speed), _fireFrequency(info.fireFrequency),
+	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
 	  _playerBullet(0)
 {
@@ -78,6 +77,7 @@ Ship::Ship(ShipInfo const &info, int r, int g, int b,
 	this->defineGrabPosition(info.grab1, 0);
 	this->defineGrabPosition(info.grab2, 1);
 	this->defineGrabPosition(info.grab3, 2);
+	player.setShip(this);
 }
 
 Ship::~Ship()
@@ -355,23 +355,32 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
 
 void Ship::setDead(bool dead)
 {
-  this->_dead = dead;
-  this->setVx(0);
-  this->setVy(0);
-  if (this->_playerBullet)
-    {
-      delete this->_playerBullet;
-      this->_playerBullet = 0;
-    }
-  for (size_t i = 0; i < _nbMaxGrabs; ++i)
-    {
-      if (_cannons[i])
+	if (this->_dead == dead)
+		return ;
+	this->_dead = dead;
+	if (!dead)
 	{
-	  _cannons[i]->stopFire();
-	  _cannons[i]->erase();
-	  _cannons[i] = 0;
+		this->_delete = false;
+		return ;
 	}
+	this->_delete = true;
+	this->_player.die();
+	this->setVx(0);
+	this->setVy(0);
+	if (this->_playerBullet)
+	{
+		delete this->_playerBullet;
+		this->_playerBullet = 0;
     }
+	for (size_t i = 0; i < _nbMaxGrabs; ++i)
+    {
+		if (_cannons[i])
+		{
+			_cannons[i]->stopFire();
+			_cannons[i]->erase();
+			_cannons[i] = 0;
+		}
+	}
 }
 
 bool Ship::isDead() const

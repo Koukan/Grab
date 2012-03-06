@@ -66,17 +66,14 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 	{
 		if (cmd.idResource == i)
 		{
-			Ship::ShipInfo const	*info;
 			Ship					*ship;
-			info = (*it)->getShipInfo();
-			ship = new Ship(*info, playerColors[i].r, playerColors[i].g,
-				playerColors[i].b);
+			if (!(*it)->getShip())
+				this->_nbShip++;
+			ship = new Ship(**it, *(*it)->getShipInfo(), playerColors[i].r,
+							playerColors[i].g, playerColors[i].b);
 			ship->setX(cmd.x);
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);
-			if (!(*it)->getShip())
-				this->_nbShip++;
-			(*it)->setShip(ship);
 			if ((*it)->getType() != Player::type::ONLINE)
 				this->_game.addGameObject(ship, "players");
 			else

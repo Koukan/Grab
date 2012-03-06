@@ -7,7 +7,8 @@
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
 
-class Cannon;
+class	Cannon;
+class	Player;
 
 class Ship : public ConcreteObject
 {
@@ -27,47 +28,48 @@ public:
   static unsigned int const shipsListSize;
 
 public:
-  Ship(std::string const &spriteName, std::string const &bulletFileName,
+  Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
        float speed, int fireFrequency, int r, int g, int b,
        Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
-       std::string const &group = "players", unsigned int nbMaxGrabs = 3);
-  Ship(ShipInfo const &info, int r, int g, int b, std::string const &group = "players",
+       unsigned int nbMaxGrabs = 3);
+  Ship(Player &player, ShipInfo const &info, int r, int g, int b,
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
-  void setGrabLaunched(bool grabLaunched);
-  bool getGrabLaunched() const;
-  float getSpeed() const;
-  void addCannon(Cannon *cannon, unsigned int nGrab);
-  void copyColor(Core::Sprite& sprite);
+  void			setGrabLaunched(bool grabLaunched);
+  bool			getGrabLaunched() const;
+  float			getSpeed() const;
+  void			addCannon(Cannon *cannon, unsigned int nGrab);
+  void			copyColor(Core::Sprite& sprite);
   virtual void	move(double time);
 
-  void inputUp(Core::InputCommand const &cmd);
-  void inputDown(Core::InputCommand const &cmd);
-  void inputLeft(Core::InputCommand const &cmd);
-  void inputRight(Core::InputCommand const &cmd);
-  void inputReleasedUp(Core::InputCommand const &cmd);
-  void inputReleasedDown(Core::InputCommand const &cmd);
-  void inputReleasedLeft(Core::InputCommand const &cmd);
-  void inputReleasedRight(Core::InputCommand const &cmd);
-  void inputJoystickMoved(Core::InputCommand const &cmd);
-  void inputFire(Core::InputCommand const &cmd);
-  void inputReleasedFire(Core::InputCommand const &cmd);
-  void inputGrab1(Core::InputCommand const &cmd);
-  void inputGrab2(Core::InputCommand const &cmd);
-  void inputGrab3(Core::InputCommand const &cmd);
-  void inputGrab4(Core::InputCommand const &cmd);
-  void defineGrabPosition(Grab::Position position, unsigned int nGrab);
-  void setDead(bool dead);
-  bool isDead() const;
+  void			inputUp(Core::InputCommand const &cmd);
+  void			inputDown(Core::InputCommand const &cmd);
+  void			inputLeft(Core::InputCommand const &cmd);
+  void			inputRight(Core::InputCommand const &cmd);
+  void			inputReleasedUp(Core::InputCommand const &cmd);
+  void			inputReleasedDown(Core::InputCommand const &cmd);
+  void			inputReleasedLeft(Core::InputCommand const &cmd);
+  void			inputReleasedRight(Core::InputCommand const &cmd);
+  void			inputJoystickMoved(Core::InputCommand const &cmd);
+  void			inputFire(Core::InputCommand const &cmd);
+  void			inputReleasedFire(Core::InputCommand const &cmd);
+  void			inputGrab1(Core::InputCommand const &cmd);
+  void			inputGrab2(Core::InputCommand const &cmd);
+  void			inputGrab3(Core::InputCommand const &cmd);
+  void			inputGrab4(Core::InputCommand const &cmd);
+  void			defineGrabPosition(Grab::Position position, unsigned int nGrab);
+  void			setDead(bool dead);
+  bool			isDead() const;
   virtual void	draw(double elapsedTime);
-  void updateCannonsTrajectory();
-  void updateBulletTrajectory();
+  void			updateCannonsTrajectory();
+  void			updateBulletTrajectory();
 
 private:
-  void launchGrab(std::string const &group, unsigned int nGrab);
-  void manageGrab(std::string const &group, unsigned int nGrab);
+  void			launchGrab(std::string const &group, unsigned int nGrab);
+  void			manageGrab(std::string const &group, unsigned int nGrab);
 
+  Player		&_player;
   float			_speed;
   int			_fireFrequency;
   bool			_dead;

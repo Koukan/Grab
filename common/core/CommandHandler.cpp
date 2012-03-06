@@ -4,6 +4,7 @@
 CORE_USE_NAMESPACE
 
 CommandHandler::CommandHandler()
+	: _time(0)
 {
 }
 
@@ -40,25 +41,32 @@ bool			CommandHandler::handle(Command const &command)
 	return ret;
 }
 
-void			CommandHandler::handle(double)
+void			CommandHandler::handle(double elapsedTime)
 {
-	Command		const *command;
-	std::list<CommandHandler *>::const_iterator 	it;
+	Command const								*command;
+	std::list<CommandHandler *>::const_iterator it;
 
 	this->_mutex.lock();
+
+	// time command management
+	this->_time += static_cast<int>(elapsedTime);
+	while (!this->_timeCommands.empty() && this->_timeCommands.top().first < this->_time)
+	{
+		command = this->_timeCommands.top().second;
+		this->_timeCommands.pop();
+		this->_mutex.unlock();
+		this->handle(*command);
+		delete command;
+		this->_mutex.lock();
+	}
+	// end time
+
 	while (!this->_commands.empty())
 	{
 		command = this->_commands.front();
 		this->_commands.pop();
 		this->_mutex.unlock();
 		this->handle(*command);
-		//for (it = this->_handlers.begin(); it != this->_handlers.end(); it++)
-		//{
-		//	if (command->name == "move")
-		//		std::cout << "Handle(double) move" << std::endl;
-		//	if ((*it)->handle(*command))
-		//		break ;
-		//}
 		delete command;
 		this->_mutex.lock();
 	}
@@ -73,6 +81,11 @@ void			CommandHandler::pushCommand(Command const &command, bool treatNow)
 	}
 	if (treatNow)
 		this->handle(0);
+}
+
+void			CommandHandler::pushCommand(Command const &command, int time)
+{
+	this->_timeCommands.push(std::make_pair(this->_time + time, &command));
 }
 
 void			CommandHandler::registerHandler(CommandHandler &handler)
