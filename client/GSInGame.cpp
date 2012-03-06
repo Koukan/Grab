@@ -17,7 +17,7 @@
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
-	_nameFonts(nbPlayers, this->getFont("buttonFont")), _ship(0), _rangeBegin(0), _rangeEnd(0),
+	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
 }
@@ -52,6 +52,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
   this->load("resources/map/map1.xml");
@@ -183,8 +184,6 @@ void		GSInGame::onEnd()
 bool		GSInGame::handleCommand(Core::Command const &command)
 {
   static Method<std::string const> const	methods[] = {
-	{"destroy", &GSInGame::destroy},
-	{"life", &GSInGame::life},
 	{"score", &GSInGame::score},
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
@@ -238,33 +237,6 @@ void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
       this->pause(PHYSIC);
     }
   Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
-}
-
-void		GSInGame::throwShip()
-{
-  GameCommand *cmd = new GameCommand("Move", this->_ship->getId(), 0,
-				     static_cast<int16_t>(this->_ship->getX()),
-				     static_cast<int16_t>(this->_ship->getY()),
-				     static_cast<int16_t>(this->_ship->getVx()),
-				     static_cast<int16_t>(this->_ship->getVy()));
-
-  Core::CommandDispatcher::get().pushCommand(*cmd); //send to network
-}
-
-void		GSInGame::destroy(GameCommand const &event)
-{
-	Core::GameObject *tmp = this->getGameObject(event.idObject);
-	if (tmp)
-	{
-		if (this->_ship->getId() == event.idObject)
-			this->_ship = 0;
-		tmp->erase();
-	}
-}
-
-void		GSInGame::life(GameCommand const &/*event*/)
-{
-	//actions
 }
 
 void		GSInGame::score(GameCommand const &event)
@@ -366,8 +338,6 @@ void		GSInGame::createShips()
 		ship->setX(i * 250 + 150);
       (*it)->setShip(ship);
     }
-  _ship = (*_players.begin())->getShip(); //tmp
-  //_idPlayer = _ship->getId();
 }
 
 uint32_t	GSInGame::getNextId()

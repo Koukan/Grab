@@ -82,7 +82,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 
       if (&(grab.getShip()) == &ship)
 	{
-	  if (!grab.getBulletScript().empty())
+	  if (!grab.getBulletScript().empty() && !ship.isDead())
 	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
 				      "weapon", "cannons", "playerShots",
 				      grab.getOffsetX(), grab.getOffsetY()),
@@ -91,6 +91,13 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 	  ship.setGrabLaunched(false);
 	}
     }
+}
+
+void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
+{
+  Grab &grab = static_cast<Grab &>(o1);
+
+  grab.setReturnToShip(true);
 }
 
 void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)

@@ -37,9 +37,7 @@ private:
 
 	// HandleCommand
 
-	void		destroy(GameCommand const &event);
 	void		score(GameCommand const &event);
-	void		life(GameCommand const &event);
 	void		move(GameCommand const &event);
 	void		rangeid(GameCommand const &event);
 	void		spawnspawner(GameCommand const &event);
@@ -48,9 +46,6 @@ private:
 	void		spawnend(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
-
-  	void		throwShip();
-
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
 	void		displayScores();
 
@@ -69,7 +64,6 @@ private:
 	std::vector<uint32_t>			_scores;
 	std::vector<Core::CoreFont*>    _scoreFonts;
 	std::vector<Core::CoreFont*>    _nameFonts;
-	Core::PhysicObject				*_ship;
 	uint32_t						_rangeBegin;
 	uint32_t						_rangeEnd;
 	uint32_t						_currentId;
