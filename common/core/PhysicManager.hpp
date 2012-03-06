@@ -22,6 +22,8 @@ class CORE_DLLREQ PhysicManager : public GameStateObserver
     static void		move(GameObjectManager::groupsMap const &, double);
     static void		collide(GameObjectManager::groupsMap const&,
 							GameObjectManager::collisionGroupsMap const&);
+
+	std::list<GameState*>	_list;
 };
 
 CORE_END_NAMESPACE
