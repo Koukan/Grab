@@ -28,8 +28,8 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
-	//this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
-	//this->setCollisionGroups("shot", "players", &Rules::shotTouchClient);
+	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+	this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 }
 
@@ -51,19 +51,19 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	GameCommand	const &gc = static_cast<GameCommand const &>(command);
 	if (gc.name == "move")
 	{
-		Ship	*ship = gc.client->getShip();
+		Ship	*ship = reinterpret_cast<Player*>(gc.client)->getShip();
 		ship->setX(gc.x);
 		ship->setY(gc.y);
 		ship->setVx(gc.vx);
 		ship->setVy(gc.vy);
 		GameCommand *answer = new GameCommand("Move");
-		answer->idObject = gc.client->getShip()->getId();
+		answer->idObject = ship->getId();
 		answer->x = gc.x;
 		answer->y = gc.y;
 		answer->vx = gc.vx;
 		answer->vy = gc.vy;
 		answer->game = &_game;
-		answer->client = gc.client;
+		answer->client = &reinterpret_cast<Player*>(gc.client)->getClient();
 		Core::CommandDispatcher::get().pushCommand(*answer);
 		return true;
 	}

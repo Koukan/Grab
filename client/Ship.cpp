@@ -4,6 +4,8 @@
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
 #include "SFMLSprite.hpp"
+#include "GameCommand.hpp"
+#include "CommandDispatcher.hpp"
 
 Ship::ShipInfo const Ship::shipsList[] = {
   {"Conqueror", "player1", "player3", 300, 400,
@@ -87,6 +89,13 @@ void	Ship::move(double time)
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
+	GameCommand	*move = new GameCommand("Move");
+	move->idObject = this->getId();
+	move->x = this->getX();
+	move->y = this->getY();
+	move->vx = 0/*this->getVx()*/;
+	move->vy = 0/*this->getVy()*/;
+	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab)

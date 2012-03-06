@@ -33,7 +33,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	uint8_t				type;
 
 	if (packet.size() < 9)
-		return 0;
+		return 1;
 	packet >> _time_recv;
 	packet >> type;
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
@@ -44,15 +44,13 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 		else
 			return 1;
 	}
-	return 0;
+	return 1;
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 {
 	uint32_t	id_packet;
 
-	if (!client.getShip())
-		return 1;
 	GameCommand *gc = new GameCommand("spawn");
 	packet >> id_packet;
 	packet >> gc->idResource;
@@ -73,16 +71,25 @@ int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 
 int			UdpHandler::destroy(Net::Packet &, Client&)
 {
-	return 0;
+	return 1;
 }
 
 int			UdpHandler::move(Net::Packet &packet, Client &client)
 {
-	if (!client.getShip())
-		return 1;
+	Player	*player = 0;
 	GameCommand *gc = new GameCommand("move");
 	packet >> gc->idObject;
-	gc->idObject = client.getShip()->getId();
+	for (std::list<Player*>::const_iterator it = client.getPlayers().begin();
+		 it != client.getPlayers().end(); it++)
+	{
+		if ((*it)->getShip() && (*it)->getShip()->getId() == gc->idObject)
+		{
+			player = *it;
+			break ;
+		}
+	}
+	if (!player)
+		return 1;
 	packet >> gc->x;
 	packet >> gc->y;
 	packet >> gc->vx;
@@ -92,7 +99,7 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 		gc->x += player.getLatency() * gc->vx;
 		gc->y += player.getLatency() * gc->vy;
 	}*/
-	gc->client = &client;
+	gc->client = reinterpret_cast<Client*>(player);
 	client.getGameLogic().pushCommand(*gc);
 	return 1;
 }
