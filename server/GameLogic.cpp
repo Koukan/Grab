@@ -28,8 +28,8 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
-	//this->setCollisionGroups("playerfires", "ship", &Rules::shotTouchMonster);
-	//this->setCollisionGroups("shot", "players", &Rules::shotTouchClient);
+	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+	this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 }
 
