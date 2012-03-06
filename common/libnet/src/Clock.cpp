@@ -40,15 +40,15 @@ bool	Clock::isPaused() const
 
 void	Clock::update()
 {
-	 _time = GetTickCount();
+	 _time = timeGetTime();
 }
 
-double	Clock::getElapsedTime() const
+uint64_t	Clock::getElapsedTime() const
 {
 	if (this->isPaused())
 		return 0;
 	else
-		return (GetTickCount() - _time);
+		return (timeGetTime() - _time);
 }
 
 uint64_t Clock::getMsSinceEpoch()
@@ -91,12 +91,12 @@ void	Clock::update()
   gettimeofday(&_time, 0);
 }
 
-double	Clock::getElapsedTime() const
+uint64_t	Clock::getElapsedTime() const
 {
    struct timeval	tmp;
 
-   double		time1;
-   double		time2;
+   uint64_t		time1;
+   uint64_t		time2;
 
 	if (this->isPaused())
 		return (0);
