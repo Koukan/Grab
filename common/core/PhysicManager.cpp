@@ -22,7 +22,6 @@ void		PhysicManager::update(double elapsedTime)
 	if (elapsedTime == 0)
 		return ;
 
-	std::cout << elapsedTime << std::endl;
 	for (std::list<GameState*>::const_iterator it = this->_glist.begin();
 		it != this->_glist.end(); it++)
 		PhysicManager::apply(**it, elapsedTime);
