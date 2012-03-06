@@ -161,9 +161,6 @@ void		GSInGame::onStart()
 {
   if (!this->_online)
     this->preload();
-  /*  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed, *this, &GSInGame::inputSpace, static_cast<int>(Core::Keyboard::Space));
-  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased, *this, &GSInGame::releaseInputSpace, static_cast<int>(Core::Keyboard::Space));
-  */
   GameState *state = Core::GameStateManager::get().getGameState("Preload");
   if (state)
 	state->pause();

@@ -35,7 +35,7 @@ public:
 	void	reset();
 	bool	isPaused() const;
 
-	double	getElapsedTime() const;
+	uint64_t	getElapsedTime() const;
 	static uint64_t getMsSinceEpoch();
 	static std::string getTimeInStr();
 	static void			sleep(int ms);

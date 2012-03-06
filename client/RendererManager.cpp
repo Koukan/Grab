@@ -120,7 +120,7 @@ sf::RenderWindow	*RendererManager::getWindow()
 	return _window;
 }
 
-sf::Shader			&RendererManager::getShader()
+Shader			&RendererManager::getShader()
 {
 	return _shader;
 }

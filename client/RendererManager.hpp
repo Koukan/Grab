@@ -3,7 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include "GameStateObserver.hpp"
 #include "Singleton.hpp"
-#include <SFML/Graphics/Shader.hpp>
+#if (SFML_VERSION_MAJOR == 2)
+	#include <SFML/Graphics/Shader.hpp>
+	typedef sf::Shader	Shader;
+#else
+	#include <SFML\Graphics\PostFX.hpp>
+typedef sf::PostFX		Shader;
+#endif
 
 class RendererManager : public Core::GameStateObserver, public Net::Singleton<RendererManager>
 {
@@ -16,7 +22,7 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		void				clear();
 		void				flip();
 		sf::RenderWindow	*getWindow();
-		sf::Shader			&getShader();
+		Shader			&getShader();
 		int					getWidth() const;
 		int					getHeight() const;
 
@@ -24,5 +30,5 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		int					_width;
 		int					_height;
 		sf::RenderWindow	*_window;
-		sf::Shader			_shader;
+		Shader			_shader;
 };
