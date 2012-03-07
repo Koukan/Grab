@@ -6,6 +6,7 @@
 #include "Input.hpp"
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
+#include "ShipInfo.hpp"
 
 class	Cannon;
 class	Player;
@@ -13,26 +14,11 @@ class	Player;
 class Ship : public ConcreteObject
 {
 public:
-  struct ShipInfo
-  {
-    std::string shipName;
-    std::string spriteName;
-    std::string bulletFileName;
-    float speed;
-    int fireFrequency;
-    Grab::Position grab1;
-    Grab::Position grab2;
-    Grab::Position grab3;
-  };
-  static ShipInfo const	shipsList[];
-  static unsigned int const shipsListSize;
-
-public:
   Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
        float speed, int fireFrequency, int r, int g, int b,
-       Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
-       unsigned int nbMaxGrabs = 3);
-  Ship(Player &player, ShipInfo const &info, int r, int g, int b,
+       GrabPosition::Position grab1, GrabPosition::Position grab2,
+	   GrabPosition::Position grab3, unsigned int nbMaxGrabs = 3);
+  Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
@@ -58,7 +44,7 @@ public:
   void			inputGrab2(Core::InputCommand const &cmd);
   void			inputGrab3(Core::InputCommand const &cmd);
   void			inputGrab4(Core::InputCommand const &cmd);
-  void			defineGrabPosition(Grab::Position position, unsigned int nGrab);
+  void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab);
   void			setDead(bool dead);
   bool			isDead() const;
   virtual void	draw(double elapsedTime);
@@ -69,15 +55,15 @@ private:
   void			launchGrab(std::string const &group, unsigned int nGrab);
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
-  Player		&_player;
-  float			_speed;
-  int			_fireFrequency;
-  bool			_dead;
-  Cannon*		_cannons[4];
-  unsigned int	_nbMaxGrabs; // can be up to 4 by choosing a special power
-  bool			_grabLaunched;
-  std::pair<double, double> _grabsPositions[3];
-  int			_colors[3];
+  Player					&_player;
+  float						_speed;
+  int						_fireFrequency;
+  bool						_dead;
+  Cannon*					_cannons[4];
+  unsigned int				_nbMaxGrabs; // can be up to 4 by choosing a special power
+  bool						_grabLaunched;
+  std::pair<double, double>	_grabsPositions[3];
+  int						_colors[3];
 
   // ship control
   enum Actions

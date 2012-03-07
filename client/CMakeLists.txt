@@ -77,6 +77,7 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}Map.cpp
 	${INCLUDES_COMMON_DIR}MapProvider.hpp
 	${INCLUDES_COMMON_DIR}MapProvider.cpp
+	${INCLUDES_COMMON_DIR}ShipInfo.hpp
 	main.cpp
 	Cannon.hpp
 	Cannon.cpp
