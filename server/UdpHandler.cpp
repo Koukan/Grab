@@ -28,7 +28,10 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			&UdpHandler::statement,
 			&UdpHandler::retrieve,
 			&UdpHandler::ping,
-			&UdpHandler::pong
+			&UdpHandler::pong,
+			&UdpHandler::firestate,
+			&UdpHandler::updatecannon,
+			&UdpHandler::launchgrab
 	};
 	uint8_t				type;
 
@@ -141,3 +144,12 @@ int         UdpHandler::pong(Net::Packet &, Client &client)
 	client.setLatency((Net::Clock::getMsSinceEpoch() - _time_recv) / 2);
 	return 1;
 }
+
+int         UdpHandler::firestate(Net::Packet &packet, Client&)
+{}
+
+int         UdpHandler::updatecannon(Net::Packet &packet, Client&)
+{}
+
+int         UdpHandler::launchgrab(Net::Packet &packet, Client&)
+{}

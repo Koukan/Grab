@@ -110,7 +110,7 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
-	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)));
+	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
 	this->_gameStarted = true;
 }
 

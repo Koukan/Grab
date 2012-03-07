@@ -21,6 +21,9 @@ private:
 	int         retrieve(Net::Packet &packet, Client&);
 	int			ping(Net::Packet &packet, Client&);
 	int         pong(Net::Packet &packet, Client&);
+	int         firestate(Net::Packet &packet, Client&);
+	int         updatecannon(Net::Packet &packet, Client&);
+	int         launchgrab(Net::Packet &packet, Client&);
 
 	uint64_t	_time_recv;
 };
