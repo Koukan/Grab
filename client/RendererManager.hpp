@@ -31,4 +31,8 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		int					_height;
 		sf::RenderWindow	*_window;
 		Shader			_shader;
+
+private:
+	void drawQuadTree(Core::QuadTree const &quadTree);
+	void drawNode(Core::Node *node);
 };

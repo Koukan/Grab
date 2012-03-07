@@ -30,7 +30,7 @@ public:
 	void display(Node *node, std::string const &space = "  ") const;
 	void display(std::string const &space = "  ") const;
 
-private:
+public:
 	Node *_mainNode;
 
 	void	collideNodes(Node *node, Node *node2, QuadTree::callInfo call) const;

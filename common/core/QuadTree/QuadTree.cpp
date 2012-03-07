@@ -524,14 +524,28 @@ void	QuadTree::collideNodes(Node *node, Node *node2, QuadTree::callInfo call) co
 			Node *child = node->getChilds()[i];
 			if (child)
 			{
+				Node *checkpoint = 0;
 				if (!child->getElements().empty())
 				{
 					for (Node *tmp = node2; tmp; tmp = tmp->getParent())
+					{
+						if (this->collideRect(tmp->getX(), tmp->getY(), tmp->getSize(), tmp->getSize(),
+							child->getX(), child->getY(), child->getSize(), child->getSize()))
+							checkpoint = tmp;
 						this->collideElements(child->getElements(), tmp->getElements(), call);
+					}
 				}
-				if (this->collideRect(node2->getX(), node2->getY(), node2->getSize(), node2->getSize(),
-				child->getX(), child->getY(), child->getSize(), child->getSize()))
-					this->collideNodes(child, node2, call);
+				else
+				{
+					for (Node *tmp = node2; tmp; tmp = tmp->getParent())
+					{
+						if (this->collideRect(tmp->getX(), tmp->getY(), tmp->getSize(), tmp->getSize(),
+							child->getX(), child->getY(), child->getSize(), child->getSize()))
+							checkpoint = tmp;
+					}
+				}
+				if (checkpoint)
+					this->collideNodes(child, checkpoint, call);
 			}
 		}
 	}

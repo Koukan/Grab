@@ -29,6 +29,39 @@ void				RendererManager::init()
 	//_shader.SetParameter("vx_offset", 0.0f);
 }
 
+void RendererManager::drawNode(Core::Node *node)
+{
+	#if (SFML_VERSION_MAJOR == 2)
+		sf::RectangleShape  rect(sf::Vector2f(node->getSize(), node->getSize()));
+		rect.SetOutlineColor(sf::Color(255, 255, 255, 50));
+		rect.SetFillColor(sf::Color(0, 0, 0,0));
+		rect.SetOutlineThickness(2.0);
+		rect.SetPosition(node->getX(), node->getY());
+		this->_window->Draw(rect);
+	#else
+		this->_window->Draw(sf::Shape::Rectangle(node->getX(), node->getY(),
+			node->getX() + node->getSize(), node->getY() + node->getSize(),
+			sf::Color(0, 0, 0,0), 2.0, sf::Color(0, 255, 0, 50)));
+	#endif
+
+	for (int i = 0; i < 4; ++i)
+	{
+		Core::Node *child = node->getChilds()[i];
+		if (child)
+			this->drawNode(child);
+	}
+}
+
+void RendererManager::drawQuadTree(Core::QuadTree const &quadTree)
+{
+	//for (int i = 0; i < 4; ++i)
+	//{
+		Core::Node *node = quadTree._mainNode->getChilds()[0];
+		if (node)
+			this->drawNode(node);
+	//}
+}
+
 void				RendererManager::update(double elapsedTime)
 {
   Core::GameObjectManager::groupsDisplay::const_iterator	lit;
@@ -46,6 +79,8 @@ void				RendererManager::update(double elapsedTime)
 		{
 			if (lit->second->getLayer() >= 0)
 			{
+				if (lit->second->getName() == "playerShots" || lit->second->getName() == "monster")
+				this->drawQuadTree(lit->second->getQuadTree());
 				time = lit->second->getTimeEffect() * elapsedTime;
 				Core::Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)
