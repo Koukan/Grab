@@ -8,21 +8,10 @@
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
 
-Ship::ShipInfo const Ship::shipsList[] = {
-  {"Conqueror", "player1", "player3", 300, 400,
-   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER},
-  {"Voyageer", "player2", "player3", 300, 800,
-   Grab::MIDDLE_BOTTOM, Grab::LEFT_TOP_CORNER, Grab::RIGHT_TOP_CORNER},
-  {"Obliterator", "player3", "player3", 300, 200,
-   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER}
-};
-
-unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
-
 Ship::Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
 	   float speed, int fireFrequency, int r, int g, int b,
-	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
-	   unsigned int nbMaxGrabs)
+	   GrabPosition::Position grab1, GrabPosition::Position grab2,
+	   GrabPosition::Position grab3, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
 	_player(player), _speed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
@@ -50,7 +39,7 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
 	player.setShip(this);
 }
 
-Ship::Ship(Player &player, ShipInfo const &info, int r, int g, int b,
+Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _player(player), _speed(info.speed), _fireFrequency(info.fireFrequency),
@@ -444,7 +433,7 @@ void Ship::updateBulletTrajectory()
     }
 }
 
-void Ship::defineGrabPosition(Grab::Position position, unsigned int nGrab)
+void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGrab)
 {
   if ((position & 8))
     _grabsPositions[nGrab].first = -20;

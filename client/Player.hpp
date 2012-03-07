@@ -34,22 +34,22 @@ public:
   //setter
   void					setType(Player::type type);
   void					setShip(Ship *ship);
-  void					setShipInfo(Ship::ShipInfo const *info);
+  void					setShipInfo(ShipInfo::ShipInfo const *info);
   void					setLife(int nb);
   void					die();
   void					respawn();
 
   //getter
-  Player::type			getType() const;
-  Ship					*getShip() const;
-  Ship::ShipInfo const	*getShipInfo() const;
-  Core::InputCommand	&getAction(Player::Action action);
-  int					getLife() const;
+  Player::type				getType() const;
+  Ship						*getShip() const;
+  ShipInfo::ShipInfo const	*getShipInfo() const;
+  Core::InputCommand		&getAction(Player::Action action);
+  int						getLife() const;
 
 private:
-  	int						_life;
-	Player::type			_type;
-	Core::InputCommand		_actions[NBACTIONS];
-	Ship					*_ship;
-	Ship::ShipInfo const	*_shipInfo;
+  	int							_life;
+	Player::type				_type;
+	Core::InputCommand			_actions[NBACTIONS];
+	Ship						*_ship;
+	ShipInfo::ShipInfo const	*_shipInfo;
 };

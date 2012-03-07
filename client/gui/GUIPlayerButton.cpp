@@ -19,7 +19,7 @@ GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int 
 		this->_bindFont->setText("bind");
 	}
 	if (this->_shipFont)
-		this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
+		this->_shipFont->setText(ShipInfo::shipsList[this->_ship].shipName);
 
 	this->_bindActions.push_back("Fire");
 	this->_bindActions.push_back("Special Fire");
@@ -121,7 +121,7 @@ bool	GUIPlayerButton::directionCommand(Core::GUICommand const &command)
 	else if (command.direction == Core::GUICommand::UP)
 	{
 		if (this->_ship == 0)
-			this->_ship = Ship::shipsListSize - 1;
+			this->_ship = ShipInfo::shipsListSize - 1;
 		else
 			this->_ship--;
 		this->changeShip();
@@ -130,7 +130,7 @@ bool	GUIPlayerButton::directionCommand(Core::GUICommand const &command)
 	}
 	else if (command.direction == Core::GUICommand::DOWN)
 	{
-		if (this->_ship == Ship::shipsListSize - 1)
+		if (this->_ship == ShipInfo::shipsListSize - 1)
 			this->_ship = 0;
 		else
 			this->_ship++;
@@ -259,7 +259,7 @@ void	GUIPlayerButton::changeToSelect()
 		else
 			this->_font->setText("Joystick : Start ?");
 	}
-	this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+	this->_player->setShipInfo(&ShipInfo::shipsList[this->_ship]);
 	++this->_nbPending;
 	this->_isSelect = true;
 	if (this->_isReady)
@@ -289,6 +289,6 @@ void	GUIPlayerButton::changeToReady()
 
 void	GUIPlayerButton::changeShip()
 {
-	this->_shipFont->setText(Ship::shipsList[this->_ship].shipName);
-	this->_player->setShipInfo(&Ship::shipsList[this->_ship]);
+	this->_shipFont->setText(ShipInfo::shipsList[this->_ship].shipName);
+	this->_player->setShipInfo(&ShipInfo::shipsList[this->_ship]);
 }

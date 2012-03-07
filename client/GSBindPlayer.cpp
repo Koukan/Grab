@@ -126,7 +126,7 @@ void	GSBindPlayer::answerBind(Core::Command const &command)
 			{
 				(*lit)->addPlayer(it->second);
 				this->_players[i] = new Player(static_cast<Player::type>(it->second));
-				this->_players[i]->setShipInfo(&Ship::shipsList[0]);
+				this->_players[i]->setShipInfo(&ShipInfo::shipsList[0]);
 				break ;
 			}
 			i++;
@@ -184,7 +184,7 @@ void	GSBindPlayer::updatePlayer(Core::Command const &command)
 		if (i == cmd.idObject)
 		{
 			(*it)->updatePlayer(cmd.idResource, cmd.boolean);
-			this->_players[i]->setShipInfo(&Ship::shipsList[cmd.idResource]);
+			this->_players[i]->setShipInfo(&ShipInfo::shipsList[cmd.idResource]);
 			return ;
 		}
 		i++;

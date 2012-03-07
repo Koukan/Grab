@@ -55,7 +55,7 @@ void			Player::setShip(Ship *ship)
 	this->_ship = ship;
 }
 
-void			Player::setShipInfo(Ship::ShipInfo const *info)
+void			Player::setShipInfo(ShipInfo::ShipInfo const *info)
 {
 	this->_shipInfo = info;
 }
@@ -98,7 +98,7 @@ Ship			*Player::getShip() const
 	return (this->_ship);
 }
 
-Ship::ShipInfo const	*Player::getShipInfo() const
+ShipInfo::ShipInfo const	*Player::getShipInfo() const
 {
 	return (this->_shipInfo);
 }
