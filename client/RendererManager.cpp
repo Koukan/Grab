@@ -79,8 +79,8 @@ void				RendererManager::update(double elapsedTime)
 		{
 			if (lit->second->getLayer() >= 0)
 			{
-				if (lit->second->getName() == "playerShots" || lit->second->getName() == "monster")
-				this->drawQuadTree(lit->second->getQuadTree());
+//				if (lit->second->getName() == "playerShots" || lit->second->getName() == "monster")
+//				this->drawQuadTree(lit->second->getQuadTree());
 				time = lit->second->getTimeEffect() * elapsedTime;
 				Core::Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)

@@ -40,6 +40,8 @@ public:
   void			inputJoystickMoved(Core::InputCommand const &cmd);
   void			inputFire(Core::InputCommand const &cmd);
   void			inputReleasedFire(Core::InputCommand const &cmd);
+  void			inputSpecialFire(Core::InputCommand const &cmd);
+  void			inputReleasedSpecialFire(Core::InputCommand const &cmd);
   void			inputGrab1(Core::InputCommand const &cmd);
   void			inputGrab2(Core::InputCommand const &cmd);
   void			inputGrab3(Core::InputCommand const &cmd);
@@ -57,6 +59,7 @@ private:
 
   Player					&_player;
   float						_speed;
+  float						_tmpSpeed;
   int						_fireFrequency;
   bool						_dead;
   Cannon*					_cannons[4];
@@ -72,6 +75,8 @@ private:
 	  DOWN,
 	  LEFT,
 	  RIGHT,
+	  FIRE,
+	  SPECIAL_FIRE,
 	  NBACTIONS
   };
 

@@ -12,14 +12,14 @@ inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
 		  double x, double y, double vx, double vy)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
 	double x, double y, double vx, double vy)
-	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true)
+	: Core::BulletCommand(state, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -27,7 +27,8 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
 	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
-	: Core::BulletCommand(state, gstate, box, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName), _isFiring(true)
+	: Core::BulletCommand(state, gstate, box, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
+	_isFiring(true), _isConcentrated(false)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -40,6 +41,16 @@ PlayerBullet::~PlayerBullet()
 void	PlayerBullet::createSimpleBullet(double direction, double speed)
 {
 	double		vx, vy;
+
+	if (this->_isConcentrated)
+	{
+		if (direction >= 0 && direction < 180)
+			direction = (direction + 3 * 90) / 4;
+		else
+			direction = (direction + 3 * 270) / 4;
+		speed *= 1.2;
+	}
+
 	double		dir = dtor(direction);
 	Bullet		*bullet;
 
@@ -66,6 +77,16 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 void	PlayerBullet::createBullet(BulletMLState* state, double direction, double speed)
 {
 	double			vx, vy;
+
+	if (this->_isConcentrated)
+	{
+		if (direction >= 0 && direction < 180)
+			direction = (direction + 3 * 90) / 4;
+		else
+			direction = (direction + 3 * 270) / 4;
+		speed *= 1.2;
+	}
+
 	double			dir = dtor(direction);
 	PlayerBullet	*bullet;
 
@@ -115,7 +136,10 @@ void	PlayerBullet::move(double time)
 {
 	if (this->_isFiring)
 	{
-		_turn += time * 50;
+		if (this->_isConcentrated)
+			_turn += time * 100;
+		else
+			_turn += time * 50;
 		this->run();
 	}
 	if (!this->_end)
@@ -140,4 +164,14 @@ void	PlayerBullet::setColor(uint8_t r, uint8_t g, uint8_t b)
 	_colors[0] = r;
 	_colors[1] = g;
 	_colors[2] = b;
+}
+
+void	PlayerBullet::isConcentrated(bool concentrated)
+{
+	this->_isConcentrated = concentrated;
+}
+
+bool	PlayerBullet::isConcentrated() const
+{
+	return (this->_isConcentrated);
 }

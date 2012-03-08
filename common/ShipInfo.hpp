@@ -39,11 +39,11 @@ namespace	ShipInfo
 	};
 
 	static ShipInfo const		shipsList[] = {
-  {"Conqueror", "player1", "player3", 300, 400,
+  {"Conqueror", "player1", "player3", 450, 400,
    GrabPosition::MIDDLE_TOP, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER},
-  {"Voyageer", "player2", "player3", 300, 800,
+  {"Voyageer", "player2", "player3", 450, 800,
    GrabPosition::MIDDLE_BOTTOM, GrabPosition::LEFT_TOP_CORNER, GrabPosition::RIGHT_TOP_CORNER},
-  {"Obliterator", "player3", "player3", 300, 200,
+  {"Obliterator", "player3", "player3", 450, 200,
    GrabPosition::MIDDLE_TOP, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER}
 	};
 	static unsigned int const	shipsListSize = sizeof(shipsList) / sizeof(*shipsList);

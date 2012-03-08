@@ -146,6 +146,7 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 		dist = tmpdist;
 	}
 
+	Ship *ship = dynamic_cast<Ship *>(&player);
 	if (id == 1)
 		player.setY(wy - pheight - player.getYHitBoxOffset());
 	else if (id == 2)
@@ -155,7 +156,15 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 	else if (id == 4)
 		player.setX(wx + wwidth - player.getXHitBoxOffset());
 	else
-		static_cast<Ship &>(player).setDead(true);
-	static_cast<Ship &>(player).updateBulletTrajectory();
-	static_cast<Ship &>(player).updateCannonsTrajectory();
+	{
+		if (ship)
+			ship->setDead(true);
+		else
+			player.erase();
+	}
+	if (ship)
+	{
+		ship->updateBulletTrajectory();
+		ship->updateCannonsTrajectory();
+	}
 }
