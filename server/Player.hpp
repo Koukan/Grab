@@ -3,6 +3,7 @@
 #include "Net.hpp"
 #include "GameLogic.hpp"
 #include "PacketType.hpp"
+#include "ShipInfo.hpp"
 
 class Game;
 class Ship;
@@ -15,21 +16,29 @@ class Player
     virtual ~Player();
 
 	//getter
-	uint32_t			getId() const;
-	Ship				*getShip() const;
-	bool				isReady() const;
-	int					getShipType() const;
-	Client				&getClient() const;
+	uint32_t					getId() const;
+	Ship						*getShip() const;
+	bool						isReady() const;
+	int							getShipType() const;
+	ShipInfo::ShipInfo const	*getShipInfo() const;
+	Client						&getClient() const;
+	int							getLife() const;
 
 	//setter
 	void				setShip(Ship *ship);
 	void				setReady(bool ready);
 	void				setShipType(int type);
+	void				setShipInfo(ShipInfo::ShipInfo const *info);
+	void				setLife(int life);
+	void				die();
+	void				respawn();
 
   private:
-	uint8_t			_id;
-	Client			&_client;
-	bool			_ready;
-	int				_shipType;
-	Ship			*_ship;
+	int							_life;
+	uint8_t						_id;
+	Client						&_client;
+	bool						_ready;
+	int							_shipType;
+	ShipInfo::ShipInfo const	*_shipInfo;
+	Ship						*_ship;
 };

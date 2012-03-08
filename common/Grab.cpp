@@ -1,6 +1,5 @@
 #include <cmath>
 #include "Grab.hpp"
-#include "RendererManager.hpp"
 #include "Ship.hpp"
 
 #ifndef M_PI
