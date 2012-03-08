@@ -20,9 +20,12 @@ public:
 	virtual double	getAimDirection();
     virtual void	move(double time);
 	void			setColor(uint8_t r, uint8_t g, uint8_t b);
+	void			isConcentrated(bool concentrated);
+	bool			isConcentrated() const;
 
 private:
 	std::string const	_groupName;
 	bool				_isFiring;
+	bool				_isConcentrated;
 	uint8_t				_colors[3];
 };

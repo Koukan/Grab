@@ -27,9 +27,9 @@ Player::Player(Player::type type, Ship* ship)
 	else
 	{
 		this->_actions[Player::FIRE].Type = InputCommand::JoystickButtonPressed;
-		this->_actions[Player::FIRE].JoystickButton.Button = 0;
+		this->_actions[Player::FIRE].JoystickButton.Button = 5;
 		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::JoystickButtonPressed;
-		this->_actions[Player::SPECIAL_FIRE].JoystickButton.Button = 8;
+		this->_actions[Player::SPECIAL_FIRE].JoystickButton.Button = 4;
 		this->_actions[Player::PAUSE].Type = InputCommand::JoystickButtonReleased;
 		this->_actions[Player::PAUSE].JoystickButton.Button = 7;
 		this->_actions[Player::GRAB1].Type = InputCommand::JoystickButtonPressed;
