@@ -44,10 +44,10 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 
 	if (this->_isConcentrated)
 	{
-		if (direction >= 0 && direction < 180)
+		if (direction < /*180*/270)
 			direction = (direction + 3 * 90) / 4;
 		else
-			direction = (direction + 3 * 270) / 4;
+			direction = (direction + 3 * /*270*/(360 + 90)) / 4;
 		speed *= 1.2;
 	}
 
@@ -80,10 +80,10 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 
 	if (this->_isConcentrated)
 	{
-		if (direction >= 0 && direction < 180)
+		if (direction < /*180*/270)
 			direction = (direction + 3 * 90) / 4;
 		else
-			direction = (direction + 3 * 270) / 4;
+			direction = (direction + 3 * /*270*/(360 + 90)) / 4;
 		speed *= 1.2;
 	}
 
