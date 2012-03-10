@@ -43,6 +43,14 @@ private:
 		VWALL
 	};
 
+	enum Direction
+	{
+		LEFT = 0,
+		RIGHT = 1,
+		TOP = 2,
+		BOTTOM = 3
+	};
+
 	typedef std::vector<MonsterInfo>	Monsters;
 
 	Monsters	_randMonsters;
@@ -52,6 +60,7 @@ private:
 
 	size_t		_maxId;
 	size_t		_squadLevel;
+	size_t		_mazeLevel;
 	size_t		_squadLevelSpeed;
 	size_t		_nbSquads;
 	size_t		_nbSquadsMax;
@@ -66,13 +75,14 @@ private:
 	int			_mazeY;
 
 	void	createMonster(MonsterInfo const &info);
-	void	createWall(MonsterInfo const &info, int x, double y);
+	void	createWall(MonsterInfo const &info, int x, int y);
 	void	updateId();
 	void	addSideWalls(double elapsed);
 	void	chooseMovingWall(int x, int y, int direction);
 	bool	thereIsFreeWay(int x, int y, int direction);
-	void	createWalls();
-	void	createMaze(double elapsed);
+	bool	isMovable(int x, int y, int direction);
+	void	createWalls(int offset);
+	void	createMaze();
 	void	roundWall(int x, int y);
 	void	onLeft(int &x, int &y);
 	void	onRight(int &x, int &y);
