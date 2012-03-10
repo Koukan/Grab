@@ -34,6 +34,9 @@ void		GSInGame::preload()
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
+  this->addGroup("walls", 4);
+  this->addGroup("breakableWalls", 3);
+  this->addGroup("Wall", 0);
   this->addGroup("shot", 9); //what is it ??
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
@@ -41,17 +44,21 @@ void		GSInGame::preload()
   this->addGroup("end", 3);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
-  this->setCollisionGroups("Wall", "walls", &Rules::wallTouchObject);
+  //this->setCollisionGroups("Wall", "walls", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+  this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("breakableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
