@@ -186,7 +186,7 @@ void		Game::loadGame()
 
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
-		ship = new Ship(x, 650, *this->_players[i]);
+		ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), 0, 0, 0);
 		_logic.addGameObject(ship, "players");
 		cmd = new GameCommand("ShipSpawn");
 		cmd->idResource = i;

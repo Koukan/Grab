@@ -39,6 +39,16 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}MonsterGenerator.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.cpp
+	${COMMON_INCLUDE_DIR}Ship.hpp
+	${COMMON_INCLUDE_DIR}Ship.cpp
+	${COMMON_INCLUDE_DIR}Grab.hpp
+	${COMMON_INCLUDE_DIR}Grab.cpp
+	${COMMON_INCLUDE_DIR}Cannon.hpp
+	${COMMON_INCLUDE_DIR}Cannon.cpp
+	${COMMON_INCLUDE_DIR}ConcreteObject.hpp
+	${COMMON_INCLUDE_DIR}ConcreteObject.cpp
+	${COMMON_INCLUDE_DIR}PlayerBullet.hpp
+	${COMMON_INCLUDE_DIR}PlayerBullet.cpp
 	main.cpp
 	Client.cpp
 	Client.hpp
@@ -63,8 +73,6 @@ set(SRCS
 	Server.hpp
 	ServerResourceManager.cpp
 	ServerResourceManager.hpp
-	Ship.cpp
-	Ship.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	main.cpp

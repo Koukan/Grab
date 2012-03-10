@@ -3,28 +3,16 @@
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
-#include "SFMLSprite.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
 
-Ship::ShipInfo const Ship::shipsList[] = {
-  {"Conqueror", "player1", "player3", 300, 400,
-   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER},
-  {"Voyageer", "player2", "player3", 300, 800,
-   Grab::MIDDLE_BOTTOM, Grab::LEFT_TOP_CORNER, Grab::RIGHT_TOP_CORNER},
-  {"Obliterator", "player3", "player3", 300, 200,
-   Grab::MIDDLE_TOP, Grab::LEFT_BOTTOM_CORNER, Grab::RIGHT_BOTTOM_CORNER}
-};
-
-unsigned int const Ship::shipsListSize = sizeof(Ship::shipsList) / sizeof(*Ship::shipsList);
-
 Ship::Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
 	   float speed, int fireFrequency, int r, int g, int b,
-	   Grab::Position grab1, Grab::Position grab2, Grab::Position grab3,
-	   unsigned int nbMaxGrabs)
+	   GrabPosition::Position grab1, GrabPosition::Position grab2,
+	   GrabPosition::Position grab3, unsigned int nbMaxGrabs)
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-	_player(player), _speed(speed), _fireFrequency(fireFrequency), _dead(false),
+	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName), _playerBullet(0)
 {
@@ -50,10 +38,10 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
 	player.setShip(this);
 }
 
-Ship::Ship(Player &player, ShipInfo const &info, int r, int g, int b,
+Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
-	  _player(player), _speed(info.speed), _fireFrequency(info.fireFrequency),
+	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
 	  _playerBullet(0)
@@ -290,6 +278,9 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
 	if (this->_dead)
 		return ;
+	this->_actions[Ship::FIRE] = true;
+	if (this->_actions[Ship::SPECIAL_FIRE])
+		return ;
   if (!this->_playerBullet)
   {
 	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
@@ -310,7 +301,9 @@ void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 {
-	if (this->_dead)
+	this->_actions[Ship::FIRE] = false;
+
+	if (this->_dead || this->_actions[Ship::SPECIAL_FIRE])
 		return ;
 	if (this->_playerBullet)
 	{
@@ -323,6 +316,66 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 	      _cannons[i]->stopFire();
 	  }
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("endFire", this->_id));
+}
+
+void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
+{
+	if (this->_dead)
+		return ;
+	this->_actions[Ship::SPECIAL_FIRE] = true;
+	this->_speed = this->_tmpSpeed * 0.5;
+	this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
+	this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
+	if (!this->_playerBullet)
+		this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
+			"playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
+	if (this->_playerBullet)
+	{
+		this->_playerBullet->isConcentrated(true);
+		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
+	    {
+	      if (_cannons[i])
+		  {
+			_cannons[i]->fire();
+			if (_cannons[i]->getBullet())
+				_cannons[i]->getBullet()->isConcentrated(true);
+		  }
+	    }
+	}
+}
+
+void Ship::inputReleasedSpecialFire(Core::InputCommand const& cmd)
+{
+	this->_actions[Ship::SPECIAL_FIRE] = false;
+	this->_vx = this->_vx / this->_speed * this->_tmpSpeed;
+	this->_vy = this->_vy / this->_speed * this->_tmpSpeed;
+	this->_speed = this->_tmpSpeed;
+	if (this->_dead)
+		return ;
+	if (!this->_actions[Ship::FIRE])
+	{
+		if (this->_playerBullet)
+		{
+			this->_playerBullet->erase();
+			this->_playerBullet = 0;
+		}
+		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
+		{
+		    if (_cannons[i])
+		      _cannons[i]->stopFire();
+		}
+	}
+	else if (this->_playerBullet)
+	{
+		this->_playerBullet->isConcentrated(false);
+		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
+		{
+		    if (_cannons[i] && _cannons[i]->getBullet())
+		      _cannons[i]->getBullet()->isConcentrated(false);
+		}
+	}
 }
 
 void Ship::inputGrab1(Core::InputCommand const& /*cmd*/)
@@ -412,7 +465,7 @@ void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 
 void Ship::copyColor(Core::Sprite &sprite)
 {
-  static_cast<SFMLSprite &>(sprite).SetColor(static_cast<SFMLSprite *>(_sprite)->GetColor());
+	sprite.setColor(_colors[0], _colors[1], _colors[2]);
 }
 
 void Ship::updateCannonsTrajectory()
@@ -444,7 +497,7 @@ void Ship::updateBulletTrajectory()
     }
 }
 
-void Ship::defineGrabPosition(Grab::Position position, unsigned int nGrab)
+void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGrab)
 {
   if ((position & 8))
     _grabsPositions[nGrab].first = -20;

@@ -80,23 +80,25 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}MapProvider.hpp
 	${INCLUDES_COMMON_DIR}MapProvider.cpp
 	${INCLUDES_COMMON_DIR}ShipInfo.hpp
+	${INCLUDES_COMMON_DIR}PlayerBullet.cpp
+	${INCLUDES_COMMON_DIR}PlayerBullet.hpp
+	${INCLUDES_COMMON_DIR}Cannon.hpp
+	${INCLUDES_COMMON_DIR}Cannon.cpp
 	main.cpp
-	Cannon.hpp
-	Cannon.cpp
 	SFMLFont.cpp
 	SFMLFont.hpp
 	SFMLFontProvider.cpp
 	SFMLFontProvider.hpp
-	ConcreteObject.cpp
-	ConcreteObject.hpp
+	${INCLUDES_COMMON_DIR}ConcreteObject.cpp
+	${INCLUDES_COMMON_DIR}ConcreteObject.hpp
 	Game.cpp
 	Game.hpp
 	GameButton.cpp
 	GameButton.hpp
 	GameListCommand.hpp
 	GameListCommand.cpp
-	Grab.hpp
-	Grab.cpp
+	${INCLUDES_COMMON_DIR}Grab.hpp
+	${INCLUDES_COMMON_DIR}Grab.cpp
 	GSBindPlayer.cpp
 	GSBindPlayer.hpp
 	GSInGame.cpp
@@ -131,8 +133,6 @@ set(SRCS
 	PacketCommand.hpp
 	Player.cpp
 	Player.hpp
-	PlayerBullet.cpp
-	PlayerBullet.hpp
 	RendererManager.cpp
 	RendererManager.hpp
 	ResourceCommand.hpp
@@ -146,8 +146,8 @@ set(SRCS
 	SFMLSprite.hpp
 	SFMLSpriteProvider.cpp
 	SFMLSpriteProvider.hpp
-	Ship.cpp
-	Ship.hpp
+	${INCLUDES_COMMON_DIR}Ship.cpp
+	${INCLUDES_COMMON_DIR}Ship.hpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	Wall.cpp
