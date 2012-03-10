@@ -41,6 +41,7 @@ void		GSInGame::preload()
   this->addGroup("end", 3);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
@@ -54,7 +55,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
-  this->load("resources/map/map1.xml");
+  this->load("resources/map/randomMap.xml");
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");

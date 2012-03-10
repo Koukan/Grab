@@ -35,6 +35,8 @@ set(SRCS
 	${COMMON_INCLUDE_DIR}GameCommand.hpp
 	${COMMON_INCLUDE_DIR}Map.hpp
 	${COMMON_INCLUDE_DIR}Map.cpp
+	${COMMON_INCLUDE_DIR}MonsterGenerator.cpp
+	${COMMON_INCLUDE_DIR}MonsterGenerator.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.hpp
 	${COMMON_INCLUDE_DIR}MapProvider.cpp
 	main.cpp

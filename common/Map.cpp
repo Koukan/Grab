@@ -57,6 +57,7 @@ void    	Map::addElem(std::string const &command, std::string const &name, size_
 void		Map::move(double time)
 {
 	PhysicObject::move(time);
+
 	GameCommand	*cmd;
 	std::multimap<size_t, mapdata>::iterator it = _monsters.begin();
 	for (; it != _monsters.end() && it->first <= this->_y;)
