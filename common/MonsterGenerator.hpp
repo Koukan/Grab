@@ -27,7 +27,7 @@ private:
 		MonsterInfo(size_t level, std::string const &name, bool scrollable)
 			: level(level), name(name), scrollable(scrollable) {}
 
-		bool	operator<(MonsterInfo const &info) { return (this->level < info.level); }
+		bool	operator<(MonsterInfo const &info) const { return (this->level < info.level); }
 
 		size_t		level;
 		std::string	name;
