@@ -40,7 +40,6 @@ class GameLogic : public Core::GameState
 	  int		occurenceFrequency;
   };
 
-	void createEnnemies(double elapseTime);
 	Game				&_game;
 	int					_nbEnemies;
 	double				_elapseTime;

@@ -71,13 +71,13 @@ set(SRCS
 	Rules.hpp
 	Server.cpp
 	Server.hpp
-	ServerResourceManager.cpp
-	ServerResourceManager.hpp
+	ServerSprite.hpp
+	ServerSprite.cpp
+	ServerSpriteProvider.hpp
+	ServerSpriteProvider.cpp
 	UdpHandler.cpp
 	UdpHandler.hpp
 	main.cpp
-	BCommand.cpp
-	BCommand.hpp
 )
 
 IF(WIN32)

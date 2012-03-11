@@ -14,6 +14,7 @@ public:
 	virtual ~XMLProvider();
 	virtual void	init();
 	virtual void	handleXML(TiXmlNode *, ResourceManager &) = 0;
+	void			addResource(std::string const &name, Resource &resource);
 	void			addResource(std::string const &name, Resource &resource, ResourceManager &manager);
 	virtual void	deleteResource(std::string const &name);
 

@@ -27,7 +27,7 @@ void		XMLProvider::deleteResource(std::string const &name)
 }
 
 void		XMLProvider::addResource(std::string const &name,
-				Resource &resource, ResourceManager &manager)
+				Resource &resource)
 {
 	uint32_t		id = this->_id++;
 
@@ -41,6 +41,12 @@ void		XMLProvider::addResource(std::string const &name,
 		this->_resources[name] = &resource;
 		this->_ids[id] = &resource;
 	}
+}
+
+void		XMLProvider::addResource(std::string const &name,
+				Resource &resource, ResourceManager &manager)
+{
+	this->addResource(name, resource);
 	manager.addResource(resource);
 }
 
