@@ -42,7 +42,8 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::demandPlayerPacket,
 			&Server::updatePlayerPacket,
 			&Server::removePlayerPacket,
-			&Server::shipSpawnPacket
+			&Server::shipSpawnPacket,
+			&Server::seedPacket
 	};
 	uint8_t			type;
 
@@ -214,5 +215,14 @@ bool		Server::shipSpawnPacket(Net::Packet &packet)
 	packet >> x;
 	packet >> y;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("shipSpawn", id, player, x, y));
+	return true;
+}
+
+bool		Server::seedPacket(Net::Packet &packet)
+{
+	uint32_t	seed;
+
+	packet >> seed;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("seed", seed));
 	return true;
 }

@@ -63,7 +63,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Startgame", &NetworkModule::startgameCommand},
 		{"RangeId", &NetworkModule::rangeId},
 		{"ResourceId", &NetworkModule::resourceId},
-		{"ShipSpawn", &NetworkModule::shipSpawnCommand}
+		{"ShipSpawn", &NetworkModule::shipSpawnCommand},
+		{"Seed", &NetworkModule::seedCommand}
 	};
 
 	for (size_t i = 0;
@@ -182,6 +183,19 @@ void		NetworkModule::shipSpawnCommand(Core::Command const &command)
 		packet << static_cast<uint32_t>(cmd.idObject);
 		packet << static_cast<int16_t>(cmd.x);
 		packet << static_cast<int16_t>(cmd.y);
+		this->sendTCPPacket(packet, cmd.game->getClients());
+	}
+}
+
+void		NetworkModule::seedCommand(Core::Command const &command)
+{
+	GameCommand const &cmd = static_cast<GameCommand const &>(command);
+
+	if (Server::get().gameExist(cmd.game))
+	{
+		Net::Packet		packet(5);
+		packet << static_cast<uint8_t>(TCP::SEED);
+		packet << static_cast<uint32_t>(cmd.idObject);
 		this->sendTCPPacket(packet, cmd.game->getClients());
 	}
 }

@@ -28,9 +28,9 @@ private:
 	template<typename T>
 	class Method
 	{
-	public:
-	  T		name;
-	  void (GSInGame::*method)(GameCommand const &);
+		public:
+			T		name;
+			void (GSInGame::*method)(GameCommand const &);
 	};
 
 	void		gameover();
@@ -47,6 +47,7 @@ private:
 	void		spawnsound(GameCommand const &event);
 	void		spawnend(GameCommand const &event);
 	void		respawnplayer(GameCommand const &event);
+	void		setSeed(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
@@ -73,4 +74,5 @@ private:
 	uint32_t						_currentId;
 	bool							_fire;
 	double							_elapsedTime;
+	Net::MTRand						_rand;
 };

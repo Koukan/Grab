@@ -41,6 +41,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		startgameCommand(Core::Command const &command);
 	void		rangeId(Core::Command const &command);
 	void		resourceId(Core::Command const &command);
+	void		seedCommand(Core::Command const &command);
 	void		sendPing();
 	bool		gameExist(Game *);
 

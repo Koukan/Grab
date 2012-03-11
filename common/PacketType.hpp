@@ -42,7 +42,8 @@ namespace TCP
 		DEMANDPLAYER = 17,
 		UPDATEPLAYER = 18,
 		REMOVEPLAYER = 19,
-		SHIPSPAWN = 20
+		SHIPSPAWN = 20,
+		SEED = 21
 	};
 }
 
