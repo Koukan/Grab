@@ -1,5 +1,5 @@
 #include "Rules.hpp"
-#include "BCommand.hpp"
+#include "BulletCommand.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameLogic.hpp"
 #include "GameCommand.hpp"
@@ -20,7 +20,7 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	//Core::CommandDispatcher::get().pushCommand(*cmd);
 	//o1.erase();
 
-	BCommand &obj = static_cast<BCommand &>(o2);
+	Core::BulletCommand &obj = static_cast<Core::BulletCommand &>(o2);
 	obj.setLife(obj.getLife() - 10);
 	if (obj.getLife() <= 0)
 	{

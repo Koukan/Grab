@@ -3,11 +3,9 @@
 #include "GameLogic.hpp"
 #include "GameCommand.hpp"
 #include "Ship.hpp"
-#include "Bullet.hpp"
+#include "BulletCommand.hpp"
 #include "CircleHitBox.hpp"
 #include "CommandDispatcher.hpp"
-#include "ServerResourceManager.hpp"
-#include "BCommand.hpp"
 #include "Rules.hpp"
 #include "Map.hpp"
 
@@ -56,7 +54,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		ship->setY(gc.y);
 		ship->setVx(gc.vx);
 		ship->setVy(gc.vy);
-		GameCommand *answer = new GameCommand("Move");
+		GameCommand *answer = new GameCommand("MovePacket");
 		answer->idObject = ship->getId();
 		answer->x = gc.x;
 		answer->y = gc.y;
@@ -87,18 +85,18 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 	}
 	else if (gc.name == "spawnspawner")
 	{
-		BCommand	*bullet = new BCommand(gc.data, *this, 1100, gc.x, 0, 0);
+		Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, 1100, gc.x, 0, 0);
 		this->addGameObject(bullet);
-		GameCommand *answer = new GameCommand("Spawn");
-		answer->idResource = bullet->getId();
-		answer->idObject = this->getBulletParser(gc.data)->getResourceId();
-		answer->x = gc.x;
-		answer->y = gc.y;
-		answer->vx = gc.vx;
-		answer->vy = gc.vy;
-		answer->game = &_game;
-		answer->client = gc.client;
-		Core::CommandDispatcher::get().pushCommand(*answer);
+		//GameCommand *answer = new GameCommand("Spawn");
+		//answer->idResource = bullet->getId();
+		//answer->idObject = this->getBulletParser(gc.data)->getResourceId();
+		//answer->x = gc.x;
+		//answer->y = gc.y;
+		//answer->vx = gc.vx;
+		//answer->vy = gc.vy;
+		//answer->game = &_game;
+		//answer->client = gc.client;
+		//Core::CommandDispatcher::get().pushCommand(*answer);
 	}
 	return false;
 }
@@ -112,61 +110,5 @@ void		GameLogic::startGame()
 {
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
 	this->_gameStarted = true;
-}
-
-void GameLogic::createEnnemies(double elapseTime)
-{
-	static Salvo const salvos[] = {
-		{SIMPLE, 5, "single", 1000},
-		{SINUSOIDAL, 4, "sinusoidal", 1000},
-		{BOMB, 1, "bomb", 1000},
-		{RANDOM, 5, "random", 1000},
-		{WALL, 1, "wall", 1000}
-	};
-
-	static Boss const bosses[] = {
-		{"bossMetroid", 10}
-	};
-
-	int const salvoFrequency = 10000;
-	int const maxSalvos = 10;
-
-	static int i = 0;
-	static int y = 0;
-	static int nbSalvos = 11;
-
-	if (this->_elapseTime == 0)
-	{
-		if (nbSalvos > maxSalvos)
-		{
-			int j = rand() % (sizeof(bosses) / sizeof(*bosses));
-			this->addGameObject(new BCommand(bosses[j].bulletName, *this, 1100, 400, 0, 0));
-			nbSalvos = 0;
-			this->_elapseTime = 10000;
-		}
-		else if (this->_nbEnemies == 0)
-		{
-			i = rand() % (sizeof(salvos) / sizeof(*salvos));
-			y = rand() % 700;
-			this->_nbEnemies = salvos[i].nbEnemies;
-			this->_elapseTime = salvoFrequency;
-			++nbSalvos;
-		}
-		else
-		{
-		  if (salvos[i].bulletName == "bomb")
-		    this->addGameObject(new BCommand(salvos[i].bulletName, *this, 1200, -20, 0, 0));
-		  else
-		    this->addGameObject(new BCommand(salvos[i].bulletName, *this, 1200, y + 34, 0, 0));
-			this->_elapseTime += salvos[i].occurenceFrequency;
-			--this->_nbEnemies;
-		}
-	}
-	else
-	{
-		if (this->_elapseTime - elapseTime < 0)
-			this->_elapseTime = 0;
-		else
-			this->_elapseTime -= elapseTime;
-	}
+	this->setBeginId(10000);
 }

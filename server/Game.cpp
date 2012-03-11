@@ -105,7 +105,7 @@ void		Game::removePlayer(int i)
 
 void		Game::changePlayersStatus(int i, int ship, bool ready)
 {
-	if (i < 4 && i >= 0 && this->_players[i] && !this->_players[i]->isReady())
+	if (i < 4 && i >= 0 && this->_players[i])
 	{
 		if (ready && !this->_players[i]->isReady())
 		{
@@ -187,6 +187,8 @@ void		Game::loadGame()
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
 		ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), 0, 0, 0);
+		ship->setX(x);
+		ship->setY(600);
 		_logic.addGameObject(ship, "players");
 		cmd = new GameCommand("ShipSpawn");
 		cmd->idResource = i;
