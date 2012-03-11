@@ -4,7 +4,7 @@
 
 MonsterGenerator::MonsterGenerator(int seed)
 	: _maxId(0), _leftFrequency(20), _rightFrequency(20), _upFrequency(1), _squadLevelSpeed(4), _nbSquads(0), _nbSquadsMax(10), _squadTime(10), _rand(seed), _elapsedTime(0),
-	_inMaze(true), _tmpY(this->_y), _wallSize(180), _position(1), _mazeY(0)
+	_inMaze(true), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0)
 {
 }
 
@@ -168,25 +168,25 @@ void	MonsterGenerator::chooseMovingWall(int x, int y, int direction)
 
 		if (directions[i] == LEFT)
 		{
-			std::cout << "wall left" << std::endl;
+			//std::cout << "wall left" << std::endl;
 			this->_maze[y * WIDTH + x] = HWALL;
 			this->_maze[y * WIDTH + x - 1] = HWALL;
 		}
 		else if (directions[i] == RIGHT)
 		{
-			std::cout << "wall right" << std::endl;
+			//std::cout << "wall right" << std::endl;
 			this->_maze[y * WIDTH + x] = HWALL;
 			this->_maze[y * WIDTH + x + 1] = HWALL;
 		}
 		else if (directions[i] == TOP)
 		{
-			std::cout << "wall top" << std::endl;
+			//std::cout << "wall top" << std::endl;
 			this->_maze[y * WIDTH + x] = VWALL;
 			this->_maze[(y - 1) * WIDTH + x] = VWALL;
 		}
 		else
 		{
-			std::cout << "wall bottom" << std::endl;
+			//std::cout << "wall bottom" << std::endl;
 			this->_maze[y * WIDTH + x] = VWALL;
 			this->_maze[(y + 1) * WIDTH + x] = VWALL;
 		}
@@ -194,7 +194,7 @@ void	MonsterGenerator::chooseMovingWall(int x, int y, int direction)
 
 void	MonsterGenerator::onLeft(int &x, int &y)
 {
-	std::cout << "left" << std::endl;
+	//std::cout << "left" << std::endl;
 	if (this->_maze[y * WIDTH + x - 1] == WALL)
 		this->chooseMovingWall(x - 1, y, 0);
 	this->roundWall(x, y);
@@ -203,7 +203,7 @@ void	MonsterGenerator::onLeft(int &x, int &y)
 
 void	MonsterGenerator::onRight(int &x, int &y)
 {
-	std::cout << "right" << std::endl;
+	//std::cout << "right" << std::endl;
 	if (this->_maze[y * WIDTH + x + 1] == WALL)
 		this->chooseMovingWall(x + 1, y, 1);
 	this->roundWall(x, y);
@@ -212,7 +212,7 @@ void	MonsterGenerator::onRight(int &x, int &y)
 
 void	MonsterGenerator::onTop(int &x, int &y)
 {
-	std::cout << "top" << std::endl;
+	//std::cout << "top" << std::endl;
 	if (this->_maze[(y - 1) * WIDTH + x] == WALL)
 		this->chooseMovingWall(x, y - 1, 2);
 	this->roundWall(x, y);
@@ -221,7 +221,7 @@ void	MonsterGenerator::onTop(int &x, int &y)
 
 void	MonsterGenerator::onBottom(int &x, int &y)
 {
-	std::cout << "bottom" << std::endl;
+	//std::cout << "bottom" << std::endl;
 	if (this->_maze[(y + 1) * WIDTH + x] == WALL)
 		this->chooseMovingWall(x, y + 1, 3);
 	this->roundWall(x, y);
@@ -298,7 +298,6 @@ void	MonsterGenerator::createMaze()
 		this->_maze[i] = EMPTY;
 	int x = this->_position;
 	int y = HEIGHT - 1;
-	std::cout << "<<<<" << std::endl;
 	MonsterGenerator::Direction curDir = TOP;
 	while (y >= 0)
 	{
@@ -349,15 +348,15 @@ void	MonsterGenerator::createMaze()
 	this->_position = x;
 
 	// debug display maze
-	for (int i = 0; i < HEIGHT; ++i)
-	{
-		for (int j = 0; j < WIDTH; ++j)
-		{
-			std::cout << " " << this->_maze[i * WIDTH + j];
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
+	//for (int i = 0; i < HEIGHT; ++i)
+	//{
+	//	for (int j = 0; j < WIDTH; ++j)
+	//	{
+	//		std::cout << " " << this->_maze[i * WIDTH + j];
+	//	}
+	//	std::cout << std::endl;
+	//}
+	//std::cout << std::endl;
 	/////
 }
 
@@ -394,11 +393,11 @@ void	MonsterGenerator::createWalls(int offset)
 					this->createWall(this->_walls[4], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1 + 1);
 			}
 			else if (type == VWALL)
-				this->_maze[y  * WIDTH + x] = WAY;
+				this->_maze[y  * WIDTH + x] = WALL;
 			else if (!this->_breakableWalls.empty() && type == WAY &&
-				y != HEIGHT - 1 && (this->_maze[(y + 1) * WIDTH + x] == VWALL ||
-				this->_maze[(y + 1) * WIDTH + x] == HWALL ||
-				this->_maze[(y + 1) * WIDTH + x] == WAY))
+				((y == HEIGHT - 1 && this->_lastPosition == x) || /*this->_maze[(y + 1) * WIDTH + x] == VWALL ||
+				this->_maze[(y + 1) * WIDTH + x] == HWALL ||*/
+				(y != HEIGHT - 1 && this->_maze[(y + 1) * WIDTH + x] == WAY)))
 				this->createWall(this->_breakableWalls[0], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
 		}
 	}
@@ -429,6 +428,7 @@ void	MonsterGenerator::generate(double time)
 				{
 					this->createMaze();
 					this->createWalls(offset);
+					this->_lastPosition = this->_position;
 				}
 			}
 			this->_mazeY = (this->_mazeY + 1) % (HEIGHT * nbMaze + 1);

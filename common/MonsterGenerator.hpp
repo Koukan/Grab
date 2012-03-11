@@ -80,6 +80,7 @@ private:
 	double		_wallSize;
 	WallType	_maze[WIDTH * HEIGHT];
 	int			_position;
+	int			_lastPosition;
 	int			_mazeY;
 
 	void	createMonster(MonsterInfo const &info);
