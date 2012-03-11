@@ -13,6 +13,7 @@
 #include "Map.hpp"
 #include "CircleHitBox.hpp"
 #include "RendererManager.hpp"
+#include "Modes.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -63,7 +64,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
-  this->load("resources/map/randomMap.xml");
+  if (this->_mode == Modes::STORY)
+  	this->load("resources/map/map1.xml");
+  else
+	this->load("resources/map/randomMap.xml");
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
