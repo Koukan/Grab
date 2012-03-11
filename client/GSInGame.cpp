@@ -42,11 +42,14 @@ void		GSInGame::preload()
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
   this->addGroup("end", 3);
+
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   //this->setCollisionGroups("Wall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
+  this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
@@ -72,6 +75,8 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
+
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "bottomInvisibleWall");
 
   int const large = 30;
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,

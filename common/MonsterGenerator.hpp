@@ -51,6 +51,12 @@ private:
 		BOTTOM = 3
 	};
 
+	enum MazeSize
+	{
+		WIDTH = 5,
+		HEIGHT = 40
+	};
+
 	typedef std::vector<MonsterInfo>	Monsters;
 
 	Monsters	_randMonsters;
@@ -60,7 +66,9 @@ private:
 
 	size_t		_maxId;
 	size_t		_squadLevel;
-	size_t		_mazeLevel;
+	size_t		_leftFrequency;
+	size_t		_rightFrequency;
+	size_t		_upFrequency;
 	size_t		_squadLevelSpeed;
 	size_t		_nbSquads;
 	size_t		_nbSquadsMax;
@@ -70,16 +78,19 @@ private:
 	bool		_inMaze;
 	double		_tmpY;
 	double		_wallSize;
-	WallType	_maze[5 * 3];
+	WallType	_maze[WIDTH * HEIGHT];
 	int			_position;
 	int			_mazeY;
 
 	void	createMonster(MonsterInfo const &info);
 	void	createWall(MonsterInfo const &info, int x, int y);
+	void	createDoor();
 	void	updateId();
 	void	addSideWalls(double elapsed);
 	void	chooseMovingWall(int x, int y, int direction);
-	bool	thereIsFreeWay(int x, int y, int direction);
+	bool	hWallIsTraversable(int x, int y, int direction);
+	bool	vWallIsTraversable(int x, int y, int direction);
+	bool	thereIsFreeWay(int x, int y, int direction, int direction2);
 	bool	isMovable(int x, int y, int direction);
 	void	createWalls(int offset);
 	void	createMaze();
