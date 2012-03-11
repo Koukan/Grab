@@ -8,6 +8,11 @@ ServerSprite::~ServerSprite()
 {
 }
 
+Core::Resource	*ServerSprite::clone() const
+{
+	return new ServerSprite(*this);
+}
+
 void		ServerSprite::setWidth(int width)
 {
 	this->_width = width;

@@ -8,11 +8,13 @@ class ServerSprite : public Core::Sprite
     ServerSprite();
     virtual ~ServerSprite();
 
-	void			setWidth(int width);
-	void			setHeight(int height);
+	virtual Core::Resource	*clone() const;
 
-	virtual int		getWidth() const;
-	virtual int		getHeight() const;
+	void					setWidth(int width);
+	void					setHeight(int height);
+
+	virtual int				getWidth() const;
+	virtual int				getHeight() const;
 
   private:
 	int			_width;
