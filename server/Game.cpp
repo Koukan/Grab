@@ -105,7 +105,7 @@ void		Game::removePlayer(int i)
 
 void		Game::changePlayersStatus(int i, int ship, bool ready)
 {
-	if (i < 4 && i >= 0 && this->_players[i] && !this->_players[i]->isReady())
+	if (i < 4 && i >= 0 && this->_players[i])
 	{
 		if (ready && !this->_players[i]->isReady())
 		{

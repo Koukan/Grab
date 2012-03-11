@@ -41,18 +41,22 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	ServerSprite		*sprite = new ServerSprite;
 	sprite->setWidth(10);
 	sprite->setHeight(10);
+	sprite->addUse();
 	provider->addSprite("player1", *sprite);
 	sprite = new ServerSprite;
 	sprite->setWidth(10);
 	sprite->setHeight(10);
+	sprite->addUse();
 	provider->addSprite("player2", *sprite);
 	sprite = new ServerSprite;
 	sprite->setWidth(10);
 	sprite->setHeight(10);
+	sprite->addUse();
 	provider->addSprite("player3", *sprite);
 	sprite = new ServerSprite;
 	sprite->setWidth(10);
 	sprite->setHeight(10);
+	sprite->addUse();
 	provider->addSprite("player4", *sprite);
 
 	this->update(0);
