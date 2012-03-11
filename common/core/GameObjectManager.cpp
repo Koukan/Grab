@@ -221,6 +221,11 @@ void	GameObjectManager::setCollisionGroups(
 		new PhysicsSubscriber3(function);
 }
 
+void	GameObjectManager::setBeginId(uint32_t begin)
+{
+	this->_id = begin;
+}
+
 GameObject	*GameObjectManager::getGameObject(uint32_t id)
 {
 	IdMap::iterator	it = this->_objects.find(id);

@@ -1,3 +1,4 @@
+#include "Net.hpp"
 #include "Logger.hpp"
 #include "Server.hpp"
 #include "NetworkModule.hpp"
@@ -24,6 +25,7 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	Core::ResourceManager	test;
 	ServerSpriteProvider	*provider = new ServerSpriteProvider;
 
+	srand(static_cast<unsigned int>(Net::Clock::getMsSinceEpoch()));
 	Core::GlobalResourceManager::get().init();
 	Core::GlobalResourceManager::get().addProvider(*new MapProvider);
 	Core::GlobalResourceManager::get().addProvider(*provider);

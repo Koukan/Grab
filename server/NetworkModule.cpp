@@ -55,7 +55,7 @@ void		NetworkModule::destroy()
 bool		NetworkModule::handleCommand(Core::Command const &command)
 {
 	static Method const	methods[] = {
-		{"Move", &NetworkModule::moveCommand},
+		{"MovePacket", &NetworkModule::moveCommand},
 		{"Spawn", &NetworkModule::spawnCommand},
 		{"Destroy", &NetworkModule::destroyCommand},
 		{"Status", &NetworkModule::statusCommand},

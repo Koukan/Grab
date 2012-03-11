@@ -191,6 +191,7 @@ void		GSInGame::onStart()
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
+  this->setBeginId(10000);
 }
 
 void		GSInGame::onEnd()

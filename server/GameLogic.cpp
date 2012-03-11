@@ -54,7 +54,7 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 		ship->setY(gc.y);
 		ship->setVx(gc.vx);
 		ship->setVy(gc.vy);
-		GameCommand *answer = new GameCommand("Move");
+		GameCommand *answer = new GameCommand("MovePacket");
 		answer->idObject = ship->getId();
 		answer->x = gc.x;
 		answer->y = gc.y;
@@ -110,4 +110,5 @@ void		GameLogic::startGame()
 {
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
 	this->_gameStarted = true;
+	this->setBeginId(10000);
 }

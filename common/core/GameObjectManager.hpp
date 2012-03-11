@@ -95,6 +95,7 @@ class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 				void (*function)(GameObject&, GameObject&));
     void	setGroup(const std::string &name, int layer,
 		    	bool physic, std::string const &timeEffectGroup);
+	void	setBeginId(uint32_t begin);
 
     // getter
 	GameObject					*getGameObject(uint32_t id);
