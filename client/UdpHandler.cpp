@@ -3,6 +3,7 @@
 #include "NetworkModule.hpp"
 #include "CommandDispatcher.hpp"
 #include "GameCommand.hpp"
+#include "DestroyCommand.hpp"
 
 UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0), _nblatency(0)
 {
@@ -64,12 +65,17 @@ int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
 
 int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 {
-	uint32_t	id_packet;
-
-	packet >> id_packet;
-	this->testPacketId(id_packet);
-	GameCommand *gc = new GameCommand("destroy");
-	packet >> gc->idObject;
+		//uint32_t	id_packet;
+		//
+		//packet >> id_packet;
+		//this->testPacketId(id_packet);
+	uint32_t	idchild;
+	DestroyCommand *gc = new DestroyCommand("destroy");
+	for (size_t	left = packet.size() - 9; left > sizeof(uint32_t); left -= sizeof(uint32_t))
+	{
+		packet >> idchild;
+		gc->ids.push_back(idchild);
+	}
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

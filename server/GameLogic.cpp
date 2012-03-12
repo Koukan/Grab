@@ -27,7 +27,7 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
-	this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
+	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 	this->_rand.seed(rand());
 }
