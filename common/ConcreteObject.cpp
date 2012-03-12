@@ -6,8 +6,8 @@ ConcreteObject::ConcreteObject(std::string const &spriteName, Core::HitBox &hitb
 	double xHitboxOffset, double yHitboxOffset)
   : Core::PhysicObject(hitbox, vx, vy, xHitboxOffset, yHitboxOffset), _sprite(Core::GlobalResourceManager::get().getSprite(spriteName)), _deleteSprite(false)
 {
-  if (!_sprite)
-    throw std::runtime_error(spriteName + " not found");
+  //if (!_sprite)
+    //throw std::runtime_error(spriteName + " not found");
 }
 
 ConcreteObject::ConcreteObject(Core::Sprite *sprite, Core::HitBox &hitbox, double vx, double vy,

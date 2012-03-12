@@ -22,6 +22,7 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
+	Rules::setOnline(online);
 }
 
 GSInGame::~GSInGame()
@@ -32,7 +33,7 @@ void		GSInGame::preload()
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("playersOnline", 40);
-  this->addGroup("playerShots", 40);
+  this->addGroup("playerShots", 40, 10000, 999999);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
@@ -200,7 +201,7 @@ void		GSInGame::onStart()
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
-  this->setBeginId(10000);
+  this->setBeginId(1100000);
 }
 
 void		GSInGame::onEnd()

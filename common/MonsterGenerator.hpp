@@ -15,7 +15,10 @@ public:
 	virtual	void	move(double time);
 	void	addRandomBoss(std::string const &name, bool scrollable, size_t level);
 	void	addRandomMonster(std::string const &name, bool scrollable, size_t level);
+	void	addMazeMonster(std::string const &name, bool scrollable, size_t level);
 	void	addRandomWall(std::string const &name, bool scrollable, size_t level);
+	void	addRandomHWall(std::string const &name, bool scrollable, size_t level);
+	void	addRandomVWall(std::string const &name, bool scrollable, size_t level);
 	void	addRandomBreakableWall(std::string const &name, bool scrollable, size_t level);
 	void	generate(double time);
 	void	generateSquad(double time);
@@ -54,22 +57,34 @@ private:
 	enum MazeSize
 	{
 		WIDTH = 5,
-		HEIGHT = 40
+		HEIGHT = 15
 	};
 
 	typedef std::vector<MonsterInfo>	Monsters;
 
 	Monsters	_randMonsters;
+	Monsters	_mazeMonsters;
 	Monsters	_bosses;
 	Monsters	_walls;
+	Monsters	_vWalls;
+	Monsters	_hWalls;
 	Monsters	_breakableWalls;
 
 	size_t		_maxId;
+
+//// difficulty/////
+	// squad
 	size_t		_squadLevel;
+	size_t		_squadLevelSpeed;
+	// maze
+	size_t		_mazeEnemiesFrequency;
+	size_t		_mazeBreakableWallsFrequency;
+	size_t		_mazeNoObstacleFrequency;
 	size_t		_leftFrequency;
 	size_t		_rightFrequency;
 	size_t		_upFrequency;
-	size_t		_squadLevelSpeed;
+/////////////////////
+
 	size_t		_nbSquads;
 	size_t		_nbSquadsMax;
 	size_t		_squadTime;
@@ -84,7 +99,10 @@ private:
 	int			_mazeY;
 
 	void	createMonster(MonsterInfo const &info);
+	void	createObstacle(int x, int y);
+	void	createMazeMonster(MonsterInfo const &info, int x, int y);
 	void	createWall(MonsterInfo const &info, int x, int y);
+	void	createMovableWall(MonsterInfo const &info, int x, int y);
 	void	createDoor();
 	void	updateId();
 	void	addSideWalls(double elapsed);

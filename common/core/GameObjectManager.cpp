@@ -179,7 +179,7 @@ bool	GameObjectManager::addGameObject(GameObject *object,
 					 const std::string &group, int layer)
 {
 	if (!object)
-		return false;
+		return false; 
 	addGroup(group, layer);
 	this->_groups[group]->addObject(object);
 	this->_objects[object->_id] = object;

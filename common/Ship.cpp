@@ -274,35 +274,34 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 	this->updateCannonsTrajectory();
 }
 
-void Ship::inputFire(Core::InputCommand const& /*cmd*/)
+void	Ship::fire(Core::GameState &state)
 {
 	if (this->_dead)
 		return ;
 	this->_actions[Ship::FIRE] = true;
 	if (this->_actions[Ship::SPECIAL_FIRE])
 		return ;
-  if (!this->_playerBullet)
-  {
-	  this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
-						 "playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
-	  if (this->_playerBullet)
-	  {
-	    this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-	    Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
-	  }
-	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
-	    {
-	      if (_cannons[i])
-			_cannons[i]->fire();
-	    }
-  }
-  Core::CommandDispatcher::get().pushCommand(*new GameCommand("beginFire", this->_id));
+	if (!this->_playerBullet)
+	{
+		this->_playerBullet = new PlayerBullet(this->_bulletFileName, state,
+						 "playerShots", this->_x + this->getSprite().getWidth() / 2,
+						 this->_y, this->_vx, this->_vy);
+		if (this->_playerBullet)
+		{
+			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			state.addGameObject(this->_playerBullet);
+		}
+		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
+		{
+			if (_cannons[i])
+				_cannons[i]->fire();
+		}
+	}
 }
 
-void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
+void	Ship::releaseFire()
 {
 	this->_actions[Ship::FIRE] = false;
-
 	if (this->_dead || this->_actions[Ship::SPECIAL_FIRE])
 		return ;
 	if (this->_playerBullet)
@@ -311,14 +310,13 @@ void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 		this->_playerBullet = 0;
 	}
 	for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
-	  {
-	    if (_cannons[i])
-	      _cannons[i]->stopFire();
-	  }
-	Core::CommandDispatcher::get().pushCommand(*new GameCommand("endFire", this->_id));
+	{
+		if (_cannons[i])
+			_cannons[i]->stopFire();
+	}
 }
 
-void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
+void	Ship::specialFire(Core::GameState &state)
 {
 	if (this->_dead)
 		return ;
@@ -327,13 +325,13 @@ void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
 	this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
 	this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
 	if (!this->_playerBullet)
-		this->_playerBullet = new PlayerBullet(this->_bulletFileName, Core::GameStateManager::get().getCurrentState(),
+		this->_playerBullet = new PlayerBullet(this->_bulletFileName, state,
 			"playerShots", this->_x + this->getSprite().getWidth() / 2, this->_y, this->_vx, this->_vy);
 	if (this->_playerBullet)
 	{
 		this->_playerBullet->isConcentrated(true);
 		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-		Core::GameStateManager::get().getCurrentState().addGameObject(this->_playerBullet);
+		state.addGameObject(this->_playerBullet);
 	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 	    {
 	      if (_cannons[i])
@@ -346,7 +344,7 @@ void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
 	}
 }
 
-void Ship::inputReleasedSpecialFire(Core::InputCommand const& cmd)
+void	Ship::releaseSpecialFire()
 {
 	this->_actions[Ship::SPECIAL_FIRE] = false;
 	this->_vx = this->_vx / this->_speed * this->_tmpSpeed;
@@ -376,6 +374,38 @@ void Ship::inputReleasedSpecialFire(Core::InputCommand const& cmd)
 		      _cannons[i]->getBullet()->isConcentrated(false);
 		}
 	}
+}
+
+void Ship::inputFire(Core::InputCommand const& /*cmd*/)
+{
+	this->fire(Core::GameStateManager::get().getCurrentState());
+	if (this->_dead)
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 1));
+}
+
+void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
+{
+	this->releaseFire();
+	if (this->_dead)
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 0));
+}
+
+void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
+{
+	this->specialFire(Core::GameStateManager::get().getCurrentState());
+	if (this->_dead)
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 2));
+}
+
+void Ship::inputReleasedSpecialFire(Core::InputCommand const &)
+{
+	this->releaseSpecialFire();
+	if (this->_dead)
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 3));
 }
 
 void Ship::inputGrab1(Core::InputCommand const& /*cmd*/)
@@ -449,18 +479,25 @@ void Ship::draw(double elapsedTime)
 
 void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 {
-  if (_cannons[nGrab])
-    {
-	  _cannons[nGrab]->stopFire();
-      _cannons[nGrab]->erase();
-      _cannons[nGrab] = 0;
-	  GameCommand	*cmd = new GameCommand("updateCannon");
-	  cmd->idObject = this->_id;
-	  cmd->idResource = nGrab;
-	  Core::CommandDispatcher::get().pushCommand(*cmd);
-    }
-  else
-    this->launchGrab(group, nGrab);
+	if (_cannons[nGrab])
+	{
+		this->releaseCannon(nGrab);
+		GameCommand		*cmd = new GameCommand("updateCannon");
+		cmd->idObject = this->_id;
+		cmd->idResource = nGrab;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
+	else
+		this->launchGrab(group, nGrab);
+}
+
+void Ship::releaseCannon(unsigned int nb)
+{
+	if (nb > 4 || !_cannons[nb])
+		return ;
+	_cannons[nb]->stopFire();
+	_cannons[nb]->erase();
+	_cannons[nb] = 0;
 }
 
 void Ship::copyColor(Core::Sprite &sprite)

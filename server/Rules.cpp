@@ -23,6 +23,7 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
 	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
 	monster.setLife(monster.getLife() - shot.getDamage());
+	std::cout << "fire touch monster" << std::endl;
 	if (monster.getLife() <= 0)
 	{
 	  	DestroyCommand *cmd = new DestroyCommand("Destroy");
@@ -30,14 +31,14 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 		Core::GameState const &state = gr->getState();
 		GameLogic const &gl = static_cast<GameLogic const &>(state);
 		cmd->game = &gl.getGame();
-		for (Core::GameObject *tmp = monster.getRelativeObject(); tmp; tmp = tmp->getRelativeObject())
+		for (Core::GameObject *tmp = &monster; tmp; tmp = tmp->getParent())
 			cmd->ids.push_front(tmp->getId());
 	 	Core::CommandDispatcher::get().pushCommand(*cmd);
 		monster.erase();
 	}
 }
 
-void		Rules::shotTouchClient(Core::GameObject&o1, Core::GameObject&o2)
+void		Rules::shotTouchClient(Core::GameObject &, Core::GameObject&)
 {
 	//GameCommand *cmd = new GameCommand("Destroy");
 	//cmd->idObject = o1.getId();

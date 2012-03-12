@@ -43,17 +43,18 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	{
 		Client *player = NetworkModule::get().getClientByAddr(packet.getAddr());
 		if (player)
-			return (this->*methods[type])(packet, *player);
-		else
-			return 1;
+			(this->*methods[type])(packet, *player);
+		return 1;
 	}
 	return 1;
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 {
-	uint32_t	id_packet;
 
+	if (!client.getGameLogic())
+		return 1;
+	uint32_t	id_packet;
 	GameCommand *gc = new GameCommand("spawn");
 	packet >> id_packet;
 	packet >> gc->idResource;
@@ -68,7 +69,7 @@ int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 		gc->y += player.getLatency() * gc->vy;
 	}*/
 	gc->client = &client;
-	client.getGameLogic().pushCommand(*gc);
+	client.getGameLogic()->pushCommand(*gc);
 	return 1;
 }
 
@@ -79,6 +80,8 @@ int			UdpHandler::destroy(Net::Packet &, Client&)
 
 int			UdpHandler::move(Net::Packet &packet, Client &client)
 {
+	if (!client.getGameLogic())
+		return 1;
 	Player	*player = 0;
 	GameCommand *gc = new GameCommand("move");
 	packet >> gc->idObject;
@@ -103,7 +106,7 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 		gc->y += player.getLatency() * gc->vy;
 	}*/
 	gc->client = reinterpret_cast<Client*>(player);
-	client.getGameLogic().pushCommand(*gc);
+	client.getGameLogic()->pushCommand(*gc);
 	return 1;
 }
 
@@ -145,11 +148,42 @@ int         UdpHandler::pong(Net::Packet &, Client &client)
 	return 1;
 }
 
-int         UdpHandler::firestate(Net::Packet &packet, Client&)
-{}
+int         UdpHandler::firestate(Net::Packet &packet, Client &client)
+{
+	if (client.getGameLogic())
+	{
+		uint8_t			n;
+		GameCommand		*cmd = new GameCommand("fireState");
 
-int         UdpHandler::updatecannon(Net::Packet &packet, Client&)
-{}
+		packet >> cmd->idObject;
+		packet >> n;
+		cmd->idResource = n;
+		client.getGameLogic()->pushCommand(*cmd);
+		std::cout << "fireStatePacket" << std::endl;
+	}
+	return 1;
+}
+
+int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
+{
+	if (!client.getGameLogic())
+		return 1;
+	uint8_t		num;
+	GameCommand		*cmd = new GameCommand("updateCannon");
+	packet >> cmd->idObject;
+	packet >> num;
+	cmd->idResource = num;
+	if (packet.size() > 18)
+	{
+		packet >> cmd->x;
+		packet >> cmd->y;
+		packet >> cmd->data;
+	}
+	client.getGameLogic()->pushCommand(*cmd);
+	return 1;
+}
 
 int         UdpHandler::launchgrab(Net::Packet &packet, Client&)
-{}
+{
+	return 1;
+}
