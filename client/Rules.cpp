@@ -186,3 +186,4 @@ void		Rules::setOnline(bool online)
 {
 	gl_online = online;
 }
+

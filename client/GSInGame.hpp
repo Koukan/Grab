@@ -11,6 +11,7 @@
 #include "Ship.hpp"
 #include "Modes.hpp"
 #include <list>
+#include "Map.hpp"
 
 class GSInGame : public Core::GameState
 {
@@ -23,6 +24,7 @@ public:
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 	void			playerDie(Player &player);
+	Map&		getMap() const;
 
 private:
 	template<typename T>
@@ -46,6 +48,8 @@ private:
 	void		spawndecoration(GameCommand const &event);
 	void		spawnsound(GameCommand const &event);
 	void		spawnend(GameCommand const &event);
+	void		decreasePaused(GameCommand const &event);
+	void		increasePaused(GameCommand const &event);
 	void		respawnplayer(GameCommand const &event);
 	void		setSeed(GameCommand const &event);
 
@@ -75,4 +79,5 @@ private:
 	bool							_fire;
 	double							_elapsedTime;
 	Net::MTRand						_rand;
+	Map*							_mapObj;
 };

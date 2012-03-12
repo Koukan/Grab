@@ -13,12 +13,12 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 {
   public:
     BulletCommand(std::string const &parser, GameState &gstate,
-		  double x = 0, double y = 0, double vx = 0, double vy = 0);
+		  double x = 0, double y = 0, double vx = 0, double vy = 0, bool paused = false);
     BulletCommand(BulletMLParser &parser, GameState &gstate,
+		  double x = 0, double y = 0, double vx = 0, double vy = 0, bool paused = false);
+    BulletCommand(BulletMLState &state, GameState &gstate, bool paused,
 		  double x = 0, double y = 0, double vx = 0, double vy = 0);
-    BulletCommand(BulletMLState &state, GameState &gstate,
-		  double x = 0, double y = 0, double vx = 0, double vy = 0);
-    BulletCommand(BulletMLState &state, GameState &gstate, HitBox &box,
+    BulletCommand(BulletMLState &state, GameState &gstate, HitBox &box, bool paused,
 		  double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0);
     virtual ~BulletCommand();
 
@@ -80,6 +80,10 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	double			_simpleYHitbox;
 	std::string		_grabBullet;
 	Net::MTRand		_rand;
+	bool			_paused;
+
+ private:
+	void			managePaused();
 };
 
 CORE_END_NAMESPACE
