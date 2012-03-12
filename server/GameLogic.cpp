@@ -13,13 +13,23 @@
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
 {
-	this->load("resources/map/map1.xml");
-	this->addGroup("Wall", 0);
-	this->addGroup("playerfires", 0);
-	this->addGroup("cannons", 0);
-	this->addGroup("ship", 0);
-	this->addGroup("shot", 0);
+  	this->addGroup("spawners");
+  	this->addGroup("players", 40);
+  	this->addGroup("playersOnline", 40);
+  	this->addGroup("playerShots", 40, 10000, 999999);
+  	this->addGroup("grabs", 40);
+  	this->addGroup("cannons", 42);
+  	this->addGroup("Wall", 0);
+  	this->addGroup("walls", 4);
+  	this->addGroup("breakableWalls", 3);
+  	this->addGroup("Wall", 0);
+  	this->addGroup("shot", 9); //what is it ??
+  	this->addGroup("monster", 10);
+  	this->addGroup("background2", 2);
+  	this->addGroup("background3", 3);
+  	this->addGroup("end", 3);
 
+	this->load("resources/map/map1.xml");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(3000, -2000, 1000, 8000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
@@ -29,7 +39,7 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
-	this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
+	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 	this->_rand.seed(rand());
 }
@@ -79,7 +89,7 @@ void		GameLogic::startGame()
 {
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
 	this->_gameStarted = true;
-	this->setBeginId(10000);
+	this->setBeginId(1100000);
 }
 
 uint32_t	GameLogic::getSeed() const
@@ -90,7 +100,7 @@ uint32_t	GameLogic::getSeed() const
 void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
-	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, 1100, gc.x, 0, 0);
+	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, 0, 0);
 	this->addGameObject(bullet);
 }
 
