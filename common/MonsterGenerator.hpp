@@ -88,6 +88,7 @@ private:
 	size_t		_nbSquads;
 	size_t		_nbSquadsMax;
 	size_t		_squadTime;
+	size_t		_bossTime;
 	Net::MTRand	_rand;
 	double		_elapsedTime;
 	bool		_inMaze;
@@ -99,6 +100,7 @@ private:
 	int			_mazeY;
 
 	void	createMonster(MonsterInfo const &info);
+	void	createBoss(MonsterInfo const &info);
 	void	createObstacle(int x, int y);
 	void	createMazeMonster(MonsterInfo const &info, int x, int y);
 	void	createWall(MonsterInfo const &info, int x, int y);
@@ -118,4 +120,8 @@ private:
 	void	onRight(int &x, int &y);
 	void	onTop(int &x, int &y);
 	void	onBottom(int &x, int &y);
+
+	void	changeToSquads();
+	void	changeToMaze();
+	void	changeToBoss();
 };

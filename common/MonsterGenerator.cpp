@@ -1,11 +1,12 @@
 #include "MonsterGenerator.hpp"
 #include <algorithm>
+#include "RendererManager.hpp"
 
 
 MonsterGenerator::MonsterGenerator(int seed)
-	: _maxId(0), _squadLevelSpeed(4), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(0),
-	_leftFrequency(10), _rightFrequency(10), _upFrequency(1), _nbSquads(0), _nbSquadsMax(10), _squadTime(10), _rand(seed), _elapsedTime(0),
-	_inMaze(true), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0)
+	: _maxId(0), _squadLevelSpeed(4), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(5),
+	_leftFrequency(10), _rightFrequency(10), _upFrequency(1), _nbSquads(0), _nbSquadsMax(4), _squadTime(10), _bossTime(10), _rand(seed), _elapsedTime(0),
+	_inMaze(false), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0)
 {
 }
 
@@ -82,7 +83,14 @@ void	MonsterGenerator::createMazeMonster(MonsterInfo const &info, int x, int y)
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
 {
-	this->addElem("spawnspawner", info.name, this->_rand() % 1000/*x*/, this->_y + 100, 0, 0, info.scrollable, false, -100);
+	this->addElem("spawnspawner", info.name, this->_rand() % (RendererManager::get().getWidth() - 100),
+		this->_y + 100, 0, 0, info.scrollable, false, -100);
+}
+
+void	MonsterGenerator::createBoss(MonsterInfo const &info)
+{
+	this->addElem("spawnspawner", info.name, this->_rand() % 500 + RendererManager::get().getWidth() / 2 - 250,
+		this->_y + 100, 0, 0, info.scrollable, false, -100);
 }
 
 void	MonsterGenerator::updateId()
@@ -123,6 +131,12 @@ void	MonsterGenerator::generateSquad(double time)
 
 void	MonsterGenerator::generateBoss(double time)
 {
+	if (!this->_bosses.empty())
+	{
+		int i = this->_rand() % this->_bosses.size();
+		this->createBoss(this->_bosses[i]);
+		this->_elapsedTime = this->_bossTime;
+	}
 	this->_nbSquads = 0;
 	this->_squadLevel += this->_squadLevelSpeed;
 	this->updateId();
@@ -472,7 +486,7 @@ void	MonsterGenerator::generate(double time)
 		double elapsed = this->_y - this->_tmpY;
 		if (elapsed >= this->_wallSize)
 		{
-			int nbMaze = 1;
+			int const nbMaze = 1;
 			this->addSideWalls(elapsed);
 			if (this->_mazeY == 0)
 			{
@@ -484,7 +498,17 @@ void	MonsterGenerator::generate(double time)
 					this->_lastPosition = this->_position;
 				}
 			}
-			this->_mazeY = (this->_mazeY + 1) % (HEIGHT * nbMaze + 1);
+			else if (this->_mazeY == HEIGHT * nbMaze + 1)
+			{
+				this->createDoor();
+			}
+			else if (this->_mazeY == HEIGHT * nbMaze + 6)
+			{
+				this->generateBoss(time);
+			}
+			else if (this->_mazeY > HEIGHT * nbMaze + 6 && this->_elapsedTime <= 0)
+				this->changeToSquads();
+			++this->_mazeY;
 		}
 	}
 	else
@@ -494,9 +518,25 @@ void	MonsterGenerator::generate(double time)
 			if (this->_nbSquads < this->_nbSquadsMax)
 				this->generateSquad(time);
 			else
-				this->generateBoss(time);
+				this->changeToMaze();
 		}
-		else
-			this->_elapsedTime -= time;
 	}
+	this->_elapsedTime -= time;
+}
+
+void	MonsterGenerator::changeToSquads()
+{
+	this->_inMaze = false;
+	this->_elapsedTime = 20;
+}
+
+void	MonsterGenerator::changeToMaze()
+{
+	this->_inMaze = true;
+	this->_tmpY = this->_y;
+	this->_mazeY = 0;
+}
+
+void	MonsterGenerator::changeToBoss()
+{
 }

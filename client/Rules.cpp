@@ -21,7 +21,7 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setX(shot.getX() + shot.getSprite()->getWidth() / 2 - sprite->getWidth() / 2);
 	explosion->setY(shot.getY() + shot.getSprite()->getHeight() / 2 - sprite->getHeight() / 2);
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
-	gameState.addGameObject(explosion, "sprites", 100);
+	gameState.addGameObject(explosion, "impacts", 100);
 	o2.erase();
 }
 
