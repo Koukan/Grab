@@ -162,21 +162,21 @@ void		Game::loadGame()
 	cmd->game = this;
 	Core::CommandDispatcher::get().pushCommand(*cmd);
 	// begin rangeId
-	for (int i = 0; i < 4; ++i)
-	{
-		if (!_players[i])
-			continue ;
-		uint32_t	begin = (i + 1) * 10000000 + 1000000001;
-		uint32_t	end = begin + 9999999;
-		std::string	id = "shootClient" + Net::Converter::toString((i + 1));
-		_logic.addGroup(id, 10, begin, end);
-		cmd = new GameCommand("RangeId");
-		cmd->idObject = begin;
-		cmd->idResource = end;
-		cmd->x = i;
-		cmd->client = &_players[i]->getClient();
-		Core::CommandDispatcher::get().pushCommand(*cmd);
-	}
+	//for (int i = 0; i < 4; ++i)
+	//{
+		//if (!_players[i])
+			//continue ;
+		//uint32_t	begin = (i + 1) * 10000000 + 1000000001;
+		//uint32_t	end = begin + 9999999;
+		//std::string	id = "shootClient" + Net::Converter::toString((i + 1));
+		//_logic.addGroup(id, 10, begin, end);
+		//cmd = new GameCommand("RangeId");
+		//cmd->idObject = begin;
+		//cmd->idResource = end;
+		//cmd->x = i;
+		//cmd->client = &_players[i]->getClient();
+		//Core::CommandDispatcher::get().pushCommand(*cmd);
+	//}
 	// end rangeId
 
 	// send pseudo random seed

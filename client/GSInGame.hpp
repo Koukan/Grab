@@ -52,6 +52,7 @@ private:
 	void		increasePaused(GameCommand const &event);
 	void		respawnplayer(GameCommand const &event);
 	void		setSeed(GameCommand const &event);
+	void		destroy(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;

@@ -13,6 +13,7 @@
 #include "CircleHitBox.hpp"
 #include "RendererManager.hpp"
 #include "Modes.hpp"
+#include "DestroyCommand.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -31,7 +32,7 @@ void		GSInGame::preload()
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("playersOnline", 40);
-  this->addGroup("playerShots", 40);
+  this->addGroup("playerShots", 40, 10000, 999999);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
@@ -198,7 +199,7 @@ void		GSInGame::onStart()
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
-  this->setBeginId(10000);
+  this->setBeginId(1100000);
 }
 
 void		GSInGame::onEnd()
@@ -221,7 +222,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"respawnplayer", &GSInGame::respawnplayer},
 	{"setseed", &GSInGame::setSeed},
 	{"decreasePaused", &GSInGame::decreasePaused},
-	{"increasePaused", &GSInGame::increasePaused}
+	{"increasePaused", &GSInGame::increasePaused},
+	{"destroy", &GSInGame::destroy}
   };
 
   for (size_t i = 0;
@@ -378,6 +380,19 @@ void		GSInGame::respawnplayer(GameCommand const &event)
 void		GSInGame::setSeed(GameCommand const &event)
 {
 	this->_rand.seed(event.idObject);
+}
+
+void		GSInGame::destroy(GameCommand const &event)
+{
+	DestroyCommand	const &cmd = reinterpret_cast<DestroyCommand const &>(event);
+	
+	std::list<size_t>::const_iterator it = cmd.ids.begin();
+	Core::BulletCommand *obj = static_cast<Core::BulletCommand *>(this->getGameObject(*it));
+	it++;
+	for (; it != cmd.ids.end() && obj; ++it)
+		obj = static_cast<Core::BulletCommand *>(obj->getChild(*it));
+	if (obj)
+		obj->erase();
 }
 
 void		GSInGame::createShips()

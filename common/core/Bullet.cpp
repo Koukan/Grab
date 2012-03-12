@@ -85,7 +85,10 @@ BulletCommand	*Bullet::getParent() const
 
 uint32_t		Bullet::getBulletId() const
 {
-	return this->_bulletId;
+	if (this->getParent())
+		return this->_bulletId;
+	else
+		return this->_id;
 }
 
 int32_t		Bullet::getLife() const

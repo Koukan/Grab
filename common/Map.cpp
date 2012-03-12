@@ -2,6 +2,7 @@
 #include "RectHitBox.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
+#include "GameState.hpp"
 
 Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _nbPaused(0)
 {}
@@ -62,6 +63,7 @@ void		Map::move(double time)
 
 	GameCommand	*cmd;
 	std::multimap<size_t, mapdata>::iterator it = _monsters.begin();
+	Core::GameState	&gm = this->getGroup()->getState();
 	for (; it != _monsters.end() && it->first <= this->_y;)
 	{
 		cmd = new GameCommand(it->second.command);
@@ -72,7 +74,7 @@ void		Map::move(double time)
 		cmd->position = it->second.vScrolling;
 		cmd->data = it->second.name;
 		cmd->boolean = it->second.pause;
-		Core::CommandDispatcher::get().pushCommand(*cmd);
+		gm.pushCommand(*cmd, true);
 		_monsters.erase(it);
 		it = _monsters.begin();
 	}
