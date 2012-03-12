@@ -101,18 +101,18 @@ void		Group::setFlags(int layer, bool physic,
 	this->setTimeEffectGroup(timeEffectGroup);
 }
 
-void		Group::addObject(GameObject *object)
+void		Group::addObject(GameObject *object, bool id)
 {
   if (this->_objects.empty())
   {
-    if (dynamic_cast<PhysicObject*>(object))
+	if (dynamic_cast<PhysicObject*>(object))
       {
 	this->_physic = true;
       }
   }
   if (this->_physic)
 	  this->_quadTree.push(*static_cast<PhysicObject *>(object));
-  if (!object->getId())
+  if (id && !object->getId())
   	object->setId(this->getId());
   this->_objects.insert(object);
   object->setGroup(this);
@@ -176,13 +176,14 @@ void	GameObjectManager::addGroup(const std::string &group, int layer,
 }
 
 bool	GameObjectManager::addGameObject(GameObject *object,
-					 const std::string &group, int layer)
+					 const std::string &group, bool id)
 {
 	if (!object)
 		return false;
-	addGroup(group, layer);
-	this->_groups[group]->addObject(object);
-	this->_objects[object->_id] = object;
+	addGroup(group);
+	this->_groups[group]->addObject(object, id);
+	if (id)
+		this->_objects[object->_id] = object;
 	return true;
 }
 
