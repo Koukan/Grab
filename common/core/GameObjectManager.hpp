@@ -28,7 +28,7 @@ class CORE_DLLREQ Group
 	  uint32_t begin, uint32_t end, bool physic = false);
     ~Group();
 
-    void	addObject(GameObject *object);
+    void	addObject(GameObject *object, bool id);
     void	removeObject(GameObject *object);
 
     //setter
@@ -76,8 +76,7 @@ class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 
     void	addGroup(const std::string &group, int layer = 1,
 					 uint32_t beginId = 0, uint32_t endId = 0);
-    bool	addGameObject(GameObject *object, const std::string &group = "default",
-		    	int layer = 1);
+    bool	addGameObject(GameObject *object, const std::string &group = "default", bool id = true);
     void	removeGameObject(GameObject *object);
 	void	callCollision(PhysicObject &obj1, PhysicObject &obj2);
 

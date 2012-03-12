@@ -75,6 +75,7 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}GameCommand.hpp
 	${INCLUDES_COMMON_DIR}Map.hpp
 	${INCLUDES_COMMON_DIR}Map.cpp
+	${INCLUDES_COMMON_DIR}Modes.hpp
 	${INCLUDES_COMMON_DIR}MonsterGenerator.hpp
 	${INCLUDES_COMMON_DIR}MonsterGenerator.cpp
 	${INCLUDES_COMMON_DIR}MapProvider.hpp
@@ -84,6 +85,8 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}PlayerBullet.hpp
 	${INCLUDES_COMMON_DIR}Cannon.hpp
 	${INCLUDES_COMMON_DIR}Cannon.cpp
+	${INCLUDES_COMMON_DIR}DestroyCommand.hpp
+	${INCLUDES_COMMON_DIR}DestroyCommand.cpp
 	main.cpp
 	SFMLFont.cpp
 	SFMLFont.hpp
@@ -121,7 +124,6 @@ set(SRCS
 	GSPartySettings.hpp
 	InputModule.cpp
 	InputModule.hpp
-	Modes.hpp
 	main.cpp
 	NetworkModule.cpp
 	NetworkModule.hpp

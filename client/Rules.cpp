@@ -8,6 +8,8 @@
 #include "CircleHitBox.hpp"
 #include <cmath>
 
+static bool		gl_online = false;
+
 void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 {
 	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
@@ -29,7 +31,8 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 {
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
 	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
-	monster.setLife(monster.getLife() - shot.getDamage());
+	if (!gl_online)
+		monster.setLife(monster.getLife() - shot.getDamage());
 
 	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
 	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
@@ -74,23 +77,33 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 
 void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 {
-  Grab& grab = static_cast<Grab&>(o1);
+	Grab& grab = static_cast<Grab&>(o1);
 
-  if (grab.getReturnToShip())
-    {
-      Ship& ship = static_cast<Ship &>(o2);
-
-      if (&(grab.getShip()) == &ship)
+	if (grab.getReturnToShip())
 	{
-	  if (!grab.getBulletScript().empty() && !ship.isDead())
-	    ship.addCannon(new Cannon(grab.getBulletScript(), ship,
-				      "weapon", "cannons", "playerShots",
-				      grab.getOffsetX(), grab.getOffsetY()),
-			   grab.getNum());
-	  grab.erase();
-	  ship.setGrabLaunched(false);
+		Ship& ship = static_cast<Ship &>(o2);
+		if (&(grab.getShip()) == &ship)
+		{
+			if (!grab.getBulletScript().empty() && !ship.isDead())
+			{
+				ship.addCannon(new Cannon(grab.getBulletScript(), ship, Core::GameStateManager::get().getCurrentState(),
+						  	   "weapon", "cannons", "playerShots",
+							   grab.getOffsetX(), grab.getOffsetY()),
+							   grab.getNum());
+				if (gl_online)
+				{
+					GameCommand		*cmd = new GameCommand("UpdateCannon", ship.getId());
+					cmd->data = grab.getBulletScript();
+					cmd->idResource = grab.getNum();
+					cmd->x = grab.getOffsetX();
+					cmd->y = grab.getOffsetY();
+					Core::CommandDispatcher::get().pushCommand(*cmd);
+				}
+			}
+			grab.erase();
+			ship.setGrabLaunched(false);
+		}
 	}
-    }
 }
 
 void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
@@ -168,3 +181,9 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 		ship->updateCannonsTrajectory();
 	}
 }
+
+void		Rules::setOnline(bool online)
+{
+	gl_online = online;
+}
+

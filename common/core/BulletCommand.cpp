@@ -4,6 +4,8 @@
 #include "bulletmlparser.h"
 #include "CircleHitBox.hpp"
 #include "RectHitBox.hpp"
+#include "GameCommand.hpp"
+#include "CommandDispatcher.hpp"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -15,11 +17,12 @@ inline static double dtor(double x) { return x * M_PI / 180.0; }
 inline static double rtod(double x) { return x * 180.0 / M_PI; }
 
 BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
-		double x, double y, double vx, double vy)
+			     double x, double y, double vx, double vy, bool paused)
 	: BulletMLRunner(gstate.getBulletParser(parser)), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players")
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
+	  _paused(paused)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -29,14 +32,16 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
+	this->managePaused();
 }
 
 BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
-		double x, double y, double vx, double vy)
+			     double x, double y, double vx, double vy, bool paused)
 	: BulletMLRunner(&parser), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players")
+	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
+	  _paused(paused)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -46,14 +51,15 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
+	this->managePaused();
 }
 
-BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
+BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool paused,
 		double x, double y, double vx, double vy)
 	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("players")
+	  _nextId(1), _focus("players"), _paused(paused)
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -73,14 +79,16 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
+	this->managePaused();
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
-		HitBox &box, double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+			     HitBox &box, bool paused,
+			     double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("players")
+	  _nextId(1), _focus("players"), _paused(paused)
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -100,10 +108,25 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
+	this->managePaused();
 }
 
 BulletCommand::~BulletCommand()
 {
+  if (_paused)
+    {
+      Command* cmd = new GameCommand("decreasePaused");
+      Core::CommandDispatcher::get().pushCommand(*cmd);
+    }
+}
+
+void		BulletCommand::managePaused()
+{
+  if (_paused)
+    {
+      Command* cmd = new GameCommand("increasePaused");
+      Core::CommandDispatcher::get().pushCommand(*cmd);
+    }
 }
 
 double		BulletCommand::getBulletDirection()
@@ -191,7 +214,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 		bullet->setScrollY(this->_scrollY);
 		bullet->setLife(this->_simpleLife);
 		bullet->setDamage(this->_simpleDamage);
-		this->_state.addGameObject(bullet, this->_simpleGroup);
+		this->_state.addGameObject(bullet, this->_simpleGroup, false);
 		this->insertChild(*bullet);
 	}
 }
@@ -215,17 +238,17 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	vy = speed * sin(dir);
 	if (box)
 	{
-		bullet = new BulletCommand(*state, _state, *box, vx, vy, state->getHitboxX(), state->getHitboxY());
+		bullet = new BulletCommand(*state, _state, *box, _paused, vx, vy, state->getHitboxX(), state->getHitboxY());
 		bullet->setScrollY(this->_scrollY);
-		this->_state.addGameObject(bullet, state->getGroup());
+		this->_state.addGameObject(bullet, state->getGroup(), false);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
 	}
 	else
 	{
-		bullet = new BulletCommand(*state, _state, _x, _y, vx, vy);
+		bullet = new BulletCommand(*state, _state, _paused, _x, _y, vx, vy);
 		bullet->setScrollY(this->_scrollY);
-		this->_state.addGameObject(bullet, state->getGroup());
+		this->_state.addGameObject(bullet, state->getGroup(), false);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
 	}

@@ -6,6 +6,7 @@
 #include "ResourceCommand.hpp"
 #include "GameManager.hpp"
 #include "Server.hpp"
+#include "DestroyCommand.hpp"
 
 NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5), _reactor(0), _pingupdate(0)
 {
@@ -138,17 +139,21 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 
 void		NetworkModule::destroyCommand(Core::Command const &command)
 {
-	GameCommand const &cmd = static_cast<GameCommand const &>(command);
+	DestroyCommand const &cmd = static_cast<DestroyCommand const &>(command);
 
 	if (Server::get().gameExist(cmd.game))
 	{
-		Net::Packet		packet(17);
+		Net::Packet		packet(9 + cmd.ids.size() * sizeof(uint32_t));
 		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 		packet << static_cast<uint8_t>(UDP::DESTROY);
-		packet << 0;
-		packet << cmd.idObject;
+		for (std::list<size_t>::const_iterator it = cmd.ids.begin(); it != cmd.ids.end(); ++it)
+		{
+			 packet << static_cast<uint32_t>(*it);
+			 std::cout << *it << ", ";
+		}
+		std::cout << std::endl;
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 true, cmd.client);
+						 true, 0);
 	}
 }
 

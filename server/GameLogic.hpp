@@ -5,6 +5,7 @@
 #include "GameState.hpp"
 
 class Game;
+class GameCommand;
 
 class GameLogic : public Core::GameState
 {
@@ -40,6 +41,11 @@ class GameLogic : public Core::GameState
 	  std::string bulletName;
 	  int		occurenceFrequency;
   };
+
+	void				moveCommand(Core::Command const &);
+	void				spawnSpawnerCommand(Core::Command const &);
+	void				updateCannonCommand(Core::Command const &);
+	void				fireStateCommand(Core::Command const &);
 
 	Game				&_game;
 	int					_nbEnemies;

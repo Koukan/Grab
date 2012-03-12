@@ -16,6 +16,8 @@ class	Map : public Core::Resource, public Core::PhysicObject
 		void	addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY);
 		void    addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY);
 		void    addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY);
+		void	decreasePaused();
+		void	increasePaused();
 
 	protected:
 		void    addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY);
@@ -34,5 +36,5 @@ class	Map : public Core::Resource, public Core::PhysicObject
 
 		std::multimap<size_t, mapdata>		_monsters;
 		std::multimap<size_t, mapdata>      _decorations;
-		unsigned int				_pause;
+		unsigned int				_nbPaused;
 };
