@@ -3,7 +3,8 @@
 
 
 MonsterGenerator::MonsterGenerator(int seed)
-	: _maxId(0), _leftFrequency(20), _rightFrequency(20), _upFrequency(1), _squadLevelSpeed(4), _nbSquads(0), _nbSquadsMax(10), _squadTime(10), _rand(seed), _elapsedTime(0),
+	: _maxId(0), _squadLevelSpeed(4), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(0),
+	_leftFrequency(10), _rightFrequency(10), _upFrequency(1), _nbSquads(0), _nbSquadsMax(10), _squadTime(10), _rand(seed), _elapsedTime(0),
 	_inMaze(true), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0)
 {
 }
@@ -34,10 +35,28 @@ void	MonsterGenerator::addRandomMonster(std::string const &name, bool scrollable
 	std::sort(this->_randMonsters.begin(), this->_randMonsters.end());
 }
 
+void	MonsterGenerator::addMazeMonster(std::string const &name, bool scrollable, size_t level)
+{
+	this->_mazeMonsters.push_back(MonsterInfo(level, name, scrollable));
+	std::sort(this->_mazeMonsters.begin(), this->_mazeMonsters.end());
+}
+
 void	MonsterGenerator::addRandomWall(std::string const &name, bool scrollable, size_t level)
 {
 	this->_walls.push_back(MonsterInfo(level, name, scrollable));
 	std::sort(this->_walls.begin(), this->_walls.end());
+}
+
+void	MonsterGenerator::addRandomHWall(std::string const &name, bool scrollable, size_t level)
+{
+	this->_hWalls.push_back(MonsterInfo(level, name, scrollable));
+	std::sort(this->_hWalls.begin(), this->_hWalls.end());
+}
+
+void	MonsterGenerator::addRandomVWall(std::string const &name, bool scrollable, size_t level)
+{
+	this->_vWalls.push_back(MonsterInfo(level, name, scrollable));
+	std::sort(this->_vWalls.begin(), this->_vWalls.end());
 }
 
 void	MonsterGenerator::addRandomBreakableWall(std::string const &name, bool scrollable, size_t level)
@@ -48,7 +67,17 @@ void	MonsterGenerator::addRandomBreakableWall(std::string const &name, bool scro
 
 void	MonsterGenerator::createWall(MonsterInfo const &info, int x, int y)
 {
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 100 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
+}
+
+void	MonsterGenerator::createMovableWall(MonsterInfo const &info, int x, int y)
+{
 	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 100, 0, 0, info.scrollable, false, -320 - y * this->_wallSize);
+}
+
+void	MonsterGenerator::createMazeMonster(MonsterInfo const &info, int x, int y)
+{
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) + 80, this->_tmpY - 80 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
 }
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
@@ -368,6 +397,32 @@ void	MonsterGenerator::addSideWalls(double elapsed)
 	this->createWall(info, 6, 0);
 }
 
+void	MonsterGenerator::createObstacle(int x, int y)
+{
+	std::vector<int> tab;
+
+	if (!this->_breakableWalls.empty())
+	{
+		for (int i = 0; i < this->_mazeBreakableWallsFrequency; ++i)
+			tab.push_back(0);
+	}
+	if (!this->_mazeMonsters.empty())
+	{
+		for (int i = 0; i < this->_mazeEnemiesFrequency; ++i)
+			tab.push_back(1);
+	}
+	for (int i = 0; i < this->_mazeNoObstacleFrequency; ++i)
+		tab.push_back(2);
+
+	if (tab.size() == 0)
+		return ;
+	int i = this->_rand() % tab.size();
+	if (tab[i] == 0)
+		this->createWall(this->_breakableWalls[0], x, y);
+	else if (tab[i] == 1)
+		this->createMazeMonster(this->_mazeMonsters[0], x, y);
+}
+
 void	MonsterGenerator::createWalls(int offset)
 {
 	for (int y = HEIGHT - 1; y >= 0; --y)
@@ -380,25 +435,23 @@ void	MonsterGenerator::createWalls(int offset)
 			else if (type == HWALL)
 			{
 				if (x % 2 == 0)
-					this->createWall(this->_walls[1], x + 2, (HEIGHT - 1) - y + offset * HEIGHT + 1);
+					this->createMovableWall(this->_hWalls[0], x + 2, (HEIGHT - 1) - y + offset * HEIGHT + 1);
 				else
-					this->createWall(this->_walls[3], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
+					this->createMovableWall(this->_hWalls[1], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
 				++x;
 			}
 			else if (type == VWALL && (y == HEIGHT - 1 || this->_maze[(y + 1) * WIDTH + x] != VWALL))
 			{
 				if (((HEIGHT - 1) - y + offset * HEIGHT) % 2 == 0)
-					this->createWall(this->_walls[2], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
+					this->createMovableWall(this->_vWalls[0], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
 				else
-					this->createWall(this->_walls[4], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1 + 1);
+					this->createMovableWall(this->_vWalls[1], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1 + 1);
 			}
 			else if (type == VWALL)
 				this->_maze[y  * WIDTH + x] = WALL;
-			else if (!this->_breakableWalls.empty() && type == WAY &&
-				((y == HEIGHT - 1 && this->_lastPosition == x) || /*this->_maze[(y + 1) * WIDTH + x] == VWALL ||
-				this->_maze[(y + 1) * WIDTH + x] == HWALL ||*/
+			else if (type == WAY && ((y == HEIGHT - 1 && this->_lastPosition == x) ||
 				(y != HEIGHT - 1 && this->_maze[(y + 1) * WIDTH + x] == WAY)))
-				this->createWall(this->_breakableWalls[0], x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
+				this->createObstacle(x + 1, (HEIGHT - 1) - y + offset * HEIGHT + 1);
 		}
 	}
 }

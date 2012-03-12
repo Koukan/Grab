@@ -52,10 +52,16 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 				this->handleEnd(child, manager);
 			else if (name == "randomMonster")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomMonster);
+			else if (name == "mazeMonster")
+				this->handleRandomElem(child, manager, &MonsterGenerator::addMazeMonster);
 			else if (name == "randomBoss")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomBoss);
 			else if (name == "randomWall")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomWall);
+			else if (name == "randomHWall")
+				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomHWall);
+			else if (name == "randomVWall")
+				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomVWall);
 			else if (name == "randomBreakableWall")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomBreakableWall);
 		}
