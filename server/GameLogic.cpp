@@ -8,6 +8,7 @@
 #include "CommandDispatcher.hpp"
 #include "Rules.hpp"
 #include "Map.hpp"
+#include "Cannon.hpp"
 
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
@@ -15,6 +16,7 @@ GameLogic::GameLogic(Game &game)
 	this->load("resources/map/map1.xml");
 	this->addGroup("Wall", 0);
 	this->addGroup("playerfires", 0);
+	this->addGroup("cannons", 0);
 	this->addGroup("ship", 0);
 	this->addGroup("shot", 0);
 
@@ -47,57 +49,23 @@ void		GameLogic::update(double elapseTime)
 
 bool		GameLogic::handleCommand(Core::Command const &command)
 {
-	GameCommand	const &gc = static_cast<GameCommand const &>(command);
-	if (gc.name == "move")
+	struct {
+		std::string		name;
+		void			(GameLogic::*func)(Core::Command const &);
+	}	tab[] = {
+			{"move", &GameLogic::moveCommand},
+			{"spawnspawner", &GameLogic::spawnSpawnerCommand},
+			{"updateCannon", &GameLogic::updateCannonCommand},
+			{"fireState", &GameLogic::fireStateCommand}
+	};
+
+	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
 	{
-		Ship	*ship = reinterpret_cast<Player*>(gc.client)->getShip();
-		ship->setX(gc.x);
-		ship->setY(gc.y);
-		ship->setVx(gc.vx);
-		ship->setVy(gc.vy);
-		GameCommand *answer = new GameCommand("MovePacket");
-		answer->idObject = ship->getId();
-		answer->x = gc.x;
-		answer->y = gc.y;
-		answer->vx = gc.vx;
-		answer->vy = gc.vy;
-		answer->game = &_game;
-		answer->client = &reinterpret_cast<Player*>(gc.client)->getClient();
-		Core::CommandDispatcher::get().pushCommand(*answer);
-		return true;
-	}
-	else if (gc.name == "spawn")
-	{
-	  	Core::CircleHitBox		*hitbox = new Core::CircleHitBox(gc.x, gc.y, 15);
-	  	Core::Bullet			*bullet = new Core::Bullet(*hitbox, gc.vx, gc.vy);
-		bullet->setId(gc.idObject);
-		this->addGameObject(bullet, "playerfires", 9);
-		GameCommand *answer = new GameCommand("Spawn");
-		answer->idResource = gc.idResource;
-		answer->idObject = gc.idObject;
-		answer->x = gc.x;
-		answer->y = gc.y;
-		answer->vx = gc.vx;
-		answer->vy = gc.vy;
-		answer->game = &_game;
-		answer->client = gc.client;
-		Core::CommandDispatcher::get().pushCommand(*answer);
-		return true;
-	}
-	else if (gc.name == "spawnspawner")
-	{
-		Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, 1100, gc.x, 0, 0);
-		this->addGameObject(bullet);
-		//GameCommand *answer = new GameCommand("Spawn");
-		//answer->idResource = bullet->getId();
-		//answer->idObject = this->getBulletParser(gc.data)->getResourceId();
-		//answer->x = gc.x;
-		//answer->y = gc.y;
-		//answer->vx = gc.vx;
-		//answer->vy = gc.vy;
-		//answer->game = &_game;
-		//answer->client = gc.client;
-		//Core::CommandDispatcher::get().pushCommand(*answer);
+		if (command.name == tab[i].name)
+		{
+			(this->*(tab[i].func))(command);
+			return true;
+		}
 	}
 	return false;
 }
@@ -117,4 +85,69 @@ void		GameLogic::startGame()
 uint32_t	GameLogic::getSeed() const
 {
 	return this->_rand.getSeed();
+}
+
+void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
+{
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, 1100, gc.x, 0, 0);
+	this->addGameObject(bullet);
+}
+
+void		GameLogic::moveCommand(Core::Command const &command)
+{
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+
+	Ship	*ship = reinterpret_cast<Player*>(gc.client)->getShip();
+	ship->setX(gc.x);
+	ship->setY(gc.y);
+	ship->setVx(gc.vx);
+	ship->setVy(gc.vy);
+	GameCommand *answer = new GameCommand("MovePacket");
+	answer->idObject = ship->getId();
+	answer->x = gc.x;
+	answer->y = gc.y;
+	answer->vx = gc.vx;
+	answer->vy = gc.vy;
+	answer->game = &_game;
+	answer->client = &reinterpret_cast<Player*>(gc.client)->getClient();
+	Core::CommandDispatcher::get().pushCommand(*answer);
+}
+
+void		GameLogic::updateCannonCommand(Core::Command const &command)
+{
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
+	if (!ship)
+		return ;
+	if (gc.data.empty())
+	{
+		ship->releaseCannon(gc.idResource);
+		std::cout << "releaseCannon" << std::endl;
+	}
+	else
+	{
+		ship->addCannon(new Cannon(gc.name, *ship, *this, "", "cannons", "playerShots",
+							gc.x, gc.y), gc.idResource);
+		std::cout << "addCannon" << std::endl;
+	}
+}
+
+void		GameLogic::fireStateCommand(Core::Command const &command)
+{
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
+	if (!ship)
+		return ;
+	if (gc.idResource == 0)
+		ship->releaseFire();
+	else if (gc.idResource == 1)
+		ship->fire(*this);
+	else if (gc.idResource == 2)
+		ship->specialFire(*this);
+	else if (gc.idResource == 3)
+		ship->releaseSpecialFire();
+	std::cout << "fireStateCommand " << gc.idResource << std::endl;
 }

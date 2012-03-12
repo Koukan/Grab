@@ -26,8 +26,14 @@ public:
   bool			getGrabLaunched() const;
   float			getSpeed() const;
   void			addCannon(Cannon *cannon, unsigned int nGrab);
+  void			releaseCannon(unsigned int nb);
   void			copyColor(Core::Sprite& sprite);
   virtual void	move(double time);
+
+  void			fire(Core::GameState &);
+  void			releaseFire();
+  void			specialFire(Core::GameState &);
+  void			releaseSpecialFire();
 
   void			inputUp(Core::InputCommand const &cmd);
   void			inputDown(Core::InputCommand const &cmd);

@@ -310,9 +310,11 @@ int		Client::removePlayer(Net::Packet &packet)
 	return 0;
 }
 
-GameLogic		&Client::getGameLogic()
+GameLogic			*Client::getGameLogic()
 {
-	return _game->getGameLogic();
+	if (this->_game)
+		return &_game->getGameLogic();
+	return 0;
 }
 
 int         		Client::sendError(Error::Type error)

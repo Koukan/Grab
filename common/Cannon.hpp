@@ -6,9 +6,9 @@
 class Cannon : public ConcreteObject
 {
 public:
-  Cannon(std::string const &parser, Ship& ship, std::string const &spriteName,
-	 std::string const &cannonGroup, std::string const &shootGroup,
-	 double offsetx = 0, double offsety = 0);
+  Cannon(std::string const &parser, Ship& ship, Core::GameState &state,
+		 std::string const &spriteName, std::string const &cannonGroup,
+		 std::string const &shootGroup, double offsetx = 0, double offsety = 0);
   ~Cannon();
 
   virtual void draw(double elapsedTime);

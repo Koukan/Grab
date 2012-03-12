@@ -21,6 +21,7 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	_currentId(0), _fire(false), _elapsedTime(0)
 {
+	Rules::setOnline(online);
 }
 
 GSInGame::~GSInGame()

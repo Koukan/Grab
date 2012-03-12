@@ -80,8 +80,7 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"unBindPlayer", &NetworkModule::unBindPlayerCommand},
 		{"updatePlayer", &NetworkModule::updatePlayerCommand},
 		{"Ready", &NetworkModule::readyCommand},
-		{"beginFire", &NetworkModule::beginFire},
-		{"endFire", &NetworkModule::endFire},
+		{"Fire", &NetworkModule::fireCommand},
 		{"launchGrab", &NetworkModule::launchGrab},
 		{"updateCannon", &NetworkModule::updateCannon}
 		/*must be completed */
@@ -230,25 +229,14 @@ void		NetworkModule::readyCommand(Core::Command const &)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::beginFire(Core::Command const &command)
+void		NetworkModule::fireCommand(Core::Command const &command)
 {
 	Net::Packet		packet(14);
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::FIRESTATE);
 	packet << static_cast<GameCommand const &>(command).idObject;
-	packet << true;
-	this->sendPacketUDP(packet);
-}
-
-void		NetworkModule::endFire(Core::Command const &command)
-{
-	Net::Packet		packet(14);
-
-	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-	packet << static_cast<uint8_t>(UDP::FIRESTATE);
-	packet << static_cast<GameCommand const &>(command).idObject;
-	packet << false;
+	packet << static_cast<uint8_t>(static_cast<GameCommand const &>(command).idResource);
 	this->sendPacketUDP(packet);
 }
 
@@ -268,14 +256,18 @@ void		NetworkModule::launchGrab(Core::Command const &command)
 void		NetworkModule::updateCannon(Core::Command const &command)
 {
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(15 + cmd.data.size());
+	Net::Packet			packet(19 + cmd.data.size());
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::UPDATECANNON);
 	packet << cmd.idObject;
 	packet << static_cast<uint8_t>(cmd.idResource);
 	if (!cmd.data.empty())
+	{
+		packet << static_cast<int16_t>(cmd.x);
+		packet << static_cast<int16_t>(cmd.y);
 		packet << cmd.data;
+	}
 	this->sendPacketUDP(packet);
 }
 
