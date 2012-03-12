@@ -13,6 +13,7 @@
 #include "Map.hpp"
 #include "CircleHitBox.hpp"
 #include "RendererManager.hpp"
+#include "Modes.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -63,7 +64,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
 
   // load xml
-  this->load("resources/map/randomMap.xml");
+  if (this->_mode == Modes::STORY)
+  	this->load("resources/map/map1.xml");
+  else
+	this->load("resources/map/randomMap.xml");
 
   //test map
   this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
@@ -215,7 +219,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawndecoration", &GSInGame::spawndecoration},
 	{"spawnsound", &GSInGame::spawnsound},
 	{"spawnend", &GSInGame::spawnend},
-	{"respawnplayer", &GSInGame::respawnplayer}
+	{"respawnplayer", &GSInGame::respawnplayer},
+	{"setseed", &GSInGame::setSeed}
   };
 
   for (size_t i = 0;
@@ -335,6 +340,7 @@ void		GSInGame::spawnend(GameCommand const &event)
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
 	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
+	spawner->setSeed(this->_rand());
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
 }
@@ -356,6 +362,11 @@ void		GSInGame::spawnsound(GameCommand const &event)
 void		GSInGame::respawnplayer(GameCommand const &event)
 {
 	event.player->respawn();
+}
+
+void		GSInGame::setSeed(GameCommand const &event)
+{
+	this->_rand.seed(event.idObject);
 }
 
 void		GSInGame::createShips()

@@ -29,6 +29,7 @@ GameLogic::GameLogic(Game &game)
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
 	this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
+	this->_rand.seed(rand());
 }
 
 GameLogic::~GameLogic()
@@ -111,4 +112,9 @@ void		GameLogic::startGame()
 	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
 	this->_gameStarted = true;
 	this->setBeginId(10000);
+}
+
+uint32_t	GameLogic::getSeed() const
+{
+	return this->_rand.getSeed();
 }

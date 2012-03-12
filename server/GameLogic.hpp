@@ -12,9 +12,10 @@ class GameLogic : public Core::GameState
     GameLogic(Game &game);
     virtual ~GameLogic();
 	virtual void		update(double elapsedTime);
-  virtual bool		handleCommand(Core::Command const &command);
+	virtual bool		handleCommand(Core::Command const &command);
 	Game				&getGame() const;
 	void				startGame();
+	uint32_t			getSeed() const;
 
   private:
   enum SalvoType
@@ -44,4 +45,5 @@ class GameLogic : public Core::GameState
 	int					_nbEnemies;
 	double				_elapseTime;
 	bool				_gameStarted;
+	Net::MTRand			_rand;
 };

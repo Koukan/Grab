@@ -310,7 +310,7 @@ int		Client::removePlayer(Net::Packet &packet)
 	return 0;
 }
 
-GameLogic           &Client::getGameLogic()
+GameLogic		&Client::getGameLogic()
 {
 	return _game->getGameLogic();
 }

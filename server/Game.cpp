@@ -179,6 +179,13 @@ void		Game::loadGame()
 	}
 	// end rangeId
 
+	// send pseudo random seed
+	cmd = new GameCommand("Seed");
+	cmd->idObject = this->_logic.getSeed();
+	cmd->game = this;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
+	// end pseudo random seed
+
 	// begin ship
 	double		x = 384;
 	double		step = 256;
