@@ -115,7 +115,7 @@ BulletCommand::~BulletCommand()
 {
   if (_paused)
     {
-      Command* cmd = new GameCommand("decreasePaused");
+      Command* cmd = new Command("decreasePaused");
       Core::CommandDispatcher::get().pushCommand(*cmd);
     }
 }
@@ -124,7 +124,7 @@ void		BulletCommand::managePaused()
 {
   if (_paused)
     {
-      Command* cmd = new GameCommand("increasePaused");
+      Command* cmd = new Command("increasePaused");
       Core::CommandDispatcher::get().pushCommand(*cmd);
     }
 }
@@ -301,6 +301,13 @@ double		BulletCommand::getBulletSpeedY()
 	return this->_vy;
 }
 
+void		BulletCommand::removeChild(uint32_t id)
+{
+	this->_childs.erase(id);
+	if (this->isDelete() && this->_childs.empty())
+		this->GameObject::erase();
+}
+
 void		BulletCommand::setFocus(std::string const &name)
 {
 	this->_focus = name;
@@ -343,6 +350,14 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 std::string const &BulletCommand::getBulletScript() const
 {
 	return this->_grabBullet;
+}
+
+void		BulletCommand::erase()
+{
+	if (this->_childs.empty())
+		this->GameObject::erase();
+	else
+		this->_delete = true;
 }
 
 void		BulletCommand::setSpeedDirection()

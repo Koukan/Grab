@@ -36,6 +36,8 @@ Bullet::~Bullet()
 {
 	if (this->_sprite)
 		delete this->_sprite;
+	if (this->_parent)
+		this->_parent->removeChild(this->_bulletId);
 }
 
 void		Bullet::draw(double elapsedTime)

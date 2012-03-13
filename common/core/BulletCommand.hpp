@@ -39,6 +39,7 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
     virtual void	doAccelY(double speedy);
     virtual double	getBulletSpeedX();
     virtual double	getBulletSpeedY();
+	void			removeChild(uint32_t id);
 
 	void			setFocus(std::string const &name);
 	void			setRank(double rank);
@@ -47,6 +48,8 @@ class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
 	uint32_t		getSeed() const;
 	Bullet			*getChild(uint32_t id) const;
 	std::string const	&getBulletScript() const;
+
+	virtual void	erase();
 
   protected:
 	typedef std::map<uint32_t, Bullet*>	BulletMap;
