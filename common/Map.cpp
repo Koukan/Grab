@@ -4,7 +4,7 @@
 #include "CommandDispatcher.hpp"
 #include "GameState.hpp"
 
-Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _pause(0)
+Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _nbPaused(0)
 {}
 
 Map::~Map()
@@ -57,6 +57,8 @@ void    	Map::addElem(std::string const &command, std::string const &name, size_
 
 void		Map::move(double time)
 {
+  if (this->_nbPaused == 0)
+    {
 	PhysicObject::move(time);
 
 	GameCommand	*cmd;
@@ -76,4 +78,15 @@ void		Map::move(double time)
 		_monsters.erase(it);
 		it = _monsters.begin();
 	}
+    }
+}
+
+void		Map::decreasePaused()
+{
+  --this->_nbPaused;
+}
+
+void		Map::increasePaused()
+{
+  ++this->_nbPaused;
 }

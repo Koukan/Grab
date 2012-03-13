@@ -61,6 +61,8 @@ void		SFMLSprite::update(double elapsedTime)
 			nb += nbr;
 		else
 			nb -= nbr;
+		if (nb >= size)
+			nb = size - 1;
 		this->_currentFrame = nb;
 		#if (SFML_VERSION_MAJOR == 2)
 		this->SetTextureRect(this->_rect[this->_currentFrame]);

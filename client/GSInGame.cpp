@@ -10,7 +10,6 @@
 #include "GameStateManager.hpp"
 #include "NetworkModule.hpp"
 #include "Rules.hpp"
-#include "Map.hpp"
 #include "CircleHitBox.hpp"
 #include "RendererManager.hpp"
 #include "Modes.hpp"
@@ -20,7 +19,7 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbDie(0), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
-	_currentId(0), _fire(false), _elapsedTime(0)
+	  _currentId(0), _fire(false), _elapsedTime(0)
 {
 	Rules::setOnline(online);
 }
@@ -40,11 +39,10 @@ void		GSInGame::preload()
   this->addGroup("walls", 4);
   this->addGroup("breakableWalls", 3);
   this->addGroup("Wall", 0);
-  this->addGroup("shot", 9); //what is it ??
+  this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
-  this->addGroup("end", 3);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
@@ -72,8 +70,8 @@ void		GSInGame::preload()
 	this->load("resources/map/randomMap.xml");
 
   //test map
-  this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
-
+  _mapObj = static_cast<Map*>(this->getResource("level1", 5));
+  this->addGameObject(_mapObj, "map");
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
@@ -223,6 +221,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"spawnend", &GSInGame::spawnend},
 	{"respawnplayer", &GSInGame::respawnplayer},
 	{"setseed", &GSInGame::setSeed},
+	{"decreasePaused", &GSInGame::decreasePaused},
+	{"increasePaused", &GSInGame::increasePaused},
 	{"destroy", &GSInGame::destroy}
   };
 
@@ -337,12 +337,12 @@ void		GSInGame::rangeid(GameCommand const &event)
 
 void		GSInGame::spawnend(GameCommand const &event)
 {
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, event.y, 1000, 8000)), "end");
+  std::cout << "you win !" << std::endl;
 }
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
-	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy);
+  Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
 	spawner->setSeed(this->_rand());
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");
@@ -360,6 +360,16 @@ void		GSInGame::spawnsound(GameCommand const &event)
 	Core::Sound	*sound = this->getSound(event.data);
 	if (sound)
 		sound->play();
+}
+
+void		GSInGame::decreasePaused(GameCommand const &event)
+{
+  this->getMap().decreasePaused();
+}
+
+void		GSInGame::increasePaused(GameCommand const &event)
+{
+  this->getMap().increasePaused();
 }
 
 void		GSInGame::respawnplayer(GameCommand const &event)
@@ -426,4 +436,9 @@ uint32_t	GSInGame::getNextId()
 		_currentId = _rangeBegin;
 	}
 	return (_currentId++);
+}
+
+Map&		GSInGame::getMap() const
+{
+  return *_mapObj;
 }
