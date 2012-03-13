@@ -113,11 +113,14 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 
 BulletCommand::~BulletCommand()
 {
-  if (_paused)
-    {
-      Command* cmd = new Command("decreasePaused");
-      Core::CommandDispatcher::get().pushCommand(*cmd);
-    }
+	if (_paused)
+	{
+		Command* cmd = new Command("decreasePaused");
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
+	for (BulletMap::iterator it = this->_childs.begin();
+		 it != this->_childs.end(); it++)
+		it->second->setParent(0);
 }
 
 void		BulletCommand::managePaused()
