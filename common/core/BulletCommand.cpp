@@ -218,7 +218,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 		bullet->setLife(this->_simpleLife);
 		bullet->setDamage(this->_simpleDamage);
 		this->_state.addGameObject(bullet, this->_simpleGroup, false);
-		this->insertChild(*bullet);
+		//this->insertChild(*bullet);
 	}
 }
 

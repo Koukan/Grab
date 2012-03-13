@@ -72,9 +72,10 @@ void		PhysicManager::move(GameObjectManager::groupsMap const &groups, double tim
 				 it1 != itGroups->second->getObjects().end();)
 			{
 				it2 = it1++;
+				if ((*it2)->isDelete())
+					continue ;
 				static_cast<PhysicObject*>(*it2)->move(timeEffect);
-				if (!(*it2)->isDelete())
-					itGroups->second->getQuadTree().move(*static_cast<PhysicObject *>(*it2));
+				itGroups->second->getQuadTree().move(*static_cast<PhysicObject *>(*it2));
 			}
 		}
 	}
