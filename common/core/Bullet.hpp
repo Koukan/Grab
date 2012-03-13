@@ -34,6 +34,8 @@ class CORE_DLLREQ Bullet : public PhysicObject
 	int32_t			getDamage() const;
 	Sprite			*getSprite() const;
 
+	virtual void	erase();
+
   protected:
     Sprite			*_sprite;
 	BulletCommand	*_parent;

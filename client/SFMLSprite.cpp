@@ -61,7 +61,7 @@ void		SFMLSprite::update(double elapsedTime)
 			nb += nbr;
 		else
 			nb -= nbr;
-		if (nb >= size)
+		if (static_cast<uint32_t>(nb) >= size)
 			nb = size - 1;
 		this->_currentFrame = nb;
 		#if (SFML_VERSION_MAJOR == 2)

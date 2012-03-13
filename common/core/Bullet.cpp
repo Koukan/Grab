@@ -36,8 +36,6 @@ Bullet::~Bullet()
 {
 	if (this->_sprite)
 		delete this->_sprite;
-	if (this->_parent)
-		this->_parent->removeChild(this->_bulletId);
 }
 
 void		Bullet::draw(double elapsedTime)
@@ -106,4 +104,11 @@ int32_t		Bullet::getDamage() const
 Core::Sprite	*Bullet::getSprite() const
 {
 	return this->_sprite;
+}
+
+void		Bullet::erase()
+{
+	if (this->_parent)
+		this->_parent->removeChild(this->_bulletId);
+	this->GameObject::erase();
 }

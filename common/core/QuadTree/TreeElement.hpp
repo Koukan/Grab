@@ -10,7 +10,7 @@ class CORE_DLLREQ TreeElement
 {
 public:
 	TreeElement(void);
-	~TreeElement(void);
+	virtual ~TreeElement(void);
 
 	virtual int getWidthElement() = 0;
 	virtual int getHeightElement() = 0;

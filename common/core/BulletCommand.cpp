@@ -308,7 +308,7 @@ void		BulletCommand::removeChild(uint32_t id)
 {
 	this->_childs.erase(id);
 	if (this->isDelete() && this->_childs.empty())
-		this->GameObject::erase();
+		this->erase();
 }
 
 void		BulletCommand::setFocus(std::string const &name)
@@ -358,9 +358,18 @@ std::string const &BulletCommand::getBulletScript() const
 void		BulletCommand::erase()
 {
 	if (this->_childs.empty())
-		this->GameObject::erase();
+	{
+		this->_delete = 1;
+		if (this->_parent)
+			this->_parent->removeChild(this->_bulletId);
+	}
 	else
-		this->_delete = true;
+		this->_delete = 2;
+	if (this->_group)
+		this->_group->getState().addDeleteObject(static_cast<GameObject*>(this));
+	for (std::list<GameObject*>::iterator it = this->_objects.begin();
+		 it != this->_objects.end(); it++)
+		(*it)->setRelativeObject(0);
 }
 
 void		BulletCommand::setSpeedDirection()
@@ -373,5 +382,6 @@ void		BulletCommand::insertChild(Bullet &bullet)
 {
 	bullet.setBulletId(this->_nextId);
 	bullet.setParent(this);
-	this->_childs[this->_nextId++] = &bullet;
+	this->_childs[this->_nextId] = &bullet;
+	++this->_nextId;
 }

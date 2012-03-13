@@ -9,7 +9,7 @@
 
 CORE_BEGIN_NAMESPACE
 
-class CORE_DLLREQ BulletCommand : public BulletMLRunner, public Bullet
+class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 {
   public:
     BulletCommand(std::string const &parser, GameState &gstate,
