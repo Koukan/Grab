@@ -113,18 +113,21 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 
 BulletCommand::~BulletCommand()
 {
-  if (_paused)
-    {
-      Command* cmd = new GameCommand("decreasePaused");
-      Core::CommandDispatcher::get().pushCommand(*cmd);
-    }
+	if (_paused)
+	{
+		Command* cmd = new Command("decreasePaused");
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
+	for (BulletMap::iterator it = this->_childs.begin();
+		 it != this->_childs.end(); it++)
+		it->second->setParent(0);
 }
 
 void		BulletCommand::managePaused()
 {
   if (_paused)
     {
-      Command* cmd = new GameCommand("increasePaused");
+      Command* cmd = new Command("increasePaused");
       Core::CommandDispatcher::get().pushCommand(*cmd);
     }
 }
@@ -215,7 +218,7 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 		bullet->setLife(this->_simpleLife);
 		bullet->setDamage(this->_simpleDamage);
 		this->_state.addGameObject(bullet, this->_simpleGroup, false);
-		this->insertChild(*bullet);
+		//this->insertChild(*bullet);
 	}
 }
 
@@ -301,6 +304,13 @@ double		BulletCommand::getBulletSpeedY()
 	return this->_vy;
 }
 
+void		BulletCommand::removeChild(uint32_t id)
+{
+	this->_childs.erase(id);
+	if (this->isDelete() && this->_childs.empty())
+		this->GameObject::erase();
+}
+
 void		BulletCommand::setFocus(std::string const &name)
 {
 	this->_focus = name;
@@ -343,6 +353,14 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 std::string const &BulletCommand::getBulletScript() const
 {
 	return this->_grabBullet;
+}
+
+void		BulletCommand::erase()
+{
+	if (this->_childs.empty())
+		this->GameObject::erase();
+	else
+		this->_delete = true;
 }
 
 void		BulletCommand::setSpeedDirection()

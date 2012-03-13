@@ -85,6 +85,8 @@ void				RendererManager::update(double elapsedTime)
 				Core::Group::gameObjectSet const	&objects = lit->second->getObjects();
 				for (oit = objects.begin(); oit != objects.end(); oit++)
 				{
+					if ((*oit)->isDelete())
+						continue ;
 					static_cast<Core::DrawableObject*>(*oit)->draw(time);
 					//Core::PhysicObject * tmp = dynamic_cast<Core::PhysicObject*>(*oit);
 					//if (tmp)

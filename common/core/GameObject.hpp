@@ -32,7 +32,8 @@ public:
 	bool				isDelete() const;
 	GameObject			*getRelativeObject() const;
 
-	void				erase();
+	virtual void		erase();
+
 protected:
 	void				addGameObject(GameObject &obj);
 	void				removeGameObject(GameObject &obj);
