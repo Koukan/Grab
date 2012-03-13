@@ -32,7 +32,7 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 		GameLogic const &gl = static_cast<GameLogic const &>(state);
 		cmd->game = &gl.getGame();
 		for (Core::Bullet *tmp = &monster; tmp; tmp = tmp->getParent())
-			cmd->ids.push_front(tmp->getId());
+			cmd->ids.push_front(tmp->getBulletId());
 	 	Core::CommandDispatcher::get().pushCommand(*cmd);
 		monster.erase();
 	}

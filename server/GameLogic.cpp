@@ -101,7 +101,7 @@ void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
 	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, 0, 0);
-	this->addGameObject(bullet);
+	this->addGameObject(bullet, "spawners");
 }
 
 void		GameLogic::moveCommand(Core::Command const &command)

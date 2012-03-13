@@ -378,9 +378,16 @@ void		GSInGame::destroy(GameCommand const &event)
 	
 	std::list<size_t>::const_iterator it = cmd.ids.begin();
 	Core::BulletCommand *obj = static_cast<Core::BulletCommand *>(this->getGameObject(*it));
+	Core::BulletCommand *tmp = obj;
+		std::cout << *it << ", ";
 	it++;
-	for (; it != cmd.ids.end() && obj; ++it)
-		obj = static_cast<Core::BulletCommand *>(obj->getChild(*it));
+	for (; it != cmd.ids.end() && tmp; ++it)
+	{
+		obj = tmp;
+		std::cout << *it << ", ";
+		tmp = static_cast<Core::BulletCommand *>(tmp->getChild(*it));
+	}
+	std::cout << std::endl;
 	if (obj)
 		obj->erase();
 }

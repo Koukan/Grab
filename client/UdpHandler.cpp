@@ -71,11 +71,14 @@ int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 		//this->testPacketId(id_packet);
 	uint32_t	idchild;
 	DestroyCommand *gc = new DestroyCommand("destroy");
-	for (size_t	left = packet.size() - 9; left > sizeof(uint32_t); left -= sizeof(uint32_t))
+	write(1, packet.base(), packet.size());
+	for (size_t	left = packet.size() - 9; left >= sizeof(uint32_t); left -= sizeof(uint32_t))
 	{
 		packet >> idchild;
 		gc->ids.push_back(idchild);
+		std::cout << idchild <<", ";
 	}
+	std::cout << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
