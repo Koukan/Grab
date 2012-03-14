@@ -129,6 +129,12 @@ GameObjectManager::GameObjectManager() : _id(0)
 
 GameObjectManager::~GameObjectManager()
 {
+	for (std::list<GameObject *>::iterator it = this->_deleteList.begin();
+		 it != this->_deleteList.end(); it++)
+	{
+		this->_objects.erase((*it)->_id);
+		delete *it;
+	}
 	for (IdMap::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
 		delete it->second;
@@ -260,7 +266,8 @@ Group			*GameObjectManager::getGroup(std::string const &name) const
 
 void			GameObjectManager::addDeleteObject(GameObject *obj)
 {
-	this->_deleteList.push_back(obj);
+	if (std::find(_deleteList.begin(), _deleteList.end(), obj) == _deleteList.end())
+		this->_deleteList.push_back(obj);
 }
 
 void			GameObjectManager::deleteObjects()
