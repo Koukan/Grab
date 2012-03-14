@@ -396,6 +396,7 @@ void		GSInGame::destroy(GameCommand const &event)
 		obj = tmp;
 		tmp = static_cast<Core::BulletCommand *>(tmp->getChild(*it));
 	}
+	std::cout << "destroy" << std::endl;
 	if (tmp && it == cmd.ids.end())
 		tmp->erase();
 }

@@ -17,6 +17,12 @@ CommandHandler::~CommandHandler()
 		this->_commands.pop();
 		delete command;
 	}
+	for (std::list<CommandHandler*>::iterator it = this->_handlers.begin();
+		 it != this->_handlers.end(); it++)
+		(*it)->removeFather(*this);
+	for (std::list<CommandHandler*>::iterator it = this->_fathers.begin();
+		 it != this->_fathers.end(); it++)
+		(*it)->removeHandler(*this);
 }
 
 bool			CommandHandler::handleCommand(Command const &)
@@ -91,6 +97,12 @@ void			CommandHandler::pushCommand(Command const &command, int time)
 void			CommandHandler::registerHandler(CommandHandler &handler)
 {
 	this->_handlers.push_back(&handler);
+	handler.addFather(*this);
+}
+
+void			CommandHandler::addFather(CommandHandler &handler)
+{
+	this->_fathers.push_back(&handler);
 }
 
 void			CommandHandler::removeHandler(CommandHandler &handler)
@@ -109,4 +121,17 @@ void			CommandHandler::removeHandler(CommandHandler &handler)
 void			CommandHandler::removeHandler()
 {
 	this->_handlers.clear();
+}
+
+void			CommandHandler::removeFather(CommandHandler &handler)
+{
+	std::list<CommandHandler*>::iterator	it2;
+
+	for (std::list<CommandHandler*>::iterator it = this->_fathers.begin();
+		 it != this->_fathers.end();)
+	{
+		it2 = it++;
+		if (*it2 == &handler)
+			this->_fathers.erase(it2);
+	}
 }

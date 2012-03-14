@@ -118,9 +118,11 @@ void		Group::addObject(GameObject *object, bool id)
   object->setGroup(this);
 }
 
-void		Group::removeObject(GameObject *object)
+void		Group::removeObject(GameObject *object, bool id)
 {
 	this->_objects.erase(object);
+	if (id)
+		this->_gameState.removeObject(object->getId());
 }
 
 GameObjectManager::GameObjectManager() : _id(0)
@@ -129,12 +131,6 @@ GameObjectManager::GameObjectManager() : _id(0)
 
 GameObjectManager::~GameObjectManager()
 {
-	for (std::list<GameObject *>::iterator it = this->_deleteList.begin();
-		 it != this->_deleteList.end(); it++)
-	{
-		this->_objects.erase((*it)->_id);
-		delete *it;
-	}
 	for (IdMap::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
 		delete it->second;
@@ -293,4 +289,9 @@ GameObjectManager::groupsDisplay const	&GameObjectManager::getDisplayObjects() c
 uint32_t			GameObjectManager::getLastAttributedId() const
 {
  	return _id;
+}
+
+void				GameObjectManager::removeObject(uint32_t id)
+{
+	this->_objects.erase(id);
 }

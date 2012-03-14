@@ -18,7 +18,7 @@ inline static double rtod(double x) { return x * 180.0 / M_PI; }
 
 BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 			     double x, double y, double vx, double vy, bool paused)
-	: BulletMLRunner(gstate.getBulletParser(parser)), Bullet(x, y, vx, vy),
+	: Bullet(x, y, vx, vy), BulletMLRunner(gstate.getBulletParser(parser)),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
@@ -37,7 +37,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 
 BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 			     double x, double y, double vx, double vy, bool paused)
-	: BulletMLRunner(&parser), Bullet(x, y, vx, vy),
+	: Bullet(x, y, vx, vy), BulletMLRunner(&parser),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
@@ -56,7 +56,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool paused,
 		double x, double y, double vx, double vy)
-	: BulletMLRunner(&state), Bullet(x, y, vx, vy),
+	: Bullet(x, y, vx, vy), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("players"), _paused(paused)
@@ -85,7 +85,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 			     HitBox &box, bool paused,
 			     double vx, double vy, double xHitboxOffset, double yHitboxOffset)
-	: BulletMLRunner(&state), Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset),
+	: Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
 	  _nextId(1), _focus("players"), _paused(paused)
@@ -141,7 +141,7 @@ double		BulletCommand::getAimDirection()
 {
 	if (!this->_relativeObject || this->_relativeObject->isDelete())
 	{
-		Group *group = this->_state.getGroup(this->_focus);
+		Group	*group = this->_state.getGroup(this->_focus);
 		if (group)
 		{
 			uint32_t	distance = static_cast<uint32_t>(-1);
