@@ -98,7 +98,7 @@ void	MonsterGenerator::updateId()
 	for (; this->_maxId < this->_randMonsters.size() && this->_squadLevel >= this->_randMonsters[this->_maxId].level; ++this->_maxId);
 }
 
-void	MonsterGenerator::generateSquad(double time)
+void	MonsterGenerator::generateSquad(double)
 {
 	if (this->_randMonsters.empty())
 		return ;
@@ -129,7 +129,7 @@ void	MonsterGenerator::generateSquad(double time)
 	++this->_nbSquads;
 }
 
-void	MonsterGenerator::generateBoss(double time)
+void	MonsterGenerator::generateBoss(double)
 {
 	if (!this->_bosses.empty())
 	{
@@ -273,7 +273,6 @@ void	MonsterGenerator::onBottom(int &x, int &y)
 
 bool	MonsterGenerator::isMovable(int x, int y, int direction)
 {
-	int i = 0;
 	bool	tab[] = {false, false, false};
 	if (x - 1 >= 0 && this->_maze[y * WIDTH + x - 1] != WAY && direction != 0)
 		tab[0] = true;
@@ -370,9 +369,9 @@ void	MonsterGenerator::createMaze()
 			for (size_t i = 0; i < this->_upFrequency; ++i)
 				directions.push_back(TOP);
 		}
-		if (y + 1 < HEIGHT && (this->_maze[(y + 1) * WIDTH + x] == EMPTY ||
-			(this->_maze[(y + 1) * WIDTH + x] == WALL && this->isMovable(x, y + 1, 2))))
-			/*directions.push_back(BOTTOM)*/;
+		//if (y + 1 < HEIGHT && (this->_maze[(y + 1) * WIDTH + x] == EMPTY ||
+			//(this->_maze[(y + 1) * WIDTH + x] == WALL && this->isMovable(x, y + 1, 2))))
+			//directions.push_back(BOTTOM);
 
 		int i = this->_rand() % directions.size();
 
@@ -417,15 +416,15 @@ void	MonsterGenerator::createObstacle(int x, int y)
 
 	if (!this->_breakableWalls.empty())
 	{
-		for (int i = 0; i < this->_mazeBreakableWallsFrequency; ++i)
+		for (size_t i = 0; i < this->_mazeBreakableWallsFrequency; ++i)
 			tab.push_back(0);
 	}
 	if (!this->_mazeMonsters.empty())
 	{
-		for (int i = 0; i < this->_mazeEnemiesFrequency; ++i)
+		for (size_t i = 0; i < this->_mazeEnemiesFrequency; ++i)
 			tab.push_back(1);
 	}
-	for (int i = 0; i < this->_mazeNoObstacleFrequency; ++i)
+	for (size_t i = 0; i < this->_mazeNoObstacleFrequency; ++i)
 		tab.push_back(2);
 
 	if (tab.size() == 0)
