@@ -74,6 +74,8 @@ Ship::~Ship()
 
 void	Ship::move(double time)
 {
+	if (this->_dead)
+		return ;
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
@@ -185,64 +187,48 @@ void Ship::handleActions()
 
 void Ship::inputUp(Core::InputCommand const &/*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::UP] = true;
 	this->handleActions();
 }
 
 void Ship::inputDown(Core::InputCommand const &/*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::DOWN] = true;
 	this->handleActions();
 }
 
 void Ship::inputLeft(Core::InputCommand const &/*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::LEFT] = true;
 	this->handleActions();
 }
 
 void Ship::inputRight(Core::InputCommand const &/*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::RIGHT] = true;
 	this->handleActions();
 }
 
 void Ship::inputReleasedUp(Core::InputCommand const& /*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::UP] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedDown(Core::InputCommand const& /*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::DOWN] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedLeft(Core::InputCommand const& /*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::LEFT] = false;
 	this->handleActions();
 }
 
 void Ship::inputReleasedRight(Core::InputCommand const& /*cmd*/)
 {
-	if (this->_dead)
-		return ;
 	this->_actions[Ship::RIGHT] = false;
 	this->handleActions();
 }
