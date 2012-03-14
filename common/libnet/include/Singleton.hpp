@@ -5,6 +5,7 @@
 #include "NonCopyable.hpp"
 #include "Mutex.hpp"
 #include "NullMutex.hpp"
+#include <iostream>
 
 NET_BEGIN_NAMESPACE
 
@@ -24,7 +25,7 @@ class Singleton : private NonCopyable
             if (_singleton == 0)
 				allocSingleton();
             return *(static_cast<T*>(_singleton));
-        }	
+        }
 
         static void     kill()
         {
@@ -39,11 +40,14 @@ class Singleton : private NonCopyable
 	Singleton()
 	{}
 
-	virtual ~Singleton(){}
+	virtual ~Singleton()
+	{
+		_singleton = 0;
+	}
 
     private:
 		static void				allocSingleton()
-		{	
+		{
 			_lockstrategy.lock();
 			if (_singleton == 0)
 				_singleton = new T;
