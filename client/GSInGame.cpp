@@ -43,7 +43,6 @@ void		GSInGame::preload()
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
-  this->addGroup("scoreBonus", 42);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);

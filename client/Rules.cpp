@@ -6,8 +6,6 @@
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
-#include "ConcreteObject.hpp"
-#include "GSInGame.hpp"
 #include <cmath>
 
 static bool		gl_online = false;
@@ -48,12 +46,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 
 	shot.erase();
 	if (monster.getLife() <= 0)
-	  {
-	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
-	    ConcreteObject *obj = new ConcreteObject("weapon", *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
-	    monster.erase();
-	    gamestate.addGameObject(obj, "scoreBonus");
-	  }
+		monster.erase();
 }
 
 void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
