@@ -101,7 +101,7 @@ void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
 	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, 0, 0);
-	this->addGameObject(bullet);
+	this->addGameObject(bullet, "spawners");
 }
 
 void		GameLogic::moveCommand(Core::Command const &command)
@@ -134,13 +134,11 @@ void		GameLogic::updateCannonCommand(Core::Command const &command)
 	if (gc.data.empty())
 	{
 		ship->releaseCannon(gc.idResource);
-		std::cout << "releaseCannon" << std::endl;
 	}
 	else
 	{
 		ship->addCannon(new Cannon(gc.name, *ship, *this, "", "cannons", "playerShots",
 							gc.x, gc.y), gc.idResource);
-		std::cout << "addCannon" << std::endl;
 	}
 }
 
@@ -159,5 +157,4 @@ void		GameLogic::fireStateCommand(Core::Command const &command)
 		ship->specialFire(*this);
 	else if (gc.idResource == 3)
 		ship->releaseSpecialFire();
-	std::cout << "fireStateCommand " << gc.idResource << std::endl;
 }

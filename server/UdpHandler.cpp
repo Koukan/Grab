@@ -159,7 +159,6 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		packet >> n;
 		cmd->idResource = n;
 		client.getGameLogic()->pushCommand(*cmd);
-		std::cout << "fireStatePacket" << std::endl;
 	}
 	return 1;
 }

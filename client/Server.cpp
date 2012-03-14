@@ -48,7 +48,7 @@ int			Server::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
-	std::cout << "incomming packet " << int(type) << std::endl;
+	//std::cout << "incomming packet " << int(type) << std::endl;
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
 	{
 		return (this->*methods[type])(packet);

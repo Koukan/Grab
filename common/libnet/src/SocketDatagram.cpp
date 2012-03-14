@@ -84,24 +84,24 @@ int		SocketDatagram::recvPacket(Packet &packet, int flags, int packsize)
 {
 	struct sockaddr_storage		tmp;
 	socklen_t					size = sizeof(tmp);
-	int							toread = (packsize == -1) ? packet.capacity() - packet.getWindex() : packsize;
 
-	int ret = ::recvfrom(_handle, packet.wr_ptr(), toread, flags, reinterpret_cast<sockaddr*>(&tmp), &size);
+	int ret = ::recvfrom(_handle, packet.base(), packet.capacity(), flags, reinterpret_cast<sockaddr*>(&tmp), &size);
 	if (ret > 0)
 	{
-		packet.wr_ptr(packet.getWindex() + ret);
+		packet.wr_ptr(ret);
 		packet.getAddr().assign(reinterpret_cast<sockaddr&>(tmp), size);
-		packet.setSize(packet.getWindex());
+		packet.setSize(ret);
 	}
 	return ret;
 }
 
 int		SocketDatagram::sendPacket(Packet &packet, int flags, int packsize)
 {
-	int							tosend = (packsize == -1) ? packet.size() - packet.getWindex() : packsize;
+	int							tosend = (packsize == -1) ? packet.size(): packsize;
 
-	int ret = ::sendto(_handle, packet.wr_ptr(), tosend, flags, packet.getAddr(), packet.getAddr().getSize());
+	int ret = ::sendto(_handle, packet.base(), tosend, flags, packet.getAddr(), packet.getAddr().getSize());
 	if (ret > 0)
-		packet.wr_ptr(packet.getWindex() + ret);
+		packet.wr_ptr(ret);
 	return ret;
 }
+
