@@ -63,7 +63,7 @@ private:
   void			launchGrab(std::string const &group, unsigned int nGrab);
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
-  Player					&_player;
+  Player&					_player;
   float						_speed;
   float						_tmpSpeed;
   int						_fireFrequency;
@@ -92,6 +92,7 @@ private:
 
   std::string	_bulletFileName;
   PlayerBullet	*_playerBullet;
+  int						_score;
 
   void handleActions();
 };

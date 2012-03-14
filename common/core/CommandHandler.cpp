@@ -1,5 +1,6 @@
 #include "CommandHandler.hpp"
 #include <iostream>
+#include <algorithm>
 
 CORE_USE_NAMESPACE
 
@@ -107,15 +108,9 @@ void			CommandHandler::addFather(CommandHandler &handler)
 
 void			CommandHandler::removeHandler(CommandHandler &handler)
 {
-	std::list<CommandHandler*>::iterator	it2;
-
-	for (std::list<CommandHandler*>::iterator it = this->_handlers.begin();
-		 it != this->_handlers.end();)
-	{
-		it2 = it++;
-		if (*it2 == &handler)
-			this->_handlers.erase(it2);
-	}
+	std::list<CommandHandler*>::iterator	it = std::find(this->_handlers.begin(), this->_handlers.end(), &handler);
+	if (it != this->_handlers.end())
+		this->_handlers.erase(it);
 }
 
 void			CommandHandler::removeHandler()
@@ -125,13 +120,7 @@ void			CommandHandler::removeHandler()
 
 void			CommandHandler::removeFather(CommandHandler &handler)
 {
-	std::list<CommandHandler*>::iterator	it2;
-
-	for (std::list<CommandHandler*>::iterator it = this->_fathers.begin();
-		 it != this->_fathers.end();)
-	{
-		it2 = it++;
-		if (*it2 == &handler)
-			this->_fathers.erase(it2);
-	}
+	std::list<CommandHandler*>::iterator	it = std::find(this->_fathers.begin(), this->_fathers.end(), &handler);
+	if (it != this->_fathers.end())
+		this->_fathers.erase(it);
 }
