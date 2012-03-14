@@ -14,6 +14,7 @@
 #include "GSPartySettings.hpp"
 #include "GSBindPlayer.hpp"
 #include "Converter.hpp"
+#include "Game.hpp"
 #include "RendererManager.hpp"
 
 GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
@@ -53,6 +54,7 @@ void	GSPartySettings::createParty()
 			this->_error->setText("Connection to the server failed");
 			this->_error->setX((RendererManager::get().getWidth() - this->_error->getWidth()) / 2);
 			this->_error->setY(100);
+			Game::get().unloadModule("NetworkModule");
 		}
     }
     else
@@ -84,8 +86,6 @@ void	GSPartySettings::onStart()
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "selected left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "selected right list arrow", "pressed right list arrow");
 
-  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
-
   GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, 0);
 /*  if (_mode == Modes::STORY)*/
     //guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "1 Player", "buttonFont", *sprite, 0)));
@@ -101,5 +101,6 @@ void	GSPartySettings::onStart()
 
   layout->insertElementAtEnd(*(this->_playerList));
 
+  new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "Next", "buttonFont", *sprite, layout);
   new GUIButton<GSPartySettings>(*this, &GSPartySettings::back, "Back", "buttonFont", *sprite, layout);
 }
