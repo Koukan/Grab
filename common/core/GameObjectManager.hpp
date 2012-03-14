@@ -108,6 +108,7 @@ class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 	void						deleteObjects();
 	groupsDisplay const			&getDisplayObjects() const;
 	uint32_t					getLastAttributedId() const;
+	void						removeObject(uint32_t id);
 
   private:
 	typedef	std::map<uint32_t, GameObject*>				IdMap;
