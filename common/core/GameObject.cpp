@@ -114,7 +114,6 @@ void		GameObject::removeGameObject(GameObject &obj)
 
 void		GameObject::removeGroup()
 {
-	if (!this->_group)
-		return ;
-	this->_group->removeObject(this);
+	if (this->_group)
+		this->_group->removeObject(this, false);
 }

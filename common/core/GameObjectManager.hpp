@@ -29,7 +29,7 @@ class CORE_DLLREQ Group
     ~Group();
 
     void	addObject(GameObject *object, bool id);
-    void	removeObject(GameObject *object);
+    void	removeObject(GameObject *object, bool id = true);
 
     //setter
     void	setLayer(int layer);

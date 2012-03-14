@@ -118,10 +118,11 @@ void		Group::addObject(GameObject *object, bool id)
   object->setGroup(this);
 }
 
-void		Group::removeObject(GameObject *object)
+void		Group::removeObject(GameObject *object, bool id)
 {
 	this->_objects.erase(object);
-	this->_gameState.removeObject(object->getId());
+	if (id)
+		this->_gameState.removeObject(object->getId());
 }
 
 GameObjectManager::GameObjectManager() : _id(0)
