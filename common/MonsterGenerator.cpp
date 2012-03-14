@@ -113,13 +113,13 @@ void	MonsterGenerator::generateSquad(double time)
 	size_t tmpMaxId = this->_maxId;
 	do
 	{
-		while (tmpMaxId - 1 >= 0)
+		while (tmpMaxId >= 1)
 		{
 			if (this->_squadLevel - level >= this->_randMonsters[tmpMaxId - 1].level)
 				break;
 			--tmpMaxId;
 		}
-		if (tmpMaxId - 1 < 0)
+		if (tmpMaxId < 1)
 			return ;
 		MonsterInfo &info = this->_randMonsters[this->_rand() % tmpMaxId];
 		this->createMonster(info);
