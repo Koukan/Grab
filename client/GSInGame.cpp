@@ -335,7 +335,7 @@ void		GSInGame::rangeid(GameCommand const &event)
 }
 
 
-void		GSInGame::spawnend(GameCommand const &event)
+void		GSInGame::spawnend(GameCommand const &)
 {
   std::cout << "you win !" << std::endl;
 }
@@ -362,14 +362,14 @@ void		GSInGame::spawnsound(GameCommand const &event)
 		sound->play();
 }
 
-void		GSInGame::decreasePaused(GameCommand const &event)
+void		GSInGame::decreasePaused(GameCommand const &)
 {
-  this->getMap().decreasePaused();
+	this->getMap().decreasePaused();
 }
 
-void		GSInGame::increasePaused(GameCommand const &event)
+void		GSInGame::increasePaused(GameCommand const &)
 {
-  this->getMap().increasePaused();
+	this->getMap().increasePaused();
 }
 
 void		GSInGame::respawnplayer(GameCommand const &event)
@@ -385,7 +385,7 @@ void		GSInGame::setSeed(GameCommand const &event)
 void		GSInGame::destroy(GameCommand const &event)
 {
 	DestroyCommand	const &cmd = reinterpret_cast<DestroyCommand const &>(event);
-	
+
 	std::list<size_t>::const_iterator it = cmd.ids.begin();
 	Core::BulletCommand *obj = static_cast<Core::BulletCommand *>(this->getGameObject(*it));
 	Core::BulletCommand *tmp = obj;

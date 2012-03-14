@@ -29,7 +29,7 @@ public:
 	double				getX() const;
 	double				getY() const;
 	Group				*getGroup() const;
-	bool				isDelete() const;
+	int8_t				isDelete() const;
 	GameObject			*getRelativeObject() const;
 
 	virtual void		erase();
@@ -41,11 +41,14 @@ protected:
 	double					_x;
 	double 					_y;
 	double					_z;
-	bool					_delete;
+	int8_t					_delete;
 	uint32_t				_id;
 	Group					*_group;
 	GameObject				*_relativeObject;
 	std::list<GameObject*>	_objects;
+
+private:
+	void				removeGroup();
 
 	friend class GameObjectManager;
 };

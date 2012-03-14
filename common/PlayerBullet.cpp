@@ -55,23 +55,12 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	Bullet		*bullet;
 
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
-	//if (_shape == Core::BulletCommand::Circle)
-		//box = new Core::CircleHitBox(_x, _y,
-			//static_cast<double>(_width));
-	//else if (_shape == Core::BulletCommand::Rectangle)
-		//box = new Core::RectHitBox(_x, _y,
-			//static_cast<double>(_width),
-			//static_cast<double>(_height));
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	//if (box)
-	//{
 	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
 	if (bullet->getSprite())
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
-	this->insertChild(*bullet);
-		//}
 }
 
 void	PlayerBullet::createBullet(BulletMLState* state, double direction, double speed)
@@ -91,17 +80,8 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	PlayerBullet	*bullet;
 
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
-	//if (state->getShape() == "circle")
-		//box = new Core::CircleHitBox(_x, _y,
-			//static_cast<double>(state->getRadius()));
-	//else if (state->getShape() == "rectangle")
-		//box = new Core::RectHitBox(_x, _y,
-			//static_cast<double>(state->getWidth()),
-			//static_cast<double>(state->getHeight()));
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	//if (box)
-	//{
 	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
 	if (bullet->getSprite())
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
@@ -109,17 +89,6 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	this->_state.addGameObject(bullet, this->_groupName);
 	this->insertChild(*bullet);
 	bullet->setSeed(this->_rand());
-	//}
-	//else
-	//{
-		//bullet = new PlayerBullet(*state, _state, this->_groupName, _x, _y, vx, vy);
-		//if (bullet->getSprite())
-		  //bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		//bullet->setColor(_colors[0], _colors[1], _colors[2]);
-		//this->_state.addGameObject(bullet, this->_groupName);
-		//this->insertChild(*bullet);
-		//bullet->setSeed(this->_rand());
-	//}
 	delete state;
 }
 

@@ -5,7 +5,7 @@
 CORE_USE_NAMESPACE
 
 GameObject::GameObject(double x, double y, double z, Group *group)
-	: _x(x), _y(y), _z(z), _delete(false), _id(0), _group(group), _relativeObject(0)
+	: _x(x), _y(y), _z(z), _delete(0), _id(0), _group(group), _relativeObject(0)
 {}
 
 GameObject::~GameObject(void)
@@ -44,7 +44,7 @@ GameObject	*GameObject::getRelativeObject() const
 	return this->_relativeObject;
 }
 
-bool		GameObject::isDelete() const
+int8_t		GameObject::isDelete() const
 {
 	return (this->_delete);
 }
@@ -87,7 +87,7 @@ void		GameObject::setRelativeObject(GameObject *obj)
 
 void		GameObject::erase()
 {
-	this->_delete = true;
+	this->_delete = 1;
 	this->_group->getState().addDeleteObject(this);
 	for (std::list<GameObject*>::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
@@ -110,4 +110,11 @@ void		GameObject::removeGameObject(GameObject &obj)
 			return ;
 		}
 	}
+}
+
+void		GameObject::removeGroup()
+{
+	if (!this->_group)
+		return ;
+	this->_group->removeObject(this);
 }

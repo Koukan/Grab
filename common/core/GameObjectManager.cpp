@@ -16,7 +16,7 @@ Group::Group(GameState &state, std::string const &name, int layer,
 Group::~Group()
 {
 	for (gameObjectSet::iterator it = this->_objects.begin();
-		 it != this->_objects.end(); it++)
+	 	it != this->_objects.end(); it++)
 	{
 		(*it)->setGroup(0);
 		delete *it;
@@ -129,6 +129,9 @@ GameObjectManager::GameObjectManager() : _id(0)
 
 GameObjectManager::~GameObjectManager()
 {
+	for (IdMap::iterator it = this->_objects.begin();
+		 it != this->_objects.end(); it++)
+		delete it->second;
 	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
 		 it != this->_collisionGroups.end(); it++)
 		delete it->second;
@@ -257,15 +260,20 @@ Group			*GameObjectManager::getGroup(std::string const &name) const
 
 void			GameObjectManager::addDeleteObject(GameObject *obj)
 {
-	this->_deleteList.insert(obj);
+	this->_deleteList.push_back(obj);
 }
 
 void			GameObjectManager::deleteObjects()
 {
-	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end(); it++)
+	for (std::list<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end(); it++)
 	{
-		this->_objects.erase((*it)->_id);
-		delete *it;
+		if ((*it)->isDelete() == 1)
+		{
+			this->_objects.erase((*it)->_id);
+			delete *it;
+		}
+		else
+			(*it)->removeGroup();
 	}
 	this->_deleteList.clear();
 }
