@@ -23,7 +23,7 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
 	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
 	monster.setLife(monster.getLife() - shot.getDamage());
-	std::cout << "fire touch monster" << std::endl;
+	//std::cout << "fire touch monster" << std::endl;
 	if (monster.getLife() <= 0)
 	{
 	  	DestroyCommand *cmd = new DestroyCommand("Destroy");

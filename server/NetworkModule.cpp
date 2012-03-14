@@ -149,12 +149,9 @@ void		NetworkModule::destroyCommand(Core::Command const &command)
 		for (std::list<size_t>::const_iterator it = cmd.ids.begin(); it != cmd.ids.end(); ++it)
 		{
 			 packet << static_cast<uint32_t>(*it);
-			 std::cout << *it << ", ";
 		}
-		std::cout << std::endl;
-		write(1, packet.base(), packet.size());
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 true, 0);
+						 false, 0);
 	}
 }
 

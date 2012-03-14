@@ -1,6 +1,6 @@
 #include "MonsterGenerator.hpp"
 #include <algorithm>
-#include "RendererManager.hpp"
+//#include "RendererManager.hpp"
 
 
 MonsterGenerator::MonsterGenerator(int seed)
@@ -83,13 +83,13 @@ void	MonsterGenerator::createMazeMonster(MonsterInfo const &info, int x, int y)
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
 {
-	this->addElem("spawnspawner", info.name, this->_rand() % (RendererManager::get().getWidth() - 100),
+	this->addElem("spawnspawner", info.name, this->_rand() % (/*RendererManager::get().getWidth()*/1280 - 100),
 		this->_y + 100, 0, 0, info.scrollable, false, -100);
 }
 
 void	MonsterGenerator::createBoss(MonsterInfo const &info)
 {
-	this->addElem("spawnspawner", info.name, this->_rand() % 500 + RendererManager::get().getWidth() / 2 - 250,
+	this->addElem("spawnspawner", info.name, this->_rand() % 500 + /*RendererManager::get().getWidth()*/1280 / 2 - 250,
 		this->_y + 100, 0, 0, info.scrollable, false, -100);
 }
 
