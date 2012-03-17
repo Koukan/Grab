@@ -58,6 +58,8 @@ public:
   virtual void	draw(double elapsedTime);
   void			updateCannonsTrajectory();
   void			updateBulletTrajectory();
+  unsigned int		getScore() const;
+  void			setScore(unsigned int score);
 
 private:
   void			launchGrab(std::string const &group, unsigned int nGrab);
@@ -92,7 +94,7 @@ private:
 
   std::string	_bulletFileName;
   PlayerBullet	*_playerBullet;
-  int						_score;
+  unsigned int					_score;
 
   void handleActions();
 };

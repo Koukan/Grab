@@ -63,6 +63,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
   // load xml
   if (this->_mode == Modes::STORY)
