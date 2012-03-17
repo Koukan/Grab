@@ -82,7 +82,7 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, RendererManager::get().getHeight() + 300,
 	  8000, 1000)), "bottomInvisibleWall");
 
-  int const large = 30;
+  int const large = 100;
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
 	  RendererManager::get().getWidth(), large)), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,
