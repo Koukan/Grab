@@ -5,7 +5,7 @@
 
 MonsterGenerator::MonsterGenerator(int seed)
 	: _maxId(0), _squadLevelSpeed(4), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(5),
-	_leftFrequency(10), _rightFrequency(10), _upFrequency(1), _nbSquads(0), _nbSquadsMax(4), _squadTime(10), _bossTime(10), _rand(seed), _elapsedTime(0),
+	_leftFrequency(10), _rightFrequency(10), _upFrequency(1), _nbSquads(0), _nbSquadsMax(4), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(0),
 	_inMaze(false), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0)
 {
 }
@@ -531,6 +531,20 @@ void	MonsterGenerator::changeToSquads()
 
 void	MonsterGenerator::changeToMaze()
 {
+	static struct {
+		int left;
+		int right;
+		int up;
+	} const tab[] =
+	{
+		{1, 1, 2},
+		{20, 20, 1}
+	};
+
+	int i = this->_rand() % 2;
+	this->_leftFrequency = tab[i].left;
+	this->_rightFrequency = tab[i].right;
+	this->_upFrequency = tab[i].up;
 	this->_inMaze = true;
 	this->_tmpY = this->_y;
 	this->_mazeY = 0;
