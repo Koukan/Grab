@@ -531,3 +531,13 @@ void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGra
   else if ((position & 4))
     _grabsPositions[nGrab].second = _sprite->getHeight() + 20;
 }
+
+unsigned int	Ship::getScore() const
+{
+  return (_score);
+}
+
+void		Ship::setScore(unsigned int score)
+{
+  _score = score;
+}

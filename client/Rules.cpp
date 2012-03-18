@@ -6,7 +6,7 @@
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
-#include "ConcreteObject.hpp"
+#include "ScoreBonus.hpp"
 #include "GSInGame.hpp"
 #include <cmath>
 
@@ -50,7 +50,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	if (monster.getLife() <= 0)
 	  {
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
-	    ConcreteObject *obj = new ConcreteObject("weapon", *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
+	    ConcreteObject *obj = new ScoreBonus("weapon", 10, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
 	    monster.erase();
 	    gamestate.addGameObject(obj, "scoreBonus");
 	  }
@@ -187,6 +187,15 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 		ship->updateBulletTrajectory();
 		ship->updateCannonsTrajectory();
 	}
+}
+
+void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
+{
+  Ship& ship = static_cast<Ship&>(o1);
+  ScoreBonus& score = static_cast<ScoreBonus&>(o2);
+
+  ship.setScore(ship.getScore() + score.score);
+  score.erase();
 }
 
 void		Rules::setOnline(bool online)
