@@ -21,6 +21,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void			removeUDPClient(Client &client);
 	Client			*getClientByAddr(Net::InetAddr const &addr) const;
 	void			sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client = 0);
+	void			sendUDPPacket(Net::Packet &packet, std::list<Client*> const &list, bool needId, Client *client);
 
   private:
 	struct	Method
@@ -33,9 +34,6 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		destroyCommand(Core::Command const &command);
 	void		moveCommand(Core::Command const &command);
 	void		shipSpawnCommand(Core::Command const &command);
-	void		sendUDPPacket(Net::Packet &packet,
-					std::list<Client*> const &list,
-					bool needId, Client *client);
 	void		statusCommand(Core::Command const &command);
 	void		loadgameCommand(Core::Command const &command);
 	void		startgameCommand(Core::Command const &command);

@@ -242,12 +242,13 @@ void		NetworkModule::fireCommand(Core::Command const &command)
 
 void		NetworkModule::launchGrab(Core::Command const &command)
 {
-	Net::Packet			packet(17);
+	Net::Packet			packet(18);
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::LAUNCHGRAB);
 	packet << cmd.idObject;
+	packet << static_cast<uint8_t>(cmd.idResource);
 	packet << cmd.x;
 	packet << cmd.y;
 	this->sendPacketUDP(packet);
@@ -256,7 +257,7 @@ void		NetworkModule::launchGrab(Core::Command const &command)
 void		NetworkModule::updateCannon(Core::Command const &command)
 {
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(19 + cmd.data.size());
+	Net::Packet			packet(18 + cmd.data.size());
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::UPDATECANNON);
@@ -264,8 +265,8 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 	packet << static_cast<uint8_t>(cmd.idResource);
 	if (!cmd.data.empty())
 	{
-		packet << static_cast<int16_t>(cmd.x);
-		packet << static_cast<int16_t>(cmd.y);
+		packet << cmd.x;
+		packet << cmd.y;
 		packet << cmd.data;
 	}
 	this->sendPacketUDP(packet);

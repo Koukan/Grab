@@ -310,7 +310,14 @@ int		Client::removePlayer(Net::Packet &packet)
 	return 0;
 }
 
-GameLogic			*Client::getGameLogic()
+Game				*Client::getGame() const
+{
+	if (this->_game)
+		return this->_game;
+	return 0;
+}
+
+GameLogic			*Client::getGameLogic() const
 {
 	if (this->_game)
 		return &_game->getGameLogic();

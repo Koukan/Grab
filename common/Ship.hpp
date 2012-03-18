@@ -58,9 +58,9 @@ public:
   virtual void	draw(double elapsedTime);
   void			updateCannonsTrajectory();
   void			updateBulletTrajectory();
+  void			launchGrab(std::string const &group, unsigned int nGrab, double x, double y);
 
 private:
-  void			launchGrab(std::string const &group, unsigned int nGrab);
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
   Player&					_player;

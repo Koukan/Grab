@@ -99,7 +99,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 							   grab.getNum());
 				if (gl_online)
 				{
-					GameCommand		*cmd = new GameCommand("UpdateCannon", ship.getId());
+					GameCommand		*cmd = new GameCommand("updateCannon", ship.getId());
 					cmd->data = grab.getBulletScript();
 					cmd->idResource = grab.getNum();
 					cmd->x = grab.getOffsetX();
