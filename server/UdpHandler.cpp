@@ -18,6 +18,11 @@ void		UdpHandler::init()
 {
 }
 
+int			UdpHandler::handleClose(Net::Socket &)
+{
+	return 0;
+}
+
 int			UdpHandler::handleInputPacket(Net::Packet &packet)
 {
 	static int			(UdpHandler::* const methods[])(Net::Packet&, Client&) = {
@@ -112,12 +117,12 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 
 int			UdpHandler::score(Net::Packet &, Client&)
 {
-	return 0;
+	return 1;
 }
 
 int			UdpHandler::statement(Net::Packet &, Client&)
 {
-	return 0;
+	return 1;
 }
 
 int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
@@ -161,11 +166,11 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		client.getGameLogic()->pushCommand(*cmd);
 
 		// broadcast to other client
-		Net::Packet		broadcast(13);
-		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		packet << static_cast<uint8_t>(UDP::FIRESTATE);
-		packet << cmd->idObject;
-		packet << n;
+		Net::Packet		broadcast(14);
+		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+		broadcast << static_cast<uint8_t>(UDP::FIRESTATE);
+		broadcast << cmd->idObject;
+		broadcast << n;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
 		// end broadcast
 	}
@@ -222,9 +227,11 @@ int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 		packet >> n;
 		broadcast << n;
 		packet >> nb;
-		broadcast >> nb;
+		std::cout << "grab id = " << id << " n = " << static_cast<uint32_t>(n) << " x = " << nb << " y = ";
+		broadcast << nb;
 		packet >> nb;
-		broadcast >> nb;
+		broadcast << nb;
+		std::cout << nb << std::endl;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
 	}
 	return 1;

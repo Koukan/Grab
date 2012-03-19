@@ -11,23 +11,26 @@
 #include "Cannon.hpp"
 
 GameLogic::GameLogic(Game &game)
-  : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false)
+  : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false), _map(0)
 {
-  	this->addGroup("spawners");
-  	this->addGroup("players", 40);
-  	this->addGroup("playersOnline", 40);
-  	this->addGroup("playerShots", 40, 10000, 999999);
-  	this->addGroup("grabs", 40);
-  	this->addGroup("cannons", 42);
-  	this->addGroup("Wall", 0);
-  	this->addGroup("walls", 4);
-  	this->addGroup("breakableWalls", 3);
-  	this->addGroup("Wall", 0);
-  	this->addGroup("shot", 9); //what is it ??
-  	this->addGroup("monster", 10);
-  	this->addGroup("background2", 2);
-  	this->addGroup("background3", 3);
-  	this->addGroup("end", 3);
+	this->addGroup("spawners");
+	this->addGroup("players", 40);
+	this->addGroup("playersOnline", 40);
+	this->addGroup("playerShots", 40);
+	this->addGroup("grabs", 40);
+	this->addGroup("cannons", 42);
+	this->addGroup("Wall", 0);
+	this->addGroup("walls", 4);
+	this->addGroup("breakableWalls", 3);
+	this->addGroup("deadlyWalls", 5);
+	this->addGroup("Wall", 0);
+	this->addGroup("shot", 9); // monster shot
+	this->addGroup("monster", 10);
+	this->addGroup("background2", 2);
+	this->addGroup("background3", 3);
+	this->addGroup("impacts", 43);
+	this->addGroup("scoreBonus", 42);
+	this->addGroup("map", 0);
 
 	this->load("resources/map/map1.xml");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(3000, -2000, 1000, 8000)), "Wall");
@@ -51,6 +54,21 @@ GameLogic::~GameLogic()
 void		GameLogic::update(double elapseTime)
 {
 	this->handle(elapseTime);
+	this->_elapseTime += elapseTime;
+	if (this->_elapseTime > 1000)
+	{
+		if (_map)
+		{
+			GameCommand		*command = new GameCommand("MovePacket");
+			command->idObject = _map->getId();
+			command->x = _map->getX();
+			command->y = _map->getY();
+			command->vx = _map->getVx();
+			command->vy = _map->getVy();
+			Core::CommandDispatcher::get().pushCommand(*command);
+		}
+		this->_elapseTime -= 1000;
+	}
 	//if (_gameStarted)
 	//{
 			//this->createEnnemies(elapseTime);

@@ -251,6 +251,7 @@ void		NetworkModule::launchGrab(Core::Command const &command)
 	packet << static_cast<uint8_t>(cmd.idResource);
 	packet << cmd.x;
 	packet << cmd.y;
+	std::cout << "grab id = " << cmd.idObject << " n = " << cmd.idResource << " x = " << cmd.x << " y = " << cmd.y << std::endl;
 	this->sendPacketUDP(packet);
 }
 

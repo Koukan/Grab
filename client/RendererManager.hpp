@@ -7,7 +7,7 @@
 	#include <SFML/Graphics/Shader.hpp>
 	typedef sf::Shader	Shader;
 #else
-	#include <SFML\Graphics\PostFX.hpp>
+	#include <SFML/Graphics/PostFX.hpp>
 typedef sf::PostFX		Shader;
 #endif
 

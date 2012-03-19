@@ -35,7 +35,7 @@ private:
 			void (GSInGame::*method)(GameCommand const &);
 	};
 
-	void		gameover();
+	void		gameover(bool victory);
 	void		inputEscape(Core::InputCommand const &event);
 	void		registerShipCallbacks();
 
