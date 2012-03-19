@@ -166,13 +166,12 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		client.getGameLogic()->pushCommand(*cmd);
 
 		// broadcast to other client
-		Net::Packet		broadcast(13);
+		Net::Packet		broadcast(14);
 		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 		packet << static_cast<uint8_t>(UDP::FIRESTATE);
 		packet << cmd->idObject;
 		packet << n;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
-		std::cout << "fire" << std::endl;
 		// end broadcast
 	}
 	return 1;
