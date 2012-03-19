@@ -167,10 +167,10 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 
 		// broadcast to other client
 		Net::Packet		broadcast(14);
-		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		packet << static_cast<uint8_t>(UDP::FIRESTATE);
-		packet << cmd->idObject;
-		packet << n;
+		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+		broadcast << static_cast<uint8_t>(UDP::FIRESTATE);
+		broadcast << cmd->idObject;
+		broadcast << n;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
 		// end broadcast
 	}
