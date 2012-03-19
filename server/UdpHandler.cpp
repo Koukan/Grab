@@ -52,7 +52,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 int			UdpHandler::spawn(Net::Packet &packet, Client &client)
 {
 
-	if (!client.getGameLogic())
+	if (!client.getGame())
 		return 1;
 	uint32_t	id_packet;
 	GameCommand *gc = new GameCommand("spawn");
@@ -80,7 +80,7 @@ int			UdpHandler::destroy(Net::Packet &, Client&)
 
 int			UdpHandler::move(Net::Packet &packet, Client &client)
 {
-	if (!client.getGameLogic())
+	if (!client.getGame())
 		return 1;
 	Player	*player = 0;
 	GameCommand *gc = new GameCommand("move");
@@ -150,7 +150,7 @@ int         UdpHandler::pong(Net::Packet &, Client &client)
 
 int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 {
-	if (client.getGameLogic())
+	if (client.getGame())
 	{
 		uint8_t			n;
 		GameCommand		*cmd = new GameCommand("fireState");
@@ -159,15 +159,24 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		packet >> n;
 		cmd->idResource = n;
 		client.getGameLogic()->pushCommand(*cmd);
+
+		// broadcast to other client
+		Net::Packet		broadcast(13);
+		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+		packet << static_cast<uint8_t>(UDP::FIRESTATE);
+		packet << cmd->idObject;
+		packet << n;
+		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		// end broadcast
 	}
 	return 1;
 }
 
 int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 {
-	if (!client.getGameLogic())
+	if (!client.getGame())
 		return 1;
-	uint8_t		num;
+	uint8_t			num;
 	GameCommand		*cmd = new GameCommand("updateCannon");
 	packet >> cmd->idObject;
 	packet >> num;
@@ -179,10 +188,44 @@ int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 		packet >> cmd->data;
 	}
 	client.getGameLogic()->pushCommand(*cmd);
+
+	// broadcast to other client
+	Net::Packet			broadcast((packet.size() > 18) ? 18 + cmd->data.size() : 14);
+	broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	broadcast << static_cast<uint8_t>(UDP::UPDATECANNON);
+	broadcast << cmd->idObject;
+	broadcast << num;
+	if (packet.size() > 18)
+	{
+		broadcast << cmd->x;
+		broadcast << cmd->y;
+		broadcast << cmd->data;
+	}
+	NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+	// end broadcast
+
 	return 1;
 }
 
-int         UdpHandler::launchgrab(Net::Packet &packet, Client&)
+int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 {
+	if (client.getGame())
+	{
+		Net::Packet			broadcast(18);
+		uint32_t			id;
+		uint16_t			nb;
+		uint8_t				n;
+		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+		broadcast << static_cast<uint8_t>(UDP::LAUNCHGRAB);
+		packet >> id;
+		broadcast << id;
+		packet >> n;
+		broadcast << n;
+		packet >> nb;
+		broadcast >> nb;
+		packet >> nb;
+		broadcast >> nb;
+		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+	}
 	return 1;
 }

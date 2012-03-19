@@ -14,6 +14,7 @@
 #include "RendererManager.hpp"
 #include "Modes.hpp"
 #include "DestroyCommand.hpp"
+#include "Cannon.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -231,7 +232,10 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"setseed", &GSInGame::setSeed},
 	{"decreasePaused", &GSInGame::decreasePaused},
 	{"increasePaused", &GSInGame::increasePaused},
-	{"destroy", &GSInGame::destroy}
+	{"destroy", &GSInGame::destroy},
+	{"ServerFire", &GSInGame::serverFire},
+	{"ServerGrab", &GSInGame::serverGrab},
+	{"ServerCannon", &GSInGame::serverCannon}
   };
 
   for (size_t i = 0;
@@ -403,9 +407,55 @@ void		GSInGame::destroy(GameCommand const &event)
 		obj = tmp;
 		tmp = static_cast<Core::BulletCommand *>(tmp->getChild(*it));
 	}
-	std::cout << "destroy" << std::endl;
 	if (tmp && it == cmd.ids.end())
 		tmp->erase();
+}
+
+void		GSInGame::serverFire(GameCommand const &cmd)
+{
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+	{
+		switch (cmd.idResource)
+		{
+			case 0:
+				ship->releaseFire();
+				break;
+			case 1:
+				ship->fire(*this);
+				break;
+			case 2:
+				ship->specialFire(*this);
+				break;
+			case 3:
+				ship->releaseSpecialFire();
+				break;
+		};
+	}
+}
+
+void		GSInGame::serverGrab(GameCommand const &cmd)
+{
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+	{
+		ship->launchGrab("grabs", cmd.idResource, cmd.x, cmd.y);
+	}
+}
+
+void		GSInGame::serverCannon(GameCommand const &cmd)
+{
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+	{
+		if (cmd.data.empty())
+			ship->releaseCannon(cmd.idResource);
+		else
+			ship->addCannon(new Cannon(cmd.name, *ship, *this, "", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
+	}
 }
 
 void		GSInGame::createShips()
