@@ -57,7 +57,7 @@ private:
 	enum MazeSize
 	{
 		WIDTH = 5,
-		HEIGHT = 30
+		HEIGHT = 15
 	};
 
 	typedef std::vector<MonsterInfo>	Monsters;
