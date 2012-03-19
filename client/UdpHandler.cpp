@@ -172,6 +172,7 @@ int			UdpHandler::launchGrab(Net::Packet &packet, uint64_t)
 	gc->idResource = n;
 	packet >> gc->x;
 	packet >> gc->y;
+	std::cout << "grab id = " << gc->idObject << " n = " << gc->idResource << " x = " << gc->x << " y = " << gc->y << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
