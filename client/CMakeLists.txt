@@ -60,8 +60,6 @@ set(CORE_BULLETML_DIR "../common/core/bulletml/")
 set(CORE_TINYXML_DIR "../common/core/tinyxml/")
 
 
-##	AudioManager.cpp
-##	AudioManager.hpp
 set(GUI_INCLUDE_DIR "gui")
 
 set(GUI_SRC_DIR "gui")
@@ -144,6 +142,8 @@ set(SRCS
 	ScrollingSprite.cpp
 	Server.cpp
 	Server.hpp
+	ScoreBonus.cpp
+	ScoreBonus.hpp
 	SFMLSprite.cpp
 	SFMLSprite.hpp
 	SFMLSpriteProvider.cpp

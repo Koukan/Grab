@@ -88,22 +88,15 @@ void	Ship::move(double time)
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
-void Ship::launchGrab(std::string const &group, unsigned int nGrab)
+void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
 {
-  if (!_grabLaunched && nGrab < _nbMaxGrabs)
-   {
-     Grab* grab = new Grab("grab", *(new Core::CircleHitBox(this->getX(),
-							    this->getY(), 10)),
-			   *this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first, _grabsPositions[nGrab].second);
-     grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
-	 Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
-     _grabLaunched = true;
-	 GameCommand	*cmd = new GameCommand("launchGrab");
-	 cmd->x = this->_x;
-	 cmd->y = this->_y;
-	 cmd->idObject = this->_id;
-	 Core::CommandDispatcher::get().pushCommand(*cmd);
-   }
+	Grab* grab = new Grab("grab",
+				*(new Core::CircleHitBox(x, y, 10)),
+				*this, 180, _speed * 2, nGrab, _grabsPositions[nGrab].first,
+				_grabsPositions[nGrab].second);
+	grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
+	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+	_grabLaunched = true;
 }
 
 void Ship::setGrabLaunched(bool grabLaunched)
@@ -121,17 +114,12 @@ float Ship::getSpeed() const
   return (_speed);
 }
 
-void Ship::addCannon(Cannon *cannon, unsigned int nGrab)
+void	Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 {
 	if (cannon && nGrab < _nbMaxGrabs)
 	{
 		_cannons[nGrab] = cannon;
 		cannon->setColor(_colors[0], _colors[1], _colors[2]);
-		GameCommand *cmd = new GameCommand("updateCannon");
-		cmd->idObject = this->_id;
-		cmd->idResource = nGrab;
-		cmd->data = cannon->_parser;
-		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
 }
 
@@ -473,8 +461,16 @@ void Ship::manageGrab(std::string const &group, unsigned int nGrab)
 		cmd->idResource = nGrab;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
-	else
-		this->launchGrab(group, nGrab);
+	else if (!_grabLaunched && nGrab < _nbMaxGrabs)
+	{
+		this->launchGrab(group, nGrab, this->getX(), this->getY());
+		GameCommand	*cmd = new GameCommand("launchGrab");
+		cmd->x = static_cast<int16_t>(this->getX());
+		cmd->y = static_cast<int16_t>(this->getY());
+		cmd->idResource = nGrab;
+		cmd->idObject = this->_id;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
 }
 
 void Ship::releaseCannon(unsigned int nb)
@@ -534,4 +530,14 @@ void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGra
     _grabsPositions[nGrab].second = _sprite->getHeight() / 2;
   else if ((position & 4))
     _grabsPositions[nGrab].second = _sprite->getHeight() + 20;
+}
+
+unsigned int	Ship::getScore() const
+{
+  return (_score);
+}
+
+void		Ship::setScore(unsigned int score)
+{
+  _score = score;
 }

@@ -19,7 +19,10 @@ private:
 	int			statement(Net::Packet &packet, uint64_t timediff);
 	int         retrieve(Net::Packet &packet, uint64_t timediff);
 	int			ping(Net::Packet &packet, uint64_t timediff);
-	int         pong(Net::Packet &packet, uint64_t timediff);
+	int			pong(Net::Packet &packet, uint64_t timediff);
+	int			fireState(Net::Packet &packet, uint64_t timediff);
+	int			updateCannon(Net::Packet &packet, uint64_t timediff);
+	int			launchGrab(Net::Packet &packet, uint64_t timediff);
 
 	bool		testPacketId(uint32_t id);
 
