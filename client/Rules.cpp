@@ -121,6 +121,21 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 	}
 }
 
+void	Rules::grabTouchPlayerOnline(Core::GameObject& o1, Core::GameObject& o2)
+{
+	Grab& grab = static_cast<Grab&>(o1);
+
+	if (grab.getReturnToShip())
+	{
+		Ship& ship = static_cast<Ship &>(o2);
+		if (&(grab.getShip()) == &ship)
+		{
+			grab.erase();
+			ship.setGrabLaunched(false);
+		}
+	}
+}
+
 void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
 {
   Grab &grab = static_cast<Grab &>(o1);
