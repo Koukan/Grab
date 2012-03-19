@@ -33,7 +33,7 @@ void		GSInGame::preload()
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("playersOnline", 40);
-  this->addGroup("playerShots", 40, 10000, 999999);
+  this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
@@ -47,6 +47,7 @@ void		GSInGame::preload()
   this->addGroup("background3", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
+  this->addGroup("map", 0);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);

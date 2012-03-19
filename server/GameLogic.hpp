@@ -6,6 +6,7 @@
 
 class Game;
 class GameCommand;
+class Map;
 
 class GameLogic : public Core::GameState
 {
@@ -52,4 +53,5 @@ class GameLogic : public Core::GameState
 	double				_elapseTime;
 	bool				_gameStarted;
 	Net::MTRand			_rand;
+	Map					*_map;
 };
