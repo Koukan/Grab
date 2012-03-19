@@ -79,6 +79,8 @@ void	Ship::move(double time)
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
+	if (this->_vx == 0 && this->_vy == 0)
+		return ;
 	GameCommand	*move = new GameCommand("Move");
 	move->idObject = this->getId();
 	move->x = this->getX();

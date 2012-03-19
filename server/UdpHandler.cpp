@@ -112,12 +112,12 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 
 int			UdpHandler::score(Net::Packet &, Client&)
 {
-	return 0;
+	return 1;
 }
 
 int			UdpHandler::statement(Net::Packet &, Client&)
 {
-	return 0;
+	return 1;
 }
 
 int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
@@ -167,6 +167,7 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		packet << cmd->idObject;
 		packet << n;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		std::cout << "fire" << std::endl;
 		// end broadcast
 	}
 	return 1;
