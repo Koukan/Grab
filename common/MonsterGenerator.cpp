@@ -428,7 +428,7 @@ void	MonsterGenerator::createMaze()
 
 void	MonsterGenerator::addSideWalls(double elapsed)
 {
-	this->_tmpY = this->_y + (elapsed - this->_wallSize);
+	this->_tmpY = this->_y + (elapsed - this->_wallSize - 1);
 	this->createWall(0, 0);
 	this->createWall(6, 0);
 }
