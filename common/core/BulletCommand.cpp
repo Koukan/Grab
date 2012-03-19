@@ -4,7 +4,6 @@
 #include "bulletmlparser.h"
 #include "CircleHitBox.hpp"
 #include "RectHitBox.hpp"
-#include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
 
 #ifndef M_PI
