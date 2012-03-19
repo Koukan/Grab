@@ -5,7 +5,7 @@
 #include "GameCommand.hpp"
 #include "DestroyCommand.hpp"
 
-UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0), _nblatency(0)
+UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _sentPacketId(0), _latency(0), _nblatency(0)
 {
 	this->enableWhitelist(true);
 }
@@ -17,6 +17,11 @@ UdpHandler::~UdpHandler()
 void		UdpHandler::init()
 {
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
+}
+
+int     	UdpHandler::handleClose(Net::Socket &)
+{
+	return 1;
 }
 
 int			UdpHandler::handleInputPacket(Net::Packet &packet)
@@ -78,9 +83,7 @@ int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 	{
 		packet >> idchild;
 		gc->ids.push_back(idchild);
-		//std::cout << idchild <<", ";
 	}
-	//std::cout << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

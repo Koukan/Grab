@@ -125,7 +125,7 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 		Net::Packet		packet(29);
 		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 		packet << static_cast<uint8_t>(UDP::SPAWN);
-		packet << 0;
+		packet << static_cast<uint32_t>(0);
 		packet << cmd.idResource;
 		packet << cmd.idObject;
 		packet << cmd.x;
@@ -143,15 +143,16 @@ void		NetworkModule::destroyCommand(Core::Command const &command)
 
 	if (Server::get().gameExist(cmd.game))
 	{
-		Net::Packet		packet(9 + cmd.ids.size() * sizeof(uint32_t));
+		Net::Packet		packet(13 + cmd.ids.size() * sizeof(uint32_t));
 		packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 		packet << static_cast<uint8_t>(UDP::DESTROY);
+		packet << static_cast<uint32_t>(0);
 		for (std::list<size_t>::const_iterator it = cmd.ids.begin(); it != cmd.ids.end(); ++it)
 		{
 			 packet << static_cast<uint32_t>(*it);
 		}
 		this->sendUDPPacket(packet, cmd.game->getClients(),
-						 false, 0);
+						 true, 0);
 	}
 }
 
