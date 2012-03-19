@@ -38,11 +38,13 @@ void		GSInGame::preload()
   this->addGroup("Wall", 0);
   this->addGroup("walls", 4);
   this->addGroup("breakableWalls", 3);
+  this->addGroup("deadlyWalls", 5);
   this->addGroup("Wall", 0);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
+  this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
@@ -50,6 +52,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
+  this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
@@ -59,9 +62,12 @@ void		GSInGame::preload()
   this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("deadlyWalls", "players", &Rules::deadlyWallsTouchPlayers);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("deadlyWalls", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("deadlyWalls", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
