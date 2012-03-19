@@ -29,7 +29,10 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			NULL,
 			&UdpHandler::retrieve,
 			&UdpHandler::ping,
-			&UdpHandler::pong
+			&UdpHandler::pong,
+			&UdpHandler::fireState,
+			&UdpHandler::updateCannon,
+			&UdpHandler::launchGrab
 	};
 	uint64_t			time;
 	uint8_t				type;
@@ -126,6 +129,47 @@ int         UdpHandler::pong(Net::Packet &, uint64_t time_recv)
 {
 	_nblatency++;
 	_latency = (_latency + ((Net::Clock::getMsSinceEpoch() - time_recv) / 2)) / 2;
+	return 1;
+}
+
+int			UdpHandler::fireState(Net::Packet &packet, uint64_t)
+{
+	uint8_t		n;
+	GameCommand *gc = new GameCommand("ServerFire");
+	packet >> gc->idObject;
+	packet >> n;
+	gc->idResource = n;
+	Core::CommandDispatcher::get().pushCommand(*gc);
+	return 1;
+}
+
+int			UdpHandler::updateCannon(Net::Packet &packet, uint64_t)
+{
+	uint8_t		n;
+	GameCommand *gc = new GameCommand("ServerCannon");
+	packet >> gc->idObject;
+	packet >> n;
+	gc->idResource = n;
+	if (packet.size() > 18)
+	{
+		packet >> gc->x;
+		packet >> gc->y;
+		packet >> gc->data;
+	}
+	Core::CommandDispatcher::get().pushCommand(*gc);
+	return 1;
+}
+
+int			UdpHandler::launchGrab(Net::Packet &packet, uint64_t)
+{
+	uint8_t		n;
+	GameCommand *gc = new GameCommand("ServerGrab");
+	packet >> gc->idObject;
+	packet >> n;
+	gc->idResource = n;
+	packet >> gc->x;
+	packet >> gc->y;
+	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
 

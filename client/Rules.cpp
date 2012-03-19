@@ -44,7 +44,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setX(shot.getX() + shot.getSprite()->getWidth() / 2 - sprite->getWidth() / 2);
 	explosion->setY(shot.getY() + shot.getSprite()->getHeight() / 2 - sprite->getHeight() / 2);
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
-	gameState.addGameObject(explosion, "sprites", 100);
+	gameState.addGameObject(explosion, "impacts", 100);
 
 	shot.erase();
 	if (monster.getLife() <= 0)
@@ -66,6 +66,14 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 		ship.setDead(true);
 		shot.erase();
 	}
+}
+
+void	Rules::deadlyWallsTouchPlayers(Core::GameObject &o1, Core::GameObject &o2)
+{
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead())
+		ship.setDead(true);
 }
 
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
@@ -99,7 +107,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 							   grab.getNum());
 				if (gl_online)
 				{
-					GameCommand		*cmd = new GameCommand("UpdateCannon", ship.getId());
+					GameCommand		*cmd = new GameCommand("updateCannon", ship.getId());
 					cmd->data = grab.getBulletScript();
 					cmd->idResource = grab.getNum();
 					cmd->x = grab.getOffsetX();
