@@ -118,9 +118,11 @@ void		Group::addObject(GameObject *object, bool id)
   object->setGroup(this);
 }
 
-void		Group::removeObject(GameObject *object)
+void		Group::removeObject(GameObject *object, bool id)
 {
 	this->_objects.erase(object);
+	if (id)
+		this->_gameState.removeObject(object->getId());
 }
 
 GameObjectManager::GameObjectManager() : _id(0)
@@ -129,9 +131,13 @@ GameObjectManager::GameObjectManager() : _id(0)
 
 GameObjectManager::~GameObjectManager()
 {
+	IdMap::iterator	tmp;
 	for (IdMap::iterator it = this->_objects.begin();
-		 it != this->_objects.end(); it++)
-		delete it->second;
+		 it != this->_objects.end();)
+	{
+		tmp = it++;
+		delete tmp->second;
+	}
 	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
 		 it != this->_collisionGroups.end(); it++)
 		delete it->second;
@@ -260,7 +266,8 @@ Group			*GameObjectManager::getGroup(std::string const &name) const
 
 void			GameObjectManager::addDeleteObject(GameObject *obj)
 {
-	this->_deleteList.push_back(obj);
+	if (std::find(_deleteList.begin(), _deleteList.end(), obj) == _deleteList.end())
+		this->_deleteList.push_back(obj);
 }
 
 void			GameObjectManager::deleteObjects()
@@ -286,4 +293,9 @@ GameObjectManager::groupsDisplay const	&GameObjectManager::getDisplayObjects() c
 uint32_t			GameObjectManager::getLastAttributedId() const
 {
  	return _id;
+}
+
+void				GameObjectManager::removeObject(uint32_t id)
+{
+	this->_objects.erase(id);
 }

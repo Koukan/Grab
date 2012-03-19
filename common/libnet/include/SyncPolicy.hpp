@@ -12,6 +12,10 @@ NET_BEGIN_NAMESPACE
 typedef EpollPolicy DefaultSyncPolicy;
 #elif defined(__FreeBSD__)
 typedef KqueuePolicy DefaultSyncPolicy;
+#elif defined(__APPLE__)
+typedef KqueuePolicy DefaultSyncPolicy;
+#elif defined(__MACOSX__)
+typedef KqueuePolicy DefaultSyncPolicy;
 #elif defined(_WI2)
 typedef WFMOPolicy DefaultSyncPolicy;
 #else

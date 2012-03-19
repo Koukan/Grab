@@ -57,7 +57,7 @@ private:
 	enum MazeSize
 	{
 		WIDTH = 5,
-		HEIGHT = 15
+		HEIGHT = 30
 	};
 
 	typedef std::vector<MonsterInfo>	Monsters;
@@ -77,6 +77,7 @@ private:
 	size_t		_squadLevel;
 	size_t		_squadLevelSpeed;
 	// maze
+	size_t		_mazeLevel;
 	size_t		_mazeEnemiesFrequency;
 	size_t		_mazeBreakableWallsFrequency;
 	size_t		_mazeNoObstacleFrequency;
@@ -98,13 +99,20 @@ private:
 	int			_position;
 	int			_lastPosition;
 	int			_mazeY;
+	int			_currentMazeStage;
+	int			_MazeEnemiesNb;
+	int			_MazeBreakableWallsNb;
+	int			_MazeMovableWallsNb;
+	int			_MazeWallsNb;
 
 	void	createMonster(MonsterInfo const &info);
 	void	createBoss(MonsterInfo const &info);
 	void	createObstacle(int x, int y);
-	void	createMazeMonster(MonsterInfo const &info, int x, int y);
-	void	createWall(MonsterInfo const &info, int x, int y);
-	void	createMovableWall(MonsterInfo const &info, int x, int y);
+	void	createMazeMonster(int x, int y);
+	void	createBreakableWall(int x, int y);
+	void	createWall(int x, int y);
+	void	createVWall(int x, int y, int direction);
+	void	createHWall(int x, int y, int direction);
 	void	createDoor();
 	void	updateId();
 	void	addSideWalls(double elapsed);

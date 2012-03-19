@@ -80,10 +80,13 @@ void    ModuleManager::update(double)
 	  ++it;
       if (!module->isPaused() && module->_targetRate > 0)
 		{
-	  	module->_lastUpdate -= diff;
+		  	module->_lastUpdate -= diff;
        	 	if (module->_lastUpdate <= 0)
 	  		{
-				module->update(module->_targetRate - module->_lastUpdate);
+				int n = -1 * module->_lastUpdate / module->_targetRate + 1;
+				double tmpUpdate = module->_lastUpdate;
+				module->_lastUpdate += n * module->_targetRate;
+				module->update(module->_lastUpdate - tmpUpdate);
 				if (_stop)
 					break ;
 				if (module->isStopped())
@@ -91,9 +94,6 @@ void    ModuleManager::update(double)
 					this->unloadModule(module->_name);
 					continue ;
 				}
-	   			module->_lastUpdate += module->_targetRate;
-				if (module->_lastUpdate < 0)
-					module->_lastUpdate = 0;
  	  		}
 	  		if (towait == -1 || module->_lastUpdate < towait)
 	    		towait = module->_lastUpdate;
