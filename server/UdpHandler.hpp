@@ -10,6 +10,7 @@ public:
 	virtual ~UdpHandler();
 
 	virtual void	init();
+	virtual int		handleClose(Net::Socket &);
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
 private:

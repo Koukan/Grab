@@ -14,7 +14,7 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
 	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
-    _bulletFileName(bulletFileName), _playerBullet(0), _score(0)
+    _bulletFileName(bulletFileName), _playerBullet(0)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -44,7 +44,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
-	  _playerBullet(0), _score(0)
+	  _playerBullet(0)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;

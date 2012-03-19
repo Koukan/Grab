@@ -35,7 +35,7 @@ void		GSInGame::preload()
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("playersOnline", 40);
-  this->addGroup("playerShots", 40, 10000, 999999);
+  this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
@@ -49,6 +49,7 @@ void		GSInGame::preload()
   this->addGroup("background3", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
+  this->addGroup("map", 0);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
@@ -58,6 +59,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
+  this->setCollisionGroups("grabs", "playersOnline", &Rules::grabTouchPlayerOnline);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
@@ -71,7 +73,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "playerShots", &Rules::wallTouchObject);
-  this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "deadlyWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "breakableWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "walls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "invisibleWallsGrab", &Rules::grabTouchWall);
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
   // load xml
@@ -94,6 +99,8 @@ void		GSInGame::preload()
 	  8000, 1000)), "bottomInvisibleWall");
 
   int const large = 100;
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
+	  RendererManager::get().getWidth(), large)), "invisibleWallsGrab");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
 	  RendererManager::get().getWidth(), large)), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,

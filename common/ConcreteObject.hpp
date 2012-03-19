@@ -18,6 +18,7 @@ public:
   Core::Sprite const &getSprite() const;
   Core::Sprite &getSprite();
 
+
 protected:
   Core::Sprite		*_sprite;
   bool				_deleteSprite;

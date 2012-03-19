@@ -65,7 +65,7 @@ public:
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
-  Player&					_player;
+  Player					&_player;
   float						_speed;
   float						_tmpSpeed;
   int						_fireFrequency;

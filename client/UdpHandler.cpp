@@ -38,13 +38,13 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	uint8_t				type;
 
 	if (packet.size() < 9)
-		return 0;
+		return 1;
 	packet >> time;
 	packet >> type;
 
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
 		return (this->*methods[type])(packet, time);
-	return 0;
+	return 1;
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
@@ -52,7 +52,7 @@ int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
 	uint32_t	id_packet;
 
 	if (packet.size() != 29)
-		return 0;
+		return 1;
 	packet >> id_packet;
 	this->testPacketId(id_packet);
 	GameCommand *gc = new GameCommand("spawn");
@@ -169,6 +169,7 @@ int			UdpHandler::launchGrab(Net::Packet &packet, uint64_t)
 	gc->idResource = n;
 	packet >> gc->x;
 	packet >> gc->y;
+	std::cout << "grab id = " << gc->idObject << " n = " << gc->idResource << " x = " << gc->x << " y = " << gc->y << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
