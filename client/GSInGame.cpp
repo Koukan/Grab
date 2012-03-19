@@ -15,6 +15,7 @@
 #include "Modes.hpp"
 #include "DestroyCommand.hpp"
 #include "Cannon.hpp"
+#include "GSGameOver.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -26,7 +27,8 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 }
 
 GSInGame::~GSInGame()
-{}
+{
+}
 
 void		GSInGame::preload()
 {
@@ -280,16 +282,19 @@ void		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
 	if (this->_nbDie == this->_nbPlayers)
-		this->gameover();
+		this->gameover(false);
 }
 
-void		GSInGame::gameover()
+void		GSInGame::gameover(bool victory)
 {
-	std::cout << "Game Over !!!" << std::endl;
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
+  if (!victory)
+    std::cout << "Game Over !!!" << std::endl;
+  else
+    std::cout << "You win !!!" << std::endl;
+
+  this->pause(PHYSIC);
+  Core::GameStateManager::get().pushState(*(new GSGameOver(victory, _players, _mode,
+							   _map, _nbPlayers, _online)), Core::GameState::PHYSIC);
 }
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
@@ -350,7 +355,7 @@ void		GSInGame::rangeid(GameCommand const &event)
 
 void		GSInGame::spawnend(GameCommand const &)
 {
-  std::cout << "you win !" << std::endl;
+  this->gameover(true);
 }
 
 void		GSInGame::spawnspawner(GameCommand const &event)

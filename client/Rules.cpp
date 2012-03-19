@@ -32,10 +32,9 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 {
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
-	Core::Bullet	&monster = static_cast<Core::Bullet&>(o2);
+	Core::BulletCommand	&monster = static_cast<Core::BulletCommand&>(o2);
 	if (!gl_online)
 		monster.setLife(monster.getLife() - shot.getDamage());
-
 	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
 	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
 		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
@@ -50,7 +49,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	if (monster.getLife() <= 0)
 	  {
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
-	    ConcreteObject *obj = new ScoreBonus("weapon", 10, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
+	    ConcreteObject *obj = new ScoreBonus("weapon", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
 	    monster.erase();
 	    gamestate.addGameObject(obj, "scoreBonus");
 	  }

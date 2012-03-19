@@ -85,6 +85,9 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	Net::MTRand		_rand;
 	bool			_paused;
 
+ public:
+	unsigned int const	score;
+
  private:
 	void			managePaused();
 };
