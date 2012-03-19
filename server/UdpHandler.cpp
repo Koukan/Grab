@@ -18,6 +18,11 @@ void		UdpHandler::init()
 {
 }
 
+int			UdpHandler::handleClose(Net::Socket &)
+{
+	return 0;
+}
+
 int			UdpHandler::handleInputPacket(Net::Packet &packet)
 {
 	static int			(UdpHandler::* const methods[])(Net::Packet&, Client&) = {
