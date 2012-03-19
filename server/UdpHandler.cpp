@@ -228,9 +228,9 @@ int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 		broadcast << n;
 		packet >> nb;
 		std::cout << "grab id = " << id << " n = " << static_cast<uint32_t>(n) << " x = " << nb << " y = ";
-		broadcast >> nb;
+		broadcast << nb;
 		packet >> nb;
-		broadcast >> nb;
+		broadcast << nb;
 		std::cout << nb << std::endl;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
 	}
