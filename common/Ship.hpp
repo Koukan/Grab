@@ -53,7 +53,7 @@ public:
   void			inputGrab3(Core::InputCommand const &cmd);
   void			inputGrab4(Core::InputCommand const &cmd);
   void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab);
-  void			setDead(bool dead);
+  void			setDead(bool dead, bool command = true);
   bool			isDead() const;
   virtual void	draw(double elapsedTime);
   void			updateCannonsTrajectory();

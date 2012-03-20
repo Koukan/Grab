@@ -35,6 +35,10 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		retrieveCommand(Core::Command const &command);
 	void		moveCommand(Core::Command const &command);
 	void		spawnCommand(Core::Command const &command);
+	void		fireCommand(Core::Command const &command);
+	void		launchGrab(Core::Command const &command);
+	void		updateCannon(Core::Command const &command);
+	void		deadPlayer(Core::Command const &command);
 
 // Command TCP
 
@@ -47,9 +51,6 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		unBindPlayerCommand(Core::Command const &command);
 	void		updatePlayerCommand(Core::Command const &command);
 	void		readyCommand(Core::Command const &command);
-	void		fireCommand(Core::Command const &command);
-	void		launchGrab(Core::Command const &command);
-	void		updateCannon(Core::Command const &command);
 
 	struct	Method
 	{
