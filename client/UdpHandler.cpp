@@ -5,7 +5,7 @@
 #include "GameCommand.hpp"
 #include "DestroyCommand.hpp"
 
-UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _sentPacketId(0), _latency(0), _nblatency(0)
+UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0), _nblatency(0)
 {
 	this->enableWhitelist(true);
 }
@@ -26,18 +26,18 @@ int     	UdpHandler::handleClose(Net::Socket &)
 
 int			UdpHandler::handleInputPacket(Net::Packet &packet)
 {
-	static int			(UdpHandler::* const methods[])(Net::Packet&, uint64_t) = {
-			&UdpHandler::spawn,
-			&UdpHandler::destroy,
-			&UdpHandler::move,
-			NULL,
-			NULL,
-			&UdpHandler::retrieve,
-			&UdpHandler::ping,
-			&UdpHandler::pong,
-			&UdpHandler::fireState,
-			&UdpHandler::updateCannon,
-			&UdpHandler::launchGrab
+	static UdpHandler::functions methods[] = {
+			{&UdpHandler::spawn, true},
+			{&UdpHandler::destroy, true},
+			{0, false},
+			{0, false},
+			{&UdpHandler::statement, false},
+			{&UdpHandler::retrieve, false},
+			{&UdpHandler::ping, false},
+			{&UdpHandler::pong, false},
+			{&UdpHandler::fireState, true},
+			{&UdpHandler::updateCannon, true},
+			{&UdpHandler::launchGrab, true}
 	};
 	uint64_t			time;
 	uint8_t				type;
@@ -47,19 +47,23 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	packet >> time;
 	packet >> type;
 
-	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
-		return (this->*methods[type])(packet, time);
+	if (type < sizeof(methods) / sizeof(*methods) && methods[type].func != NULL)
+	{
+		if (methods[type].needId)
+		{
+			uint32_t	id_packet;
+			packet >> id_packet;
+			this->testPacketId(id_packet);
+		}
+		return (this->*methods[type].func)(packet, time);
+	}
 	return 1;
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
 {
-	uint32_t	id_packet;
-
 	if (packet.size() != 29)
 		return 1;
-	packet >> id_packet;
-	this->testPacketId(id_packet);
 	GameCommand *gc = new GameCommand("spawn");
 	packet >> gc->idResource;
 	packet >> gc->idObject;
@@ -73,13 +77,9 @@ int			UdpHandler::spawn(Net::Packet &packet, uint64_t)
 
 int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 {
-		//uint32_t	id_packet;
-		//
-		//packet >> id_packet;
-		//this->testPacketId(id_packet);
 	uint32_t	idchild;
 	DestroyCommand *gc = new DestroyCommand("destroy");
-	for (size_t	left = packet.size() - 9; left >= sizeof(uint32_t); left -= sizeof(uint32_t))
+	for (size_t	left = packet.size() - 13; left >= sizeof(uint32_t); left -= sizeof(uint32_t))
 	{
 		packet >> idchild;
 		gc->ids.push_back(idchild);
@@ -110,8 +110,11 @@ int			UdpHandler::statement(Net::Packet &, uint64_t)
 	return 1;
 }
 
-int         UdpHandler::retrieve(Net::Packet &, uint64_t)
+int         UdpHandler::retrieve(Net::Packet &packet, uint64_t)
 {
+	uint32_t	id;
+	packet >> id;
+	NetworkModule::get().retrievePacket(id);
 	return 1;
 }
 

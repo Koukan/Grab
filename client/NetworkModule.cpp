@@ -5,7 +5,7 @@
 #include "PacketCommand.hpp"
 #include "PacketType.hpp"
 
-NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5) , _initudp(false), _server(0)
+NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5) , _initudp(false), _sentPacketId(0), _server(0)
 {
 	Core::CommandDispatcher::get().registerHandler(*this);
 }
@@ -231,37 +231,40 @@ void		NetworkModule::readyCommand(Core::Command const &)
 
 void		NetworkModule::fireCommand(Core::Command const &command)
 {
-	Net::Packet		packet(14);
+	Net::Packet		packet(18);
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::FIRESTATE);
+	packet << 0;
 	packet << static_cast<GameCommand const &>(command).idObject;
 	packet << static_cast<uint8_t>(static_cast<GameCommand const &>(command).idResource);
-	this->sendPacketUDP(packet);
+	this->sendPacketUDP(packet, true);
 }
 
 void		NetworkModule::launchGrab(Core::Command const &command)
 {
-	Net::Packet			packet(18);
+	Net::Packet			packet(22);
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::LAUNCHGRAB);
+	packet << 0;
 	packet << cmd.idObject;
 	packet << static_cast<uint8_t>(cmd.idResource);
 	packet << cmd.x;
 	packet << cmd.y;
 	std::cout << "grab id = " << cmd.idObject << " n = " << cmd.idResource << " x = " << cmd.x << " y = " << cmd.y << std::endl;
-	this->sendPacketUDP(packet);
+	this->sendPacketUDP(packet, true);
 }
 
 void		NetworkModule::updateCannon(Core::Command const &command)
 {
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(18 + cmd.data.size());
+	Net::Packet			packet(22 + cmd.data.size());
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::UPDATECANNON);
+	packet << 0;
 	packet << cmd.idObject;
 	packet << static_cast<uint8_t>(cmd.idResource);
 	if (!cmd.data.empty())
@@ -270,7 +273,7 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.data;
 	}
-	this->sendPacketUDP(packet);
+	this->sendPacketUDP(packet, true);
 }
 
 void		NetworkModule::setName(std::string const &name)
@@ -303,14 +306,31 @@ std::string const	&NetworkModule::getIP() const
   return (this->_ip);
 }
 
-void		NetworkModule::sendPacketUDP(Net::Packet &packet)
+void		NetworkModule::sendPacketUDP(Net::Packet &packet, bool needId)
 {
 	packet.setDestination(_addr);
 	packet.getAddr().setPort(25558);
+	if (needId)
+	{
+		uint32_t    id;
+		packet.wr_ptr(9);
+		id = _sentPacketId++;
+		packet << id;
+		_packets.insert(_packets.end(), std::pair<uint32_t, Net::Packet>(id, Net::Packet(packet)));
+		if (_packets.size() > 50)
+			_packets.erase(_packets.begin());
+	}
 	this->_udp.handleOutputPacket(packet);
 }
 
 void		NetworkModule::setServer(Server *server)
 {
 	_server = server;
+}
+
+void        NetworkModule::retrievePacket(uint32_t id)
+{
+	std::map<uint32_t, Net::Packet>::iterator it = _packets.find(id);
+	if (it != _packets.end())
+		this->_udp.handleOutputPacket(it->second);
 }

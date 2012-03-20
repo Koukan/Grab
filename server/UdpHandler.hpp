@@ -14,6 +14,14 @@ public:
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
 private:
+	struct		functions
+	{
+		 int (UdpHandler::*	const func)(Net::Packet&, Client&);
+		 bool			needId;
+	};
+	void		verify(uint32_t id, Client &);
+	void		sendRetrieve(uint32_t id, Client &);
+
 	int			spawn(Net::Packet &packet, Client&);
 	int			destroy(Net::Packet &packet, Client&);
 	int			move(Net::Packet &packet, Client&);

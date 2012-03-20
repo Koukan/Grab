@@ -25,18 +25,18 @@ int			UdpHandler::handleClose(Net::Socket &)
 
 int			UdpHandler::handleInputPacket(Net::Packet &packet)
 {
-	static int			(UdpHandler::* const methods[])(Net::Packet&, Client&) = {
-			&UdpHandler::spawn,
-			&UdpHandler::destroy,
-			&UdpHandler::move,
-			&UdpHandler::score,
-			&UdpHandler::statement,
-			&UdpHandler::retrieve,
-			&UdpHandler::ping,
-			&UdpHandler::pong,
-			&UdpHandler::firestate,
-			&UdpHandler::updatecannon,
-			&UdpHandler::launchgrab
+	static UdpHandler::functions methods[] = {
+			{&UdpHandler::spawn, true},
+			{&UdpHandler::destroy, true},
+			{&UdpHandler::move, false},
+			{&UdpHandler::score, false},
+			{&UdpHandler::statement, false},
+			{&UdpHandler::retrieve, false},
+			{&UdpHandler::ping, false},
+			{&UdpHandler::pong, false},
+			{&UdpHandler::firestate, true},
+			{&UdpHandler::updatecannon, true},
+			{&UdpHandler::launchgrab, true}
 	};
 	uint8_t				type;
 
@@ -44,14 +44,42 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 		return 1;
 	packet >> _time_recv;
 	packet >> type;
-	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
+	if (type < sizeof(methods) / sizeof(*methods) && methods[type].func != NULL)
 	{
 		Client *player = NetworkModule::get().getClientByAddr(packet.getAddr());
 		if (player)
-			(this->*methods[type])(packet, *player);
+		{
+			if (methods[type].needId)
+			{
+				uint32_t	id;
+				packet >> id;
+				this->verify(id, *player);		
+			}
+			(this->*methods[type].func)(packet, *player);
+		}
 		return 1;
 	}
 	return 1;
+}
+
+void		UdpHandler::sendRetrieve(uint32_t id, Client &client)
+{
+	Net::Packet			retrieve(18);
+	retrieve << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	retrieve << static_cast<uint8_t>(UDP::RETRIEVE);
+	retrieve << id;
+	std::list<Client *>	tmp;
+	tmp.push_back(&client);
+	NetworkModule::get().sendUDPPacket(retrieve, tmp, false);
+}
+
+
+void		UdpHandler::verify(uint32_t id, Client &client)
+{
+	for (uint32_t i = client.getLastRecvId(); i < id; ++i)
+		this->sendRetrieve(id, client);
+	if (id > client.getLastRecvId())
+		client.setLastRecvId(id);
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, Client &client)

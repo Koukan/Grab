@@ -28,6 +28,8 @@ class Client : public Net::SizeHeaderPacketHandler<>
 
 	uint64_t			getLatency() const;
 	void				setLatency(uint64_t latency);
+	uint32_t			getLastRecvId() const;
+	void				setLastRecvId(uint32_t id);
 	int					getRemoteAddr(Net::InetAddr &addr);
 	bool				isReady() const;
 	std::list<Player*> const	&getPlayers() const;
@@ -53,6 +55,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	std::string			_name;
 	Game				*_game;
 	uint32_t			_idPacket;
+	uint32_t			_idRecvPacket;
 	uint32_t			_idShip;
 	uint64_t			_latency;
 	bool				_ready;

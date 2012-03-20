@@ -5,7 +5,7 @@
 #include "NetworkModule.hpp"
 
 Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
-		_id(0), _name(""), _game(0), _idPacket(0), _idShip(0), _latency(0), _ready(false)
+		_id(0), _name(""), _game(0), _idPacket(0), _idRecvPacket(0), _idShip(0), _latency(0), _ready(false)
 {
 }
 
@@ -343,6 +343,16 @@ uint64_t            Client::getLatency() const
 void                Client::setLatency(uint64_t latency)
 {
 	_latency = latency;
+}
+
+uint32_t			Client::getLastRecvId() const
+{
+	return _idRecvPacket;
+}
+
+void				Client::setLastRecvId(uint32_t id)
+{
+	_idRecvPacket = id;
 }
 
 bool				Client::isReady() const

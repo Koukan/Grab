@@ -13,6 +13,12 @@ public:
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
 private:	
+	struct		functions
+	{
+		 int (UdpHandler::*	func)(Net::Packet&, uint64_t);
+		 bool			needId;
+	};
+
 	int			spawn(Net::Packet &packet, uint64_t timediff);
 	int			destroy(Net::Packet &packet, uint64_t timediff);
 	int			move(Net::Packet &packet, uint64_t timediff);
@@ -28,7 +34,6 @@ private:
 	bool		testPacketId(uint32_t id);
 
 	uint32_t	_lastPacketId;
-	uint32_t	_sentPacketId;
 	double		_latency;
 	uint64_t	_nblatency;
 };

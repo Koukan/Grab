@@ -21,7 +21,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void			removeUDPClient(Client &client);
 	Client			*getClientByAddr(Net::InetAddr const &addr) const;
 	void			sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client = 0);
-	void			sendUDPPacket(Net::Packet &packet, std::list<Client*> const &list, bool needId, Client *client);
+	void			sendUDPPacket(Net::Packet &packet, std::list<Client*> const &list, bool needId, Client *client = 0);
 
   private:
 	struct	Method

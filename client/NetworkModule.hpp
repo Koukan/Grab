@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include "Module.hpp"
 #include "Net.hpp"
@@ -26,7 +27,8 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	std::string const	&getIP() const;
 
 	void		setServer(Server *server);
-	void		sendPacketUDP(Net::Packet &packet);
+	void		sendPacketUDP(Net::Packet &packet, bool needId = false);
+	void		retrievePacket(uint32_t id);
 
   private:
 
@@ -58,6 +60,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	};
 
 	bool					_initudp;
+	uint32_t				_sentPacketId;
   	Net::DefaultSyncPolicy	_reactor;
 	UdpHandler	       		_udp;
 	Net::Connector<Server>	_connector;
@@ -65,6 +68,6 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	std::string	       		_port;
 	std::string	       		_ip;	
 	Net::InetAddr			_addr;
-	//Net::SetupNetwork      	_init;
+	std::map<uint32_t, Net::Packet>	_packets;
 	Server*					_server;
 };
