@@ -76,7 +76,7 @@ void	MonsterGenerator::createWall(int x, int y)
 		--begin;
 	int i = this->_rand() % (this->_MazeWallsNb + 1 - begin);
 	MonsterInfo const &info = this->_walls[begin + i];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 110 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100 + 200, this->_tmpY + 110 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
 }
 
 void	MonsterGenerator::createBreakableWall(int x, int y)
@@ -89,7 +89,7 @@ void	MonsterGenerator::createBreakableWall(int x, int y)
 		--begin;
 	int i = this->_rand() % (this->_MazeBreakableWallsNb + 1 - begin);
 	MonsterInfo const &info = this->_breakableWalls[begin + i];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 110 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100 + 200, this->_tmpY + 110 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
 }
 
 void	MonsterGenerator::createVWall(int x, int y, int direction)
@@ -101,7 +101,7 @@ void	MonsterGenerator::createVWall(int x, int y, int direction)
 		begin -= 2;
 	int i = this->_rand() % ((this->_MazeMovableWallsNb + 2 - begin) / 2);
 	MonsterInfo const &info = this->_vWalls[begin + i * 2 - direction];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 110, 0, 0, info.scrollable, false, -320 - y * this->_wallSize);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100 + 200, this->_tmpY + 110, 0, 0, info.scrollable, false, -320 - y * this->_wallSize);
 }
 
 void	MonsterGenerator::createHWall(int x, int y, int direction)
@@ -113,7 +113,7 @@ void	MonsterGenerator::createHWall(int x, int y, int direction)
 		begin -= 2;
 	int i = this->_rand() % ((this->_MazeMovableWallsNb + 2 - begin) / 2);
 	MonsterInfo const &info = this->_hWalls[begin + i * 2 - direction];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100, this->_tmpY + 110, 0, 0, info.scrollable, false, -320 - y * this->_wallSize);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) - 100 + 200, this->_tmpY + 110, 0, 0, info.scrollable, false, -320 - y * this->_wallSize);
 }
 
 void	MonsterGenerator::createMazeMonster(int x, int y)
@@ -125,7 +125,7 @@ void	MonsterGenerator::createMazeMonster(int x, int y)
 		--begin;
 	int i = this->_rand() % (this->_MazeEnemiesNb + 1 - begin);
 	MonsterInfo const &info = this->_mazeMonsters[begin + i];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) + 80, this->_tmpY - 80 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) + 80 + 200, this->_tmpY - 80 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
 }
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
@@ -592,9 +592,9 @@ void	MonsterGenerator::changeToMaze()
 		int empty;
 	} const mazeStages[] =
 	{
-		{20, 20, 1, 0, 1, 0},
-		{1, 1, 2, 3, 0, 1},
-		{20, 20, 1, 1, 0, 0}
+		{20, 20, 1, 0, 1, 0}
+		//{1, 1, 2, 3, 0, 1},
+		//{20, 20, 1, 1, 0, 0}
 	};
 	static int const size = sizeof mazeStages / sizeof *mazeStages;
 
