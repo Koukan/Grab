@@ -67,7 +67,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	Net::Connector<Server>	_connector;
 	std::string				_name;
 	std::string	       		_port;
-	std::string	       		_ip;	
+	std::string	       		_ip;
 	Net::InetAddr			_addr;
 	std::map<uint32_t, Net::Packet>	_packets;
 	Server*					_server;

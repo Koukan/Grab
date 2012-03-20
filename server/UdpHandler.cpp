@@ -195,12 +195,9 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 		client.getGameLogic()->pushCommand(*cmd);
 
 		// broadcast to other client
-		Net::Packet		broadcast(14);
-		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		broadcast << static_cast<uint8_t>(UDP::FIRESTATE);
-		broadcast << cmd->idObject;
-		broadcast << n;
-		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		Net::Packet		*broadcast = packet.clone();
+		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+		delete broadcast;
 		// end broadcast
 	}
 	return 1;
@@ -224,18 +221,9 @@ int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 	client.getGameLogic()->pushCommand(*cmd);
 
 	// broadcast to other client
-	Net::Packet			broadcast((packet.size() > 18) ? 18 + cmd->data.size() : 14);
-	broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-	broadcast << static_cast<uint8_t>(UDP::UPDATECANNON);
-	broadcast << cmd->idObject;
-	broadcast << num;
-	if (packet.size() > 18)
-	{
-		broadcast << cmd->x;
-		broadcast << cmd->y;
-		broadcast << cmd->data;
-	}
-	NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+	Net::Packet			*broadcast = packet.clone();
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+	delete broadcast;
 	// end broadcast
 
 	return 1;
@@ -245,22 +233,9 @@ int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 {
 	if (client.getGame())
 	{
-		Net::Packet			broadcast(18);
-		uint32_t			id;
-		uint16_t			nb;
-		uint8_t				n;
-		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		broadcast << static_cast<uint8_t>(UDP::LAUNCHGRAB);
-		packet >> id;
-		broadcast << id;
-		packet >> n;
-		broadcast << n;
-		packet >> nb;
-		broadcast << nb;
-		packet >> nb;
-		broadcast << nb;
-		std::cout << nb << std::endl;
-		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		Net::Packet			*broadcast = packet.clone();
+		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+		delete broadcast;
 	}
 	return 1;
 }
@@ -274,13 +249,9 @@ int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 		packet >> cmd->boolean;
 		client.getGameLogic()->pushCommand(*cmd);
 
-		Net::Packet		broadcast(14);
-		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		broadcast << static_cast<uint8_t>(UDP::LAUNCHGRAB);
-		broadcast << cmd->idObject;
-		broadcast << cmd->boolean;
-		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
-		std::cout << "plop" << std::endl;
+		Net::Packet		*broadcast = packet.clone();
+		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+		delete broadcast;
 	}
 	return 1;
 }

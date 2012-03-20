@@ -287,7 +287,6 @@ void		NetworkModule::deadPlayer(Core::Command const &command)
 	packet << 0;
 	packet << cmd.idObject;
 	packet << cmd.boolean;
-	std::cout << "plop" << std::endl;
 	this->sendPacketUDP(packet, true);
 }
 
