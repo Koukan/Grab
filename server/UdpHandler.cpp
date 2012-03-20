@@ -141,6 +141,11 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 	}*/
 	gc->client = reinterpret_cast<Client*>(player);
 	client.getGameLogic()->pushCommand(*gc);
+	// broadcast to other client
+	Net::Packet		*broadcast = packet.clone();
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+	delete broadcast;
+	// end broadcast
 	return 1;
 }
 

@@ -132,15 +132,6 @@ void		GameLogic::moveCommand(Core::Command const &command)
 	ship->setY(gc.y);
 	ship->setVx(gc.vx);
 	ship->setVy(gc.vy);
-	GameCommand *answer = new GameCommand("MovePacket");
-	answer->idObject = ship->getId();
-	answer->x = gc.x;
-	answer->y = gc.y;
-	answer->vx = gc.vx;
-	answer->vy = gc.vy;
-	answer->game = &_game;
-	answer->client = &reinterpret_cast<Player*>(gc.client)->getClient();
-	Core::CommandDispatcher::get().pushCommand(*answer);
 }
 
 void		GameLogic::updateCannonCommand(Core::Command const &command)
