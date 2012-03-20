@@ -50,6 +50,7 @@ void		GSInGame::preload()
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
   this->addGroup("map", 0);
+  this->addGroup("traversableWalls", 0);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
@@ -57,6 +58,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
+  this->setCollisionGroups("bottomInvisibleWall", "traversableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("grabs", "playersOnline", &Rules::grabTouchPlayerOnline);
@@ -65,6 +67,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("breakableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("traversableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("deadlyWalls", "players", &Rules::deadlyWallsTouchPlayers);
@@ -73,9 +76,11 @@ void		GSInGame::preload()
   this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("traversableWalls", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "deadlyWalls", &Rules::grabTouchWall);
   this->setCollisionGroups("grabs", "breakableWalls", &Rules::grabTouchWall);
   this->setCollisionGroups("grabs", "walls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "traversableWalls", &Rules::grabTouchWall);
   this->setCollisionGroups("grabs", "invisibleWallsGrab", &Rules::grabTouchWall);
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
