@@ -82,7 +82,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Ready", &NetworkModule::readyCommand},
 		{"Fire", &NetworkModule::fireCommand},
 		{"launchGrab", &NetworkModule::launchGrab},
-		{"updateCannon", &NetworkModule::updateCannon}
+		{"updateCannon", &NetworkModule::updateCannon},
+		{"deadPlayer", &NetworkModule::deadPlayer}
 		/*must be completed */
 	};
 
@@ -270,6 +271,18 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.data;
 	}
+	this->sendPacketUDP(packet);
+}
+
+void		NetworkModule::deadPlayer(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(14);
+
+	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	packet << static_cast<uint8_t>(UDP::DEADPLAYER);
+	packet << cmd.idObject;
+	packet << cmd.boolean;
 	this->sendPacketUDP(packet);
 }
 

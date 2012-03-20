@@ -245,7 +245,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"destroy", &GSInGame::destroy},
 	{"ServerFire", &GSInGame::serverFire},
 	{"ServerGrab", &GSInGame::serverGrab},
-	{"ServerCannon", &GSInGame::serverCannon}
+	{"ServerCannon", &GSInGame::serverCannon},
+	{"killPlayer", &GSInGame::killPlayer}
   };
 
   for (size_t i = 0;
@@ -469,6 +470,14 @@ void		GSInGame::serverCannon(GameCommand const &cmd)
 		else
 			ship->addCannon(new Cannon(cmd.name, *ship, *this, "", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
 	}
+}
+
+void		GSInGame::killPlayer(GameCommand const &cmd)
+{
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+		ship->setDead(cmd.boolean, false);
 }
 
 void		GSInGame::createShips()

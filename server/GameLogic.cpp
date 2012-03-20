@@ -84,7 +84,8 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 			{"move", &GameLogic::moveCommand},
 			{"spawnspawner", &GameLogic::spawnSpawnerCommand},
 			{"updateCannon", &GameLogic::updateCannonCommand},
-			{"fireState", &GameLogic::fireStateCommand}
+			{"fireState", &GameLogic::fireStateCommand},
+			{"killPlayer", &GameLogic::killPlayerCommand}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -175,4 +176,13 @@ void		GameLogic::fireStateCommand(Core::Command const &command)
 		ship->specialFire(*this);
 	else if (gc.idResource == 3)
 		ship->releaseSpecialFire();
+}
+
+void		GameLogic::killPlayerCommand(Core::Command const &command)
+{
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
+	if (ship)
+		ship->setDead(gc.boolean, false);
 }

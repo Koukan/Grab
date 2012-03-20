@@ -67,7 +67,7 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 	}
 }
 
-void	Rules::deadlyWallsTouchPlayers(Core::GameObject &o1, Core::GameObject &o2)
+void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
 {
 	Ship			&ship = static_cast<Ship&>(o2);
 

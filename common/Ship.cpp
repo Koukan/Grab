@@ -412,7 +412,7 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
   this->manageGrab("grabs", 3);
 }
 
-void Ship::setDead(bool dead)
+void Ship::setDead(bool dead, bool command)
 {
 	if (this->_dead == dead)
 		return ;
@@ -420,6 +420,12 @@ void Ship::setDead(bool dead)
 	if (!dead)
 	{
 		this->_delete = false;
+		if (command)
+		{
+			GameCommand		*cmd = new GameCommand("deadPlayer");
+			cmd->idObject = this->_id;
+			cmd->boolean = false;
+		}
 		return ;
 	}
 	this->_delete = true;
@@ -439,6 +445,12 @@ void Ship::setDead(bool dead)
 			_cannons[i]->erase();
 			_cannons[i] = 0;
 		}
+	}
+	if (command)
+	{
+		GameCommand		*cmd = new GameCommand("deadPlayer");
+		cmd->idObject = this->_id;
+		cmd->boolean = true;
 	}
 }
 

@@ -56,6 +56,7 @@ private:
 	void		serverFire(GameCommand const &event);
 	void		serverGrab(GameCommand const &event);
 	void		serverCannon(GameCommand const &event);
+	void		killPlayer(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;

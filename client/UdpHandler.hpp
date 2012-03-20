@@ -11,7 +11,7 @@ public:
 	virtual void	init();
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
-private:	
+private:
 	int			spawn(Net::Packet &packet, uint64_t timediff);
 	int			destroy(Net::Packet &packet, uint64_t timediff);
 	int			move(Net::Packet &packet, uint64_t timediff);
@@ -23,6 +23,7 @@ private:
 	int			fireState(Net::Packet &packet, uint64_t timediff);
 	int			updateCannon(Net::Packet &packet, uint64_t timediff);
 	int			launchGrab(Net::Packet &packet, uint64_t timediff);
+	int			deadPlayer(Net::Packet &packet, uint64_t timediff);
 
 	bool		testPacketId(uint32_t id);
 

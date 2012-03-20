@@ -47,6 +47,7 @@ class GameLogic : public Core::GameState
 	void				spawnSpawnerCommand(Core::Command const &);
 	void				updateCannonCommand(Core::Command const &);
 	void				fireStateCommand(Core::Command const &);
+	void				killPlayerCommand(Core::Command const &);
 
 	Game				&_game;
 	int					_nbEnemies;
