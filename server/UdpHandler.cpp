@@ -54,7 +54,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{
 				uint32_t	id;
 				packet >> id;
-				this->verify(id, *player);		
+				this->verify(id, *player);
 			}
 			(this->*methods[type].func)(packet, *player);
 		}
@@ -139,11 +139,11 @@ int			UdpHandler::move(Net::Packet &packet, Client &client)
 		gc->x += player.getLatency() * gc->vx;
 		gc->y += player.getLatency() * gc->vy;
 	}*/
-	gc->client = reinterpret_cast<Client*>(player);
+	gc->player = player;
 	client.getGameLogic()->pushCommand(*gc);
 	// broadcast to other client
 	Net::Packet		*broadcast = packet.clone();
-	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
 	delete broadcast;
 	// end broadcast
 	return 1;
