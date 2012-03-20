@@ -208,8 +208,6 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 				std::list<Client*> const &list,
 				bool needId, Client *player)
 {
-	uint32_t	id;
-
 	for (std::list<Client*>::const_iterator it = list.begin();
 		 it != list.end(); it++)
 	{
@@ -221,6 +219,7 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 			ipaddr.setPort(25557);
 			if (needId)
 			{
+				uint32_t	id;
 				packet.wr_ptr(9);
 				id = (*it)->getPacketId();
 				packet << id;

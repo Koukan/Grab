@@ -48,6 +48,7 @@ Packet	*Packet::clone()
 	  return 0;
 	Packet	*ret = new Packet(this->size());
 	::memcpy(ret->base(), this->base(), this->size());
+	ret->setSize(this->size());
 	return ret;
 }
 
