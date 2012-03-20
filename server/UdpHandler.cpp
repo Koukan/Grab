@@ -196,7 +196,7 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 
 		// broadcast to other client
 		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
 		delete broadcast;
 		// end broadcast
 	}
@@ -222,7 +222,7 @@ int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 
 	// broadcast to other client
 	Net::Packet			*broadcast = packet.clone();
-	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
 	delete broadcast;
 	// end broadcast
 
@@ -234,7 +234,7 @@ int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 	if (client.getGame())
 	{
 		Net::Packet			*broadcast = packet.clone();
-		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), false, &client);
+		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
 		delete broadcast;
 	}
 	return 1;
