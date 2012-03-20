@@ -248,11 +248,10 @@ int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 
 		Net::Packet		broadcast(14);
 		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-		broadcast << static_cast<uint8_t>(UDP::LAUNCHGRAB);
+		broadcast << static_cast<uint8_t>(UDP::DEADPLAYER);
 		broadcast << cmd->idObject;
 		broadcast << cmd->boolean;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
-		std::cout << "plop" << std::endl;
 	}
 	return 1;
 }
