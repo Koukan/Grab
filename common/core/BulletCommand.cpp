@@ -21,7 +21,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
-	  _paused(paused)
+	  _paused(paused), score(0)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -40,7 +40,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
-	  _paused(paused)
+	  _paused(paused), score(0)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -58,7 +58,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	: Bullet(x, y, vx, vy), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("players"), _paused(paused)
+	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -87,7 +87,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
-	  _nextId(1), _focus("players"), _paused(paused)
+	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;

@@ -57,7 +57,7 @@ private:
 	enum MazeSize
 	{
 		WIDTH = 5,
-		HEIGHT = 30
+		HEIGHT = 15
 	};
 
 	typedef std::vector<MonsterInfo>	Monsters;
@@ -99,11 +99,11 @@ private:
 	int			_position;
 	int			_lastPosition;
 	int			_mazeY;
-	int			_currentMazeStage;
 	int			_MazeEnemiesNb;
 	int			_MazeBreakableWallsNb;
 	int			_MazeMovableWallsNb;
 	int			_MazeWallsNb;
+	std::vector<int> _flush;
 
 	void	createMonster(MonsterInfo const &info);
 	void	createBoss(MonsterInfo const &info);

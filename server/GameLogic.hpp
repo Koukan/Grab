@@ -6,6 +6,7 @@
 
 class Game;
 class GameCommand;
+class Map;
 
 class GameLogic : public Core::GameState
 {
@@ -46,10 +47,12 @@ class GameLogic : public Core::GameState
 	void				spawnSpawnerCommand(Core::Command const &);
 	void				updateCannonCommand(Core::Command const &);
 	void				fireStateCommand(Core::Command const &);
+	void				killPlayerCommand(Core::Command const &);
 
 	Game				&_game;
 	int					_nbEnemies;
 	double				_elapseTime;
 	bool				_gameStarted;
 	Net::MTRand			_rand;
+	Map					*_map;
 };

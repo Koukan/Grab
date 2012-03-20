@@ -37,7 +37,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::pong, false},
 			{&UdpHandler::fireState, true},
 			{&UdpHandler::updateCannon, true},
-			{&UdpHandler::launchGrab, true}
+			{&UdpHandler::launchGrab, true},
+			{&UdpHandler::deadPlayer, true}
 	};
 	uint64_t			time;
 	uint8_t				type;
@@ -175,7 +176,15 @@ int			UdpHandler::launchGrab(Net::Packet &packet, uint64_t)
 	gc->idResource = n;
 	packet >> gc->x;
 	packet >> gc->y;
-	std::cout << "grab id = " << gc->idObject << " n = " << gc->idResource << " x = " << gc->x << " y = " << gc->y << std::endl;
+	Core::CommandDispatcher::get().pushCommand(*gc);
+	return 1;
+}
+
+int			UdpHandler::deadPlayer(Net::Packet &packet, uint64_t)
+{
+	GameCommand	*gc = new GameCommand("killPlayer");
+	packet >> gc->idObject;
+	packet >> gc->boolean;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

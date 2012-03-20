@@ -36,7 +36,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::pong, false},
 			{&UdpHandler::firestate, true},
 			{&UdpHandler::updatecannon, true},
-			{&UdpHandler::launchgrab, true}
+			{&UdpHandler::launchgrab, true},
+			{&UdpHandler::deadPlayer, true}
 	};
 	uint8_t				type;
 
@@ -255,12 +256,31 @@ int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 		packet >> n;
 		broadcast << n;
 		packet >> nb;
-		std::cout << "grab id = " << id << " n = " << static_cast<uint32_t>(n) << " x = " << nb << " y = ";
-		broadcast >> nb;
+		broadcast << nb;
 		packet >> nb;
-		broadcast >> nb;
+		broadcast << nb;
 		std::cout << nb << std::endl;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+	}
+	return 1;
+}
+
+int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
+{
+	if (client.getGame())
+	{
+		GameCommand		*cmd = new GameCommand("killPlayer");
+		packet >> cmd->idObject;
+		packet >> cmd->boolean;
+		client.getGameLogic()->pushCommand(*cmd);
+
+		Net::Packet		broadcast(14);
+		broadcast << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+		broadcast << static_cast<uint8_t>(UDP::LAUNCHGRAB);
+		broadcast << cmd->idObject;
+		broadcast << cmd->boolean;
+		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		std::cout << "plop" << std::endl;
 	}
 	return 1;
 }

@@ -15,6 +15,7 @@
 #include "Modes.hpp"
 #include "DestroyCommand.hpp"
 #include "Cannon.hpp"
+#include "GSGameOver.hpp"
 
 GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
 	: GameState("Game"), _idPlayer(0),
@@ -26,14 +27,15 @@ GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::st
 }
 
 GSInGame::~GSInGame()
-{}
+{
+}
 
 void		GSInGame::preload()
 {
   this->addGroup("spawners");
   this->addGroup("players", 40);
   this->addGroup("playersOnline", 40);
-  this->addGroup("playerShots", 40, 10000, 999999);
+  this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
   this->addGroup("Wall", 0);
@@ -47,6 +49,8 @@ void		GSInGame::preload()
   this->addGroup("background3", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
+  this->addGroup("map", 0);
+  this->addGroup("traversableWalls", 0);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
@@ -54,13 +58,16 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
+  this->setCollisionGroups("bottomInvisibleWall", "traversableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
+  this->setCollisionGroups("grabs", "playersOnline", &Rules::grabTouchPlayerOnline);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("breakableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::wallsTouchPlayers);
+  this->setCollisionGroups("traversableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("deadlyWalls", "players", &Rules::deadlyWallsTouchPlayers);
@@ -69,7 +76,12 @@ void		GSInGame::preload()
   this->setCollisionGroups("breakableWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("deadlyWalls", "playerShots", &Rules::wallTouchObject);
-  this->setCollisionGroups("grabs", "invisibleWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("traversableWalls", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("grabs", "deadlyWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "breakableWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "walls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "traversableWalls", &Rules::grabTouchWall);
+  this->setCollisionGroups("grabs", "invisibleWallsGrab", &Rules::grabTouchWall);
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
   // load xml
@@ -92,6 +104,8 @@ void		GSInGame::preload()
 	  8000, 1000)), "bottomInvisibleWall");
 
   int const large = 100;
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
+	  RendererManager::get().getWidth(), large)), "invisibleWallsGrab");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
 	  RendererManager::get().getWidth(), large)), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,
@@ -236,7 +250,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"destroy", &GSInGame::destroy},
 	{"ServerFire", &GSInGame::serverFire},
 	{"ServerGrab", &GSInGame::serverGrab},
-	{"ServerCannon", &GSInGame::serverCannon}
+	{"ServerCannon", &GSInGame::serverCannon},
+	{"killPlayer", &GSInGame::killPlayer}
   };
 
   for (size_t i = 0;
@@ -280,16 +295,19 @@ void		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
 	if (this->_nbDie == this->_nbPlayers)
-		this->gameover();
+		this->gameover(false);
 }
 
-void		GSInGame::gameover()
+void		GSInGame::gameover(bool victory)
 {
-	std::cout << "Game Over !!!" << std::endl;
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
+  if (!victory)
+    std::cout << "Game Over !!!" << std::endl;
+  else
+    std::cout << "You win !!!" << std::endl;
+
+  this->pause(PHYSIC);
+  Core::GameStateManager::get().pushState(*(new GSGameOver(victory, _players, _mode,
+							   _map, _nbPlayers, _online)), Core::GameState::PHYSIC);
 }
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
@@ -350,7 +368,7 @@ void		GSInGame::rangeid(GameCommand const &event)
 
 void		GSInGame::spawnend(GameCommand const &)
 {
-  std::cout << "you win !" << std::endl;
+  this->gameover(true);
 }
 
 void		GSInGame::spawnspawner(GameCommand const &event)
@@ -457,6 +475,14 @@ void		GSInGame::serverCannon(GameCommand const &cmd)
 		else
 			ship->addCannon(new Cannon(cmd.name, *ship, *this, "", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
 	}
+}
+
+void		GSInGame::killPlayer(GameCommand const &cmd)
+{
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+		ship->setDead(cmd.boolean, false);
 }
 
 void		GSInGame::createShips()

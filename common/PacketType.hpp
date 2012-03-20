@@ -14,7 +14,8 @@ namespace UDP
 		PONG = 7,
 		FIRESTATE = 8,
 		UPDATECANNON = 9,
-		LAUNCHGRAB = 10
+		LAUNCHGRAB = 10,
+		DEADPLAYER = 11
 	};
 }
 
