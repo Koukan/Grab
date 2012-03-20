@@ -29,7 +29,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 	static UdpHandler::functions methods[] = {
 			{&UdpHandler::spawn, true},
 			{&UdpHandler::destroy, true},
-			{0, false},
+			{&UdpHandler::move, false},
 			{0, false},
 			{&UdpHandler::statement, false},
 			{&UdpHandler::retrieve, false},
