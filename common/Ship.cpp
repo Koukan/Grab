@@ -425,6 +425,7 @@ void Ship::setDead(bool dead, bool command)
 			GameCommand		*cmd = new GameCommand("deadPlayer");
 			cmd->idObject = this->_id;
 			cmd->boolean = false;
+			Core::CommandDispatcher::get().pushCommand(*cmd);
 		}
 		return ;
 	}
@@ -451,6 +452,7 @@ void Ship::setDead(bool dead, bool command)
 		GameCommand		*cmd = new GameCommand("deadPlayer");
 		cmd->idObject = this->_id;
 		cmd->boolean = true;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
 }
 

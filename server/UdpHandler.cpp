@@ -252,6 +252,7 @@ int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 		broadcast << cmd->idObject;
 		broadcast << cmd->boolean;
 		NetworkModule::get().sendUDPPacket(broadcast, client.getGame()->getClients(), false, &client);
+		std::cout << "plop" << std::endl;
 	}
 	return 1;
 }
