@@ -28,7 +28,7 @@ void	Cannon::fire()
 {
   if (!_bullet)
     {
-      _bullet = new PlayerBullet(_parser, Core::GameStateManager::get().getCurrentState(), _shotsGroup, _x, _y, _vx, _vy);
+      _bullet = new PlayerBullet(_parser, this->getGroup()->getState(), _shotsGroup, _x, _y, _vx, _vy);
       if (_bullet->getSprite())
 	_bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
       _bullet->setColor(_colors[0], _colors[1], _colors[2]);
