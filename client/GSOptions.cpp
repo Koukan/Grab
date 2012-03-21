@@ -33,8 +33,8 @@ void	GSOptions::onStart()
   layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 3);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
-  new GUILabel("Player Name", "buttonFont", "", layout);
-  this->_name = new GUITextBox<GSOptions>("buttonFont", *sprite, layout, 7, NetworkModule::get().getName());
+  //new GUILabel("Player Name", "buttonFont", "", layout);
+  //this->_name = new GUITextBox<GSOptions>("buttonFont", *sprite, layout, 7, NetworkModule::get().getName());
   new GUILabel("IP Address", "buttonFont", "", layout);
   this->_ip = new GUITextBox<GSOptions>("buttonFont", *sprite, layout, 30, NetworkModule::get().getIP());
   new GUILabel("Port", "buttonFont", "", layout);
@@ -44,9 +44,9 @@ void	GSOptions::onStart()
 
 void	GSOptions::returnMenu()
 {
-  NetworkModule::get().setName(this->_name->getText());
+		//NetworkModule::get().setName(this->_name->getText());
   NetworkModule::get().setIP(this->_ip->getText());
   NetworkModule::get().setPort(this->_port->getText());
-  Game::get().savePreferencesFile(this->_name->getText(), this->_ip->getText(), this->_port->getText());
+  Game::get().savePreferencesFile(/*this->_name->getText()*/"", this->_ip->getText(), this->_port->getText());
   Core::GameStateManager::get().popState();
 }
