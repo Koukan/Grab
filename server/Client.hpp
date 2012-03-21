@@ -26,8 +26,8 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	GameLogic			*getGameLogic() const;
 	Net::Packet const	*getPacket(uint32_t id) const;
 
-	uint64_t			getLatency() const;
-	void				setLatency(uint64_t latency);
+	double				getLatency() const;
+	void				setLatency(double latency);
 	uint32_t			getLastRecvId() const;
 	void				setLastRecvId(uint32_t id);
 	int					getRemoteAddr(Net::InetAddr &addr);
@@ -57,7 +57,8 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	uint32_t			_idPacket;
 	uint32_t			_idRecvPacket;
 	uint32_t			_idShip;
-	uint64_t			_latency;
+	uint64_t			_nblatency;
+	double				_latency;
 	bool				_ready;
 	packetsList			_packets;
 	std::list<Player*>	_players;

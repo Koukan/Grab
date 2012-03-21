@@ -42,7 +42,7 @@ public:
 	virtual int	handleClose(Socket &socket)
 	{
 		this->_reactor->removeHandler(socket);
-		this->_iohandler.close();
+		socket.close();
 		delete this;
 		return 0;
 	}
@@ -61,9 +61,10 @@ public:
 
 	virtual	int handleOutputPacket(Packet const &output)
 	{
-		if (_outputPacket.empty())
-			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
 		_outputPacket.push_back(output);
+		this->handleOutput(this->_iohandler);
+		if (!_outputPacket.empty())
+			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
 		return 0;
 	}
 
