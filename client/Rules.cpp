@@ -28,12 +28,8 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setX(shot.getX());
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
-<<<<<<< HEAD
 	gameState.addGameObject(explosion, "impacts", 100);
-=======
-	gameState.addGameObject(explosion, "impacts");
 	o2.erase();
->>>>>>> f36d92c3011f27dc6c31481895d0961cb8193de7
 }
 
 void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
