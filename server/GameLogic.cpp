@@ -22,7 +22,6 @@ GameLogic::GameLogic(Game &game)
 	this->addGroup("walls", 4);
 	this->addGroup("breakableWalls", 3);
 	this->addGroup("deadlyWalls", 5);
-	this->addGroup("Wall", 0);
 	this->addGroup("shot", 9); // monster shot
 	this->addGroup("monster", 10);
 	this->addGroup("background2", 2);
@@ -37,9 +36,10 @@ GameLogic::GameLogic(Game &game)
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, 1000, 8000, 1000)), "Wall");
 
-	//this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
-	//this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
+	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
+	this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+	this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
 	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
@@ -64,6 +64,7 @@ void		GameLogic::update(double elapseTime)
 			command->y = _map->getY();
 			command->vx = _map->getVx();
 			command->vy = _map->getVy();
+			command->game = &this->_game;
 			Core::CommandDispatcher::get().pushCommand(*command);
 		}
 		this->_elapseTime -= 1000;
@@ -105,9 +106,9 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
-	this->addGameObject(static_cast<Map*>(this->getResource("level1", 5)), "map");
+	this->_map = static_cast<Map*>(this->getResource("level1", 5));
+	this->addGameObject(this->_map, "map");
 	this->_gameStarted = true;
-	this->setBeginId(1100000);
 }
 
 uint32_t	GameLogic::getSeed() const
@@ -146,7 +147,7 @@ void		GameLogic::updateCannonCommand(Core::Command const &command)
 	}
 	else
 	{
-		ship->addCannon(new Cannon(gc.name, *ship, *this, "weapon", "cannons", "playerShots",
+		ship->addCannon(new Cannon(gc.data, *ship, *this, "weapon", "cannons", "playerShots",
 							gc.x, gc.y), gc.idResource);
 	}
 }

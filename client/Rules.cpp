@@ -14,10 +14,13 @@ static bool		gl_online = false;
 
 void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 {
-	Core::GameState &gameState = Core::GameStateManager::get().getCurrentState();
+	Core::GameState &gameState = o1.getGroup()->getState();
 
-	Core::PhysicObject &monster = static_cast<Core::PhysicObject &>(o1);
 	Core::Bullet &shot = static_cast<Core::Bullet &>(o2);
+	o2.erase();
+	if (!shot.getSprite())
+		return ;
+	Core::PhysicObject &monster = static_cast<Core::PhysicObject &>(o1);
 	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
 		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
 	explosion->setDeleteSprite(true);
@@ -26,7 +29,6 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
 	gameState.addGameObject(explosion, "impacts", 100);
-	o2.erase();
 }
 
 void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)

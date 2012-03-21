@@ -87,7 +87,6 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	bullet->setColor(_colors[0], _colors[1], _colors[2]);
 	this->_state.addGameObject(bullet, this->_groupName);
-	this->insertChild(*bullet);
 	bullet->setSeed(this->_rand());
 	delete state;
 }

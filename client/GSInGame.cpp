@@ -41,7 +41,6 @@ void		GSInGame::preload()
   this->addGroup("walls", 4);
   this->addGroup("breakableWalls", 3);
   this->addGroup("deadlyWalls", 5);
-  this->addGroup("Wall", 0);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
@@ -310,11 +309,10 @@ void		GSInGame::gameover(bool victory)
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-  if (!_online)
-    {
-      this->pause(PHYSIC);
-    }
-  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
+	if (!_online)
+		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
+	else
+		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
 }
 
 void		GSInGame::score(GameCommand const &event)
