@@ -74,10 +74,7 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 			ship->setX(cmd.x);
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);
-			if ((*it)->getType() != Player::type::ONLINE)
-				this->_game.addGameObject(ship, "players");
-			else
-				this->_game.addGameObject(ship, "playersOnline");
+			this->_game.addGameObject(ship, "players");
 			if (this->_nbShip == this->_nbPlayers)
 				Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
 			return ;

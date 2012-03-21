@@ -111,6 +111,11 @@ bool Ship::getGrabLaunched() const
   return (_grabLaunched);
 }
 
+Player	&Ship::getPlayer() const
+{
+	return this->_player;
+}
+
 float Ship::getSpeed() const
 {
   return (_speed);
