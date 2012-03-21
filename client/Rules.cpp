@@ -60,7 +60,7 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
 	Ship			&ship = static_cast<Ship&>(o2);
 
-	if (!ship.isDead())
+	if (!ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
 	{
 		ship.setDead(true);
 		shot.erase();
@@ -71,7 +71,7 @@ void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
 {
 	Ship			&ship = static_cast<Ship&>(o2);
 
-	if (!ship.isDead())
+	if (!ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
 		ship.setDead(true);
 }
 
@@ -98,7 +98,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 		Ship& ship = static_cast<Ship &>(o2);
 		if (&(grab.getShip()) == &ship)
 		{
-			if (!grab.getBulletScript().empty() && !ship.isDead())
+			if (!grab.getBulletScript().empty() && !ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
 			{
 				ship.addCannon(new Cannon(grab.getBulletScript(), ship, Core::GameStateManager::get().getCurrentState(),
 						  	   "weapon", "cannons", "playerShots",
@@ -120,21 +120,6 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 	}
 }
 
-void	Rules::grabTouchPlayerOnline(Core::GameObject& o1, Core::GameObject& o2)
-{
-	Grab& grab = static_cast<Grab&>(o1);
-
-	if (grab.getReturnToShip())
-	{
-		Ship& ship = static_cast<Ship &>(o2);
-		if (&(grab.getShip()) == &ship)
-		{
-			grab.erase();
-			ship.setGrabLaunched(false);
-		}
-	}
-}
-
 void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
 {
   Grab &grab = static_cast<Grab &>(o1);
@@ -144,8 +129,10 @@ void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
 
 void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 {
-	Core::PhysicObject &player = static_cast<Core::PhysicObject &>(o2);
-	Core::PhysicObject &wall = static_cast<Core::PhysicObject &>(o1);
+	Ship				&player = static_cast<Ship &>(o2);
+	if (player.getPlayer().getType() == Player::ONLINE)
+		return ;
+	Core::PhysicObject	&wall = static_cast<Core::PhysicObject &>(o1);
 	Core::HitBox &phitbox = player.getHitBox();
 	Core::HitBox &whitbox = wall.getHitBox();
 
@@ -216,6 +203,8 @@ void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
   Ship& ship = static_cast<Ship&>(o1);
   ScoreBonus& score = static_cast<ScoreBonus&>(o2);
 
+  if (ship.getPlayer().getType() == Player::ONLINE)
+	return ;
   ship.setScore(ship.getScore() + score.score);
   score.erase();
 }

@@ -52,7 +52,7 @@ bool		NetworkModule::connect()
   Net::Packet     ping(18);
   ping << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
   ping << static_cast<uint8_t>(UDP::PING);
-  NetworkModule::get().sendPacketUDP(ping);
+  this->sendPacketUDP(ping);
   return (true);
 }
 

@@ -24,6 +24,7 @@ public:
 
   void			setGrabLaunched(bool grabLaunched);
   bool			getGrabLaunched() const;
+  Player		&getPlayer() const;
   float			getSpeed() const;
   void			addCannon(Cannon *cannon, unsigned int nGrab);
   void			releaseCannon(unsigned int nb);

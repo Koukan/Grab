@@ -4,20 +4,17 @@
 using namespace Net;
 
 
-class	Client : public RingBufferPacketHandler<>
+class	Client : public UdpPacketHandler
 {
 public:
-	Client() : RingBufferPacketHandler<>(1500, "\n")
+	Client() : UdpPacketHandler()
 	{
 	}
 
 	virtual void init()
 	{
 	  _reactor->scheduleTimer(*this, 3000, true);
-	  InetAddr addr;
-	  std::cout << _iohandler.getHandle() << std::endl;
-	  std::cout << _iohandler.getRemoteAddr(addr) << std::endl;
-	  std::cout << addr.getHost() << addr.getHost() << std::endl;
+	  _reactor->registerHandler(this->getIOHandler(), *this, Reactor::READ);
 	}
 
 	virtual int handleInputPacket(Packet &input)
@@ -26,9 +23,9 @@ public:
 		input >> str;
 		Packet	test(2048);
 		test << str;
-		test << "\n";
 		std::cout << str << std::endl;
-		for (int i = 0; i < 5; i++)
+		test.setDestination(input.getAddr());
+		for (int i = 0; i < 1; i++)
 	   	{
 			this->handleOutputPacket(test);
 		}
@@ -48,13 +45,15 @@ private:
 
 int  main(int ac, char **av)
 {
-  SetupNetwork  		init;
-  InetAddr				test("4500");
-  InetAddr				tmp("0.0.0.0", "7800");
-  Net::DefaultSyncPolicy reactor;
-  Acceptor<Client>		acceptor;
+	 SetupNetwork  		init;
+  	InetAddr			test("4500");
+  	InetAddr			tmp("0.0.0.0", "7800");
+  	Net::DefaultSyncPolicy reactor;
 
-  acceptor.setup(test, reactor);
+	Client				client;
+	client.getIOHandler().setup(test);
+	client.setReactor(reactor);
+	client.init();
   //testtss = new Client();
   //testtss->handleTimeout();
   /*Connector<Client>		client;

@@ -34,7 +34,6 @@ void		GSInGame::preload()
 {
   this->addGroup("spawners");
   this->addGroup("players", 40);
-  this->addGroup("playersOnline", 40);
   this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
   this->addGroup("cannons", 42);
@@ -61,7 +60,6 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "traversableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
-  this->setCollisionGroups("grabs", "playersOnline", &Rules::grabTouchPlayerOnline);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("walls", "players", &Rules::wallsTouchPlayers);
