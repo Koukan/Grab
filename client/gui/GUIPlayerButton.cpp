@@ -181,10 +181,10 @@ void	GUIPlayerButton::draw(double elapseTime)
 		this->_font->draw(static_cast<int>(0 + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
 	if (!this->_isReady && this->_isSelect && this->_bindFont && !this->_bindPlayer.isOnline())
-		this->_bindFont->draw(static_cast<int>(0 + this->_sprite.getWidth() + 40),
+		this->_bindFont->draw(static_cast<int>(this->_sprite.getWidth() - 160),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 	if (this->_isSelect && this->_shipFont)
-		this->_shipFont->draw(static_cast<int>(0 - this->_sprite.getWidth() - 40),
+		this->_shipFont->draw(static_cast<int>(35),
 		static_cast<int>(0 + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 
@@ -195,10 +195,10 @@ void	GUIPlayerButton::draw(int x, int y, double elapseTime)
 		this->_font->draw(static_cast<int>(x + (this->_sprite.getWidth() - this->_font->getWidth()) / 2) - 7,
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_font->getHeight()) / 2 + 2), elapseTime);
 	if (!this->_isReady && this->_isSelect && this->_bindFont && !this->_bindPlayer.isOnline())
-		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() + 40),
+		this->_bindFont->draw(static_cast<int>(x + this->_sprite.getWidth() - 160),
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_bindFont->getHeight()) / 2 + 2), elapseTime);
 	if (this->_isSelect && this->_shipFont)
-		this->_shipFont->draw(static_cast<int>(x - this->_sprite.getWidth() - 40),
+		this->_shipFont->draw(x + 35,
 		static_cast<int>(y + (this->_sprite.getHeight() - this->_shipFont->getHeight()) / 2 + 2), elapseTime);
 }
 

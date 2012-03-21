@@ -29,11 +29,11 @@ void	GSBindPlayer::onStart()
 	// add gui
 
 	Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
-		(RendererManager::get().getHeight() - 100) / 2, 300, 300, 20, 100, "up arrow", "down arrow");
+		100, 1024, 300, 20, 100, "up arrow", "down arrow");
 	layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
 	layout->setDispatch(true);
 
-	Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
+	Core::ButtonSprite *sprite = new Core::ButtonSprite("long button", "long button", "long button");
 
 	for (unsigned int i = 0; i < this->_nbPlayers; ++i)
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
