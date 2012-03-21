@@ -594,11 +594,11 @@ void	MonsterGenerator::changeToMaze()
 	{
 		{20, 20, 1, 0, 1, 0},
 		{1, 1, 2, 3, 0, 1},
-		{20, 20, 1, 1, 0, 0}
+		{20, 20, 1, 1, 1, 1}
 	};
 	static int const size = sizeof mazeStages / sizeof *mazeStages;
 
-	if (this->_flush.empty()/* || size - this->_flush.size() == 2*/)
+	if (this->_flush.empty())
 	{
 		this->_flush.clear();
 		for (int i = 0; i < size; ++i)
