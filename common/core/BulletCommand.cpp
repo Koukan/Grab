@@ -148,7 +148,7 @@ double		BulletCommand::getAimDirection()
 			{
 				if ((*it)->isDelete())
 					continue;
-				calc = (*it)->getX() * (*it)->getX() + (*it)->getY() * (*it)->getY();
+				calc = static_cast<int>((*it)->getX() * (*it)->getX() + (*it)->getY() * (*it)->getY());
 				if (calc < distance)
 				{
 					distance = calc;

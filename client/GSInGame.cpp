@@ -220,7 +220,6 @@ void		GSInGame::onStart()
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
-  this->setBeginId(1100000);
 }
 
 void		GSInGame::onEnd()
@@ -275,7 +274,7 @@ void		GSInGame::displayScores()
       this->_nameFonts[i]->setText(ss.str());
       this->_nameFonts[i]->setColor(255, 0, 0);
       this->_nameFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_nameFonts[i]->getWidth() / 2, 680);
-      this->addGameObject(this->_nameFonts[i], "score", 20);
+      this->addGameObject(this->_nameFonts[i], "score");
     }
 
   for (unsigned int i = 0; i < this->_nbPlayers; ++i)
@@ -284,7 +283,7 @@ void		GSInGame::displayScores()
       this->_scoreFonts[i]->setText("0000000");
       this->_scoreFonts[i]->setColor(255, 0, 0);
       this->_scoreFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_scoreFonts[i]->getWidth() / 2, 720);
-      this->addGameObject(this->_scoreFonts[i], "score", 20);
+      this->addGameObject(this->_scoreFonts[i], "score");
     }
 }
 

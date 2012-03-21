@@ -194,7 +194,7 @@ void	SFMLSprite::setTransparency(float transparency)
 {
   sf::Color base = this->GetColor();
 
-  base.a = transparency * 255;
+  base.a = static_cast<sf::Uint8>(transparency * 255);
   this->SetColor(base);
 }
 

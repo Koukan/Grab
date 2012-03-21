@@ -28,7 +28,7 @@ public:
 private:
   std::list<ButtonSprite *> _spriteButtons;
   GUICommand::DirectionState _direction[4];
-  int _elapsedTime[4];
+  double _elapsedTime[4];
 
   GUICommand *createGUICommand(InputCommand const &cmd);
 

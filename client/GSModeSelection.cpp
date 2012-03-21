@@ -31,7 +31,7 @@ void	GSModeSelection::onStart()
   Core::Sprite *sp = this->getSprite("logo");
   sp->setX((RendererManager::get().getWidth() - sp->getWidth()) / 2);
   sp->setY(50);
-  this->addGameObject(sp, "gui", 20);
+  this->addGameObject(sp, "gui");
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::story, "Story", "buttonFont", *sprite, layout);
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::survivalScoring, "Survival Scoring", "buttonFont", *sprite, layout);
