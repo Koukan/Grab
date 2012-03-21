@@ -3,10 +3,10 @@
 
 using namespace Net;
 
-class	Client : public PacketHandler<>
+class	Client : public RingBufferPacketHandler<>
 {
 public:
-	Client() : PacketHandler(1500, "\n")
+	Client() : RingBufferPacketHandler(1500, "\n")
 	{
 	}
 
@@ -39,12 +39,12 @@ int  main(int ac, char **av)
 {
   SetupNetwork  		init;
   InetAddr				test("127.0.0.1", "25557");
-  Reactor				*reactor = new DefaultSyncPolicy();
+  Net::DefaultSyncPolicy reactor;
 /*  Acceptor<Client>		acceptor;
 
   acceptor.setup(test, *reactor);*/
   Connector<Client>		connector;
-  connector.setup(test, *reactor, false);
-  reactor->waitForEvent();
+  connector.setup(test, reactor, false);
+  reactor.waitForEvent(-1);
   return (0);
 }
