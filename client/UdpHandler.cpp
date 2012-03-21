@@ -135,7 +135,7 @@ int         UdpHandler::ping(Net::Packet &, uint64_t time_recv)
 int         UdpHandler::pong(Net::Packet &, uint64_t time_recv)
 {
 	_nblatency++;
-	_latency = (_latency + ((Net::Clock::getMsSinceEpoch() - time_recv) / 2)) / 2;
+	_latency = (_latency * _nblatency + ((Net::Clock::getMsSinceEpoch() - time_recv) / 2)) / (_nblatency + 1);
 	return 1;
 }
 
