@@ -24,7 +24,8 @@ bool		GSLoading::handleCommand(Core::Command const &command)
 {
 	Method<std::string>	tab[] = {
 		{"goToInGame", &GSLoading::goToInGame},
-		{"shipSpawn", &GSLoading::shipSpawn}
+		{"shipSpawn", &GSLoading::shipSpawn},
+		{"seed", &GSLoading::setSeed}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -75,10 +76,16 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);
 			this->_game.addGameObject(ship, "players");
-			if (this->_nbShip == this->_nbPlayers)
-				Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
 			return ;
 		}
 		i++;
 	}
+}
+
+void		GSLoading::setSeed(Core::Command const &command)
+{
+	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
+
+	this->_game.setSeed(cmd.idObject);
+	Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
 }

@@ -11,6 +11,9 @@ Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
 
 Client::~Client()
 {
+	Net::InetAddr	addr;
+	this->getRemoteAddr(addr);
+	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " disconnected";
 	NetworkModule::get().removeUDPClient(*this);
 	if (this->_game)
 	{
@@ -63,7 +66,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
-	Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
+	//Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != 0)
 	{
 		return (this->*methods[type])(packet);
@@ -160,13 +163,18 @@ int		Client::connectGame(Net::Packet &packet)
 {
 	uint16_t	id;
 	packet >> id;
+	Net::InetAddr		addr;
+
 	Game			*game = Server::get().getGame(id);
+	this->getRemoteAddr(addr);
 
 	if (game)
 	{
 		if (game->addClient(*this))
 		{
-			Core::Logger::logger << "Client join game" << id;
+			Net::InetAddr   addr;
+			this->getRemoteAddr(addr);
+			Core::Logger::logger << addr.getHost(NI_NUMERICHOST) <<  " join game " << id;
 			Player	* const *players = game->getPlayers();
 			for (size_t i = 0; i < 4; i++)
 			{
@@ -182,8 +190,10 @@ int		Client::connectGame(Net::Packet &packet)
 			}
 			return 1;
 		}
+		Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " try to join game " << id <<  " but game is full";
 		return this->sendError(Error::GAME_FULL);
 	}
+	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " try to join game " << id << " but game not exist";
 	return this->sendError(Error::GAME_NOT_EXIST);
 }
 
@@ -201,16 +211,19 @@ int		Client::player(Net::Packet &packet)
 
 int		Client::createGame(Net::Packet &packet)
 {
-	uint8_t		maxClient;
+	Net::InetAddr		addr;
+	uint8_t			maxClient;
+
 	packet >> maxClient;
 	Game		*game = Server::get().createGame(maxClient);
-
-	Core::Logger::logger << "Game created with "<< int(maxClient) << " players";
+	this->getRemoteAddr(addr);
 	if (game)
 	{
+		Core::Logger::logger << "Game created with "<< int(maxClient) << " players by " << addr.getHost(NI_NUMERICHOST);
 		game->addClient(*this);
 		return 1;
 	}
+	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " try to create game but server is full";
 	return this->sendError(Error::SERVER_FULL);
 }
 
@@ -329,8 +342,10 @@ GameLogic			*Client::getGameLogic() const
 int         		Client::sendError(Error::Type error)
 {
 	Net::Packet		answer(7);
+	Net::InetAddr		addr;
 
-	Core::Logger::logger << "Send error to " << this->_name;
+	this->getRemoteAddr(addr);
+	Core::Logger::logger << "Send error to " << addr.getHost(NI_NUMERICHOST);
 	answer << static_cast<uint8_t>(TCP::TCP_ERROR);
 	answer << static_cast<uint16_t>(error);
 	this->handleOutputPacket(answer);

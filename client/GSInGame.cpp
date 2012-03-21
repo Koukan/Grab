@@ -294,6 +294,11 @@ void		GSInGame::playerDie(Player &)
 		this->gameover(false);
 }
 
+void		GSInGame::setSeed(uint32_t seed)
+{
+	this->_rand.seed(seed);
+}
+
 void		GSInGame::gameover(bool victory)
 {
   if (!victory)
@@ -368,7 +373,7 @@ void		GSInGame::spawnend(GameCommand const &)
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
-  Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
+	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
 	spawner->setSeed(this->_rand());
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");

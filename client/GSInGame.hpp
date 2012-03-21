@@ -24,7 +24,8 @@ public:
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 	void			playerDie(Player &player);
-	Map&		getMap() const;
+	Map&			getMap() const;
+	void			setSeed(uint32_t seed);
 
 private:
 	template<typename T>

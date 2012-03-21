@@ -120,6 +120,7 @@ void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
 	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, 0, 0);
+	bullet->setSeed(this->_rand());
 	this->addGameObject(bullet, "spawners");
 }
 
@@ -127,7 +128,7 @@ void		GameLogic::moveCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
 
-	Ship	*ship = reinterpret_cast<Player*>(gc.client)->getShip();
+	Ship	*ship = gc.player->getShip();
 	ship->setX(gc.x);
 	ship->setY(gc.y);
 	ship->setVx(gc.vx);

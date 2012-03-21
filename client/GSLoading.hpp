@@ -30,6 +30,7 @@ class GSLoading : public Core::GameState
 	// handleCommand
 	void			goToInGame(Core::Command const &command);
 	void			shipSpawn(Core::Command const &command);
+	void			setSeed(Core::Command const &command);
 
 	std::list<Player *> const	&_players;
 	unsigned int				_nbPlayers;
