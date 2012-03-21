@@ -127,7 +127,8 @@ double		PhysicObject::getScrollY() const
 void	PhysicObject::collide(TreeElement &elem)
 {
 	PhysicObject 		&obj = static_cast<PhysicObject &>(elem);
-	if (this->_delete || obj.isDelete())
+	if ((this->_delete && this->_delete != 3) ||
+		(obj._delete && obj._delete != 3))
 		return ;
 
 	this->_hitBox->setX(this->_x + this->_xHitboxOffset);

@@ -439,8 +439,10 @@ void Ship::setDead(bool dead, bool command)
 			cmd->boolean = false;
 			Core::CommandDispatcher::get().pushCommand(*cmd);
 		}
+		this->_delete = 0;
 		return ;
 	}
+	this->_delete = 3;
 	this->_player.die();
 	this->_elapsedTime = 1000;
 	if (this->_timer)
