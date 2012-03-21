@@ -15,6 +15,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	virtual void	init();
 	virtual void	update(double elapsedTime);
 	virtual void	destroy();
+	bool			isReady() const;
 	virtual bool	handleCommand(Core::Command const &command);
 	void			setPort(std::string const &port);
 	void			addUDPClient(Client &client);
@@ -48,6 +49,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 
 	Net::Reactor						*_reactor;
 	size_t								_pingupdate;
+	bool								_error;
 	Net::Acceptor<Client>				_acceptor;
 	UdpHandler							_udp;
 	std::string							_port;

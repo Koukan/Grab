@@ -8,7 +8,7 @@
 #include "Server.hpp"
 #include "DestroyCommand.hpp"
 
-NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5), _reactor(0), _pingupdate(0)
+NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5), _reactor(0), _pingupdate(0), _error(false)
 {
   Core::CommandDispatcher::get().registerHandler(*this);
 }
@@ -25,6 +25,7 @@ void		NetworkModule::init()
 	if (this->_acceptor.setup(addr, *this->_reactor) < 0)
 	{
 		Net::printLastError();
+		this->_error = true;
 		return ;
 	}
 	this->_udp.setReactor(*this->_reactor);
@@ -32,7 +33,10 @@ void		NetworkModule::init()
 	if (_udp.getIOHandler().setup(addr) != -1)
 		this->_udp.init();
 	else
+	{
+		this->_error = true;
 		Net::printLastError();
+	}
 }
 
 void		NetworkModule::update(double elapsedtime)
@@ -51,6 +55,11 @@ void		NetworkModule::update(double elapsedtime)
 
 void		NetworkModule::destroy()
 {
+}
+
+bool		NetworkModule::isReady() const
+{
+	return !this->_error;
 }
 
 bool		NetworkModule::handleCommand(Core::Command const &command)

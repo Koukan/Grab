@@ -39,6 +39,8 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	network.setPort(port);
 	this->loadModule(Core::CommandDispatcher::get());
 	this->loadModule(network);
+	if (!network.isReady())
+		return false;
 
 	// add player sprite
 	ServerSprite		*sprite = new ServerSprite;

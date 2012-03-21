@@ -119,8 +119,9 @@ uint32_t	GameLogic::getSeed() const
 void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 {
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
-	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, 0, 0);
+	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, gc.vx, gc.vy, gc.boolean);
 	bullet->setSeed(this->_rand());
+	bullet->setScrollY(gc.position);
 	this->addGameObject(bullet, "spawners");
 }
 
