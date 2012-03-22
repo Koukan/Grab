@@ -91,7 +91,7 @@ void	GSBindPlayer::goToInGame()
 				"players" : "playersOnline");
 		}
 	}
-	if (i == 1 && this->_players[0])
+	if (players->size() == 1 && this->_players[0])
 	  this->_players[0]->setLife(3);
 	state->preload();
 	Core::GameStateManager::get().pushState(*state);

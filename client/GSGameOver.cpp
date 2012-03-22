@@ -47,7 +47,7 @@ void	GSGameOver::retry()
 	    for (std::list<Player*>::iterator it = list.begin(); it != list.end(); ++it)
 	      {
 		if (_nbPlayers > 1)
-		  (*it)->setLife(1);
+		  (*it)->setLife(-1);
 		else
 		  (*it)->setLife(3);
 	      }

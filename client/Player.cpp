@@ -5,7 +5,7 @@
 #include "GameStateManager.hpp"
 
 Player::Player(Player::type type, Ship* ship)
-  : _life(-1), _type(type), _ship(ship), _shipInfo(0)
+  : _life(-1), _type(type), _ship(ship), _shipInfo(0), _nbDie(0)
 {
 	if (type == Player::KEYBOARD)
 	{
@@ -65,12 +65,12 @@ void			Player::setLife(int nb)
 
 void			Player::respawn()
 {
-	static int const nbSecRespawn = 9;
+	static int const nbSecRespawn = 3;
 
 	GameCommand	*cmd = new GameCommand("respawnplayer");
 	cmd->player = this;
-	Core::CommandDispatcher::get().pushCommand(*cmd, nbSecRespawn * 1000);
-	this->_ship->setNbSecRespawn(nbSecRespawn);
+	Core::CommandDispatcher::get().pushCommand(*cmd, (nbSecRespawn + this->_nbDie * 2) * 1000);
+	this->_ship->setNbSecRespawn(nbSecRespawn + this->_nbDie * 2);
 }
 
 void			Player::die()
@@ -90,6 +90,7 @@ void			Player::die()
 	  }
 	else // in this part, a "dead player" is a player in ghost mode
 	  {
+	    ++this->_nbDie;
 	    Core::Group *group = this->_ship->getGroup();
 
 	    if (group)

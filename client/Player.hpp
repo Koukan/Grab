@@ -47,9 +47,10 @@ public:
   int						getLife() const;
 
 private:
-  	int							_life;
+	int					_life;
 	Player::type				_type;
 	Core::InputCommand			_actions[NBACTIONS];
 	Ship						*_ship;
 	ShipInfo::ShipInfo const	*_shipInfo;
+	int					_nbDie;
 };
