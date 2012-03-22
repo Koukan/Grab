@@ -23,6 +23,7 @@ public:
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
+  virtual void	setPosition(double x, double y, double z = 0);
   void			setGrabLaunched(bool grabLaunched);
   bool			getGrabLaunched() const;
   Player		&getPlayer() const;
@@ -101,6 +102,9 @@ private:
   int			_nbSecRespawn;
   double		_elapsedTime;
   Core::CoreFont	*_timer;
+  double		_targetx;
+  double		_targety;
+  bool			_target;
 
   void handleActions();
 };
