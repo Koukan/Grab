@@ -25,7 +25,7 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setX(shot.getX());
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
-	gameState.addGameObject(explosion, "impacts", 100);
+	gameState.addGameObject(explosion, "impacts");
 	o2.erase();
 }
 
@@ -43,7 +43,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setX(shot.getX());
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
-	gameState.addGameObject(explosion, "impacts", 100);
+	gameState.addGameObject(explosion, "impacts");
 
 	shot.erase();
 	if (monster.getLife() <= 0)
@@ -109,8 +109,8 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 					GameCommand		*cmd = new GameCommand("updateCannon", ship.getId());
 					cmd->data = grab.getBulletScript();
 					cmd->idResource = grab.getNum();
-					cmd->x = grab.getOffsetX();
-					cmd->y = grab.getOffsetY();
+					cmd->x = static_cast<int16_t>(grab.getOffsetX());
+					cmd->y = static_cast<int16_t>(grab.getOffsetY());
 					Core::CommandDispatcher::get().pushCommand(*cmd);
 				}
 			}
@@ -202,7 +202,7 @@ void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
   Ship& ship = static_cast<Ship&>(o1);
   ScoreBonus& score = static_cast<ScoreBonus&>(o2);
 
-  if (ship.getPlayer().getType() == Player::ONLINE)
+  if (ship.getPlayer().getType() == Player::ONLINE || ship.isDead())
 	return ;
   ship.setScore(ship.getScore() + score.score);
   score.erase();

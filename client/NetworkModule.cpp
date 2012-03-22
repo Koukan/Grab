@@ -269,8 +269,8 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.data;
 	}
-	write(1, packet.base(), packet.size());
-	std::cout << std::endl;
+	//write(1, packet.base(), packet.size());
+	//std::cout << std::endl;
 	this->sendPacketUDP(packet, true);
 }
 

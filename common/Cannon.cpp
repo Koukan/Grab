@@ -21,7 +21,7 @@ Cannon::~Cannon()
 
 void	Cannon::draw(double time)
 {
-  _sprite->draw(_x, _y, time);
+  _sprite->draw(static_cast<int>(_x), static_cast<int>(_y), time);
 }
 
 void	Cannon::fire()

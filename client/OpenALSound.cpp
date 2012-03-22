@@ -77,12 +77,12 @@ void			OpenALSound::setPosition(double x, double y, double z)
   _x = x;
   _y = y;
   _z = z;
-  alSource3f(this->_source, AL_POSITION, x, y, z);
+  alSource3f(this->_source, AL_POSITION, static_cast<ALfloat>(x), static_cast<ALfloat>(y), static_cast<ALfloat>(z));
 }
 
 void			OpenALSound::setVelocity(double x, double y, double z)
 {
-  alSource3f(this->_source, AL_VELOCITY, x, y, z);
+  alSource3f(this->_source, AL_VELOCITY, static_cast<ALfloat>(x), static_cast<ALfloat>(y), static_cast<ALfloat>(z));
 }
 
 void        	OpenALSound::setLoop(bool loop)
@@ -100,7 +100,7 @@ bool         	OpenALSound::isLooping() const
 
 void			OpenALSound::setVolume(double volume)
 {
-  alSourcef(this->_source, AL_GAIN, volume * 0.01);
+  alSourcef(this->_source, AL_GAIN, static_cast<ALfloat>(volume * 0.01));
 }
 
 double			OpenALSound::getVolume() const

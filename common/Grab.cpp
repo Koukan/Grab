@@ -7,9 +7,10 @@
 #endif
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, Ship& ship,
-	   double angle, float speed, unsigned int nGrab,
+	   unsigned int angle, double speed, unsigned int nGrab,
 	   double offsetX, double offsetY) :
-  ConcreteObject(spriteName, hitbox, 0, 0, -10, -10), _ship(ship), _returnToShip(false), _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab), _angle(angle)
+  ConcreteObject(spriteName, hitbox, 0, 0, -10, -10), _ship(ship), _returnToShip(false),
+	  _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab), _angle(angle)
 {
   if (this->_sprite)
     {

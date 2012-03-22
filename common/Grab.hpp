@@ -12,7 +12,7 @@ class Grab : public ConcreteObject
 {
 public:
   Grab(std::string const &name, Core::HitBox& hitbox, Ship &ship,
-       double angle, float speed, unsigned int nGrab,
+       unsigned int angle, double speed, unsigned int nGrab,
        double offsetX = 0, double offsetY = 0);
   ~Grab();
 
@@ -31,7 +31,7 @@ private:
   std::string		_bullet;
   Ship&				_ship;
   bool				_returnToShip;
-  float				_speed;
+  double				_speed;
   double			_offsetX;
   double			_offsetY;
   unsigned int		_nGrab;

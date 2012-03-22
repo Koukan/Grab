@@ -99,10 +99,10 @@ private:
 	int			_position;
 	int			_lastPosition;
 	int			_mazeY;
-	int			_MazeEnemiesNb;
-	int			_MazeBreakableWallsNb;
-	int			_MazeMovableWallsNb;
-	int			_MazeWallsNb;
+	size_t		_MazeEnemiesNb;
+	size_t		_MazeBreakableWallsNb;
+	size_t		_MazeMovableWallsNb;
+	size_t		_MazeWallsNb;
 	std::vector<int> _flush;
 
 	void	createMonster(MonsterInfo const &info);

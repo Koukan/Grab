@@ -26,7 +26,7 @@ public:
   void			setGrabLaunched(bool grabLaunched);
   bool			getGrabLaunched() const;
   Player		&getPlayer() const;
-  float			getSpeed() const;
+  double		getSpeed() const;
   void			addCannon(Cannon *cannon, unsigned int nGrab);
   void			releaseCannon(unsigned int nb);
   void			copyColor(Core::Sprite& sprite);
@@ -69,8 +69,8 @@ private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
   Player					&_player;
-  float						_speed;
-  float						_tmpSpeed;
+  double					_speed;
+  double					_tmpSpeed;
   int						_fireFrequency;
   bool						_dead;
   Cannon*					_cannons[4];
@@ -99,7 +99,7 @@ private:
   PlayerBullet	*_playerBullet;
   unsigned int	_score;
   int			_nbSecRespawn;
-  int			_elapsedTime;
+  double		_elapsedTime;
   Core::CoreFont	*_timer;
 
   void handleActions();

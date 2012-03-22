@@ -71,7 +71,7 @@ void    ModuleManager::update(double)
   while (!_stop)
   {
     towait = -1;
-    diff = clock.getElapsedTime();
+    diff = static_cast<double>(clock.getElapsedTime());
     clock.update();
     for (std::map<std::string, Module*>::iterator it = _modules.begin();
 		    it != _modules.end();)
@@ -83,7 +83,7 @@ void    ModuleManager::update(double)
 		  	module->_lastUpdate -= diff;
        	 	if (module->_lastUpdate <= 0)
 	  		{
-				int n = -1 * module->_lastUpdate / module->_targetRate + 1;
+				int n = static_cast<int>(-1 * module->_lastUpdate / module->_targetRate + 1);
 				double tmpUpdate = module->_lastUpdate;
 				module->_lastUpdate += n * module->_targetRate;
 				module->update(module->_lastUpdate - tmpUpdate);

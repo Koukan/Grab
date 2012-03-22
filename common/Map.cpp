@@ -48,7 +48,7 @@ void    	Map::addElem(std::string const &command, std::string const &name, size_
 		data.vy = vy;
 		data.pause = pause;
 		if (scrollable)
-			data.vScrolling = this->_vy;
+			data.vScrolling = static_cast<int>(this->_vy);
 		else
 			data.vScrolling = 0;
 		_monsters.insert(std::make_pair(y, data));
@@ -67,11 +67,11 @@ void		Map::move(double time)
 	for (; it != _monsters.end() && it->first <= this->_y;)
 	{
 		cmd = new GameCommand(it->second.command);
-		cmd->y = this->_y - it->first + it->second.y;
+		cmd->y = static_cast<int16_t>(this->_y - it->first + it->second.y);
 		cmd->x = it->second.x;
 		cmd->vx = it->second.vx;
 		cmd->vy = it->second.vy;
-		cmd->position = it->second.vScrolling;
+		cmd->position = static_cast<float>(it->second.vScrolling);
 		cmd->data = it->second.name;
 		cmd->boolean = it->second.pause;
 		gm.pushCommand(*cmd, true);
