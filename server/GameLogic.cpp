@@ -37,9 +37,9 @@ GameLogic::GameLogic(Game &game)
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, 1000, 8000, 1000)), "Wall");
 
-	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
-	this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
-	this->setCollisionGroups("Wall", "playerfires", &Rules::wallTouchObject);
+	//this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
+	//this->setCollisionGroups("Wall", "ship", &Rules::wallTouchObject);
+	this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
 	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
@@ -146,7 +146,7 @@ void		GameLogic::updateCannonCommand(Core::Command const &command)
 	}
 	else
 	{
-		ship->addCannon(new Cannon(gc.name, *ship, *this, "", "cannons", "playerShots",
+		ship->addCannon(new Cannon(gc.name, *ship, *this, "weapon", "cannons", "playerShots",
 							gc.x, gc.y), gc.idResource);
 	}
 }
