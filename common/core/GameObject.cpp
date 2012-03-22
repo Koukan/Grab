@@ -12,11 +12,6 @@ GameObject::~GameObject()
 {
 	if (this->_group)
 		_group->removeObject(this);
-	for (std::list<GameObject*>::iterator it = this->_objects.begin();
-		 it != this->_objects.end(); it++)
-		(*it)->_relativeObject = 0;
-	if (this->_relativeObject)
-		this->_relativeObject->removeGameObject(this);
 }
 
 uint32_t	GameObject::getId() const

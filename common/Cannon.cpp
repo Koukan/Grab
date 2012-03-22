@@ -21,7 +21,7 @@ Cannon::~Cannon()
 
 void	Cannon::draw(double time)
 {
-  _sprite->draw(_x, _y, time);
+  _sprite->draw(static_cast<int>(_x), static_cast<int>(_y), time);
 }
 
 void	Cannon::fire()
@@ -32,7 +32,7 @@ void	Cannon::fire()
       if (_bullet->getSprite())
 	_bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
       _bullet->setColor(_colors[0], _colors[1], _colors[2]);
-      Core::GameStateManager::get().getCurrentState().addGameObject(_bullet);
+      this->getGroup()->getState().addGameObject(_bullet);
     }
 }
 

@@ -21,6 +21,7 @@ Server::~Server()
 
 bool			Server::initServer(std::string const &port, size_t nbthread)
 {
+	Core::Logger::logger << "Initialisation";
 	NetworkModule			&network = NetworkModule::get();
 	Core::ResourceManager	test;
 	ServerSpriteProvider	*provider = new ServerSpriteProvider;
@@ -61,6 +62,7 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	sprite->addUse();
 	provider->addSprite("player4", *sprite);
 
+	Core::Logger::logger << "Server is ready";
 	this->update(0);
 	return true;
 }

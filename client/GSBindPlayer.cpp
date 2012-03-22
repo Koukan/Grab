@@ -87,7 +87,7 @@ void	GSBindPlayer::goToInGame()
 		if (this->_players[i] && this->_players[i]->getShip())
 		{
 				state->addGameObject(this->_players[i]->getShip(),
-				(this->_players[i]->getType() != Player::type::ONLINE) ?
+				(this->_players[i]->getType() != Player::ONLINE) ?
 				"players" : "playersOnline");
 		}
 	}

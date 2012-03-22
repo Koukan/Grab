@@ -65,7 +65,7 @@ void			Player::setLife(int nb)
 
 void			Player::respawn()
 {
-	static int const nbSecRespawn = 3;
+	static int const nbSecRespawn = 1;
 
 	GameCommand	*cmd = new GameCommand("respawnplayer");
 	cmd->player = this;

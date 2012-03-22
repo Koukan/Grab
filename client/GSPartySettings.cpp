@@ -49,7 +49,7 @@ void	GSPartySettings::createParty()
 			if (!this->_error)
 			{
 				this->_error = this->getFont("buttonFont");
-				this->addGameObject(this->_error, "font", 10);
+				this->addGameObject(this->_error, "font");
 			}
 			this->_error->setText("Connection to the server failed");
 			this->_error->setX((RendererManager::get().getWidth() - this->_error->getWidth()) / 2);

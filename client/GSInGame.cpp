@@ -41,7 +41,6 @@ void		GSInGame::preload()
   this->addGroup("walls", 4);
   this->addGroup("breakableWalls", 3);
   this->addGroup("deadlyWalls", 5);
-  this->addGroup("Wall", 0);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
   this->addGroup("background2", 2);
@@ -221,7 +220,6 @@ void		GSInGame::onStart()
   if (!_online)
       this->createShips();
   this->registerShipCallbacks();
-  this->setBeginId(1100000);
 }
 
 void		GSInGame::onEnd()
@@ -276,7 +274,7 @@ void		GSInGame::displayScores()
       this->_nameFonts[i]->setText(ss.str());
       this->_nameFonts[i]->setColor(255, 0, 0);
       this->_nameFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_nameFonts[i]->getWidth() / 2, 680);
-      this->addGameObject(this->_nameFonts[i], "score", 20);
+      this->addGameObject(this->_nameFonts[i], "score");
     }
 
   for (unsigned int i = 0; i < this->_nbPlayers; ++i)
@@ -285,7 +283,7 @@ void		GSInGame::displayScores()
       this->_scoreFonts[i]->setText("0000000");
       this->_scoreFonts[i]->setColor(255, 0, 0);
       this->_scoreFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_scoreFonts[i]->getWidth() / 2, 720);
-      this->addGameObject(this->_scoreFonts[i], "score", 20);
+      this->addGameObject(this->_scoreFonts[i], "score");
     }
 }
 
@@ -298,6 +296,11 @@ bool		GSInGame::playerDie(Player &)
 	    return (true);
 	  }
 	return (false);
+}
+
+void		GSInGame::setSeed(uint32_t seed)
+{
+	this->_rand.seed(seed);
 }
 
 void		GSInGame::gameover(bool victory)
@@ -314,11 +317,10 @@ void		GSInGame::gameover(bool victory)
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-  if (!_online)
-    {
-      this->pause(PHYSIC);
-    }
-  Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
+	if (!_online)
+		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
+	else
+		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
 }
 
 void		GSInGame::score(GameCommand const &event)
@@ -375,7 +377,7 @@ void		GSInGame::spawnend(GameCommand const &)
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
-  Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
+	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
 	spawner->setSeed(this->_rand());
 	this->updatePositions(event, *spawner);
 	this->addGameObject(spawner, "spawners");

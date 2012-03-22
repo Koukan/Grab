@@ -8,6 +8,7 @@
 NetworkModule::NetworkModule() : Core::Module("NetworkModule", 5) , _initudp(false), _sentPacketId(0), _server(0)
 {
 	Core::CommandDispatcher::get().registerHandler(*this);
+	Game::get().loadModule(*this);
 }
 
 NetworkModule::~NetworkModule()
@@ -269,8 +270,6 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 		packet << cmd.y;
 		packet << cmd.data;
 	}
-	write(1, packet.base(), packet.size());
-	std::cout << std::endl;
 	this->sendPacketUDP(packet, true);
 }
 

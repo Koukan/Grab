@@ -31,7 +31,7 @@ void	SFMLFont::draw(double /*elapsedTime*/)
 {
 		//this->_str.SetX(static_cast<float>(this->_x));
 		//this->_str.SetY(static_cast<float>(this->_y));
-  this->_str.SetPosition(this->_x, this->_y);
+  this->_str.SetPosition(static_cast<float>(this->_x), static_cast<float>(this->_y));
   this->_window->Draw(this->_str);
 }
 
@@ -39,7 +39,7 @@ void	SFMLFont::draw(int x, int y, double /*elapsedTime*/)
 {
 		//this->_str.SetX(static_cast<float>(x));
 		//this->_str.SetY(static_cast<float>(y));
-  this->_str.SetPosition(x, y);
+  this->_str.SetPosition(static_cast<float>(x), static_cast<float>(y));
   this->_window->Draw(this->_str);
 }
 

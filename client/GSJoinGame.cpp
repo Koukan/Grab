@@ -51,6 +51,7 @@ void	GSJoinGame::onStart()
 		  (RendererManager::get().getHeight() - 100) / 2, 300, 700, 50);
       new GUILabel("Connection to the server failed", "buttonFont", "", this->_vlayout);
       new GUIButton<GSJoinGame>(*this, &GSJoinGame::returnMainMenu, "Return", "buttonFont", *this->_sprite, this->_vlayout);
+	  Game::get().unloadModule("NetworkModule"); 
     }
 }
 

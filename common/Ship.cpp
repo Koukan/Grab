@@ -90,8 +90,8 @@ void	Ship::move(double time)
 		return ;
 	GameCommand	*move = new GameCommand("Move");
 	move->idObject = this->getId();
-	move->x = this->getX();
-	move->y = this->getY();
+	move->x = static_cast<int16_t>(this->getX());
+	move->y = static_cast<int16_t>(this->getY());
 	move->vx = 0/*this->getVx()*/;
 	move->vy = 0/*this->getVy()*/;
 	Core::CommandDispatcher::get().pushCommand(*move);
@@ -123,7 +123,7 @@ Player	&Ship::getPlayer() const
 	return this->_player;
 }
 
-float Ship::getSpeed() const
+double Ship::getSpeed() const
 {
   return (_speed);
 }
@@ -449,7 +449,7 @@ void Ship::setDead(bool dead, bool command)
 	this->_elapsedTime = 1000;
 	if (this->_timer)
 		this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
-	this->getSprite().setTransparency(0.4);
+	this->getSprite().setTransparency(0.4f);
 	if (this->_playerBullet)
 	{
 		delete this->_playerBullet;
@@ -492,8 +492,8 @@ void Ship::draw(double elapsedTime)
 		else
 			this->_elapsedTime -= elapsedTime;
 	Core::Sprite const &sprite = this->getSprite();
-	this->_timer->draw(this->_x + (sprite.getWidth() - this->_timer->getWidth()) / 2,
-		this->_y + (sprite.getHeight() - this->_timer->getHeight()) / 2, elapsedTime);
+	this->_timer->draw(static_cast<int>(this->_x + (sprite.getWidth() - this->_timer->getWidth()) / 2),
+		static_cast<int>(this->_y + (sprite.getHeight() - this->_timer->getHeight()) / 2), elapsedTime);
 	}
 }
 

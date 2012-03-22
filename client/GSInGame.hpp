@@ -23,10 +23,11 @@ public:
 	virtual void	onEnd();
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
-	bool			playerDie(Player &player);
-	Map&		getMap() const;
 	unsigned int	getNbPlayers() const;
 	unsigned int	getNbDie() const;
+	bool			playerDie(Player &player);
+	Map&			getMap() const;
+	void			setSeed(uint32_t seed);
 
 private:
 	template<typename T>

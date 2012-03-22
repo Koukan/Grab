@@ -39,9 +39,9 @@ void RendererManager::drawNode(Core::Node *node)
 		rect.SetPosition(node->getX(), node->getY());
 		this->_window->Draw(rect);
 	#else
-		this->_window->Draw(sf::Shape::Rectangle(node->getX(), node->getY(),
-			node->getX() + node->getSize(), node->getY() + node->getSize(),
-			sf::Color(0, 0, 0,0), 2.0, sf::Color(0, 255, 0, 50)));
+		this->_window->Draw(sf::Shape::Rectangle(static_cast<float>(node->getX()), static_cast<float>(node->getY()),
+			static_cast<float>(node->getX() + node->getSize()), static_cast<float>(node->getY() + node->getSize()),
+			sf::Color(0, 0, 0, 0), 2.0, sf::Color(0, 255, 0, 50)));
 	#endif
 
 	for (int i = 0; i < 4; ++i)
