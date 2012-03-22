@@ -191,10 +191,18 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 #####
 
 
+IF(WIN32)
+add_executable(
+	${TARGET_NAME} WIN32 resource.rc
+	${SRCS}
+	
+)
+ELSE(WIN32)
 add_executable(
 	${TARGET_NAME}
 	${SRCS}
 )
+ENDIF(WIN32)
 
 include_directories (
 	${INCLUDES_COMMON_DIR}

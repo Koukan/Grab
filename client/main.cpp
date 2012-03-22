@@ -22,3 +22,11 @@ int	main(int /*ac*/, char**av)
     return 1;
   }
 }
+
+#if defined (WIN32)
+int	CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	char		*tab[1] = {"./"};
+	main(1, tab);
+}
+#endif
