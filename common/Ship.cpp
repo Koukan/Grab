@@ -132,6 +132,8 @@ void	Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 {
 	if (cannon && nGrab < _nbMaxGrabs)
 	{
+		if (_cannons[nGrab])
+			_cannons[nGrab]->erase();
 		_cannons[nGrab] = cannon;
 		cannon->setColor(_colors[0], _colors[1], _colors[2]);
 	}

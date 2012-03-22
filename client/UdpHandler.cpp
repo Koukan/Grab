@@ -157,7 +157,7 @@ int			UdpHandler::updateCannon(Net::Packet &packet, uint64_t)
 	packet >> gc->idObject;
 	packet >> n;
 	gc->idResource = n;
-	if (packet.size() > 18)
+	if (packet.size() > 22)
 	{
 		packet >> gc->x;
 		packet >> gc->y;

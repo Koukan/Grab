@@ -239,6 +239,7 @@ int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 		packet >> cmd->y;
 		packet >> cmd->data;
 	}
+	std::cout << "bouhb " << cmd->data << std::endl;
 	client.getGameLogic()->pushCommand(*cmd);
 
 	// broadcast to other client

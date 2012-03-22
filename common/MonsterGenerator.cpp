@@ -549,11 +549,11 @@ void	MonsterGenerator::generate(double time)
 			{
 				this->createDoor();
 			}
-			else if (this->_mazeY == HEIGHT * nbMaze + 6)
+			else if (this->_mazeY == HEIGHT * nbMaze + 7)
 			{
 				this->generateBoss(time);
 			}
-			else if (this->_mazeY > HEIGHT * nbMaze + 6 && this->_elapsedTime <= 0)
+			else if (this->_mazeY > HEIGHT * nbMaze + 7 && this->_elapsedTime <= 0)
 				this->changeToSquads();
 			++this->_mazeY;
 		}
