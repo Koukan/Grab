@@ -31,7 +31,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
-	this->managePaused();
+	this->managePaused(gstate);
 }
 
 BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
@@ -50,7 +50,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
-	this->managePaused();
+	this->managePaused(gstate);
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool paused,
@@ -78,7 +78,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
-	this->managePaused();
+	this->managePaused(gstate);
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
@@ -107,7 +107,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
-	this->managePaused();
+	this->managePaused(gstate);
 }
 
 BulletCommand::~BulletCommand()
@@ -115,16 +115,16 @@ BulletCommand::~BulletCommand()
 	if (_paused)
 	{
 		Command* cmd = new Command("decreasePaused");
-		Core::CommandDispatcher::get().pushCommand(*cmd);
+		this->getGroup()->getState().pushCommand(*cmd);
 	}
 }
 
-void		BulletCommand::managePaused()
+void		BulletCommand::managePaused(GameState &state)
 {
   if (_paused)
     {
       Command* cmd = new Command("increasePaused");
-      Core::CommandDispatcher::get().pushCommand(*cmd);
+	  state.pushCommand(*cmd);
     }
 }
 
