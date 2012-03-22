@@ -130,6 +130,14 @@ void	Rules::grabTouchWall(Core::GameObject &o1, Core::GameObject &)
 void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 {
 	Ship				&player = static_cast<Ship &>(o2);
+
+	if (!player.isDead())
+		Rules::invisibleWallsTouchPlayers(o1, o2);
+}
+
+void	Rules::invisibleWallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
+{
+	Ship				&player = static_cast<Ship &>(o2);
 	if (player.getPlayer().getType() == Player::ONLINE)
 		return ;
 	Core::PhysicObject	&wall = static_cast<Core::PhysicObject &>(o1);
@@ -175,7 +183,6 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 		dist = tmpdist;
 	}
 
-	Ship *ship = dynamic_cast<Ship *>(&player);
 	if (id == 1)
 		player.setY(wy - pheight - player.getYHitBoxOffset());
 	else if (id == 2)
@@ -185,17 +192,9 @@ void	Rules::wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2)
 	else if (id == 4)
 		player.setX(wx + wwidth - player.getXHitBoxOffset());
 	else
-	{
-		if (ship)
-			ship->setDead(true);
-		else
-			player.erase();
-	}
-	if (ship)
-	{
-		ship->updateBulletTrajectory();
-		ship->updateCannonsTrajectory();
-	}
+		player.setDead(true);
+	player.updateBulletTrajectory();
+	player.updateCannonsTrajectory();
 }
 
 void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)

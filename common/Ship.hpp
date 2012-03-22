@@ -3,6 +3,7 @@
 #include <vector>
 #include "ConcreteObject.hpp"
 #include "Sprite.hpp"
+#include "Font.hpp"
 #include "Input.hpp"
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
@@ -60,6 +61,7 @@ public:
   void			updateCannonsTrajectory();
   void			updateBulletTrajectory();
   void			launchGrab(std::string const &group, unsigned int nGrab, double x, double y);
+  void			setNbSecRespawn(int nbSec);
   unsigned int	getScore() const;
   void			setScore(unsigned int score);
 
@@ -95,7 +97,10 @@ private:
 
   std::string	_bulletFileName;
   PlayerBullet	*_playerBullet;
-  unsigned int					_score;
+  unsigned int	_score;
+  int			_nbSecRespawn;
+  int			_elapsedTime;
+  Core::CoreFont	*_timer;
 
   void handleActions();
 };

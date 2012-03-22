@@ -6,6 +6,7 @@
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
+#include "Converter.hpp"
 
 Ship::Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
 	   float speed, int fireFrequency, int r, int g, int b,
@@ -14,7 +15,8 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
   : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
 	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
-    _bulletFileName(bulletFileName), _playerBullet(0)
+    _bulletFileName(bulletFileName), _playerBullet(0),
+	_timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -26,6 +28,8 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
 			for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
+	if (this->_timer)
+		this->_timer->setColor(r, g, b);
 	if (this->_sprite)
 	{
 		this->_sprite->setColor(r, g, b);
@@ -44,7 +48,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
-	  _playerBullet(0)
+	  _playerBullet(0),
+	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -56,6 +61,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
+	if (this->_timer)
+		this->_timer->setColor(r, g, b);
 	if (this->_sprite)
 	{
 		this->_sprite->setColor(r, g, b);
@@ -74,8 +81,8 @@ Ship::~Ship()
 
 void	Ship::move(double time)
 {
-	if (this->_dead)
-		return ;
+	//if (this->_dead)
+	//	return ;
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
@@ -230,8 +237,8 @@ void Ship::inputReleasedRight(Core::InputCommand const& /*cmd*/)
 
 void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 {
-	if (this->_dead)
-		return ;
+	//if (this->_dead)
+	//	return ;
 	static float const limit = 50;
 
 	if (cmd.JoystickMove.Axis == Core::Joystick::X)
@@ -424,7 +431,7 @@ void Ship::setDead(bool dead, bool command)
 	this->_dead = dead;
 	if (!dead)
 	{
-		this->_delete = false;
+		this->getSprite().setTransparency(1);
 		if (command)
 		{
 			GameCommand		*cmd = new GameCommand("deadPlayer");
@@ -434,10 +441,11 @@ void Ship::setDead(bool dead, bool command)
 		}
 		return ;
 	}
-	this->_delete = true;
 	this->_player.die();
-	this->setVx(0);
-	this->setVy(0);
+	this->_elapsedTime = 1000;
+	if (this->_timer)
+		this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
+	this->getSprite().setTransparency(0.4);
 	if (this->_playerBullet)
 	{
 		delete this->_playerBullet;
@@ -468,8 +476,21 @@ bool Ship::isDead() const
 
 void Ship::draw(double elapsedTime)
 {
-	if (!this->_dead)
-		this->ConcreteObject::draw(elapsedTime);
+	this->ConcreteObject::draw(elapsedTime);
+	if (this->_dead && this->_nbSecRespawn > 0 && this->_timer)
+	{
+		if (this->_elapsedTime < 0)
+		{
+			--this->_nbSecRespawn;
+			this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
+			this->_elapsedTime += 1000;
+		}
+		else
+			this->_elapsedTime -= elapsedTime;
+	Core::Sprite const &sprite = this->getSprite();
+	this->_timer->draw(this->_x + (sprite.getWidth() - this->_timer->getWidth()) / 2,
+		this->_y + (sprite.getHeight() - this->_timer->getHeight()) / 2, elapsedTime);
+	}
 }
 
 void Ship::manageGrab(std::string const &group, unsigned int nGrab)
@@ -561,4 +582,9 @@ unsigned int	Ship::getScore() const
 void		Ship::setScore(unsigned int score)
 {
   _score = score;
+}
+
+void		Ship::setNbSecRespawn(int nbSec)
+{
+	this->_nbSecRespawn = nbSec;
 }
