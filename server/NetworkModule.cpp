@@ -28,7 +28,7 @@ void		NetworkModule::init()
 		return ;
 	}
 	this->_udp.setReactor(*this->_reactor);
-	addr.setPort(25558);
+	//addr.setPort(25558);
 	if (_udp.getIOHandler().setup(addr) != -1)
 		this->_udp.init();
 	else
@@ -87,26 +87,26 @@ void		NetworkModule::setPort(std::string const &port)
 
 void		NetworkModule::addUDPClient(Client &client)
 {
-	Net::InetAddr		addr;
-
-	if (client.getRemoteAddr(addr) != -1)
-	{
-		addr.setPort(25557);
-		_players[addr] = &client;
-		this->_udp.addAddr(addr);
-	}
+	_players[client.getUDPAddr()] = &client;
+	this->_udp.addAddr(client.getUDPAddr());
 }
 
 void		NetworkModule::removeUDPClient(Client &client)
 {
-	Net::InetAddr		addr;
+	_players.erase(client.getUDPAddr());
+	this->_udp.removeAddr(client.getUDPAddr());
+}
 
-	if (client.getRemoteAddr(addr) != -1)
-	{
-		addr.setPort(25557);
-		_players.erase(addr);
-		this->_udp.removeAddr(addr);
-	}
+void		NetworkModule::registerAuthId(Client &client, uint32_t id)
+{
+	this->_auth[id] = &client;
+}
+
+Client		*NetworkModule::getClientByAuthId(uint32_t id)
+{
+	std::map<uint32_t, Client *>::const_iterator it = this->_auth.find(id);
+
+	return ((it != this->_auth.end()) ? it->second : 0);
 }
 
 Client 		*NetworkModule::getClientByAddr(Net::InetAddr const &addr) const
@@ -211,23 +211,18 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 	for (std::list<Client*>::const_iterator it = list.begin();
 		 it != list.end(); it++)
 	{
-		if (player != *it)
+		if (player == *it)
+			continue ;
+		if (needId)
 		{
-			Net::InetAddr		ipaddr;
-			if ((*it)->getRemoteAddr(ipaddr) == -1)
-				return ;
-			ipaddr.setPort(25557);
-			if (needId)
-			{
-				uint32_t	id;
-				packet.wr_ptr(9);
-				id = (*it)->getPacketId();
-				packet << id;
-				(*it)->addPacket(id, packet);
-			}
-			packet.setDestination(ipaddr);
-			this->_udp.handleOutputPacket(packet);
+			uint32_t	id;
+			packet.wr_ptr(9);
+			id = (*it)->getPacketId();
+			packet << id;
+			(*it)->addPacket(id, packet);
 		}
+		packet.setDestination((*it)->getUDPAddr());
+		this->_udp.handleOutputPacket(packet);
 	}
 }
 
@@ -235,9 +230,8 @@ void		NetworkModule::sendTCPPacket(Net::Packet &packet, std::list<Client*> const
 {
 	for (std::list<Client*>::const_iterator it = list.begin(); it != list.end(); it++)
 	{
-		if (client == *it)
-			continue ;
-		(*it)->handleOutputPacket(packet);
+		if (client != *it)
+			(*it)->handleOutputPacket(packet);
 	}
 }
 

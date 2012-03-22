@@ -30,8 +30,7 @@ bool		NetworkModule::connect()
   if (!_initudp)
   {
   	this->_udp.setReactor(this->_reactor);
-	Net::InetAddr     tmp("25557");
-	if (this->_udp.getIOHandler().setup(tmp) == -1)
+	if (this->_udp.getIOHandler().setup(addr, false) == -1)
 	{
 		Net::printLastError();
 		return false;
@@ -46,13 +45,10 @@ bool		NetworkModule::connect()
 	return (false);
   }
   _addr = addr;
+  //addr.setPort(25558);
+  this->_udp.getIOHandler().connect(addr);
   this->_udp.clearAddr();
-  addr.setPort(25558);
   this->_udp.addAddr(addr);
-  Net::Packet     ping(18);
-  ping << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
-  ping << static_cast<uint8_t>(UDP::PING);
-  this->sendPacketUDP(ping);
   return (true);
 }
 
@@ -321,8 +317,8 @@ std::string const	&NetworkModule::getIP() const
 
 void		NetworkModule::sendPacketUDP(Net::Packet &packet, bool needId)
 {
-	packet.setDestination(_addr);
-	packet.getAddr().setPort(25558);
+		//packet.setDestination(_addr);
+		//packet.getAddr().setPort(25558);
 	if (needId)
 	{
 		uint32_t    id;

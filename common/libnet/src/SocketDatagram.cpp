@@ -9,7 +9,7 @@
 
 NET_USE_NAMESPACE
 
-SocketDatagram::SocketDatagram()
+SocketDatagram::SocketDatagram() : _connected(false)
 {
 }
 
@@ -35,7 +35,13 @@ int		SocketDatagram::connect(InetAddr const &addr)
 	Handle ret = ::connect(_handle, addr, addr.getSize());
 	if (ret == INVALID_HANDLE)
 		return -1;
+	_connected = true;
 	return 0;
+}
+
+bool	SocketDatagram::isConnected() const
+{
+	return _connected;
 }
 
 int		SocketDatagram::join(InetAddr const &addr)
@@ -99,7 +105,11 @@ int		SocketDatagram::sendPacket(Packet &packet, int flags, int packsize)
 {
 	int							tosend = (packsize == -1) ? packet.size(): packsize;
 
-	int ret = ::sendto(_handle, packet.base(), tosend, flags, packet.getAddr(), packet.getAddr().getSize());
+	int ret;
+   	if (_connected && packet.getAddr().getPort() == 0)
+		ret = ::send(_handle, packet.base(), tosend, flags);
+	else
+		ret = ::sendto(_handle, packet.base(), tosend, flags, packet.getAddr(), packet.getAddr().getSize());
 	if (ret > 0)
 		packet.wr_ptr(ret);
 	return ret;

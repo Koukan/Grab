@@ -19,8 +19,11 @@ private:
 		 int (UdpHandler::*	const func)(Net::Packet&, Client&);
 		 bool			needId;
 	};
+	
 	void		verify(uint32_t id, Client &);
 	void		sendRetrieve(uint32_t id, Client &);
+
+	void		auth(Net::Packet &packet);
 
 	int			spawn(Net::Packet &packet, Client&);
 	int			destroy(Net::Packet &packet, Client&);
@@ -33,7 +36,7 @@ private:
 	int         firestate(Net::Packet &packet, Client&);
 	int         updatecannon(Net::Packet &packet, Client&);
 	int         launchgrab(Net::Packet &packet, Client&);
-	int         deadPlayer(Net::Packet &packet, Client&);
+	int         deadPlayer(Net::Packet &packet, Client&);	
 
 	uint64_t	_time_recv;
 };

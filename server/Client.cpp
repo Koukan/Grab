@@ -29,7 +29,6 @@ Client::~Client()
 
 void		Client::init()
 {
-	NetworkModule::get().addUDPClient(*this);
 }
 
 int			Client::getRemoteAddr(Net::InetAddr &addr)
@@ -41,22 +40,22 @@ int			Client::handleInputPacket(Net::Packet &packet)
 {
 	static int			(Client::* const methods[])(Net::Packet&) = {
 			&Client::connection,
-			NULL,
+			0,
 			&Client::listGame,
-			NULL,
-			NULL,
+			0,
+			0,
 			&Client::connectGame,
 			&Client::player,
 			&Client::createGame,
-			NULL,
+			0,
 			&Client::requireResource,
-			NULL,
-			NULL,
-			NULL,
+			0,
+			0,
+			0,
 			&Client::gameState,
-			NULL,
-			NULL,
-			NULL,
+			0,
+			0,
+			0,
 			&Client::demandPlayer,
 			&Client::updatePlayer,
 			&Client::removePlayer
@@ -65,7 +64,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 
 	packet >> type;
 	Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
-	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
+	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != 0)
 	{
 		return (this->*methods[type])(packet);
 	}
@@ -122,14 +121,17 @@ Net::Packet const	*Client::getPacket(uint32_t id) const
 
 int		Client::connection(Net::Packet &packet)
 {
-	Net::Packet		answer(1);
+	Net::Packet		answer(5);
 	Net::InetAddr	addr;
 
+	uint32_t	authid = rand();
 	packet >> _name;
 	answer << static_cast<uint8_t>(TCP::ETABLISHED);
+	answer << static_cast<uint32_t>(authid);
 	this->handleOutputPacket(answer);
+	NetworkModule::get().registerAuthId(*this, authid);
 	this->getRemoteAddr(addr);
-	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " connected";
+	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " connected ";
 	return 1;
 }
 
@@ -364,4 +366,14 @@ bool				Client::isReady() const
 std::list<Player*> const	&Client::getPlayers() const
 {
 	return this->_players;
+}
+
+void				Client::setUDPAddr(Net::InetAddr &addr)
+{
+	_udpaddr = addr;
+}
+
+Net::InetAddr const 		&Client::getUDPAddr() const
+{
+	return _udpaddr;
 }

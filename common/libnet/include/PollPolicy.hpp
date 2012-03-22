@@ -26,7 +26,7 @@ public:
 
 	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
 	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout);
+	int		waitForEvent(int timeout = -1);
 
 private:
 	struct	pollpolicydata

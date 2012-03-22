@@ -20,6 +20,7 @@ public:
 
 	int	setup(InetAddr const &addr, bool bind = true, int protocol = IPPROTO_UDP);
 	int	connect(InetAddr const &addr);
+	bool isConnected() const;
 
 	int	join(InetAddr const &addr);
 	int	leave(InetAddr const &addr);
@@ -30,6 +31,8 @@ public:
 
 private:
 	int	bind(InetAddr const &addr);
+
+	bool		_connected;
 };
 
 NET_END_NAMESPACE

@@ -7,7 +7,7 @@
 
 UdpHandler::UdpHandler()
 {
-	this->enableWhitelist(true);
+		//this->enableWhitelist(true);
 }
 
 UdpHandler::~UdpHandler()
@@ -16,6 +16,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
+	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
 int			UdpHandler::handleClose(Net::Socket &)
@@ -45,7 +46,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 		return 1;
 	packet >> _time_recv;
 	packet >> type;
-	if (type < sizeof(methods) / sizeof(*methods) && methods[type].func != NULL)
+	if (type < sizeof(methods) / sizeof(*methods) && methods[type].func != 0)
 	{
 		Client *player = NetworkModule::get().getClientByAddr(packet.getAddr());
 		if (player)
@@ -60,6 +61,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 		}
 		return 1;
 	}
+	if (type == UDP::AUTH)
+		this->auth(packet);
 	return 1;
 }
 
@@ -81,6 +84,19 @@ void		UdpHandler::verify(uint32_t id, Client &client)
 		this->sendRetrieve(id, client);
 	if (id > client.getLastRecvId())
 		client.setLastRecvId(id);
+}
+
+void        UdpHandler::auth(Net::Packet &packet)
+{
+	uint32_t	authid;
+
+	packet >> authid;
+	Client *tmp = NetworkModule::get().getClientByAuthId(authid);
+	if (tmp)
+	{
+		tmp->setUDPAddr(packet.getAddr());
+		NetworkModule::get().addUDPClient(*tmp);
+	}
 }
 
 int			UdpHandler::spawn(Net::Packet &packet, Client &client)

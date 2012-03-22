@@ -31,6 +31,8 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	uint32_t			getLastRecvId() const;
 	void				setLastRecvId(uint32_t id);
 	int					getRemoteAddr(Net::InetAddr &addr);
+	void				setUDPAddr(Net::InetAddr &addr);
+	Net::InetAddr const		&getUDPAddr() const;
 	bool				isReady() const;
 	std::list<Player*> const	&getPlayers() const;
 
@@ -62,4 +64,5 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	bool				_ready;
 	packetsList			_packets;
 	std::list<Player*>	_players;
+	Net::InetAddr		_udpaddr;
 };

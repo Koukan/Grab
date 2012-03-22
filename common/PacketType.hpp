@@ -15,7 +15,8 @@ namespace UDP
 		FIRESTATE = 8,
 		UPDATECANNON = 9,
 		LAUNCHGRAB = 10,
-		DEADPLAYER = 11
+		DEADPLAYER = 11,
+		AUTH = 12,
 	};
 }
 

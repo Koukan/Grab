@@ -63,8 +63,15 @@ void		Server::setGame(Game &game)
 
 // Generer command comme gamecommand et la push dans commandDispatcher
 
-bool		Server::treatEtablishedPacket(Net::Packet &)
+bool		Server::treatEtablishedPacket(Net::Packet &packet)
 {
+	uint32_t	udpauth;
+	packet >> udpauth;
+	Net::Packet auth(13);
+	auth << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	auth << static_cast<uint8_t>(UDP::AUTH);
+	auth << udpauth;
+	NetworkModule::get().sendPacketUDP(auth);
 	return true;
 }
 

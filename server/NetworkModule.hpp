@@ -19,6 +19,8 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void			setPort(std::string const &port);
 	void			addUDPClient(Client &client);
 	void			removeUDPClient(Client &client);
+	void			registerAuthId(Client &client, uint32_t id);
+	Client			*getClientByAuthId(uint32_t id);
 	Client			*getClientByAddr(Net::InetAddr const &addr) const;
 	void			sendTCPPacket(Net::Packet &packet, std::list<Client*> const &list, Client *client = 0);
 	void			sendUDPPacket(Net::Packet &packet, std::list<Client*> const &list, bool needId, Client *client = 0);
@@ -49,6 +51,6 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	Net::Acceptor<Client>				_acceptor;
 	UdpHandler							_udp;
 	std::string							_port;
-	//Net::SetupNetwork					_init;
 	std::map<Net::InetAddr, Client *>	_players;
+	std::map<uint32_t, Client *>   		_auth;
 };

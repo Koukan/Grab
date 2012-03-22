@@ -21,14 +21,14 @@ public:
 	{
 		std::string	str;
 		input >> str;
-		Packet	test(2048);
-		test << str;
-		std::cout << str << std::endl;
-		test.setDestination(input.getAddr());
+		Packet	*answer = input.clone();
+		std::cout << str << " from " << input.getAddr().getHost() << ":" << input.getAddr().getPort() << std::endl;
+		answer->setDestination(input.getAddr());
 		for (int i = 0; i < 1; i++)
 	   	{
-			this->handleOutputPacket(test);
+			this->handleOutputPacket(*answer);
 		}
+		delete answer;
 		return 1;
 	}
 

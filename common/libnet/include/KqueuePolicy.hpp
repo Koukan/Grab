@@ -24,7 +24,7 @@ public:
 
 	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
 	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout);
+	int		waitForEvent(int timeout = -1);
 
 	int		scheduleTimer(NetHandler &handler, size_t delay, bool repeat = false);
 	int		cancelTimer(NetHandler &handler);
