@@ -87,12 +87,6 @@ void	Ship::setPosition(double x, double y, double)
 	x = abs(x - this->_x);
 	y = abs(y - this->_y);
 	double		t1, t2;
-	if (x > 200 || y > 200)
-	{
-		this->_x = _targetx;
-		this->_y = _targety;
-		return ;
-	}
 	t1 = x / this->_speed;
 	t2 = y / this->_speed;
 	if (t1 > t2)
