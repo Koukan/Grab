@@ -289,11 +289,15 @@ void		GSInGame::displayScores()
     }
 }
 
-void		GSInGame::playerDie(Player &)
+bool		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
 	if (this->_nbDie == this->_nbPlayers)
-		this->gameover(false);
+	  {
+	    this->gameover(false);
+	    return (true);
+	  }
+	return (false);
 }
 
 void		GSInGame::gameover(bool victory)
@@ -403,7 +407,12 @@ void		GSInGame::increasePaused(GameCommand const &)
 
 void		GSInGame::respawnplayer(GameCommand const &event)
 {
-	event.player->respawn();
+	Ship*	ship = event.player->getShip();
+	
+	if (ship)
+	  ship->setDead(false);
+	if (event.player->getLife() == -1)
+	  --this->_nbDie;
 }
 
 void		GSInGame::setSeed(GameCommand const &event)
@@ -522,4 +531,14 @@ uint32_t	GSInGame::getNextId()
 Map&		GSInGame::getMap() const
 {
   return *_mapObj;
+}
+
+unsigned int	GSInGame::getNbPlayers() const
+{
+  return (_nbPlayers);
+}
+
+unsigned int	GSInGame::getNbDie() const
+{
+  return (_nbDie);
 }

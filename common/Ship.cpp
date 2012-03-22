@@ -16,7 +16,7 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
 	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName), _playerBullet(0),
-	_timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
+    _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;

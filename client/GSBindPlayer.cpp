@@ -74,14 +74,15 @@ void	GSBindPlayer::goToLoadGame(Core::Command const &)
 void	GSBindPlayer::goToInGame()
 {
 	std::list<Player *> *players = new std::list<Player *>;
+	size_t i = 0;
 
-	for (int i = 0; i < 4; ++i)
+	for (; i < 4; ++i)
 	{
 		if (this->_players[i])
 			players->push_back(this->_players[i]);
 	}
 	GSInGame	*state = new GSInGame(*players, this->_mode, this->_map, players->size(), this->_online);
-	for (size_t i = 0; i < 4; ++i)
+	for (i = 0; i < 4; ++i)
 	{
 		if (this->_players[i] && this->_players[i]->getShip())
 		{
@@ -90,6 +91,8 @@ void	GSBindPlayer::goToInGame()
 				"players" : "playersOnline");
 		}
 	}
+	if (i == 1 && this->_players[0])
+	  this->_players[0]->setLife(3);
 	state->preload();
 	Core::GameStateManager::get().pushState(*state);
 }

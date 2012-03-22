@@ -23,8 +23,10 @@ public:
 	virtual void	onEnd();
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
-	void			playerDie(Player &player);
+	bool			playerDie(Player &player);
 	Map&		getMap() const;
+	unsigned int	getNbPlayers() const;
+	unsigned int	getNbDie() const;
 
 private:
 	template<typename T>
@@ -76,8 +78,8 @@ private:
 	unsigned int					_nbDie;
 	bool							_online;
 	std::vector<uint32_t>			_scores;
-	std::vector<Core::CoreFont*>    _scoreFonts;
-	std::vector<Core::CoreFont*>    _nameFonts;
+	std::vector<Core::CoreFont*>				 _scoreFonts;
+	std::vector<Core::CoreFont*>				_nameFonts;
 	uint32_t						_rangeBegin;
 	uint32_t						_rangeEnd;
 	uint32_t						_currentId;

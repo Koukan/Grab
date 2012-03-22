@@ -4,39 +4,37 @@
 #include "GSInGame.hpp"
 #include "GameStateManager.hpp"
 
-CORE_USE_NAMESPACE
-
 Player::Player(Player::type type, Ship* ship)
-  : _life(3), _type(type), _ship(ship), _shipInfo(0)
+  : _life(-1), _type(type), _ship(ship), _shipInfo(0)
 {
 	if (type == Player::KEYBOARD)
 	{
-		this->_actions[Player::FIRE].Type = InputCommand::KeyPressed;
-		this->_actions[Player::FIRE].Key.Code = Keyboard::Space;
-		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::KeyPressed;
-		this->_actions[Player::SPECIAL_FIRE].Key.Code = Keyboard::LControl;
-		this->_actions[Player::GRAB1].Type = InputCommand::KeyPressed;
-		this->_actions[Player::GRAB1].Key.Code = Keyboard::W;
-		this->_actions[Player::GRAB2].Type = InputCommand::KeyPressed;
-		this->_actions[Player::GRAB2].Key.Code = Keyboard::A;
-		this->_actions[Player::GRAB3].Type = InputCommand::KeyPressed;
-		this->_actions[Player::GRAB3].Key.Code = Keyboard::D;
-		this->_actions[Player::PAUSE].Type = InputCommand::KeyReleased;
-		this->_actions[Player::PAUSE].Key.Code = Keyboard::Escape;
+		this->_actions[Player::FIRE].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::FIRE].Key.Code = Core::Keyboard::Space;
+		this->_actions[Player::SPECIAL_FIRE].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::SPECIAL_FIRE].Key.Code = Core::Keyboard::LControl;
+		this->_actions[Player::GRAB1].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::GRAB1].Key.Code = Core::Keyboard::W;
+		this->_actions[Player::GRAB2].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::GRAB2].Key.Code = Core::Keyboard::A;
+		this->_actions[Player::GRAB3].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::GRAB3].Key.Code = Core::Keyboard::D;
+		this->_actions[Player::PAUSE].Type = Core::InputCommand::KeyReleased;
+		this->_actions[Player::PAUSE].Key.Code = Core::Keyboard::Escape;
 	}
 	else
 	{
-		this->_actions[Player::FIRE].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::FIRE].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::FIRE].JoystickButton.Button = 5;
-		this->_actions[Player::SPECIAL_FIRE].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::SPECIAL_FIRE].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::SPECIAL_FIRE].JoystickButton.Button = 4;
-		this->_actions[Player::PAUSE].Type = InputCommand::JoystickButtonReleased;
+		this->_actions[Player::PAUSE].Type = Core::InputCommand::JoystickButtonReleased;
 		this->_actions[Player::PAUSE].JoystickButton.Button = 7;
-		this->_actions[Player::GRAB1].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::GRAB1].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::GRAB1].JoystickButton.Button = 3;
-		this->_actions[Player::GRAB2].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::GRAB2].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::GRAB2].JoystickButton.Button = 2;
-		this->_actions[Player::GRAB3].Type = InputCommand::JoystickButtonPressed;
+		this->_actions[Player::GRAB3].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::GRAB3].JoystickButton.Button = 1;
 	}
 }
@@ -65,29 +63,43 @@ void			Player::setLife(int nb)
 	this->_life = nb;
 }
 
-void			Player::die()
+void			Player::respawn()
 {
 	static int const nbSecRespawn = 9;
-	this->_life--;
-	if (this->_life > 0)
-	{
-		GameCommand	*cmd = new GameCommand("respawnplayer");
-		cmd->player = this;
-		Core::CommandDispatcher::get().pushCommand(*cmd, nbSecRespawn * 1000);
-		this->_ship->setNbSecRespawn(nbSecRespawn);
-	}
-	else
-	{
+
+	GameCommand	*cmd = new GameCommand("respawnplayer");
+	cmd->player = this;
+	Core::CommandDispatcher::get().pushCommand(*cmd, nbSecRespawn * 1000);
+	this->_ship->setNbSecRespawn(nbSecRespawn);
+}
+
+void			Player::die()
+{
+	if (this->_life != -1)
+	  {
+	    this->_life--;
+	    if (this->_life > 0)
+	      this->respawn();
+	    else
+	      {
 		GSInGame	*state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
 
 		if (state)
-			state->playerDie(*this);
-	}
-}
+		  state->playerDie(*this);
+	      }
+	  }
+	else // in this part, a "dead player" is a player in ghost mode
+	  {
+	    Core::Group *group = this->_ship->getGroup();
 
-void			Player::respawn()
-{
-	this->_ship->setDead(false);
+	    if (group)
+	      {
+		GSInGame&	state = static_cast<GSInGame&>(group->getState());
+
+		if (!state.playerDie(*this))
+		  this->respawn();
+	      }
+	  }
 }
 
 Player::type	Player::getType() const
@@ -105,7 +117,7 @@ ShipInfo::ShipInfo const	*Player::getShipInfo() const
 	return (this->_shipInfo);
 }
 
-InputCommand	&Player::getAction(Player::Action action)
+Core::InputCommand	&Player::getAction(Player::Action action)
 {
 	return (this->_actions[action]);
 }

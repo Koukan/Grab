@@ -41,10 +41,20 @@ void	GSGameOver::retry()
 	Core::GameStateManager::get().popState();
 	Core::GameStateManager::get().popState();
 
-	GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
-	Core::GameStateManager::get().pushState(*gs);
-	gs->preload();
-	
+	if (!_online)
+	  {
+	    std::list<Player *>& list = const_cast<std::list<Player *> &>(this->_players);
+	    for (std::list<Player*>::iterator it = list.begin(); it != list.end(); ++it)
+	      {
+		if (_nbPlayers > 1)
+		  (*it)->setLife(1);
+		else
+		  (*it)->setLife(3);
+	      }
+	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+	    Core::GameStateManager::get().pushState(*gs);
+	    gs->preload();
+	  }
 }
 
 void	GSGameOver::returnToMainMenu()
