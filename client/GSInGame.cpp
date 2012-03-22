@@ -482,7 +482,7 @@ void		GSInGame::serverCannon(GameCommand const &cmd)
 		if (cmd.data.empty())
 			ship->releaseCannon(cmd.idResource);
 		else
-			ship->addCannon(new Cannon(cmd.name, *ship, *this, "weapon", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
+			ship->addCannon(new Cannon(cmd.data, *ship, *this, "weapon", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
 	}
 }
 
