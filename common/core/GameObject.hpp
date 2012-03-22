@@ -36,7 +36,7 @@ public:
 
 protected:
 	void				addGameObject(GameObject &obj);
-	void				removeGameObject(GameObject &obj);
+	void				removeGameObject(GameObject *obj);
 
 	double					_x;
 	double 					_y;

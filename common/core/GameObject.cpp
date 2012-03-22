@@ -8,15 +8,15 @@ GameObject::GameObject(double x, double y, double z, Group *group)
 	: _x(x), _y(y), _z(z), _delete(0), _id(0), _group(group), _relativeObject(0)
 {}
 
-GameObject::~GameObject(void)
+GameObject::~GameObject()
 {
 	if (this->_group)
 		_group->removeObject(this);
-	if (this->_relativeObject)
-		this->_relativeObject->removeGameObject(*this);
 	for (std::list<GameObject*>::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
-		(*it)->setRelativeObject(0);
+		(*it)->_relativeObject = 0;
+	if (this->_relativeObject)
+		this->_relativeObject->removeGameObject(this);
 }
 
 uint32_t	GameObject::getId() const
@@ -79,10 +79,10 @@ void		GameObject::setGroup(Group *group)
 void		GameObject::setRelativeObject(GameObject *obj)
 {
 	if (this->_relativeObject)
-		this->_relativeObject->removeGameObject(*this->_relativeObject);
-	this->_relativeObject = obj;
+		this->_relativeObject->removeGameObject(this->_relativeObject);
 	if (obj)
 		obj->addGameObject(*this);
+	this->_relativeObject = obj;
 }
 
 void		GameObject::erase()
@@ -91,7 +91,11 @@ void		GameObject::erase()
 	this->_group->getState().addDeleteObject(this);
 	for (std::list<GameObject*>::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
-		(*it)->setRelativeObject(0);
+		(*it)->_relativeObject = 0;
+	this->_objects.clear();
+	if (this->_relativeObject)
+		this->_relativeObject->removeGameObject(this);
+	this->_relativeObject = 0;
 }
 
 void		GameObject::addGameObject(GameObject &obj)
@@ -99,12 +103,12 @@ void		GameObject::addGameObject(GameObject &obj)
 	this->_objects.push_back(&obj);
 }
 
-void		GameObject::removeGameObject(GameObject &obj)
+void		GameObject::removeGameObject(GameObject *obj)
 {
 	for (std::list<GameObject*>::iterator it = this->_objects.begin();
 		 it != this->_objects.end(); it++)
 	{
-		if (*it == &obj)
+		if (*it == obj)
 		{
 			this->_objects.erase(it);
 			return ;

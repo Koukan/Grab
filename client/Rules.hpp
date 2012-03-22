@@ -13,6 +13,7 @@ namespace Rules
 	void		grabTouchPlayerOnline(Core::GameObject &o1, Core::GameObject &o2);
 	void		grabTouchWall(Core::GameObject &o1, Core::GameObject &o2);
 	void		wallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2);
+	void		invisibleWallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2);
   	void		playerTouchScore(Core::GameObject& o1, Core::GameObject& o2);
 	void		setOnline(bool online);
 };

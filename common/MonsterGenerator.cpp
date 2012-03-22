@@ -125,7 +125,7 @@ void	MonsterGenerator::createMazeMonster(int x, int y)
 		--begin;
 	int i = this->_rand() % (this->_MazeEnemiesNb + 1 - begin);
 	MonsterInfo const &info = this->_mazeMonsters[begin + i];
-	this->addElem("spawnspawner", info.name, (x * this->_wallSize) + 80 + 200, this->_tmpY - 80 + y * this->_wallSize, 0, 0, info.scrollable, false, -320);
+	this->addElem("spawnspawner", info.name, (x * this->_wallSize) + 80, this->_tmpY - 80 + y * this->_wallSize + 200, 0, 0, info.scrollable, false, -320);
 }
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
@@ -592,13 +592,13 @@ void	MonsterGenerator::changeToMaze()
 		int empty;
 	} const mazeStages[] =
 	{
-		{20, 20, 1, 0, 1, 0}
-		//{1, 1, 2, 3, 0, 1},
-		//{20, 20, 1, 1, 0, 0}
+		{20, 20, 1, 0, 1, 0},
+		{1, 1, 2, 3, 0, 1},
+		{20, 20, 1, 1, 1, 1}
 	};
 	static int const size = sizeof mazeStages / sizeof *mazeStages;
 
-	if (this->_flush.empty()/* || size - this->_flush.size() == 2*/)
+	if (this->_flush.empty())
 	{
 		this->_flush.clear();
 		for (int i = 0; i < size; ++i)

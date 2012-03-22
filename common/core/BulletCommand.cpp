@@ -117,9 +117,6 @@ BulletCommand::~BulletCommand()
 		Command* cmd = new Command("decreasePaused");
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
-	for (BulletMap::iterator it = this->_childs.begin();
-		 it != this->_childs.end(); it++)
-		it->second->setParent(0);
 }
 
 void		BulletCommand::managePaused()
@@ -160,6 +157,8 @@ double		BulletCommand::getAimDirection()
 			}
 			if (obj)
 				this->setRelativeObject(obj);
+			else
+				this->setRelativeObject(0);
 		}
 	}
 	if (this->_relativeObject)
@@ -356,19 +355,14 @@ std::string const &BulletCommand::getBulletScript() const
 
 void		BulletCommand::erase()
 {
+	this->GameObject::erase();
 	if (this->_childs.empty())
 	{
-		this->_delete = 1;
 		if (this->_parent)
 			this->_parent->removeChild(this->_bulletId);
 	}
 	else
 		this->_delete = 2;
-	if (this->_group)
-		this->_group->getState().addDeleteObject(static_cast<GameObject*>(this));
-	for (std::list<GameObject*>::iterator it = this->_objects.begin();
-		 it != this->_objects.end(); it++)
-		(*it)->setRelativeObject(0);
 }
 
 void		BulletCommand::setSpeedDirection()

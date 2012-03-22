@@ -67,12 +67,14 @@ void			Player::setLife(int nb)
 
 void			Player::die()
 {
+	static int const nbSecRespawn = 9;
 	this->_life--;
 	if (this->_life > 0)
 	{
 		GameCommand	*cmd = new GameCommand("respawnplayer");
 		cmd->player = this;
-		Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
+		Core::CommandDispatcher::get().pushCommand(*cmd, nbSecRespawn * 1000);
+		this->_ship->setNbSecRespawn(nbSecRespawn);
 	}
 	else
 	{
