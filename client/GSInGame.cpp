@@ -377,9 +377,9 @@ void		GSInGame::spawnend(GameCommand const &)
 
 void		GSInGame::spawnspawner(GameCommand const &event)
 {
-	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, 0, 0, event.vx, event.vy, event.boolean);
+	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, event.x, event.y, event.vx, event.vy, event.boolean);
 	spawner->setSeed(this->_rand());
-	this->updatePositions(event, *spawner);
+	spawner->setScrollY(event.position);
 	this->addGameObject(spawner, "spawners");
 }
 
