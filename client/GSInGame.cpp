@@ -16,6 +16,7 @@
 #include "DestroyCommand.hpp"
 #include "Cannon.hpp"
 #include "GSGameOver.hpp"
+#include "GSContinue.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -310,7 +311,7 @@ bool		GSInGame::playerDie(Player &)
 		    (*it)->getShip()->setDead(false);
 		  }
 		//		this->pause();
-		//		GameStateManager::get().pushState(new 
+		//		GameStateManager::get().pushState(new GSContinue());
 	      }
 	    else
 	      {

@@ -6,7 +6,7 @@ class GSContinue : public Core::GameState
 {
 public:
   GSContinue();
-  virtual ~GSGameOver();
+  ~GSContinue();
   virtual void onStart();
 
 };

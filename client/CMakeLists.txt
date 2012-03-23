@@ -102,6 +102,8 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}Grab.cpp
 	GSBindPlayer.cpp
 	GSBindPlayer.hpp
+	GSContinue.cpp
+	GSContinue.hpp
 	GSGameOver.cpp
 	GSGameOver.hpp
 	GSInGame.cpp
