@@ -114,8 +114,11 @@ BulletCommand::~BulletCommand()
 {
 	if (_paused)
 	{
-		Command* cmd = new Command("decreasePaused");
-		this->getGroup()->getState().pushCommand(*cmd);
+		if (this->getGroup())
+		{
+			Command* cmd = new Command("decreasePaused");
+			this->getGroup()->getState().pushCommand(*cmd);
+		}
 	}
 }
 
