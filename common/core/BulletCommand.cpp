@@ -28,6 +28,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	this->_simpleYHitbox = 0;
 	this->setDamage(1);
 	this->setLife(1);
+	this->_lifeRank = 0;
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
@@ -47,7 +48,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleYHitbox = 0;
 	this->setDamage(1);
 	this->setLife(1);
-	this->_lifeRank = false;
+	this->_lifeRank = 0;
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
