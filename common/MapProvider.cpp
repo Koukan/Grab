@@ -31,7 +31,7 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 			random = true;
 	}
 	if (random)
-		_current = new MonsterGenerator();
+		_current = new MonsterGenerator(0);
 	else
 		_current = new Map();
 	this->addResource(mapName, *_current, manager);
