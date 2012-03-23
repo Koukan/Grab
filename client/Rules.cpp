@@ -80,16 +80,21 @@ void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
 
 void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 {
-  Grab			&grab = static_cast<Grab&>(o1);
-  Core::BulletCommand	&obj = static_cast<Core::BulletCommand&>(o2);
-  if (grab.getBulletScript().empty())
+	Grab				&grab = static_cast<Grab&>(o1);
+	Core::BulletCommand	&obj = static_cast<Core::BulletCommand&>(o2);
+	if (grab.getBulletScript().empty())
     {
-      grab.setBulletScript(obj.getBulletScript());
-      grab.setReturnToShip(true);
-      grab.setSprite("grab-action");
-      grab.getShip().copyColor(grab.getSprite());
-      o2.erase();
-    }
+		grab.setBulletScript(obj.getBulletScript());
+		grab.setReturnToShip(true);
+		grab.setSprite("grab-action");
+		grab.getShip().copyColor(grab.getSprite());
+		if (!gl_online)
+		{
+			obj.setLife(obj.getLife() - 5);
+			if (obj.getLife() <= 0)
+					obj.erase();
+		}
+	}
 }
 
 void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
