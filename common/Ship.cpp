@@ -97,23 +97,23 @@ void	Ship::move(double time)
 {
 	//if (this->_dead)
 	//	return ;
-	//if (_target == true)
-	//{
-		//if ((this->_vx >= 0 && this->_x + this->_vx > this->_targetx) ||
-			//(this->_vx < 0 && this->_x + this->_vx < this->_targetx))
-		//{
-			//this->_vx = 0;
-			//this->_x = this->_targetx;
-		//}
-		//if ((this->_vy >= 0 && this->_y + this->_vy > this->_targety) ||
-			//(this->_vy < 0 && this->_y + this->_vy < this->_targety))
-		//{
-			//this->_vy = 0;
-			//this->_y = this->_targety;
-		//}
-		//if (this->_vx == 0 && this->_vy == 0)
-			//this->_target = false;
-	//}
+	if (_target == true)
+	{
+		if ((this->_vx >= 0 && this->_x + this->_vx > this->_targetx) ||
+			(this->_vx < 0 && this->_x + this->_vx < this->_targetx))
+		{
+			this->_vx = 0;
+			this->_x = this->_targetx;
+		}
+		if ((this->_vy >= 0 && this->_y + this->_vy > this->_targety) ||
+			(this->_vy < 0 && this->_y + this->_vy < this->_targety))
+		{
+			this->_vy = 0;
+			this->_y = this->_targety;
+		}
+		if (this->_vx == 0 && this->_vy == 0)
+			this->_target = false;
+	}
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
