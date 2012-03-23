@@ -17,6 +17,7 @@
 #include "Cannon.hpp"
 #include "GSGameOver.hpp"
 #include "GSContinue.hpp"
+#include "MonsterGenerator.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -213,16 +214,19 @@ void		GSInGame::registerShipCallbacks()
 
 void		GSInGame::onStart()
 {
-  GameState *state = Core::GameStateManager::get().getGameState("Preload");
-  if (state)
-	state->pause();
+	GameState *state = Core::GameStateManager::get().getGameState("Preload");
+	if (state)
+		state->pause();
   /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");*/
 
-  if (!_online)
-      this->createShips();
-  this->registerShipCallbacks();
+	if (!_online)
+		this->createShips();
+  	this->registerShipCallbacks();
+	MonsterGenerator	*generator = dynamic_cast<MonsterGenerator*>(this->_mapObj);
+	if (generator)
+		generator->setSeed(this->_rand());
 }
 
 void		GSInGame::onEnd()

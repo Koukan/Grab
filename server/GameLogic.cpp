@@ -9,6 +9,7 @@
 #include "Rules.hpp"
 #include "Map.hpp"
 #include "Cannon.hpp"
+#include "MonsterGenerator.hpp"
 
 GameLogic::GameLogic(Game &game)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false), _map(0)
@@ -109,6 +110,9 @@ Game		&GameLogic::getGame() const
 void		GameLogic::startGame()
 {
 	this->_map = static_cast<Map*>(this->getResource("level1", 5));
+	MonsterGenerator	*generator = dynamic_cast<MonsterGenerator*>(this->_map);
+	if (generator)
+		generator->setSeed(this->_rand());
 	this->addGameObject(this->_map, "map");
 	this->_gameStarted = true;
 }
