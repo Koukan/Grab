@@ -8,5 +8,11 @@ public:
   GSContinue();
   ~GSContinue();
   virtual void onStart();
+  virtual void update(double elapsedTime);
 
+  void	returnToGame(Core::InputCommand const &cmd);
+
+private:
+  int			_time;
+  Core::CoreFont*	_timer;
 };

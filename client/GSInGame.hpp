@@ -29,6 +29,7 @@ public:
 	bool			playerDie(Player &player);
 	Map&			getMap() const;
 	void			setSeed(uint32_t seed);
+	void		gameover(bool victory);
 
 private:
 	template<typename T>
@@ -39,7 +40,6 @@ private:
 			void (GSInGame::*method)(GameCommand const &);
 	};
 
-	void		gameover(bool victory);
 	void		inputEscape(Core::InputCommand const &event);
 	void		registerShipCallbacks();
 
