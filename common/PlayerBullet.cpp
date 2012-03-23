@@ -104,7 +104,10 @@ void	PlayerBullet::move(double time)
 {
 	if (this->_isFiring)
 	{
-		_turn += time * 50;
+		if (this->_isConcentrated)
+			_turn += time * 75;
+		else
+			_turn += time * 50;
 		this->run();
 	}
 	if (!this->_end)
