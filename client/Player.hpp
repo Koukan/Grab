@@ -28,7 +28,7 @@ public:
 	  NBACTIONS
   };
 
-  Player(Player::type type, Ship *ship = 0);
+  Player(Player::type type, int nbLife = -1, Ship *ship = 0);
   ~Player();
 
   //setter

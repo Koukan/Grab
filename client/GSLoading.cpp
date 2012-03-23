@@ -4,10 +4,11 @@
 #include "GameStateManager.hpp"
 #include "CommandDispatcher.hpp"
 
-GSLoading::GSLoading(std::list<Player *> const &players, Modes::Mode mode,
+GSLoading::GSLoading(std::list<Player *>& players, Modes::Mode mode,
 		std::string const &map, unsigned int nbPlayers, bool online)
 	: Core::GameState("Loading"), _players(players), _nbPlayers(nbPlayers), _nbShip(0),
-	  _game(*new GSInGame(players, mode, map, nbPlayers, online))
+	  _game(*new GSInGame(players, mode, map,
+			      nbPlayers, online, Modes::modesList[mode].nbCredits))
 {
 }
 

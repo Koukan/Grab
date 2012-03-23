@@ -11,7 +11,7 @@ class GSInGame;
 class GSLoading : public Core::GameState
 {
 	public:
-	GSLoading(std::list<Player *> const &players, Modes::Mode mode,
+	GSLoading(std::list<Player *>& players, Modes::Mode mode,
 			std::string const &map, unsigned int nbPlayers, bool online);
 	virtual ~GSLoading();
 
@@ -32,7 +32,7 @@ class GSLoading : public Core::GameState
 	void			shipSpawn(Core::Command const &command);
 	void			setSeed(Core::Command const &command);
 
-	std::list<Player *> const	&_players;
+	std::list<Player *>			&_players;
 	unsigned int				_nbPlayers;
 	unsigned int				_nbShip;
 	GSInGame					&_game;

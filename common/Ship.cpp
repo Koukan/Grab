@@ -426,6 +426,7 @@ void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
   this->manageGrab("grabs", 3);
 }
 
+#include <iostream>
 void Ship::setDead(bool dead, bool command)
 {
 	if (this->_dead == dead)

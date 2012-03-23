@@ -4,8 +4,8 @@
 #include "GSInGame.hpp"
 #include "GameStateManager.hpp"
 
-Player::Player(Player::type type, Ship* ship)
-  : _life(-1), _type(type), _ship(ship), _shipInfo(0), _nbDie(0)
+Player::Player(Player::type type, int life, Ship* ship)
+  : _life(life), _type(type), _ship(ship), _shipInfo(0), _nbDie(0)
 {
 	if (type == Player::KEYBOARD)
 	{

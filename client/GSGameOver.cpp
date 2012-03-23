@@ -6,7 +6,7 @@
 #include "SFMLFont.hpp"
 #include "GSInGame.hpp"
 
-GSGameOver::GSGameOver(bool victory, std::list<Player *> const& players,
+GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       Modes::Mode mode, std::string const& map, 
 		       unsigned int nbPlayers, bool online) :
   Core::GameState("gameOver"),
@@ -43,15 +43,14 @@ void	GSGameOver::retry()
 
 	if (!_online)
 	  {
-	    std::list<Player *>& list = const_cast<std::list<Player *> &>(this->_players);
-	    for (std::list<Player*>::iterator it = list.begin(); it != list.end(); ++it)
+	    for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	      {
 		if (_nbPlayers > 1)
 		  (*it)->setLife(-1);
 		else
 		  (*it)->setLife(3);
 	      }
-	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
 	    Core::GameStateManager::get().pushState(*gs);
 	    gs->preload();
 	  }

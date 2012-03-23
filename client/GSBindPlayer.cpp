@@ -81,7 +81,7 @@ void	GSBindPlayer::goToInGame()
 		if (this->_players[i])
 			players->push_back(this->_players[i]);
 	}
-	GSInGame	*state = new GSInGame(*players, this->_mode, this->_map, players->size(), this->_online);
+	GSInGame	*state = new GSInGame(*players, this->_mode, this->_map, players->size(), this->_online, Modes::modesList[_mode].nbCredits);
 	for (i = 0; i < 4; ++i)
 	{
 		if (this->_players[i] && this->_players[i]->getShip())
@@ -92,7 +92,7 @@ void	GSBindPlayer::goToInGame()
 		}
 	}
 	if (players->size() == 1 && this->_players[0])
-	  this->_players[0]->setLife(3);
+	  this->_players[0]->setLife(Modes::modesList[_mode].singleNbLife);
 	state->preload();
 	Core::GameStateManager::get().pushState(*state);
 }

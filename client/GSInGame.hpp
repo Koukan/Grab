@@ -10,14 +10,15 @@
 #include "Player.hpp"
 #include "Ship.hpp"
 #include "Modes.hpp"
-#include <list>
 #include "Map.hpp"
+#include <list>
 
 class GSInGame : public Core::GameState
 {
 public:
-	GSInGame(std::list<Player *> const &players, Modes::Mode mode,
-			 std::string const &map, unsigned int nbPlayers, bool online);
+	GSInGame(std::list<Player *>& players, Modes::Mode mode,
+		 std::string const &map, unsigned int nbPlayers, bool online,
+		 unsigned int credits);
 	virtual ~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
@@ -72,7 +73,7 @@ private:
 	void		createShips();
 
 	uint16_t						_idPlayer;
-	std::list<Player *> const		&_players;
+	std::list<Player *>					&_players;
 	Modes::Mode						_mode;
 	std::string const				_map;
 	unsigned int					_nbPlayers;
@@ -88,4 +89,5 @@ private:
 	double							_elapsedTime;
 	Net::MTRand						_rand;
 	Map*							_mapObj;
+	unsigned int						_nbCredits;
 };

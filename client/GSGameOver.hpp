@@ -8,7 +8,7 @@
 class GSGameOver : public Core::GameState
 {
 public:
-  GSGameOver(bool victory, std::list<Player *> const& players, Modes::Mode mode,
+  GSGameOver(bool victory, std::list<Player *>& players, Modes::Mode mode,
 	     std::string const& map, unsigned int nbPlayers, bool online);
 
   virtual ~GSGameOver();
@@ -20,7 +20,7 @@ public:
 
 private:
   bool		_victory;
-  std::list<Player *> const& _players;
+  std::list<Player *>& _players;
   Modes::Mode	_mode;
   std::string const& _map;
   unsigned int _nbPlayers;

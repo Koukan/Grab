@@ -17,11 +17,13 @@
 #include "Cannon.hpp"
 #include "GSGameOver.hpp"
 
-GSInGame::GSInGame(std::list<Player *> const &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
+GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
-	  _players(players), _mode(mode), _map(map), _nbPlayers(nbPlayers), _nbDie(0), _online(online), _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
-	_nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
-	  _currentId(0), _fire(false), _elapsedTime(0)
+	  _players(players), _mode(mode), _map(map),
+	  _nbPlayers(nbPlayers), _nbDie(0), _online(online), 
+	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
+	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
+	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits)
 {
 	Rules::setOnline(online);
 }
@@ -292,8 +294,29 @@ bool		GSInGame::playerDie(Player &)
 	this->_nbDie++;
 	if (this->_nbDie == this->_nbPlayers)
 	  {
-	    this->gameover(false);
-	    return (true);
+	    if (this->_nbCredits > 0)
+	      {
+		unsigned int	life = Modes::modesList[_mode].singleNbLife;
+
+		this->_nbDie = 0;
+
+		--this->_nbCredits;		
+		if (this->_players.size() != 1)
+		  life = Modes::modesList[_mode].multiNbLife;
+		for (std::list<Player *>::iterator it = this->_players.begin();
+		     it != this->_players.end(); ++it)
+		  {
+		    (*it)->setLife(life);
+		    (*it)->getShip()->setDead(false);
+		  }
+		//		this->pause();
+		//		GameStateManager::get().pushState(new 
+	      }
+	    else
+	      {
+		this->gameover(false);
+		return (true);
+	      }
 	  }
 	return (false);
 }
@@ -309,7 +332,6 @@ void		GSInGame::gameover(bool victory)
     std::cout << "Game Over !!!" << std::endl;
   else
     std::cout << "You win !!!" << std::endl;
-
   this->pause(PHYSIC);
   Core::GameStateManager::get().pushState(*(new GSGameOver(victory, _players, _mode,
 							   _map, _nbPlayers, _online)), Core::GameState::PHYSIC);
