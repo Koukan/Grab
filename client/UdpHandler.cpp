@@ -197,16 +197,16 @@ bool		UdpHandler::testPacketId(uint32_t id)
 		_lastPacketId = id;
 	if (id > _lastPacketId)
 	{
-		uint32_t	val = id - _lastPacketId;
-		_lastPacketId = id;
-		GameCommand *gc;
-		for (; val > 1; --val)
+		++_lastPacketId;
+		for (; _lastPacketId != id; ++_lastPacketId)
 		{
-			gc = new GameCommand("retrieve");
-			gc->idObject = val + _lastPacketId;
-			Core::CommandDispatcher::get().pushCommand(*gc, true);
+			Net::Packet	packet(13);
+			packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+			packet << static_cast<uint8_t>(UDP::RETRIEVE);
+			packet << id;
+			this->handleOutputPacket(packet);
 		}
-	   return true;
+		return true;
 	}
 	return false;
 }
