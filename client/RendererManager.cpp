@@ -8,22 +8,24 @@
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
 	this->_targetRate = 20;
-	this->_window = 0;
+	//this->_window = 0;
+	this->_fullscreen = false;
 }
 
 RendererManager::~RendererManager()
 {
-	if (_window)
-	{
-		_window->Close();
-		delete _window;
-	}
+		//if (_window)
+		//{
+		//_window->Close();
+		//delete _window;
+		//}
 }
 
 void				RendererManager::init()
 {
 	this->_width = 1280;
 	this->_height = 720;
+	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
 	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);
 	//_shader.SetParameter("sceneTex", sf::Shader::CurrentTexture);
@@ -38,9 +40,9 @@ void RendererManager::drawNode(Core::Node *node)
 		rect.SetFillColor(sf::Color(0, 0, 0,0));
 		rect.SetOutlineThickness(2.0);
 		rect.SetPosition(node->getX(), node->getY());
-		this->_window->Draw(rect);
+		this->_window.Draw(rect);
 	#else
-		this->_window->Draw(sf::Shape::Rectangle(static_cast<float>(node->getX()), static_cast<float>(node->getY()),
+		this->_window.Draw(sf::Shape::Rectangle(static_cast<float>(node->getX()), static_cast<float>(node->getY()),
 			static_cast<float>(node->getX() + node->getSize()), static_cast<float>(node->getY() + node->getSize()),
 			sf::Color(0, 0, 0, 0), 2.0, sf::Color(0, 255, 0, 50)));
 	#endif
@@ -139,22 +141,17 @@ void				RendererManager::destroy()
 
 void				RendererManager::clear()
 {
-	_window->Clear();
+	_window.Clear();
 }
 
 void				RendererManager::flip()
 {
-	_window->Display();
+	_window.Display();
 }
 
 sf::RenderWindow	*RendererManager::getWindow()
 {
-	if (!_window)
-	{
-		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "Grab"/*, sf::Style::Fullscreen*/);
-		_window->SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
-	}
-	return _window;
+	return &_window;
 }
 
 Shader			&RendererManager::getShader()
@@ -171,3 +168,33 @@ int					RendererManager::getHeight() const
 {
 	return this->_height;
 }
+
+void				RendererManager::setResolution(int width, int height)
+{
+	this->_width = width;
+	this->_height = height;
+	this->updateWindow();
+}
+
+void				RendererManager::setFullscreen(bool fullscreen)
+{
+	if (fullscreen != _fullscreen)
+		{
+			_fullscreen = fullscreen;
+			this->updateWindow();
+		}
+}
+
+bool				RendererManager::isFullscreen() const
+{
+	return _fullscreen;
+}
+
+void				RendererManager::updateWindow()
+{
+	sf::Uint32 style = (_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default;
+	_window.Create(sf::VideoMode(this->_width, this->_height), "Grab", style);
+	_window.ShowMouseCursor(!_fullscreen);
+	_window.SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
+}
+

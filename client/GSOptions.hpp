@@ -11,7 +11,10 @@ public:
 
   void	onStart();
 
-  void returnMenu();
+  void 	returnMenu();
+  void	fullscreen();
+  void	applyResolution();
+  void	changeResolution(Core::GUIElement &nb);
 
 private:
   GUITextBox<GSOptions> *_name;

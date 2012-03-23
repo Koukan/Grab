@@ -22,17 +22,22 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		void				clear();
 		void				flip();
 		sf::RenderWindow	*getWindow();
-		Shader			&getShader();
+		Shader				&getShader();
 		int					getWidth() const;
 		int					getHeight() const;
+		void				setResolution(int width, int height);
+		void				setFullscreen(bool fullscreen);
+		bool				isFullscreen() const;
 
 	protected:
 		int					_width;
 		int					_height;
-		sf::RenderWindow	*_window;
+		bool				_fullscreen;
+		sf::RenderWindow	_window;
 		Shader			_shader;
 
 private:
-	void drawQuadTree(Core::QuadTree const &quadTree);
-	void drawNode(Core::Node *node);
+		void				updateWindow();
+		void 				drawQuadTree(Core::QuadTree const &quadTree);
+		void 				drawNode(Core::Node *node);
 };
