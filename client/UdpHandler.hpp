@@ -37,5 +37,6 @@ private:
 	uint32_t	_lastPacketId;
 	double		_latency;
 	uint64_t	_nblatency;
+	std::map<uint32_t, uint64_t>	_idmoves;
 };
 
