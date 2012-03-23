@@ -20,4 +20,5 @@ private:
   GUITextBox<GSOptions> *_name;
   GUITextBox<GSOptions> *_ip;
   GUITextBox<GSOptions> *_port;
+  std::string			_resolution;
 };

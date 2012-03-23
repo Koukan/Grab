@@ -39,6 +39,7 @@ void	GSOptions::onStart()
   guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1280x720", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1680x1050", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1920x1080", "buttonFont", *sprite, 0)));
+  layout->insertElementAtBegin(*guilist);
   new GUIButton<GSOptions>(*this, &GSOptions::fullscreen, "Fullscreen", "buttonFont", *sprite, layout);
   new GUILabel("IP Address", "buttonFont", "", layout);
   this->_ip = new GUITextBox<GSOptions>("buttonFont", *sprite, layout, 30, NetworkModule::get().getIP());
@@ -63,10 +64,14 @@ void	GSOptions::returnMenu()
 
 void	GSOptions::applyResolution()
 {
-
+	int width = Net::Converter::toInt<int>(this->_resolution);
+	size_t pos = _resolution.find("x");
+	int height = Net::Converter::toInt<int>(_resolution.substr(pos + 1));
+	if (width > 0 && height > 0)
+		RendererManager::get().setResolution(width, height);
 }
  
 void	GSOptions::changeResolution(Core::GUIElement &nb)
 {
-
+	this->_resolution = static_cast<GUIButton<GSOptions> const &>(nb).getName();
 }
