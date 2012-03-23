@@ -97,8 +97,8 @@ int			UdpHandler::move(Net::Packet &packet, uint64_t)
 	packet >> gc->y;
 	packet >> gc->vx;
 	packet >> gc->vy;
-	gc->x += gc->vx * this->_latency;
-	gc->y += gc->vy * this->_latency;
+	gc->x += gc->vx * (this->_latency / 1000);
+	gc->y += gc->vy * (this->_latency / 1000);
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

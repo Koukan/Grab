@@ -358,7 +358,11 @@ void		GSInGame::move(GameCommand const &event)
 	Core::PhysicObject *obj = static_cast<Core::PhysicObject *>(this->getGameObject(event.idObject));
 
 	if (obj)
+	{
+		obj->setVx(event.vx);
+		obj->setVy(event.vy);
 		obj->setPosition(event.x, event.y);
+	}
 }
 
 void		GSInGame::updatePositions(GameCommand const &event, Core::PhysicObject &obj) const
