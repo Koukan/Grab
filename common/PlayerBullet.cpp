@@ -12,14 +12,14 @@ inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
 		  double x, double y, double vx, double vy)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _isPaused(true)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
 	double x, double y, double vx, double vy)
-	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _isPaused(true)
+	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -28,7 +28,7 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
 	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: Core::BulletCommand(state, gstate, box, false, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
-	_isFiring(true), _isConcentrated(false), _isPaused(true)
+	_isFiring(false), _isConcentrated(false)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -110,6 +110,9 @@ void	PlayerBullet::move(double time)
 			_turn += time * 50;
 		this->run();
 	}
+	else if (_turn != 0)
+		this->run();
+
 	if (!this->_end)
 		PhysicObject::move(time);
 	else
@@ -118,13 +121,7 @@ void	PlayerBullet::move(double time)
 
 void	PlayerBullet::isFiring(bool firing)
 {
-	if (firing)
-		this->_isFiring = true;
-	else
-	{
-		this->_isFiring = false;
-		this->_turn = 0;
-	}
+	this->_isFiring = firing;
 }
 
 void	PlayerBullet::setColor(uint8_t r, uint8_t g, uint8_t b)
@@ -142,14 +139,4 @@ void	PlayerBullet::isConcentrated(bool concentrated)
 bool	PlayerBullet::isConcentrated() const
 {
 	return (this->_isConcentrated);
-}
-
-void	PlayerBullet::isPaused(bool paused)
-{
-	this->_isPaused = paused;
-}
-
-bool	PlayerBullet::isPaused() const
-{
-	return (this->_isPaused);
 }
