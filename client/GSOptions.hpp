@@ -11,10 +11,14 @@ public:
 
   void	onStart();
 
-  void returnMenu();
+  void 	returnMenu();
+  void	fullscreen();
+  void	applyResolution();
+  void	changeResolution(Core::GUIElement &nb);
 
 private:
   GUITextBox<GSOptions> *_name;
   GUITextBox<GSOptions> *_ip;
   GUITextBox<GSOptions> *_port;
+  std::string			_resolution;
 };

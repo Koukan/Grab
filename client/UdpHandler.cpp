@@ -5,7 +5,7 @@
 #include "GameCommand.hpp"
 #include "DestroyCommand.hpp"
 
-UdpHandler::UdpHandler() : _lastPacketId(static_cast<uint32_t>(-1)), _latency(0), _nblatency(0)
+UdpHandler::UdpHandler() : _lastPacketId(0), _latency(0), _nblatency(0)
 {
 	this->enableWhitelist(true);
 }
@@ -89,17 +89,26 @@ int			UdpHandler::destroy(Net::Packet &packet, uint64_t)
 	return 1;
 }
 
-int			UdpHandler::move(Net::Packet &packet, uint64_t)
+int			UdpHandler::move(Net::Packet &packet, uint64_t time)
 {
-	GameCommand *gc = new GameCommand("move");
-	packet >> gc->idObject;
-	packet >> gc->x;
-	packet >> gc->y;
-	packet >> gc->vx;
-	packet >> gc->vy;
+	uint32_t	idObject;
+
+	packet >> idObject;
+	std::map<uint32_t, uint64_t>::iterator it = _idmoves.find(idObject);
+	if (it == _idmoves.end())
+		it = _idmoves.insert(std::make_pair(idObject, time)).first;
+	if (it->second <= time)
+	{
+		GameCommand *gc = new GameCommand("move");
+		gc->idObject = idObject;
+		packet >> gc->x;
+		packet >> gc->y;
+		packet >> gc->vx;
+		packet >> gc->vy;
 	//gc->x += gc->vx * (this->_latency / 1000);
 	//gc->y += gc->vy * (this->_latency / 1000);
-	Core::CommandDispatcher::get().pushCommand(*gc);
+		Core::CommandDispatcher::get().pushCommand(*gc);
+	}
 	return 1;
 }
 
@@ -193,8 +202,6 @@ int			UdpHandler::deadPlayer(Net::Packet &packet, uint64_t)
 
 bool		UdpHandler::testPacketId(uint32_t id)
 {
-	if (_lastPacketId == static_cast<uint32_t>(-1))
-		_lastPacketId = id;
 	if (id > _lastPacketId)
 	{
 		uint32_t	val = id - _lastPacketId;
