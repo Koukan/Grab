@@ -196,6 +196,11 @@ void	MonsterGenerator::generateBoss(double)
 	}
 }
 
+void	MonsterGenerator::setSeed(uint32_t seed)
+{
+	this->_rand.seed(seed);
+}
+
 void	MonsterGenerator::roundWall(int x, int y)
 {
 	if (x - 1 >= 0 && this->_maze[y * WIDTH + x - 1] == EMPTY)

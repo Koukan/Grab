@@ -23,6 +23,7 @@ public:
 	void	generate(double time);
 	void	generateSquad(double time);
 	void	generateBoss(double time);
+	void	setSeed(uint32_t seed);
 
 private:
 	struct MonsterInfo
