@@ -80,7 +80,7 @@ void		UdpHandler::sendRetrieve(uint32_t id, Client &client)
 
 void		UdpHandler::verify(uint32_t id, Client &client)
 {
-	for (uint32_t i = client.getLastRecvId(); i < id; ++i)
+	for (uint32_t i = client.getLastRecvId() + 1; i < id; ++i)
 		this->sendRetrieve(id, client);
 	if (id > client.getLastRecvId())
 		client.setLastRecvId(id);
