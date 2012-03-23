@@ -112,13 +112,10 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 
 BulletCommand::~BulletCommand()
 {
-	if (_paused)
+	if (_paused && this->getGroup())
 	{
-		if (this->getGroup())
-		{
-			Command* cmd = new Command("decreasePaused");
-			this->getGroup()->getState().pushCommand(*cmd);
-		}
+		Command* cmd = new Command("decreasePaused");
+		this->getGroup()->getState().pushCommand(*cmd);
 	}
 }
 
