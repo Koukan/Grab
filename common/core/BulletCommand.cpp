@@ -324,7 +324,7 @@ void		BulletCommand::setRank(double rank)
 {
 	this->_rank = rank;
 	if (this->_lifeRank)
-		this->setLife(this->getLife() * rank * this->_lifeRank);
+		this->setLife(this->getLife() + rank * this->_lifeRank);
 }
 
 void		BulletCommand::move(double time)
