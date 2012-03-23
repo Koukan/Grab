@@ -192,7 +192,11 @@ bool				RendererManager::isFullscreen() const
 
 void				RendererManager::updateWindow()
 {
+#if (SFML_VERSION_MAJOR == 2)
 	sf::Uint32 style = (_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default;
+#else
+	sf::Uint32 style = (_fullscreen) ? sf::Style::Fullscreen : (sf::Style::Resize | sf::Style::Close);
+#endif
 	_window.Create(sf::VideoMode(this->_width, this->_height), "Grab", style);
 	_window.ShowMouseCursor(!_fullscreen);
 	_window.SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
