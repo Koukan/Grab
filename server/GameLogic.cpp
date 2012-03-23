@@ -134,8 +134,8 @@ void		GameLogic::moveCommand(Core::Command const &command)
 	Ship	*ship = gc.player->getShip();
 	ship->setX(gc.x);
 	ship->setY(gc.y);
-	ship->setVx(gc.vx);
-	ship->setVy(gc.vy);
+	//ship->setVx(gc.vx);
+	//ship->setVy(gc.vy);
 }
 
 void		GameLogic::updateCannonCommand(Core::Command const &command)
