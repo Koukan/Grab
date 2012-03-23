@@ -124,6 +124,7 @@ void		GameLogic::spawnSpawnerCommand(Core::Command const &command)
 	Core::BulletCommand	*bullet = new Core::BulletCommand(gc.data, *this, gc.x, gc.y, gc.vx, gc.vy, gc.boolean);
 	bullet->setSeed(this->_rand());
 	bullet->setScrollY(gc.position);
+	bullet->setRank(this->_game.nbPlayers());
 	this->addGameObject(bullet, "spawners");
 }
 
