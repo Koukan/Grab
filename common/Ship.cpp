@@ -81,28 +81,16 @@ Ship::~Ship()
 
 void	Ship::setPosition(double x, double y, double)
 {
-	//_targetx = x;
-	//_targety = y;
-	//_target = true;
-	//x = abs(x - this->_x);
-	//y = abs(y - this->_y);
-	//double		t1, t2;
-	//t1 = x / this->_speed;
-	//t2 = y / this->_speed;
-	//if (t1 > t2)
-	//{
-		//this->_vx = this->_speed;
-		//this->_vy = (t2 / t1) * this->_speed;
-	//}
-	//else
-	//{
-		//this->_vy = (t1 / t2) * this->_speed;
-		//this->_vx = this->_speed;
-	//}
-	this->_x = x;
-	this->_y = y;
-	this->_vx = 0;
-	this->_vy = 0;
+	_targetx = x;
+	_targety = y;
+	_target = true;
+	double	angle = atan2(y - this->_y, x - this->_x);
+	this->_vx = cos(angle) * this->_speed;
+	this->_vy = sin(angle) * this->_speed;
+	//this->_x = x;
+	//this->_y = y;
+	//this->_vx = 0;
+	//this->_vy = 0;
 }
 
 void	Ship::move(double time)
