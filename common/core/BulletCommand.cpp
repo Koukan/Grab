@@ -47,6 +47,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleYHitbox = 0;
 	this->setDamage(1);
 	this->setLife(1);
+	this->_lifeRank = false;
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
@@ -74,6 +75,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	this->_simpleYHitbox = state.getSimpleHitboxY();
 	this->setDamage(state.getDamage());
 	this->setLife(state.getLife());
+	this->_lifeRank = state.getLifeRank();
 	this->_simpleLife = state.getSimpleLife();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
@@ -104,6 +106,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->setDamage(state.getDamage());
 	this->setLife(state.getLife());
 	this->_simpleLife = state.getSimpleLife();
+	this->_lifeRank = state.getLifeRank();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
@@ -319,6 +322,8 @@ void		BulletCommand::setFocus(std::string const &name)
 void		BulletCommand::setRank(double rank)
 {
 	this->_rank = rank;
+	if (this->_lifeRank)
+		this->setLife(this->getLife() * rank * this->_lifeRank);
 }
 
 void		BulletCommand::move(double time)

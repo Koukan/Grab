@@ -37,6 +37,7 @@ public:
 		_shy = 0;
 		damage_ = 1;
 		life_ = 1;
+		lifeRank_ = false;
 		simpleDamage_ = 1;
 		simpleLife_ = 1;
 	}
@@ -64,6 +65,7 @@ public:
 	DECLSPEC void setDamage(uint32_t val) { this->damage_ = val; }
 	DECLSPEC void setLife(uint32_t val) { this->life_ = val; }
 	DECLSPEC void setSimpleDamage(uint32_t val) { this->simpleDamage_ = val; }
+	DECLSPEC void setLifeRank(double val) { this->lifeRank_ = val; }
 	DECLSPEC void setSimpleLife(uint32_t val) { this->simpleLife_ = val; }
 	DECLSPEC void setGenericStr(std::map<std::string, std::string> const &map) { this->strMap_ = map; }
 	DECLSPEC void setGenericInt(std::map<std::string, int> const &map) { this->intMap_ = map; }
@@ -89,6 +91,7 @@ public:
 	DECLSPEC uint32_t			getDamage() const { return this->damage_; }
 	DECLSPEC uint32_t			getLife() const { return this->life_; }
 	DECLSPEC uint32_t			getSimpleDamage() const { return this->simpleDamage_; }
+	DECLSPEC double				getLifeRank() const { return this->lifeRank_; }
 	DECLSPEC uint32_t			getSimpleLife() const { return this->simpleLife_; }
 	DECLSPEC std::string		getGenericStr(std::string const &name) const
 	{
@@ -130,6 +133,7 @@ private:
 	//end hitbox
 	uint32_t								damage_;
 	uint32_t								life_;
+	double									lifeRank_;
 	uint32_t								simpleDamage_;
 	uint32_t								simpleLife_;
 	std::map<std::string, std::string>		strMap_;

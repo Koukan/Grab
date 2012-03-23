@@ -74,6 +74,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	double			_rank;
 	uint32_t		_nextId;
 	uint32_t		_simpleLife;
+	double			_lifeRank;
 	uint32_t		_simpleDamage;
 	std::string		_focus;
 	BulletMap		_childs;
