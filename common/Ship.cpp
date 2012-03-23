@@ -310,6 +310,7 @@ void	Ship::fire(Core::GameState &state)
 		if (this->_playerBullet)
 		{
 			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			this->_playerBullet->isFiring(true);
 			state.addGameObject(this->_playerBullet);
 		}
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
@@ -351,17 +352,18 @@ void	Ship::specialFire(Core::GameState &state)
 	if (this->_playerBullet)
 	{
 		this->_playerBullet->isConcentrated(true);
+		this->_playerBullet->isFiring(true);
 		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 		state.addGameObject(this->_playerBullet);
-	  for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
-	    {
-	      if (_cannons[i])
-		  {
+	}
+	for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
+	{
+		if (_cannons[i])
+		{
 			_cannons[i]->fire();
 			if (_cannons[i]->getBullet())
 				_cannons[i]->getBullet()->isConcentrated(true);
-		  }
-	    }
+		}
 	}
 }
 
@@ -383,7 +385,10 @@ void	Ship::releaseSpecialFire()
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 		{
 		    if (_cannons[i])
-		      _cannons[i]->stopFire();
+			{
+				_cannons[i]->stopFire();
+				_cannons[i]->getBullet()->isConcentrated(false);
+			}
 		}
 	}
 	else if (this->_playerBullet)
