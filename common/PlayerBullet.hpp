@@ -22,10 +22,13 @@ public:
 	void			setColor(uint8_t r, uint8_t g, uint8_t b);
 	void			isConcentrated(bool concentrated);
 	bool			isConcentrated() const;
+	void			isPaused(bool paused);
+	bool			isPaused() const;
 
 private:
 	std::string const	_groupName;
 	bool				_isFiring;
 	bool				_isConcentrated;
+	bool				_isPaused;
 	uint8_t				_colors[3];
 };

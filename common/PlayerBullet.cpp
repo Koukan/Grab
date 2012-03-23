@@ -12,14 +12,14 @@ inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
 		  double x, double y, double vx, double vy)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _isPaused(true)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
 	double x, double y, double vx, double vy)
-	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false)
+	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _isPaused(true)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -28,7 +28,7 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
 	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: Core::BulletCommand(state, gstate, box, false, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
-	_isFiring(true), _isConcentrated(false)
+	_isFiring(true), _isConcentrated(false), _isPaused(true)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -142,4 +142,14 @@ void	PlayerBullet::isConcentrated(bool concentrated)
 bool	PlayerBullet::isConcentrated() const
 {
 	return (this->_isConcentrated);
+}
+
+void	PlayerBullet::isPaused(bool paused)
+{
+	this->_isPaused = paused;
+}
+
+bool	PlayerBullet::isPaused() const
+{
+	return (this->_isPaused);
 }
