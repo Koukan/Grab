@@ -4,6 +4,7 @@
 #include "Ship.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
+#include "ShipInfo.hpp"
 
 GUIPlayerButton::GUIPlayerButton(GSBindPlayer &bindPlayer, Player *&player, int &nbPending, int &nbReady, Core::ButtonSprite const &sprite, std::string const &fontName, Core::GUILayout *layout, uint32_t nb)
 	: Core::GUIElement(0, 0, sprite.getWidth(), sprite.getHeight(), layout, Core::GUICommand::ALL), _bindPlayer(bindPlayer), _isSelect(false),

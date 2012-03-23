@@ -1,7 +1,9 @@
 #include <cmath>
+#include "Ship.hpp"
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
 #include "CircleHitBox.hpp"
+#include "PlayerBullet.hpp"
 
 Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
 			   std::string const& spriteName, std::string const &cannonGroup,

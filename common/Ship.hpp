@@ -7,18 +7,17 @@
 #include "Input.hpp"
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
-#include "ShipInfo.hpp"
 
+namespace ShipInfo
+{
+  struct ShipInfo;
+}
 class	Cannon;
 class	Player;
 
 class Ship : public ConcreteObject
 {
 public:
-  Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
-       float speed, int fireFrequency, int r, int g, int b,
-       GrabPosition::Position grab1, GrabPosition::Position grab2,
-	   GrabPosition::Position grab3, unsigned int nbMaxGrabs = 3);
   Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
@@ -65,6 +64,7 @@ public:
   void			setNbSecRespawn(int nbSec);
   unsigned int	getScore() const;
   void			setScore(unsigned int score);
+  void			bomb(Core::InputCommand const& cmd);
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);

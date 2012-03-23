@@ -7,6 +7,7 @@
 #include "RendererManager.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
+#include "ShipInfo.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
   : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)

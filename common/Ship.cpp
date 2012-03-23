@@ -1,4 +1,5 @@
 #include <cmath>
+#include "ShipInfo.hpp"
 #include "Ship.hpp"
 #include "Cannon.hpp"
 #include "GameStateManager.hpp"
@@ -7,40 +8,6 @@
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
 #include "Converter.hpp"
-
-Ship::Ship(Player &player, std::string const &spriteName, std::string const &bulletFileName,
-	   float speed, int fireFrequency, int r, int g, int b,
-	   GrabPosition::Position grab1, GrabPosition::Position grab2,
-	   GrabPosition::Position grab3, unsigned int nbMaxGrabs)
-  : ConcreteObject(spriteName, *(new Core::CircleHitBox(0, 0, 5)), 0, 0),
-	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
-    _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
-    _bulletFileName(bulletFileName), _playerBullet(0), _score(0), _nbSecRespawn(0),
-    _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), _targetx(0), _targety(0), _target(false)
-{
-	_cannons[0] = 0;
-	_cannons[1] = 0;
-	_cannons[2] = 0;
-	_cannons[3] = 0;
-	_colors[0] = r;
-	_colors[1] = g;
-	_colors[2] = b;
-			for (int i = 0; i < Ship::NBACTIONS; ++i)
-		this->_actions[i] = false;
-
-	if (this->_timer)
-		this->_timer->setColor(r, g, b);
-	if (this->_sprite)
-	{
-		this->_sprite->setColor(r, g, b);
-		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
-		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
-	}
-	this->defineGrabPosition(grab1, 0);
-	this->defineGrabPosition(grab2, 1);
-	this->defineGrabPosition(grab3, 2);
-	player.setShip(this);
-}
 
 Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
@@ -126,6 +93,11 @@ void	Ship::move(double time)
 	move->vx = this->getVx();
 	move->vy = this->getVy();
 	Core::CommandDispatcher::get().pushCommand(*move);
+}
+
+void Ship::bomb(Core::InputCommand const& /*cmd*/)
+{
+
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)

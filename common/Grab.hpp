@@ -4,7 +4,6 @@
 #include "ConcreteObject.hpp"
 #include "BulletCommand.hpp"
 #include "HitBox.hpp"
-#include "ShipInfo.hpp"
 
 class Ship;
 
@@ -36,4 +35,26 @@ private:
   double			_offsetY;
   unsigned int		_nGrab;
   unsigned int		_angle;
+};
+
+namespace	GrabPosition
+{
+  //    8     16     32
+  // 1  LTC   MT      LBC
+  //
+  // 2  L     M       R
+  //
+  // 4  LBC   MB      RBC
+	enum Position
+    {
+		LEFT_TOP_CORNER = 9,
+		MIDDLE_TOP = 17,
+		RIGHT_TOP_CORNER = 33,
+		LEFT = 10,
+		MIDDLE = 18,
+		RIGHT = 34,
+		LEFT_BOTTOM_CORNER = 12,
+		MIDDLE_BOTTOM = 20,
+		RIGHT_BOTTOM_CORNER = 36
+    };
 };

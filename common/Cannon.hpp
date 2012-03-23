@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ConcreteObject.hpp"
-#include "Ship.hpp"
+
+class Ship;
+class PlayerBullet;
 
 class Cannon : public ConcreteObject
 {
