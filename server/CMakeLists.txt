@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 
-project(R-Type_Server)
+project(Grab_Server)
 
 set(EXECUTABLE_OUTPUT_PATH ../)
 
@@ -108,11 +108,17 @@ foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
 endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 #####
 
-
+IF(WIN32)
 add_executable(
 	grab_server
 	${SRCS}
 )
+ELSE(WIN32)
+add_executable(
+	grab_server resource.rc
+	${SRCS}
+)
+ENDIF(WIN32)
 
 add_subdirectory(../common/libnet ../common/libnet_build)
 add_subdirectory(../common/core ../common/libcore_build)

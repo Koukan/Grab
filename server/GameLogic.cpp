@@ -85,7 +85,9 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 			{"spawnspawner", &GameLogic::spawnSpawnerCommand},
 			{"updateCannon", &GameLogic::updateCannonCommand},
 			{"fireState", &GameLogic::fireStateCommand},
-			{"killPlayer", &GameLogic::killPlayerCommand}
+			{"killPlayer", &GameLogic::killPlayerCommand},
+			{"decreasePaused", &GameLogic::decreasePaused},
+			{"increasePaused", &GameLogic::increasePaused}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -178,4 +180,14 @@ void		GameLogic::killPlayerCommand(Core::Command const &command)
 	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
 	if (ship)
 		ship->setDead(gc.boolean, false);
+}
+
+void		GameLogic::decreasePaused(Core::Command const &)
+{
+	this->_map->decreasePaused();
+}
+
+void		GameLogic::increasePaused(Core::Command const &)
+{
+	this->_map->increasePaused();
 }

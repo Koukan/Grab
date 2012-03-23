@@ -89,7 +89,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	unsigned int const	score;
 
  private:
-	void			managePaused();
+	void			managePaused(GameState &);
 };
 
 CORE_END_NAMESPACE

@@ -29,7 +29,10 @@ void		GSManager::update(double elapsedTime)
 {
 	for (std::list<GameState*>::const_iterator it = this->_currentStates.begin();
 		 it != this->_currentStates.end(); it++)
+	{
+		(*it)->handle(elapsedTime);
 		(*it)->update(elapsedTime);
+	}
 	if (!this->_currentStates.empty())
 		this->_currentStates.back()->getGUI().update(elapsedTime);
 	this->removeDelete();

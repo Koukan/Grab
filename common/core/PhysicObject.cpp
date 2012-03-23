@@ -91,7 +91,10 @@ void	PhysicObject::setHitBox(HitBox &hitBox)
 void	PhysicObject::move(double time)
 {
 	if (!this->_static && (this->_vx || this->_vy || this->_scrollX || this->_scrollY))
-		this->setPosition(this->_x + (this->_vx + this->_scrollX) * time, this->_y + (this->_vy + this->_scrollY) * time);
+	{
+		this->_x += (this->_vx + this->_scrollX) * time;
+		this->_y += (this->_vy + this->_scrollY) * time;
+	}
 }
 
 int		PhysicObject::getWidthElement()

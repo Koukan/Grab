@@ -3,6 +3,7 @@
 #include "DrawableObject.hpp"
 #include "PhysicObject.hpp"
 #include "CircleHitBox.hpp"
+#include "icon.c"
 
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
@@ -151,6 +152,7 @@ sf::RenderWindow	*RendererManager::getWindow()
 	if (!_window)
 	{
 		_window = new sf::RenderWindow(sf::VideoMode(this->_width, this->_height), "Grab"/*, sf::Style::Fullscreen*/);
+		_window->SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
 	}
 	return _window;
 }

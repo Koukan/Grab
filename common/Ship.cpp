@@ -16,7 +16,7 @@ Ship::Ship(Player &player, std::string const &spriteName, std::string const &bul
 	_player(player), _speed(speed), _tmpSpeed(speed), _fireFrequency(fireFrequency), _dead(false),
     _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false), _joyPosX(0), _joyPosY(0),
     _bulletFileName(bulletFileName), _playerBullet(0), _score(0), _nbSecRespawn(0),
-    _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
+    _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), _targetx(0), _targety(0), _target(false)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -49,7 +49,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
 	  _playerBullet(0), _score(0), _nbSecRespawn(0),
-	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
+	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), _targetx(0), _targety(0), _target(false)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -79,10 +79,47 @@ Ship::~Ship()
 {
 }
 
+void	Ship::setPosition(double x, double y, double)
+{
+	_targetx = x;
+	_targety = y;
+	_target = true;
+	double		t1, t2;
+	t1 = abs(x - this->_x) / this->_speed;
+	t2 = abs(y - this->_y) / this->_speed;
+	if (t1 > t2)
+	{
+		this->_vx = this->_speed;
+		this->_vy = (t2 / t1) * this->_speed;
+	}
+	else
+	{
+		this->_vy = (t1 / t2) * this->_speed;
+		this->_vx = this->_speed;
+	}
+}
+
 void	Ship::move(double time)
 {
 	//if (this->_dead)
 	//	return ;
+	if (_target == true)
+	{
+		if ((this->_vx >= 0 && this->_x + this->_vx > this->_targetx) ||
+			(this->_vx < 0 && this->_x + this->_vx < this->_targetx))
+		{
+			this->_vx = 0;
+			this->_x = this->_targetx;
+		}
+		if ((this->_vy >= 0 && this->_y + this->_vy > this->_targety) ||
+			(this->_vy < 0 && this->_y + this->_vy < this->_targety))
+		{
+			this->_vy = 0;
+			this->_y = this->_targety;
+		}
+		if (this->_vx == 0 && this->_vy == 0)
+			this->_target = false;
+	}
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
@@ -92,8 +129,8 @@ void	Ship::move(double time)
 	move->idObject = this->getId();
 	move->x = static_cast<int16_t>(this->getX());
 	move->y = static_cast<int16_t>(this->getY());
-	move->vx = 0/*this->getVx()*/;
-	move->vy = 0/*this->getVy()*/;
+	move->vx = this->getVx();
+	move->vy = this->getVy();
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
