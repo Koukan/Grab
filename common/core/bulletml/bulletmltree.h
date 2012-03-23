@@ -18,6 +18,7 @@
 #include "tree.h"
 #include "formula.h"
 #include "bulletmlcommon.h"
+#include "Converter.hpp"
 
 class BulletMLNode : public TreeNode<BulletMLNode> {
 public:
@@ -26,7 +27,7 @@ public:
 	typedef enum { bullet, action, fire, changeDirection, changeSpeed, accel,
 				   wait, repeat, bulletRef, actionRef, fireRef, vanish,
 				   horizontal, vertical, term, times, direction, speed, param,
-				   bulletml, hitbox, simpleHitbox, life, damage, genericstr, genericint, nameSize} Name;
+				   bulletml, hitbox, simpleHitbox, life, damage, genericstr, genericint, test, nameSize} Name;
 
 private:
 	static Type string2type(const std::string& str);
@@ -87,6 +88,7 @@ public:
 	void setSimpleY(std::string const &y) { this->_shy = strtol(y.c_str(), 0, 10); }
 	void setLife(std::string const &life) { this->life_ = strtol(life.c_str(), 0, 10); }
 	void setSimpleLife(std::string const &life) { this->simpleLife_ = strtol(life.c_str(), 0, 10); }
+	void setLifeRank(std::string const &rank) { this->lifeRank_ = Net::Converter::toInt<double>(rank); }
 	void setDamage(std::string const &damage) { this->damage_ = strtol(damage.c_str(), 0, 10); }
 	void setSimpleDamage(std::string const &damage) { this->simpleDamage_ = strtol(damage.c_str(), 0, 10); }
 	void setGenericStr(std::string const &name, std::string const &value) { this->strMap_[name] = value; }
@@ -110,6 +112,7 @@ public:
 	int		 getSimpleHitboxY() const { return this->_shy; }
 	uint32_t getLife() const { return this->life_; }
 	uint32_t getSimpleLife() const { return this->simpleLife_; }
+	double	 getLifeRank() const { return this->lifeRank_; }
 	uint32_t getDamage() const { return this->damage_; }
 	uint32_t getSimpleDamage() const { return this->simpleDamage_; }
 	std::map<std::string, std::string> const	&getGenericStr() { return this->strMap_; }
@@ -141,6 +144,7 @@ protected:
 	uint32_t				simpleDamage_;
 	uint32_t				life_;
 	uint32_t				simpleLife_;
+	double					lifeRank_;
 	std::map<std::string, std::string>	strMap_;
 	std::map<std::string, int>			intMap_;
 };

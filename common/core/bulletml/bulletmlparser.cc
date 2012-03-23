@@ -220,6 +220,8 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 					elem->setLife(val);
 				else if (key == "simple")
 					elem->setSimpleLife(val);
+				else if (key == "rank")
+					elem->setLifeRank(val);
 			}
 			else if (elem->getName() == BulletMLNode::damage)
 			{
@@ -235,6 +237,11 @@ void BulletMLParser::addAttribute(const MyAttributes& attr,
 			else if (elem->getName() == BulletMLNode::genericint)
 			{
 				elem->setGenericInt(key, ::strtol(val.c_str(), 0, 10));
+			}
+			else if (elem->getName() == BulletMLNode::test)
+			{
+				std::cout << "plop" << std::endl;
+				std::cout << val << std::endl;
 			}
 		}
 	}

@@ -21,7 +21,7 @@
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map),
-	  _nbPlayers(nbPlayers), _nbDie(0), _online(online), 
+	  _nbPlayers(nbPlayers), _nbDie(0), _online(online),
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits)
@@ -301,7 +301,7 @@ bool		GSInGame::playerDie(Player &)
 
 		this->_nbDie = 0;
 
-		--this->_nbCredits;		
+		--this->_nbCredits;
 		if (this->_players.size() != 1)
 		  life = Modes::modesList[_mode].multiNbLife;
 		for (std::list<Player *>::iterator it = this->_players.begin();
@@ -407,6 +407,7 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 	Core::BulletCommand		*spawner = new Core::BulletCommand(event.data, *this, event.x, event.y, event.vx, event.vy, event.boolean);
 	spawner->setSeed(this->_rand());
 	spawner->setScrollY(event.position);
+	spawner->setRank(this->_nbPlayers);
 	this->addGameObject(spawner, "spawners");
 }
 
@@ -437,7 +438,7 @@ void		GSInGame::increasePaused(GameCommand const &)
 void		GSInGame::respawnplayer(GameCommand const &event)
 {
 	Ship*	ship = event.player->getShip();
-	
+
 	if (ship)
 	  ship->setDead(false);
 	if (event.player->getLife() == -1)

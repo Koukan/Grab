@@ -20,7 +20,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	: Bullet(x, y, vx, vy), BulletMLRunner(gstate.getBulletParser(parser)),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
+	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
 	  _paused(paused), score(0)
 {
 	this->_shape = BulletCommand::Circle;
@@ -39,7 +39,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	: Bullet(x, y, vx, vy), BulletMLRunner(&parser),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(0.5), _nextId(1), _focus("players"),
+	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
 	  _paused(paused), score(0)
 {
 	this->_shape = BulletCommand::Circle;
@@ -47,6 +47,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleYHitbox = 0;
 	this->setDamage(1);
 	this->setLife(1);
+	this->_lifeRank = false;
 	this->_simpleLife = 1;
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
@@ -57,7 +58,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 		double x, double y, double vx, double vy)
 	: Bullet(x, y, vx, vy), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
 	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
@@ -74,6 +75,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	this->_simpleYHitbox = state.getSimpleHitboxY();
 	this->setDamage(state.getDamage());
 	this->setLife(state.getLife());
+	this->_lifeRank = state.getLifeRank();
 	this->_simpleLife = state.getSimpleLife();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
@@ -86,7 +88,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 			     double vx, double vy, double xHitboxOffset, double yHitboxOffset)
 	: Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
-	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(0.5),
+	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
 	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
@@ -104,6 +106,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->setDamage(state.getDamage());
 	this->setLife(state.getLife());
 	this->_simpleLife = state.getSimpleLife();
+	this->_lifeRank = state.getLifeRank();
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
@@ -112,7 +115,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 
 BulletCommand::~BulletCommand()
 {
-	if (_paused)
+	if (_paused && this->getGroup())
 	{
 		Command* cmd = new Command("decreasePaused");
 		this->getGroup()->getState().pushCommand(*cmd);
@@ -244,6 +247,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 		this->_state.addGameObject(bullet, state->getGroup(), false);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
+		bullet->setRank(this->_rank);
 	}
 	else
 	{
@@ -252,6 +256,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 		this->_state.addGameObject(bullet, state->getGroup(), false);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
+		bullet->setRank(this->_rank);
 	}
 	delete state;
 }
@@ -317,6 +322,8 @@ void		BulletCommand::setFocus(std::string const &name)
 void		BulletCommand::setRank(double rank)
 {
 	this->_rank = rank;
+	if (this->_lifeRank)
+		this->setLife(this->getLife() * rank * this->_lifeRank);
 }
 
 void		BulletCommand::move(double time)

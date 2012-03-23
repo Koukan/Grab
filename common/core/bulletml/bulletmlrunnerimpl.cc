@@ -176,6 +176,7 @@ void BulletMLRunnerImpl::setLife(BulletMLState &state) {
 
 		state.setLife(box->getLife());
 		state.setSimpleLife(box->getSimpleLife());
+		state.setLifeRank(box->getLifeRank());
 }
 
 void BulletMLRunnerImpl::setDamage(BulletMLState &state) {
