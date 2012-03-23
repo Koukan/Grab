@@ -99,6 +99,7 @@ int			UdpHandler::move(Net::Packet &packet, uint64_t time)
 		it = _idmoves.insert(std::make_pair(idObject, time)).first;
 	if (it->second <= time)
 	{
+		it->second = time;
 		GameCommand *gc = new GameCommand("move");
 		gc->idObject = idObject;
 		packet >> gc->x;
