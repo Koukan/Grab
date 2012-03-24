@@ -13,7 +13,7 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 {
 	std::string		name;
 	std::string		mapName;
-	double			scrollingSpeed = 0;
+	double			scrollingSpeed = 50;
 	bool			random = false;
 
 	_current = 0;
@@ -30,26 +30,23 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 		else if (name == "random" && attrib->Value() == "true")
 			random = true;
 	}
-	if (random)
-		_current = new MonsterGenerator(0);
-	else
-		_current = new Map();
+	_current = (random) ? new MonsterGenerator(0) : new Map();
 	this->addResource(mapName, *_current, manager);
 	_current->setScrollingSpeed(scrollingSpeed);
-	for (TiXmlNode *child = parent->FirstChild(); child != 0;
+	for (TiXmlNode *child = parent->FirstChild(); child;
 		 child = child->NextSibling())
 	{
 		if (child->Type() == TiXmlNode::ELEMENT)
 		{
 			name = child->Value();
 			if (name == "monster")
-				this->handleMonster(child, manager);
+				this->handleElem(child, manager, &Map::addMonster);
 			else if (name == "deco")
-				this->handleDeco(child, manager);
+				this->handleElem(child, manager, &Map::addDecoration);
 			else if (name == "sound")
-				this->handleSound(child, manager);
+				this->handleElem(child, manager, &Map::addSound);
 			else if (name == "end")
-				this->handleEnd(child, manager);
+				this->handleElem(child, manager, &Map::addEnd);
 			else if (name == "randomMonster")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomMonster);
 			else if (name == "mazeMonster")
@@ -67,26 +64,6 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 		}
 	}
 	_current = 0;
-}
-
-void    MapProvider::handleEnd(TiXmlNode *parent, Core::ResourceManager &manager)
-{
-	this->handleElem(parent, manager, &Map::addEnd);
-}
-
-void    MapProvider::handleMonster(TiXmlNode *parent, Core::ResourceManager &manager)
-{
-	this->handleElem(parent, manager, &Map::addMonster);
-}
-
-void    MapProvider::handleDeco(TiXmlNode *parent, Core::ResourceManager &manager)
-{
-	this->handleElem(parent, manager, &Map::addDecoration);
-}
-
-void    MapProvider::handleSound(TiXmlNode *parent, Core::ResourceManager &manager)
-{
-	this->handleElem(parent, manager, &Map::addSound);
 }
 
 void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, bool, int, size_t))

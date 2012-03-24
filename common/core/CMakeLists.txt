@@ -149,17 +149,23 @@ include_directories (
 )
 
 IF(WIN32)
+set_source_files_properties (
+  ${SRCS_CORE}
+  PROPERTIES
+  COMPILE_FLAGS
+  "-DCOREDLL"
+)
 ELSE(WIN32)
 set_source_files_properties (
   ${SRCS_CORE}
   PROPERTIES
   COMPILE_FLAGS
-  "-W -Wall -Wextra -g3"
+  "-W -Wall -Wextra -O2"
 )
 ENDIF(WIN32)
 
 add_library(
 	core
-	STATIC
+	SHARED
 	${SRCS_CORE}
-)
+)	

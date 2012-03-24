@@ -20,7 +20,7 @@ Game		*GameManager::getGame(uint16_t id)
 	return 0;
 }
 
-Game		*GameManager::createGame(uint8_t maxClients)
+Game		*GameManager::createGame(uint8_t maxClients, Modes::Mode type, std::string const &str)
 {
 	if (maxClients == 0)
 		return 0;
@@ -29,7 +29,7 @@ Game		*GameManager::createGame(uint8_t maxClients)
 
 	while (this->_games.find(this->_id) != this->_games.end())
 		this->_id++;
-	Game	*game = new Game(this->_id, maxClients);
+	Game	*game = new Game(this->_id, maxClients, type, str);
 	this->_games[this->_id++] = game;
 	return game;
 }

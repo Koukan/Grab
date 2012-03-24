@@ -59,10 +59,12 @@ void	GSModeSelection::survivalScoring()
 
 void	GSModeSelection::survivalHighlander()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_SCORING);
+  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_HIGHLANDER);
   Core::GameStateManager::get().pushState(*partySettings);
 }
 
 void	GSModeSelection::tryAndRetry()
 {
+  Core::GameState *partySettings = new GSPartySettings(Modes::TRY_AND_RETRY);
+  Core::GameStateManager::get().pushState(*partySettings);
 }

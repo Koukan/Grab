@@ -5,11 +5,12 @@
 #include "GameLogic.hpp"
 #include "Net.hpp"
 #include "Player.hpp"
+#include "Modes.hpp"
 
 class Game : public Core::Module
 {
   public:
-    Game(uint16_t id, uint8_t maxPlayers);
+    Game(uint16_t id, uint8_t maxPlayers, Modes::Mode type, std::string const &map);
     virtual ~Game();
 	virtual void	init();
 	virtual void	update(double elapsedTime);
@@ -38,6 +39,8 @@ class Game : public Core::Module
 	GameLogic			_logic;
 	uint16_t			_id;
 	uint8_t				_maxPlayers;
+	Modes::Mode			_type;
+	std::string			_map;
 	size_t				_readyPlayers;
 	uint8_t				_nbPlayers;
 	std::list<Client*>	_clients;

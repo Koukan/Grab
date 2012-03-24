@@ -57,10 +57,8 @@ void		Game::init()
   this->loadModule(Core::GameStateManager::get());
   this->loadModule(NetworkModule::get());
   Core::CommandDispatcher::get().registerHandler(Core::GameStateManager::get());
-  Core::GameStateManager::get().loadState<GSPreload>("preload");
-  Core::GameStateManager::get().loadState<GSMainMenu>("mainMenu");
-  Core::GameStateManager::get().pushState("preload");
-  Core::GameStateManager::get().pushState("mainMenu", Core::GameState::NONE);
+  Core::GameStateManager::get().pushState(*new GSPreload);
+  Core::GameStateManager::get().pushState(*new GSMainMenu, Core::GameState::NONE);
 }
 
 void		Game::readPreferencesFile()

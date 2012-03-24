@@ -46,7 +46,6 @@ bool		NetworkModule::connect()
 	return (false);
   }
   _addr = addr;
-  //addr.setPort(25558);
   this->_udp.getIOHandler().connect(addr);
   this->_udp.clearAddr();
   this->_udp.addAddr(addr);
@@ -109,11 +108,13 @@ void		NetworkModule::connectionCommand(Core::Command const &command)
 
 void		NetworkModule::createGameCommand(Core::Command const &command)
 {
-	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
-	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint8_t));
+	GameCommand const &cmd = static_cast<GameCommand const &>(command);
+	Net::Packet		packet(6 + cmd.data.size());
 
 	packet << static_cast<uint8_t>(TCP::CREATE_GAME);
-	packet << static_cast<uint8_t>(cmd.nbPlayers);
+	packet << static_cast<uint8_t>(cmd.idObject); // nbplayers
+	packet << static_cast<uint8_t>(cmd.idResource); // type
+	packet << cmd.data; // map
 	this->_server->handleOutputPacket(packet);
 }
 
@@ -318,8 +319,6 @@ std::string const	&NetworkModule::getIP() const
 
 void		NetworkModule::sendPacketUDP(Net::Packet &packet, bool needId)
 {
-		//packet.setDestination(_addr);
-		//packet.getAddr().setPort(25558);
 	if (needId)
 	{
 		uint32_t    id;

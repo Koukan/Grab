@@ -5,7 +5,7 @@
 
 CORE_BEGIN_NAMESPACE
 
-class GUILayout : public GUIElement
+class CORE_DLLREQ GUILayout : public GUIElement
 {
 public:
   void insertElementAtBegin(GUIElement &elem);

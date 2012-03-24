@@ -8,7 +8,7 @@ CORE_BEGIN_NAMESPACE
 
 class GUILayout;
 
-class GUIElement : public DrawableObject
+class CORE_DLLREQ GUIElement : public DrawableObject
 {
 public:
 	GUIElement(int x, int y, int width, int height, GUILayout *layout, GUICommand::PlayerType playerType = GUICommand::ALL);

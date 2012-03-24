@@ -9,9 +9,9 @@
 #include "Converter.hpp"
 #include "Ship.hpp"
 
-Game::Game(uint16_t id, uint8_t maxPlayers)
+Game::Game(uint16_t id, uint8_t maxPlayers, Modes::Mode type, std::string const &str)
   : Core::Module("Game" + id, 20), _logic(*this),
-	  _id(id), _maxPlayers(maxPlayers), _readyPlayers(0), _nbPlayers(0)
+	  _id(id), _maxPlayers(maxPlayers), _type(type), _map(str), _readyPlayers(0), _nbPlayers(0)
 {
 	Server::get().loadModule(*this);
 	::memset(this->_players, 0, sizeof(this->_players));
