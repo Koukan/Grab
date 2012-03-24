@@ -23,7 +23,7 @@ public:
 	  GRAB1,
 	  GRAB2,
 	  GRAB3,
-	  GRAB4,
+	  SPECIAL_POWER,
 	  PAUSE,
 	  NBACTIONS
   };
