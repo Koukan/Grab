@@ -70,7 +70,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("breakableWalls", "players", &Rules::wallsTouchPlayers);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::invisibleWallsTouchPlayers);
   this->setCollisionGroups("traversableWalls", "players", &Rules::wallsTouchPlayers);
-  //this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("deadlyWalls", "players", &Rules::deadlyWallsTouchPlayers);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
