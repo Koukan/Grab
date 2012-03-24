@@ -18,6 +18,7 @@ class	Map : public Core::Resource, public Core::PhysicObject
 		void    addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
 		void	decreasePaused();
 		void	increasePaused();
+		virtual void	setScrollingSpeed(double vy);
 
 	protected:
 	void    addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);

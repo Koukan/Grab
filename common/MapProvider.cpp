@@ -35,7 +35,7 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 	else
 		_current = new Map();
 	this->addResource(mapName, *_current, manager);
-	_current->setVy(scrollingSpeed);
+	_current->setScrollingSpeed(scrollingSpeed);
 	for (TiXmlNode *child = parent->FirstChild(); child != 0;
 		 child = child->NextSibling())
 	{
