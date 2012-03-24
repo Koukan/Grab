@@ -483,10 +483,10 @@ void		GSInGame::serverFire(GameCommand const &cmd)
 				ship->releaseFire();
 				break;
 			case 1:
-				ship->fire(*this);
+				ship->fire();
 				break;
 			case 2:
-				ship->specialFire(*this);
+				ship->specialFire();
 				break;
 			case 3:
 				ship->releaseSpecialFire();

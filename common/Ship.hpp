@@ -32,9 +32,10 @@ public:
   void			copyColor(Core::Sprite& sprite);
   virtual void	move(double time);
 
-  void			fire(Core::GameState &);
+  void			manageFire();
+  void			fire();
   void			releaseFire();
-  void			specialFire(Core::GameState &);
+  void			specialFire();
   void			releaseSpecialFire();
 
   void			inputUp(Core::InputCommand const &cmd);

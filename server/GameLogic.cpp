@@ -171,9 +171,9 @@ void		GameLogic::fireStateCommand(Core::Command const &command)
 	if (gc.idResource == 0)
 		ship->releaseFire();
 	else if (gc.idResource == 1)
-		ship->fire(*this);
+		ship->fire();
 	else if (gc.idResource == 2)
-		ship->specialFire(*this);
+		ship->specialFire();
 	else if (gc.idResource == 3)
 		ship->releaseSpecialFire();
 }
