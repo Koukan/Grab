@@ -6,7 +6,8 @@
 GSContinue::GSContinue() :
   Core::GameState("continue"),
   _time(10),
-  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont"))
+  _continue(false),
+  _timer(this->getFont("listGameFont"))
 {
   _timer->setText(Net::Converter::toString<int>(_time));
   this->addGameObject(_timer);
@@ -25,11 +26,11 @@ void GSContinue::onStart()
 
 void GSContinue::returnToGame(Core::InputCommand const &/*cmd*/)
 {
-  Core::GameStateManager::get().popState();
-
-  Core::GameState *state = Core::GameStateManager::get().getGameState("Game");
-  if (state)
-	state->play();
+	if (!this->_continue)
+	{
+		this->_continue = true;
+		Core::GameStateManager::get().popState();
+	}
 }
 
 void GSContinue::update(double elapsedTime)
@@ -45,10 +46,6 @@ void GSContinue::update(double elapsedTime)
       if (_time == 0)
 	{
 	  Core::GameStateManager::get().popState();
-	  GSInGame *state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
-
-	  if (state)
-	    state->gameover(false);
-	}	      
+	}
     }
 }
