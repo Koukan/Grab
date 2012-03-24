@@ -55,10 +55,6 @@ void	GSMainMenu::onStart()
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::options, "Options", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::quitGame, "Quit", "buttonFont", *sprite, layout);
   //  new GUIButton<GSMainMenu>(*this, &GSMainMenu::inGameTest, "In Game Test", "buttonFont", *sprite, layout);
-  Core::GameStateManager::get().loadState<GSModeSelection>("modeSelection");
-  Core::GameStateManager::get().loadState<GSJoinGame>("joinGame");
-  Core::GameStateManager::get().loadState<GSOptions>("options");
-
 }
 
 void	GSMainMenu::onChange()
@@ -71,22 +67,17 @@ void	GSMainMenu::onResume()
 
 void	GSMainMenu::modeSelection()
 {
-  Core::GameStateManager::get().pushState("modeSelection");
+  Core::GameStateManager::get().pushState(*new GSModeSelection);
 }
 
 void	GSMainMenu::joinGame()
 {
-  Core::GameStateManager::get().pushState("joinGame");
-}
-
-void	GSMainMenu::inGameTest()
-{
-  Core::GameStateManager::get().pushState("Game");
+  Core::GameStateManager::get().pushState(*new GSJoinGame);
 }
 
 void	GSMainMenu::options()
 {
-  Core::GameStateManager::get().pushState("options");
+  Core::GameStateManager::get().pushState(*new GSOptions);
 }
 void	GSMainMenu::quitGame()
 {

@@ -4,7 +4,7 @@
 #include "CommandDispatcher.hpp"
 #include "GameState.hpp"
 
-Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _nbPaused(0)
+Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _nbPaused(0), _prevY(0)
 {}
 
 Map::~Map()
@@ -15,27 +15,27 @@ Core::Resource    *Map::clone() const
 	return (new Map(*this));
 }
 
-void		Map::addEnd(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY)
+void		Map::addEnd(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
-  this->addElem("spawnend", name, x, y, vx, vy, scrollable, pause, spawnY);
+  this->addElem("spawnend", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
-void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY)
+void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
-  this->addElem("spawnspawner", name, x, y, vx, vy, scrollable, pause, spawnY);
+  this->addElem("spawnspawner", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
-void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY)
+void    	Map::addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
-  this->addElem("spawndecoration", name, x, y, vx, vy, scrollable, pause, spawnY);
+  this->addElem("spawndecoration", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
-void    	Map::addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY)
+void    	Map::addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
-  this->addElem("spawnsound", name, x, y, vx, vy, scrollable, pause, spawnY);
+  this->addElem("spawnsound", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
-void    	Map::addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY)
+void    	Map::addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
 	if (y >= this->_y)
 	{
@@ -51,7 +51,8 @@ void    	Map::addElem(std::string const &command, std::string const &name, size_
 			data.vScrolling = static_cast<int>(this->_vy);
 		else
 			data.vScrolling = 0;
-		_monsters.insert(std::make_pair(y, data));
+		this->_prevY += ry;
+		this->_monsters.insert(std::make_pair((y) ? y : this->_prevY, data));
 	}
 }
 
@@ -89,4 +90,9 @@ void		Map::decreasePaused()
 void		Map::increasePaused()
 {
   ++this->_nbPaused;
+}
+
+void		Map::setScrollingSpeed(double vy)
+{
+	this->_vy = vy;
 }

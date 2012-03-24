@@ -13,6 +13,7 @@ public:
   void	returnToGame(Core::InputCommand const &cmd);
 
 private:
-  int			_time;
+  int				_time;
+  bool				_continue;
   Core::CoreFont*	_timer;
 };

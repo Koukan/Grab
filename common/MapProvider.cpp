@@ -32,7 +32,7 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 	}
 	_current = (random) ? new MonsterGenerator(0) : new Map();
 	this->addResource(mapName, *_current, manager);
-	_current->setVy(scrollingSpeed);
+	_current->setScrollingSpeed(scrollingSpeed);
 	for (TiXmlNode *child = parent->FirstChild(); child;
 		 child = child->NextSibling())
 	{
@@ -66,10 +66,10 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 	_current = 0;
 }
 
-void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, bool, int))
+void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void (Map::*func)(std::string const &name, size_t, size_t, int, int, bool, bool, int, size_t))
 {
 	std::string     name, monstername;
-	size_t          y = 0, x = 0;
+	size_t          y = 0, x = 0, ry = 0;
 	int				vx = 0, vy = 0, spawnY = 0;
 	bool			scrollable = true, pause = false;
 
@@ -81,6 +81,8 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 			monstername = attrib->Value();
 		else if (name == "y")
 			y = Net::Converter::toInt<size_t>(attrib->Value());
+		else if (name == "ry")
+			ry = Net::Converter::toInt<size_t>(attrib->Value());
 		else if (name == "x")
 			x = Net::Converter::toInt<size_t>(attrib->Value());
 		else if (name == "vx")
@@ -95,7 +97,7 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 			pause = true;
 	}
 	if (!monstername.empty())
-	  (_current->*func)(monstername, x, y, vx, vy, scrollable, pause, spawnY);
+	  (_current->*func)(monstername, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
 void	MapProvider::handleRandomElem(TiXmlNode *parent, Core::ResourceManager &, void (MonsterGenerator::*func)(std::string const &name, bool scrollable, size_t level))

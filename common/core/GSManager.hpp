@@ -1,8 +1,9 @@
 #pragma once
 
 #include <list>
+#include <queue>
 #include <string>
-#include "GameStateInstance.hpp"
+#include "GameState.hpp"
 #include "Module.hpp"
 #include "Observable.hpp"
 
@@ -16,19 +17,10 @@ public:
   virtual void	init();
   virtual void	update(double elapsedTime = 0);
   virtual void	destroy();
-  bool			pushState(const std::string &name, GameState::Pause paused = GameState::ALL);
   bool			pushState(GameState &state, GameState::Pause paused = GameState::ALL);
-  bool			changeState(const std::string &name, GameState::Pause paused = GameState::ALL,
-				  			bool del = true);
   bool			changeState(GameState &state, GameState::Pause paused = GameState::ALL,
 				  			bool del = true);
   void			popState(bool del = true);
-
-  template <class T>
-  void			loadState(T &state);
-  template <class T>
-  void			loadState(const std::string &name);
-  void			removeState(const std::string &name);
 
   //getter
   GameState		&getCurrentState();
@@ -38,23 +30,32 @@ public:
 
 protected:
   void			addDelete(GameState *state);
+  void			addNewState();
   void			removeDelete();
 
 private:
-  typedef std::map<std::string, GameStateKeeper*>	instanceMap;
+	struct	AddState
+	{
+		AddState(GameState *state, bool changed, GameState::Pause paused, bool resume)
+			: state(state), changed(changed), paused(paused), resume(resume), ready(false)
+		{
+		}
+		GameState			*state;
+		bool				changed;
+		GameState::Pause	paused;
+		bool				resume;
+		bool				ready;
+	};
 
-  bool			push(const std::string &name, bool changed, GameState::Pause paused);
   bool			push(GameState &state, bool changed, GameState::Pause paused, bool resume);
   void			pop(bool changed, bool del);
 
 protected:
-  instanceMap				_keeper;
+  std::queue<AddState>		_addStates;
   std::list<GameState*>		_loadedStates;
   std::list<GameState*>		_currentStates;
   std::list<GameState*>		_deleted;
 };
-
-#include "GSManager.ipp"
 
 bool		operator==(Core::GameState const * const & state, const std::string &name);
 

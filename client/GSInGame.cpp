@@ -57,6 +57,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
+  this->setCollisionGroups("shotWall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
@@ -91,10 +92,7 @@ void		GSInGame::preload()
   else
 	this->load("resources/map/randomMap.xml");
 
-  //test map
-  _mapObj = static_cast<Map*>(this->getResource("level1", 5));
-  this->addGameObject(_mapObj, "map");
-
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 950)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
@@ -230,6 +228,9 @@ void		GSInGame::onStart()
   obj1->pushSprite("star background");
   this->addGameObject(obj1, "background2");*/
 
+	 //test map
+  _mapObj = static_cast<Map*>(this->getResource("level1", 5));
+  this->addGameObject(_mapObj, "map");
 	if (!_online)
 		this->createShips();
   	this->registerShipCallbacks();
@@ -323,8 +324,7 @@ bool		GSInGame::playerDie(Player &)
 		    (*it)->setLife(life);
 		    (*it)->getShip()->setDead(false);
 		  }
-		//		this->pause();
-		//		Core::GameStateManager::get().pushState(*(new GSContinue()), PHYSIC);
+			Core::GameStateManager::get().pushState(*new GSContinue(), PHYSIC);
 	      }
 	    else
 	      {
