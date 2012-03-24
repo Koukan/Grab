@@ -286,8 +286,16 @@ void Ship::manageFire()
 		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 		this->getGroup()->getState().addGameObject(this->_playerBullet);
 	}
-	if (this->_actions[Ship::SPECIAL_FIRE] == true && !this->_dead)
+	if (this->_actions[Ship::SPECIAL_FIRE] == true)
 	{
+		if (this->_tmpSpeed == this->_speed)
+		{
+			this->_speed = this->_tmpSpeed * 0.3;
+			this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
+			this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
+		}
+		if (this->_dead)
+			return ;
 		this->_playerBullet->isFiring(true);
 		this->_playerBullet->isConcentrated(true);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
@@ -299,9 +307,6 @@ void Ship::manageFire()
 					_cannons[i]->getBullet()->isConcentrated(true);
 			}
 		}
-		this->_speed = this->_tmpSpeed * 0.5;
-		this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
-		this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
 		return ;
 	}
 	if (this->_actions[Ship::FIRE] == true && !this->_dead)
@@ -327,9 +332,9 @@ void Ship::manageFire()
 				_cannons[i]->stopFire();
 		}
 	}
-	this->_speed = this->_tmpSpeed;
 	this->_vx = this->_vx / this->_speed * this->_tmpSpeed;
 	this->_vy = this->_vy / this->_speed * this->_tmpSpeed;
+	this->_speed = this->_tmpSpeed;
 }
 
 void	Ship::fire()
@@ -359,32 +364,24 @@ void	Ship::releaseSpecialFire()
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
 {
 	this->fire();
-	if (this->_dead)
-		return ;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 1));
 }
 
 void Ship::inputReleasedFire(Core::InputCommand const& /*cmd*/)
 {
 	this->releaseFire();
-	if (this->_dead)
-		return ;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 0));
 }
 
 void Ship::inputSpecialFire(Core::InputCommand const& /*cmd*/)
 {
 	this->specialFire();
-	if (this->_dead)
-		return ;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 2));
 }
 
 void Ship::inputReleasedSpecialFire(Core::InputCommand const &)
 {
 	this->releaseSpecialFire();
-	if (this->_dead)
-		return ;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("Fire", this->_id, 3));
 }
 
@@ -434,7 +431,7 @@ void Ship::setDead(bool dead, bool command)
 		}
 		this->_delete = 0;
 		return ;
-	}	
+	}
 	this->_delete = 3;
 	this->_powerGauge = 0;
 	this->_player.die();
