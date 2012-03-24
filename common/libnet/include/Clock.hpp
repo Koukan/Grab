@@ -12,6 +12,7 @@
 #define EPOCHFILETIME (116444736000000000LL)
 #include <windows.h>
 #else
+#include <unistd.h>
 #include <sys/time.h>
 #endif
 

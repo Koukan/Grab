@@ -212,14 +212,18 @@ int		Client::player(Net::Packet &packet)
 int		Client::createGame(Net::Packet &packet)
 {
 	Net::InetAddr		addr;
-	uint8_t			maxClient;
+	uint8_t			maxClient, type;
+	std::string		map;
 
 	packet >> maxClient;
-	Game		*game = Server::get().createGame(maxClient);
+	packet >> type;
+	packet >> map;
+	Game		*game = Server::get().createGame(maxClient, static_cast<Modes::Mode>(type), map);
 	this->getRemoteAddr(addr);
 	if (game)
 	{
-		Core::Logger::logger << "Game created with "<< int(maxClient) << " players by " << addr.getHost(NI_NUMERICHOST);
+		Core::Logger::logger << "Game created with " << int(maxClient) << " players of type "
+			   	<< int(type) << ", on map " << map << " by " << addr.getHost(NI_NUMERICHOST);
 		game->addClient(*this);
 		return 1;
 	}

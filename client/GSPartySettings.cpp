@@ -7,6 +7,7 @@
 #include "GUIVLayout.hpp"
 #include "GUIHLayout.hpp"
 #include "ScrollingSprite.hpp"
+#include "GameCommand.hpp"
 #include "GameListCommand.hpp"
 #include "NetworkModule.hpp"
 #include "GSManager.hpp"
@@ -39,9 +40,11 @@ void	GSPartySettings::createParty()
 		{
 	  		Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
 			int nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
-
-			GameListCommand	*cmd = new GameListCommand("CreateGame", nbPlayers);
-			Core::CommandDispatcher::get().pushCommand(*cmd);
+			GameCommand *gc = new GameCommand("CreateGame");
+			gc->idObject = nbPlayers;
+			gc->idResource = static_cast<uint32_t>(_mode);
+			gc->data = _map;
+			Core::CommandDispatcher::get().pushCommand(*gc);
 			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", nbPlayers, _online));
 		}
 		else

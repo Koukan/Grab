@@ -154,7 +154,7 @@ set_source_files_properties (
   ${SRCS_CORE}
   PROPERTIES
   COMPILE_FLAGS
-  "-W -Wall -Wextra -g3"
+  "-W -Wall -Wextra -O2"
 )
 ENDIF(WIN32)
 

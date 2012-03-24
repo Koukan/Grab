@@ -20,6 +20,7 @@ typedef	char	sockopt;
 #	include <signal.h>
 #	include <fcntl.h>
 #	include <errno.h>
+#	include <unistd.h>
 #	define	ioctlsocket	fcntl
 #  	define	closesocket close
 #  	define	SOCKET int

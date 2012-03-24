@@ -179,7 +179,7 @@ set_source_files_properties (
   ${SRCS}
   PROPERTIES
   COMPILE_FLAGS
-  "-std=c++0x -W -Wall -Wextra -g3"
+  "-std=c++0x -W -Wall -Wextra -O2"
 )
 ENDIF(WIN32)
 

@@ -62,9 +62,9 @@ void		Map::move(double time)
 	PhysicObject::move(time);
 
 	GameCommand	*cmd;
-	std::multimap<size_t, mapdata>::iterator it = _monsters.begin();
 	Core::GameState	&gm = this->getGroup()->getState();
-	for (; it != _monsters.end() && it->first <= this->_y;)
+	for (std::multimap<size_t, mapdata>::iterator it = _monsters.begin();
+				   	it != _monsters.end() && it->first <= this->_y;)
 	{
 		cmd = new GameCommand(it->second.command);
 		cmd->y = static_cast<int16_t>(this->_y - it->first + it->second.y);
