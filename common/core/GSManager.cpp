@@ -9,9 +9,6 @@ GSManager::GSManager() : Module("GSManager", 20)
 
 GSManager::~GSManager()
 {
-	for (instanceMap::iterator it = this->_keeper.begin();
-		 it != this->_keeper.end(); it++)
-		delete it->second;
 	this->removeDelete();
 	for (std::list<GameState*>::iterator it = this->_currentStates.begin();
 		 it != this->_currentStates.end(); it++)
@@ -36,36 +33,26 @@ void		GSManager::update(double elapsedTime)
 	if (!this->_currentStates.empty())
 		this->_currentStates.back()->getGUI().update(elapsedTime);
 	this->removeDelete();
+	this->addNewState();
 }
 
 void		GSManager::destroy()
 {
 }
 
-bool		GSManager::pushState(const std::string &name,
-					    GameState::Pause paused)
-{
-	return push(name, true, paused);
-}
-
 bool		GSManager::pushState(GameState &state,
 						GameState::Pause paused)
 {
-	return push(state, true, paused, false);
-}
-
-bool		GSManager::changeState(const std::string &name,
-					      GameState::Pause paused, bool del)
-{
-	pop(false, del);
-	return push(name, false, paused);
+	this->_addStates.push(AddState(&state, true, paused, false));
+	return true;
 }
 
 bool		GSManager::changeState(GameState &state,
 					      GameState::Pause paused, bool del)
 {
 	pop(false, del);
-	return push(state, false, paused, false);
+	this->_addStates.push(AddState(&state, false, paused, false));
+	return true;
 }
 
 void		GSManager::popState(bool del)
@@ -73,19 +60,6 @@ void		GSManager::popState(bool del)
 	pop(true, del);
 	if (!_currentStates.empty())
 		this->registerHandler(*_currentStates.back());
-}
-
-void		GSManager::removeState(const std::string &name)
-{
-  for (std::list<GameState*>::iterator it = _currentStates.begin();
-       it != _currentStates.end(); it++)
-    if ((*it)->name == name)
-      {
-    	(*it)->onEnd();
-    	it = _currentStates.erase(it);
-      }
-  _loadedStates.erase(find(_loadedStates.begin(), _loadedStates.end(), name));
-  _keeper.erase(name);
 }
 
 GameState	&GSManager::getCurrentState()
@@ -122,6 +96,21 @@ void		GSManager::addDelete(GameState *state)
 		_deleted.push_back(state);
 }
 
+void		GSManager::addNewState()
+{
+	if (!this->_addStates.empty())
+	{
+		AddState	&state = this->_addStates.front();
+		if (state.ready)
+		{
+			push(*state.state, state.changed, state.paused, state.resume);
+			this->_addStates.pop();
+		}
+		else
+			state.ready = true;
+	}
+}
+
 void		GSManager::removeDelete()
 {
 	while (!_deleted.empty())
@@ -129,26 +118,6 @@ void		GSManager::removeDelete()
 		delete _deleted.front();
 		_deleted.pop_front();
 	}
-}
-
-bool		GSManager::push(const std::string &name, bool changed,
-				       GameState::Pause paused)
-{
-	std::list<GameState*>::iterator	it;
-	it = find(_loadedStates.begin(), _loadedStates.end(), name);
-	if (it != _loadedStates.end())
-	{
-		this->push(**it, changed, paused, true);
-		_loadedStates.erase(it);
-		return true;
-	}
-	instanceMap::iterator		lit = _keeper.find(name);
-	if (lit != _keeper.end())
-	{
-		this->push(*lit->second->newInstance(), changed, paused, false);
-		return true;
-	}
-	return false;
 }
 
 bool		GSManager::push(GameState &state, bool changed,

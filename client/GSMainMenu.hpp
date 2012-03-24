@@ -14,7 +14,6 @@ public:
   void	onResume();
 
   void	modeSelection();
-  void	inGameTest();
   void	joinGame();
   void	options();
   void	quitGame();
