@@ -36,6 +36,7 @@ bool	Clock::isPaused() const
 #if defined (_WIN32)
 #define _WINSOCKAPI_
 #define EPOCHFILETIME (116444736000000000LL)
+#   pragma comment(lib, "Winmm.lib") 
 #include <windows.h>
 
 void	Clock::update()
