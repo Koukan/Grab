@@ -105,12 +105,14 @@ private:
 	size_t		_MazeMovableWallsNb;
 	size_t		_MazeWallsNb;
 	std::vector<int> _flush;
+	double		_y2;
 
 	void	createMonster(MonsterInfo const &info);
 	void	createBoss(MonsterInfo const &info);
 	void	createObstacle(int x, int y);
 	void	createMazeMonster(int x, int y);
 	void	createBreakableWall(int x, int y);
+	void	spawnSideWall(int x, int y);
 	void	createWall(int x, int y);
 	void	createVWall(int x, int y, int direction);
 	void	createHWall(int x, int y, int direction);

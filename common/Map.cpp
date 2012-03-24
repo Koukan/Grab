@@ -90,3 +90,8 @@ void		Map::increasePaused()
 {
   ++this->_nbPaused;
 }
+
+void		Map::setScrollingSpeed(double vy)
+{
+	this->_vy = vy;
+}
