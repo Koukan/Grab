@@ -325,8 +325,7 @@ bool		GSInGame::playerDie(Player &)
 		    (*it)->setLife(life);
 		    (*it)->getShip()->setDead(false);
 		  }
-		//		this->pause();
-		//		Core::GameStateManager::get().pushState(*(new GSContinue()), PHYSIC);
+			Core::GameStateManager::get().pushState(*new GSContinue(), PHYSIC);
 	      }
 	    else
 	      {
