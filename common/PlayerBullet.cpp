@@ -64,6 +64,8 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+	bullet->setXHitBoxOffset(-4);
+	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
@@ -95,6 +97,8 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
+	bullet->setXHitBoxOffset(-4);
+	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	bullet->setColor(_colors[0], _colors[1], _colors[2]);
