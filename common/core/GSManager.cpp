@@ -32,7 +32,6 @@ void		GSManager::update(double elapsedTime)
 	}
 	if (!this->_currentStates.empty())
 		this->_currentStates.back()->getGUI().update(elapsedTime);
-	this->removeDelete();
 	this->addNewState();
 }
 
@@ -105,6 +104,7 @@ void		GSManager::addNewState()
 		{
 			push(*state.state, state.changed, state.paused, state.resume);
 			this->_addStates.pop();
+			this->removeDelete();
 		}
 		else
 			state.ready = true;
@@ -120,10 +120,10 @@ void		GSManager::removeDelete()
 	}
 }
 
-bool		GSManager::push(GameState &state, bool changed,
+bool		GSManager::push(GameState &state, bool chaged,
 							GameState::Pause paused, bool resume)
 {
-	if (changed && !_currentStates.empty())
+	if (chaged && !_currentStates.empty())
 	{
 		_currentStates.back()->onChange();
 		_currentStates.back()->pause(paused);
