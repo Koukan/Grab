@@ -6,7 +6,7 @@
 
 CORE_BEGIN_NAMESPACE
 
-class CoreFont : public DrawableObject, public Resource
+class CORE_DLLREQ CoreFont : public DrawableObject, public Resource
 {
 public:
 	CoreFont(double x = 0, double y = 0) : DrawableObject(x, y){}

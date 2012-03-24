@@ -5,7 +5,7 @@
 
 CORE_BEGIN_NAMESPACE
 
-class File
+class CORE_DLLREQ File
 {
   public:
     File();

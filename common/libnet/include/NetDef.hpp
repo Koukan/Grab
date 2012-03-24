@@ -18,13 +18,13 @@
 #ifndef NET_DLLREQ
 	#if defined (NETDLL)
 		#if defined (_WIN32)
-			#define	NET_DLLREQ //__declspec(dllexport)
+			#define	NET_DLLREQ __declspec(dllexport)
 		#else
 			#define NET_DLLREQ
 		#endif
 	#else
 		#if defined (_WIN32)
-			#define	NET_DLLREQ //__declspec(dllimport)
+			#define	NET_DLLREQ __declspec(dllimport)
 		#else
 			#define NET_DLLREQ
 		#endif

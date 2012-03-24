@@ -101,9 +101,18 @@ include_directories (
 
 add_library(
 	net
-	STATIC
+	SHARED
 	${SRCS_NET}
 )
+
+IF(WIN32)
+set_source_files_properties (
+  ${SRCS_NET}
+  PROPERTIES
+  COMPILE_FLAGS
+  "-DNETDLL"
+)
+ENDIF(WIN32)
 
 IF(HAVE_EPOLL)
 set_source_files_properties (

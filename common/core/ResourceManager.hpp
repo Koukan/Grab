@@ -10,7 +10,7 @@
 
 CORE_BEGIN_NAMESPACE
 
-class ResourceManager
+class CORE_DLLREQ ResourceManager
 {
   public:
 	ResourceManager();

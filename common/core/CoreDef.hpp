@@ -1,15 +1,15 @@
 #pragma once
 
 #ifndef CORE_DLLREQ
-	#if defined (NETDLL)
+	#if defined (COREDLL)
 		#if defined (_WIN32)
-			#define	CORE_DLLREQ //__declspec(dllexport)
+			#define	CORE_DLLREQ __declspec(dllexport)
 		#else
 			#define CORE_DLLREQ
 		#endif
 	#else
 		#if defined (_WIN32)
-			#define	CORE_DLLREQ //__declspec(dllimport)
+			#define	CORE_DLLREQ __declspec(dllimport)
 		#else
 			#define CORE_DLLREQ
 		#endif
