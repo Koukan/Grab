@@ -213,6 +213,7 @@ void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
   if (ship.getPlayer().getType() == Player::ONLINE || ship.isDead())
 	return ;
   ship.setScore(ship.getScore() + score.score);
+  ship.increasePowerGauge(score.score);
   score.erase();
 }
 

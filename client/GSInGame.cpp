@@ -119,95 +119,104 @@ void		GSInGame::preload()
 
 void		GSInGame::registerShipCallbacks()
 {
+  Ship		*ship;
+
   for (std::list<Player *>::const_iterator it = this->_players.begin(); it != this->_players.end(); ++it)
   {
+	  ship = (*it)->getShip();
 	  if ((*it)->getType() == Player::KEYBOARD)
 	  {
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputUp,
+			 *ship, &Ship::inputUp,
 			  static_cast<int>(Core::Keyboard::Up));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputDown,
+			  *ship, &Ship::inputDown,
 			  static_cast<int>(Core::Keyboard::Down));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputLeft,
+			  *ship, &Ship::inputLeft,
 			  static_cast<int>(Core::Keyboard::Left));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputRight,
+			  *ship, &Ship::inputRight,
 			  static_cast<int>(Core::Keyboard::Right));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedUp,
+			  *ship, &Ship::inputReleasedUp,
 			  static_cast<int>(Core::Keyboard::Up));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedDown,
+			  *ship, &Ship::inputReleasedDown,
 			  static_cast<int>(Core::Keyboard::Down));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedLeft,
+			  *ship, &Ship::inputReleasedLeft,
 			  static_cast<int>(Core::Keyboard::Left));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedRight,
+			  *ship, &Ship::inputReleasedRight,
 			  static_cast<int>(Core::Keyboard::Right));
 		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputFire,
+			  *ship, &Ship::inputFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedFire,
+			  *ship, &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputSpecialFire,
+			  *ship, &Ship::inputSpecialFire,
 			  static_cast<int>((*it)->getAction(Player::SPECIAL_FIRE).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedSpecialFire,
+			  *ship, &Ship::inputReleasedSpecialFire,
 			  static_cast<int>((*it)->getAction(Player::SPECIAL_FIRE).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputGrab1,
+			  *ship, &Ship::inputGrab1,
 			  static_cast<int>((*it)->getAction(Player::GRAB1).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			  *(*it)->getShip(), &Ship::inputGrab2,
+			  *ship, &Ship::inputGrab2,
 			  static_cast<int>((*it)->getAction(Player::GRAB2).Key.Code));
 		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
-			 *(*it)->getShip(), &Ship::inputGrab3,
+			 *ship, &Ship::inputGrab3,
 			  static_cast<int>((*it)->getAction(Player::GRAB3).Key.Code));
+		  this->getInput().registerInputCallback(Core::InputCommand::KeyPressed,
+	   		 *ship, &Ship::specialPower,
+			 static_cast<int>((*it)->getAction(Player::SPECIAL_POWER).Key.Code));
 	  }
 	  else
 	  {
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickMoved,
-			  *(*it)->getShip(), &Ship::inputJoystickMoved, -1, (*it)->getType() - 1);
+			  *ship, &Ship::inputJoystickMoved, -1, (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::PAUSE).Type,
 			  *this, &GSInGame::inputEscape,
 			  static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonPressed,
-			  *(*it)->getShip(), &Ship::inputFire,
+			  *ship, &Ship::inputFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedFire,
+			  *ship, &Ship::inputReleasedFire,
 			  static_cast<int>((*it)->getAction(Player::FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonPressed,
-			  *(*it)->getShip(), &Ship::inputSpecialFire,
+			  *ship, &Ship::inputSpecialFire,
 			  static_cast<int>((*it)->getAction(Player::SPECIAL_FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
-			  *(*it)->getShip(), &Ship::inputReleasedSpecialFire,
+			  *ship, &Ship::inputReleasedSpecialFire,
 			  static_cast<int>((*it)->getAction(Player::SPECIAL_FIRE).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB1).Type,
-			 *(*it)->getShip(), &Ship::inputGrab1,
+			 *ship, &Ship::inputGrab1,
 			  static_cast<int>((*it)->getAction(Player::GRAB1).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB2).Type,
-			 *(*it)->getShip(), &Ship::inputGrab2,
+			 *ship, &Ship::inputGrab2,
 			  static_cast<int>((*it)->getAction(Player::GRAB2).JoystickButton.Button),
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::GRAB3).Type,
-			 *(*it)->getShip(), &Ship::inputGrab3,
+			 *ship, &Ship::inputGrab3,
 			  static_cast<int>((*it)->getAction(Player::GRAB3).JoystickButton.Button),
 			  (*it)->getType() - 1);
+		  this->getInput().registerInputCallback((*it)->getAction(Player::SPECIAL_POWER).Type,
+			 *ship, &Ship::specialPower,
+		         static_cast<int>((*it)->getAction(Player::SPECIAL_POWER).JoystickButton.Button));
 	  }
   }
 }

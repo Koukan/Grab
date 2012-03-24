@@ -54,7 +54,6 @@ public:
   void			inputGrab1(Core::InputCommand const &cmd);
   void			inputGrab2(Core::InputCommand const &cmd);
   void			inputGrab3(Core::InputCommand const &cmd);
-  void			inputGrab4(Core::InputCommand const &cmd);
   void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab);
   void			setDead(bool dead, bool command = true);
   bool			isDead() const;
@@ -62,10 +61,16 @@ public:
   void			updateCannonsTrajectory();
   void			updateBulletTrajectory();
   void			launchGrab(std::string const &group, unsigned int nGrab, double x, double y);
+  void			specialPower(Core::InputCommand const& cmd);
+  void			bomb();
+  void			shield();
+  void			grab4();
+
   void			setNbSecRespawn(int nbSec);
-  unsigned int	getScore() const;
+  unsigned int		getScore() const;
   void			setScore(unsigned int score);
-  void			bomb(Core::InputCommand const& cmd);
+  unsigned int		getPowerGauge() const;
+  void			increasePowerGauge(unsigned int score);
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
@@ -106,6 +111,8 @@ private:
   double		_targetx;
   double		_targety;
   bool			_target;
+  unsigned int		_powerGauge;
+  void (Ship::*_specialPower)();
 
   void handleActions();
 };

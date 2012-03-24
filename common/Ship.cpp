@@ -16,7 +16,10 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
 	  _playerBullet(0), _score(0), _nbSecRespawn(0),
-	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), _targetx(0), _targety(0), _target(false)
+	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
+	  _targetx(0), _targety(0), _target(false), 
+	  _powerGauge(100), //will be reset to 0 when I finish my tests
+	  _specialPower(info.specialPower)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -95,9 +98,14 @@ void	Ship::move(double time)
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
-void Ship::bomb(Core::InputCommand const& /*cmd*/)
+#include <iostream>
+void Ship::bomb()
 {
+  std::cout << "throw bomb !" << std::endl; 
+}
 
+void Ship::shield()
+{
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -401,7 +409,7 @@ void Ship::inputGrab3(Core::InputCommand const& /*cmd*/)
   this->manageGrab("grabs", 2);
 }
 
-void Ship::inputGrab4(Core::InputCommand const& /*cmd*/)
+void Ship::grab4()
 {
 	if (this->_dead)
 		return ;
@@ -426,8 +434,9 @@ void Ship::setDead(bool dead, bool command)
 		}
 		this->_delete = 0;
 		return ;
-	}
+	}	
 	this->_delete = 3;
+	this->_powerGauge = 0;
 	this->_player.die();
 	this->_elapsedTime = 1000;
 	if (this->_timer)
@@ -562,3 +571,25 @@ void		Ship::setNbSecRespawn(int nbSec)
 {
 	this->_nbSecRespawn = nbSec;
 }
+
+unsigned int	Ship::getPowerGauge() const
+{
+  return (_powerGauge);
+}
+
+void		Ship::increasePowerGauge(unsigned int score)
+{
+  _powerGauge += score;
+  if (_powerGauge > 100)
+    _powerGauge = 100;
+}
+
+void		Ship::specialPower(Core::InputCommand const&)
+{
+  if (_powerGauge == 100 && _specialPower)
+    {
+      _powerGauge = 0;
+      (this->*_specialPower)();
+    }
+}
+

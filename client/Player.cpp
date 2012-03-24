@@ -19,6 +19,8 @@ Player::Player(Player::type type, int life, Ship* ship)
 		this->_actions[Player::GRAB2].Key.Code = Core::Keyboard::A;
 		this->_actions[Player::GRAB3].Type = Core::InputCommand::KeyPressed;
 		this->_actions[Player::GRAB3].Key.Code = Core::Keyboard::D;
+		this->_actions[Player::SPECIAL_POWER].Type = Core::InputCommand::KeyPressed;
+		this->_actions[Player::SPECIAL_POWER].Key.Code = Core::Keyboard::S;
 		this->_actions[Player::PAUSE].Type = Core::InputCommand::KeyReleased;
 		this->_actions[Player::PAUSE].Key.Code = Core::Keyboard::Escape;
 	}
@@ -36,6 +38,8 @@ Player::Player(Player::type type, int life, Ship* ship)
 		this->_actions[Player::GRAB2].JoystickButton.Button = 2;
 		this->_actions[Player::GRAB3].Type = Core::InputCommand::JoystickButtonPressed;
 		this->_actions[Player::GRAB3].JoystickButton.Button = 1;
+		this->_actions[Player::SPECIAL_POWER].Type = Core::InputCommand::JoystickButtonPressed;
+		this->_actions[Player::SPECIAL_POWER].JoystickButton.Button = 0;
 	}
 }
 
