@@ -31,6 +31,12 @@ distribution.
 #include <stdio.h>
 #include <assert.h>
 
+#ifdef COREDLL
+# define DECLSPEC __declspec(dllexport)
+#else
+# define DECLSPEC
+#endif
+
 class TiXmlDocument;
 class TiXmlElement;
 class TiXmlComment;
@@ -62,7 +68,7 @@ class TiXmlDeclaration;
 	A Decleration contains: Attributes (not on tree)
 	@endverbatim
 */
-class TiXmlBase
+class DECLSPEC TiXmlBase
 {
 	friend class TiXmlNode;
 	friend class TiXmlElement;
@@ -126,7 +132,7 @@ class TiXmlBase
 	in a document, or stand on its own. The type of a TyXmlNode
 	can be queried, and it can be cast to its more defined type.
 */
-class TiXmlNode : public TiXmlBase
+class DECLSPEC TiXmlNode : public TiXmlBase
 {
   public:
 	/** The types of XML nodes supported by TinyXml. (All the
@@ -302,7 +308,7 @@ class TiXmlNode : public TiXmlBase
 
 	@note Attributes have a parent
 */
-class TiXmlAttribute : public TiXmlBase
+class DECLSPEC TiXmlAttribute : public TiXmlBase
 {
 	friend class TiXmlAttributeSet;
 
@@ -363,7 +369,7 @@ class TiXmlAttribute : public TiXmlBase
 		- I like circular lists
 		- it demonstrates some independence from the (typical) doubly linked list.
 */
-class TiXmlAttributeSet
+class DECLSPEC TiXmlAttributeSet
 {
   public:
 	TiXmlAttributeSet();
@@ -386,7 +392,7 @@ class TiXmlAttributeSet
 	and can contain other elements, text, comments, and unknowns.
 	Elements also contain an arbitrary number of attributes.
 */
-class TiXmlElement : public TiXmlNode
+class DECLSPEC TiXmlElement : public TiXmlNode
 {
   public:
 	/// Construct an element.
@@ -443,7 +449,7 @@ class TiXmlElement : public TiXmlNode
 
 /**	An XML comment.
 */
-class TiXmlComment : public TiXmlNode
+class DECLSPEC TiXmlComment : public TiXmlNode
 {
   public:
 	/// Constructs an empty comment.
@@ -466,7 +472,7 @@ class TiXmlComment : public TiXmlNode
 
 /** XML text. Contained in an element.
 */
-class TiXmlText : public TiXmlNode
+class DECLSPEC TiXmlText : public TiXmlNode
 {
   public:
 	TiXmlText()  : TiXmlNode( TiXmlNode::TEXT ) {}
@@ -491,7 +497,7 @@ class TiXmlText : public TiXmlNode
 /** XML Cdata section. Contained in an element.
  * Always start with <![CDATA[  and end with ]]>
 */
-class TiXmlCData : public TiXmlText
+class DECLSPEC TiXmlCData : public TiXmlText
 {
         friend class TiXmlElement;
 public:
@@ -518,7 +524,7 @@ protected :
 	handled as special cases, not generic attributes, simply
 	because there can only be at most 3 and they are always the same.
 */
-class TiXmlDeclaration : public TiXmlNode
+class DECLSPEC TiXmlDeclaration : public TiXmlNode
 {
   public:
 	/// Construct an empty declaration.
@@ -562,7 +568,7 @@ class TiXmlDeclaration : public TiXmlNode
 	It will be written back to the XML, unchanged, when the file 
 	is saved.
 */
-class TiXmlUnknown : public TiXmlNode
+class DECLSPEC TiXmlUnknown : public TiXmlNode
 {
   public:
 	TiXmlUnknown() : TiXmlNode( TiXmlNode::UNKNOWN ) {}
@@ -586,7 +592,7 @@ class TiXmlUnknown : public TiXmlNode
 	XML pieces. It can be saved, loaded, and printed to the screen.
 	The 'value' of a document node is the xml file name.
 */
-class TiXmlDocument : public TiXmlNode
+class DECLSPEC TiXmlDocument : public TiXmlNode
 {
   public:
 	/// Create an empty document, that has no name.

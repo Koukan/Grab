@@ -14,8 +14,8 @@
 
 NET_BEGIN_NAMESPACE
 
-std::string		getLastError();
-void			printLastError();
+std::string		NET_DLLREQ getLastError();
+void			NET_DLLREQ printLastError();
 
 NET_END_NAMESPACE
 

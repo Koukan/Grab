@@ -1,7 +1,7 @@
 #ifndef bulletmlcommon_h_
 #define bulletmlcommon_h_
 
-#ifdef WIN32_DLL_EXPORT
+#ifdef COREDLL
 # define DECLSPEC __declspec(dllexport)
 #else
 # define DECLSPEC

@@ -65,7 +65,7 @@ protected:
 	Y_ gradient_;
 };
 
-class BulletMLRunnerImpl {
+class DECLSPEC BulletMLRunnerImpl {
 public:
     explicit BulletMLRunnerImpl(BulletMLState* state, BulletMLRunner* runner);
     virtual ~BulletMLRunnerImpl();

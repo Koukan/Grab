@@ -4,6 +4,8 @@
 
 NET_USE_NAMESPACE
 
+static const int	n = 624, m = 397;
+
 MTRand::MTRand()
 	: p_(0)
 {

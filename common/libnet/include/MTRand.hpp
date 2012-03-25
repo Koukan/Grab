@@ -71,10 +71,9 @@ private:
 	uint32_t			twiddle(uint32_t, uint32_t);
 	void				gen_state(); // generate new state
 
-	static const int	n = 624, m = 397; // compile time constants
 	int					p_; // position in state array
 	uint32_t			seed_;
-	uint32_t			state_[n]; // state vector array
+	uint32_t			state_[624]; // state vector array
 };
 
 inline uint32_t		MTRand::twiddle(uint32_t u, uint32_t v)
@@ -85,7 +84,7 @@ inline uint32_t		MTRand::twiddle(uint32_t u, uint32_t v)
 
 inline uint32_t		MTRand::rand_int32()
 {
-	if (p_ == n)
+	if (p_ == 624 /*n*/)
 		gen_state();
 
 	uint32_t x = state_[p_++];
