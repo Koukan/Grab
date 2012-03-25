@@ -173,13 +173,10 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIHLayout.hpp
 )
 
-IF(CMAKE_COMPILER_IS_GNUCXX)
-    MESSAGE(STATUS "GCC detected - Adding compiler flags")
-    SET(CMAKE_C_FLAGS "-std=c++0x -W -Wall -Wextra -O2")
-ENDIF(CMAKE_COMPILER_IS_GNUCXX)
-
 IF(WIN32)
-SET(CMAKE_C_FLAGS "")
+	SET(CMAKE_C_FLAGS "")
+ELSE(WIN32)
+	SET(CMAKE_C_FLAGS "-std=c++0x -W -Wall -Wextra -O2")
 ENDIF(WIN32)
 
 ##### Setting the output directory for the solution
