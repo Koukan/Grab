@@ -150,8 +150,9 @@ include_directories (
 	${NET_MUTEX_INCLUDE_DIR}
 )
 
+add_definitions (-DCOREDLL)
+
 IF(WIN32)
-	SET(CMAKE_C_FLAGS "/DCOREDLL")
 ELSE(WIN32)
 	SET(CMAKE_C_FLAGS "-W -Wall -Wextra -O2")
 ENDIF(WIN32)
