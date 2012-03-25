@@ -36,8 +36,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	if (this->_sprite)
 	{
 		this->_sprite->setColor(r, g, b);
-		this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
-		this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+		this->_xHitboxOffset = -this->_hitBox->getWidth() / 2;
+		this->_yHitboxOffset = -this->_hitBox->getHeight() / 2;
 	}
 	this->defineGrabPosition(info.grab1, 0);
 	this->defineGrabPosition(info.grab2, 1);
@@ -281,8 +281,8 @@ void Ship::manageFire()
 	if (!this->_playerBullet)
 	{
 		this->_playerBullet = new PlayerBullet(this->_bulletFileName, this->getGroup()->getState(),
-								"playerShots", this->_x + this->getSprite().getWidth() / 2,
-								this->_y, this->_vx, this->_vy);
+								"playerShots", this->_x,
+								this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
 		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 		this->getGroup()->getState().addGameObject(this->_playerBullet);
 	}
@@ -533,25 +533,25 @@ void Ship::updateBulletTrajectory()
 {
   if (this->_playerBullet)
     {
-      this->_playerBullet->setX(this->_x + this->getSprite().getWidth() / 2);
-      this->_playerBullet->setY(this->_y);
+      this->_playerBullet->setX(this->_x);
+      this->_playerBullet->setY(this->_y - this->getSprite().getHeight() / 2);
     }
 }
 
 void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGrab)
 {
   if ((position & 8))
-    _grabsPositions[nGrab].first = -20;
+    _grabsPositions[nGrab].first = -_sprite->getWidth() / 2 - 20;
   else if ((position & 16))
-    _grabsPositions[nGrab].first = _sprite->getWidth() / 2;
+    _grabsPositions[nGrab].first = 0;
   else if ((position & 32))
-    _grabsPositions[nGrab].first = _sprite->getWidth() + 20;
+    _grabsPositions[nGrab].first = _sprite->getWidth() / 2 + 20;
   if ((position & 1))
-    _grabsPositions[nGrab].second = -20;
+    _grabsPositions[nGrab].second = -_sprite->getHeight() / 2 - 20;
   else if ((position & 2))
-    _grabsPositions[nGrab].second = _sprite->getHeight() / 2;
+    _grabsPositions[nGrab].second = 0;
   else if ((position & 4))
-    _grabsPositions[nGrab].second = _sprite->getHeight() + 20;
+    _grabsPositions[nGrab].second = _sprite->getHeight() / 2 + 20;
 }
 
 unsigned int	Ship::getScore() const
