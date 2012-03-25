@@ -120,7 +120,7 @@ add_executable(
 )
 ENDIF(WIN32)
 
-add_subdirectory(../common/libnet ../common/libnet_build)
+#add_subdirectory(../common/libnet ../common/libnet_build)
 add_subdirectory(../common/core ../common/libcore_build)
 
 include_directories (

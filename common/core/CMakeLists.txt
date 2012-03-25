@@ -138,6 +138,8 @@ set(SRCS_CORE
 )
 SOURCE_GROUP (core_headers FILES(${INCLUDES_CORE}))
 
+add_subdirectory(../libnet ../libnet_build)
+
 include_directories (
 	${CORE_DIR}
 	${CORE_CALLBACK_DIR}
@@ -168,4 +170,9 @@ add_library(
 	core
 	SHARED
 	${SRCS_CORE}
-)	
+)
+
+target_link_libraries(
+	core
+	net
+)

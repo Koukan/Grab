@@ -225,10 +225,10 @@ include_directories (
 find_package (Threads)
 
 IF(WIN32)
-	add_subdirectory(../common/libnet ../common/libnet_build_2)
+#add_subdirectory(../common/libnet ../common/libnet_build_2)
 	add_subdirectory(../common/core ../common/libcore_build_2)
 ELSE(WIN32)
-	add_subdirectory(../common/libnet ../common/libnet_build)
+#add_subdirectory(../common/libnet ../common/libnet_build)
 	add_subdirectory(../common/core ../common/libcore_build)
 ENDIF(WIN32)
 
