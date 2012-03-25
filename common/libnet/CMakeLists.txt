@@ -105,10 +105,7 @@ add_library(
 	${SRCS_NET}
 )
 
-IF(WIN32)
-	SET(CMAKE_C_FLAGS "/DNETDLL")
-ELSE(WIN32)
-ENDIF(WIN32)
+add_definitions (-DNETDLL)
 
 IF(HAVE_EPOLL)
 set_source_files_properties (
