@@ -294,9 +294,7 @@ void Ship::manageFire()
 			this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
 			this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
 		}
-		if (this->_dead)
-			return ;
-		this->_playerBullet->isFiring(true);
+		this->_playerBullet->isFiring(!this->_dead);
 		this->_playerBullet->isConcentrated(true);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 		{
@@ -304,7 +302,7 @@ void Ship::manageFire()
 			{
 				_cannons[i]->fire();
 				if (_cannons[i]->getBullet())
-					_cannons[i]->getBullet()->isConcentrated(true);
+					_cannons[i]->getBullet()->isConcentrated(!this->_dead);
 			}
 		}
 		return ;
