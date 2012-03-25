@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <MTRand.hpp>
+#include "Sound.hpp"
 
 class MonsterGenerator : public Map
 {
@@ -20,9 +21,9 @@ public:
 	void	addRandomHWall(std::string const &name, bool scrollable, size_t level);
 	void	addRandomVWall(std::string const &name, bool scrollable, size_t level);
 	void	addRandomBreakableWall(std::string const &name, bool scrollable, size_t level);
-	void	generate(double time);
-	void	generateSquad(double time);
-	void	generateBoss(double time);
+	void	addSquadSound(std::string const &name, bool scrollable, size_t level);
+	void	addBossSound(std::string const &name, bool scrollable, size_t level);
+
 	void	setSeed(uint32_t seed);
 
 private:
@@ -70,6 +71,8 @@ private:
 	Monsters	_vWalls;
 	Monsters	_hWalls;
 	Monsters	_breakableWalls;
+	std::vector<std::string>	_squadSounds;
+	std::vector<std::string>	_bossSounds;
 
 	size_t		_maxId;
 
@@ -106,6 +109,13 @@ private:
 	size_t		_MazeWallsNb;
 	std::vector<int> _flush;
 	double		_y2;
+	Core::Sound	*_sounds[2];
+	int			_currentSound;
+	bool		_beginning;
+
+	void	generate(double time);
+	void	generateSquad(double time);
+	void	generateBoss(double time);
 
 	void	createMonster(MonsterInfo const &info);
 	void	createBoss(MonsterInfo const &info);
@@ -117,6 +127,8 @@ private:
 	void	createVWall(int x, int y, int direction);
 	void	createHWall(int x, int y, int direction);
 	void	createDoor();
+	void	createSquadSound();
+	void	createBossSound();
 	void	updateId();
 	void	addSideWalls(double elapsed);
 	void	chooseMovingWall(int x, int y, int direction);
@@ -131,6 +143,7 @@ private:
 	void	onRight(int &x, int &y);
 	void	onTop(int &x, int &y);
 	void	onBottom(int &x, int &y);
+	void	soundTransition(double elapsedTime);
 
 	void	changeToSquads();
 	void	changeToMaze();

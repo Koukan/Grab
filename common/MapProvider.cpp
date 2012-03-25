@@ -61,6 +61,10 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomVWall);
 			else if (name == "randomBreakableWall")
 				this->handleRandomElem(child, manager, &MonsterGenerator::addRandomBreakableWall);
+			else if (name == "squadSound")
+				this->handleRandomElem(child, manager, &MonsterGenerator::addSquadSound);
+			else if (name == "bossSound")
+				this->handleRandomElem(child, manager, &MonsterGenerator::addBossSound);
 		}
 	}
 	_current = 0;

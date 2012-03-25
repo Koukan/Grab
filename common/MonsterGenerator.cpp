@@ -7,14 +7,20 @@
 
 MonsterGenerator::MonsterGenerator(int seed)
 	: _maxId(0), _squadLevelSpeed(4), _mazeLevel(-1), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(5),
-	_leftFrequency(20), _rightFrequency(20), _upFrequency(1), _nbSquads(0), _nbSquadsMax(4), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(0),
+	_leftFrequency(20), _rightFrequency(20), _upFrequency(1), _nbSquads(0), _nbSquadsMax(10), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(5),
 	_inMaze(false), _tmpY(this->_y), _wallSize(180), _position(1), _lastPosition(_position), _mazeY(0),
-	_MazeEnemiesNb(0), _MazeBreakableWallsNb(0), _MazeMovableWallsNb(0), _MazeWallsNb(0), _y2(this->_y)
+	_MazeEnemiesNb(0), _MazeBreakableWallsNb(0), _MazeMovableWallsNb(0), _MazeWallsNb(0), _y2(this->_y), _currentSound(0), _beginning(true)
 {
+	this->_sounds[0] = 0;
+	this->_sounds[1] = 0;
 }
 
 MonsterGenerator::~MonsterGenerator()
 {
+	if (this->_sounds[0])
+		delete this->_sounds[0];
+	if (this->_sounds[1])
+		delete this->_sounds[1];
 }
 
 Core::Resource    *MonsterGenerator::clone() const
@@ -68,6 +74,16 @@ void	MonsterGenerator::addRandomBreakableWall(std::string const &name, bool scro
 {
 	this->_breakableWalls.push_back(MonsterInfo(level, name, scrollable));
 	std::sort(this->_breakableWalls.begin(), this->_breakableWalls.end());
+}
+
+void	MonsterGenerator::addSquadSound(std::string const &name, bool scrollable, size_t level)
+{
+	this->_squadSounds.push_back(name);
+}
+
+void	MonsterGenerator::addBossSound(std::string const &name, bool scrollable, size_t level)
+{
+	this->_bossSounds.push_back(name);
 }
 
 void	MonsterGenerator::spawnSideWall(int x, int y)
@@ -173,6 +189,49 @@ void	MonsterGenerator::createBoss(MonsterInfo const &info)
 {
 	this->addElem("spawnspawner", info.name, this->_rand() % 500 + /*RendererManager::get().getWidth()*/1280 / 2 - 250,
 		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, true, -100);
+}
+
+void	MonsterGenerator::createSquadSound()
+{
+	if (this->_squadSounds.empty())
+		return ;
+	Core::GameState	&gm = this->getGroup()->getState();
+
+	int i = this->_rand() % this->_squadSounds.size();
+	this->_currentSound = (this->_currentSound + 1) % 2;
+	this->_sounds[this->_currentSound] = gm.getSound(this->_squadSounds[i]);
+	if (this->_sounds[this->_currentSound])
+		this->_sounds[this->_currentSound]->play();
+}
+
+void	MonsterGenerator::createBossSound()
+{
+	if (this->_bossSounds.empty())
+		return ;
+	Core::GameState	&gm = this->getGroup()->getState();
+
+	int i = this->_rand() % this->_bossSounds.size();
+	this->_currentSound = (this->_currentSound + 1) % 2;
+	this->_sounds[this->_currentSound] = gm.getSound(this->_bossSounds[i]);
+	if (this->_sounds[this->_currentSound])
+		this->_sounds[this->_currentSound]->play();
+}
+
+void	MonsterGenerator::soundTransition(double elapsedTime)
+{
+	int i = (this->_currentSound + 1) % 2;
+	double	speed = 50;
+	if (this->_sounds[i])
+	{
+		double volume = this->_sounds[i]->getVolume() - speed * elapsedTime;
+		if (volume <= 0)
+		{
+			delete this->_sounds[i];
+			this->_sounds[i] = 0;
+		}
+		else
+			this->_sounds[i]->setVolume(volume);
+	}
 }
 
 void	MonsterGenerator::updateId()
@@ -570,6 +629,7 @@ void	MonsterGenerator::createDoor()
 
 void	MonsterGenerator::generate(double time)
 {
+	this->soundTransition(time);
 	if (this->_inMaze)
 	{
 		double elapsed = this->_y2 - this->_tmpY;
@@ -588,22 +648,24 @@ void	MonsterGenerator::generate(double time)
 				}
 			}
 			else if (this->_mazeY == HEIGHT * nbMaze + 1)
-			{
 				this->createDoor();
-			}
 			else if (this->_mazeY == HEIGHT * nbMaze + 7)
 			{
+				this->changeToBoss();
 				this->generateBoss(time);
 			}
 			else if (this->_mazeY > HEIGHT * nbMaze + 7 && this->_nbPaused == 0/*this->_elapsedTime <= 0*/)
-			{
 				this->changeToSquads();
-			}
 			++this->_mazeY;
 		}
 	}
 	else
 	{
+		if (this->_beginning)
+		{
+			this->createSquadSound();
+			this->_beginning = false;
+		}
 		if (this->_elapsedTime <= 0)
 		{
 			if (this->_nbSquads < this->_nbSquadsMax)
@@ -618,6 +680,7 @@ void	MonsterGenerator::generate(double time)
 void	MonsterGenerator::changeToSquads()
 {
 	std::cout << "change to squad" << std::endl;
+	this->createSquadSound();
 	this->_inMaze = false;
 	this->_elapsedTime = 5;
 
@@ -675,4 +738,5 @@ void	MonsterGenerator::changeToMaze()
 
 void	MonsterGenerator::changeToBoss()
 {
+	this->createBossSound();
 }
