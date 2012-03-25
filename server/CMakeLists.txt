@@ -110,12 +110,12 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 IF(WIN32)
 add_executable(
-	grab_server
+	grab_server resource.rc
 	${SRCS}
 )
 ELSE(WIN32)
 add_executable(
-	grab_server resource.rc
+	grab_server
 	${SRCS}
 )
 ENDIF(WIN32)
