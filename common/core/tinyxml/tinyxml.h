@@ -32,7 +32,11 @@ distribution.
 #include <assert.h>
 
 #ifdef COREDLL
-# define DECLSPEC __declspec(dllexport)
+#	ifdef _WIN32
+#		define DECLSPEC __declspec(dllexport)
+#	else
+#		define DECLSPEC
+#	endif
 #else
 # define DECLSPEC
 #endif

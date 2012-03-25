@@ -2,7 +2,11 @@
 #define bulletmlcommon_h_
 
 #ifdef COREDLL
-# define DECLSPEC __declspec(dllexport)
+#	if defined (_WIN32)
+#		define DECLSPEC __declspec(dllexport)
+#	else
+#		define DECLSPEC
+#	endif
 #else
 # define DECLSPEC
 #endif
