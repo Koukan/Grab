@@ -85,6 +85,7 @@ private:
   bool						_grabLaunched;
   std::pair<double, double>	_grabsPositions[3];
   int						_colors[3];
+  Core::Sound				*_fireSound;
 
   // ship control
   enum Actions

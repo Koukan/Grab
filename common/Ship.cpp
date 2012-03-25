@@ -19,7 +19,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
 	  _targetx(0), _targety(0), _target(false), 
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPower(info.specialPower)
+	  _specialPower(info.specialPower),
+	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound"))
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -47,6 +48,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 
 Ship::~Ship()
 {
+	if (this->_fireSound)
+		delete this->_fireSound;
 }
 
 void	Ship::setPosition(double x, double y, double)
@@ -339,24 +342,32 @@ void	Ship::fire()
 {
 	this->_actions[Ship::FIRE] = true;
 	this->manageFire();
+	if (!this->_actions[Ship::SPECIAL_FIRE] && this->_fireSound)
+		this->_fireSound->play();
 }
 
 void	Ship::releaseFire()
 {
 	this->_actions[Ship::FIRE] = false;
 	this->manageFire();
+	if (!this->_actions[Ship::SPECIAL_FIRE] && this->_fireSound)
+		this->_fireSound->pause();
 }
 
 void	Ship::specialFire()
 {
 	this->_actions[Ship::SPECIAL_FIRE] = true;
 	this->manageFire();
+	if (!this->_actions[Ship::FIRE] && this->_fireSound)
+		this->_fireSound->play();
 }
 
 void	Ship::releaseSpecialFire()
 {
 	this->_actions[Ship::SPECIAL_FIRE] = false;
 	this->manageFire();
+	if (!this->_actions[Ship::FIRE] && this->_fireSound)
+		this->_fireSound->pause();
 }
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)

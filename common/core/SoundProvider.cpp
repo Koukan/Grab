@@ -18,6 +18,7 @@ void	SoundProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 	std::string		name;
 	std::string		soundName;
 	std::string		soundFile;
+	bool			loop = false;
 
 	for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute();
        attrib != 0; attrib = attrib->Next())
@@ -27,9 +28,15 @@ void	SoundProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 			soundName = attrib->Value();
 		else if (name == "file")
 			soundFile = attrib->Value();
+		else if (name == "loop" && attrib->Value() == "true")
+			loop = true;
     }
+	std::cout << "add sound \"" << soundName << "\" loop = " << loop << std::endl;
 	Sound *sound = this->addSound(soundName, soundFile);
 	if (sound)
+	{
+		sound->setLoop(loop);
 		this->XMLProvider::addResource(soundName, *sound, manager);
+	}
 }
 

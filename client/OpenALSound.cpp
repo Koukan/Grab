@@ -4,6 +4,7 @@
 #include "OpenALSound.hpp"
 
 OpenALSound::OpenALSound(std::string const &path)
+	: _loop(false)
 {
   SNDFILE               *file;
   SF_INFO               fileinfos;
@@ -47,6 +48,7 @@ OpenALSound::OpenALSound(OpenALSound const& other)
 {
   alGenSources(1, &(this->_source));
   alSourcei(this->_source, AL_BUFFER, other._buffer);
+  alSourcei(this->_source, AL_LOOPING, other._loop);
 }
 
 OpenALSound::~OpenALSound()
@@ -87,6 +89,7 @@ void			OpenALSound::setVelocity(double x, double y, double z)
 
 void        	OpenALSound::setLoop(bool loop)
 {
+	this->_loop = loop;
   alSourcei(this->_source, AL_LOOPING, loop);
 }
 
