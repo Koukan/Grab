@@ -477,8 +477,8 @@ void Ship::draw(double elapsedTime)
 		else
 			this->_elapsedTime -= elapsedTime;
 	Core::Sprite const &sprite = this->getSprite();
-	this->_timer->draw(static_cast<int>(this->_x + (sprite.getWidth() - this->_timer->getWidth()) / 2),
-		static_cast<int>(this->_y + (sprite.getHeight() - this->_timer->getHeight()) / 2), elapsedTime);
+	this->_timer->draw(static_cast<int>(this->_x - this->_timer->getWidth() / 2),
+		static_cast<int>(this->_y - this->_timer->getHeight() / 2), elapsedTime);
 	}
 }
 
