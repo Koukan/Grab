@@ -104,7 +104,9 @@ private:
   bool			_actions[Ship::NBACTIONS];
 
   std::string	_bulletFileName;
+  std::string	_concentratedBulletFileName;
   PlayerBullet	*_playerBullet;
+  PlayerBullet	*_concentratedPlayerBullet;
   unsigned int	_score;
   int			_nbSecRespawn;
   double		_elapsedTime;

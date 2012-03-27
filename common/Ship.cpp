@@ -14,8 +14,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
-	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName),
-	  _playerBullet(0), _score(0), _nbSecRespawn(0),
+	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
+	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
 	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
 	  _targetx(0), _targety(0), _target(false), 
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
@@ -281,24 +281,27 @@ void Ship::inputJoystickMoved(Core::InputCommand const& cmd)
 
 void Ship::manageFire()
 {
-	if (!this->_playerBullet)
+	if (this->_actions[Ship::SPECIAL_FIRE] == true && !this->_dead)
 	{
-		this->_playerBullet = new PlayerBullet(this->_bulletFileName, this->getGroup()->getState(),
-								"playerShots", this->_x,
-								this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
-		this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
-		this->getGroup()->getState().addGameObject(this->_playerBullet);
-	}
-	if (this->_actions[Ship::SPECIAL_FIRE] == true)
-	{
+		if (!this->_concentratedPlayerBullet)
+		{
+			this->_concentratedPlayerBullet = new PlayerBullet(this->_concentratedBulletFileName, this->getGroup()->getState(),
+									"playerShots", this->_x,
+									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
+			this->_concentratedPlayerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
+		}
+		if (this->_playerBullet)
+			this->_playerBullet->isFiring(false);
 		if (this->_tmpSpeed == this->_speed)
 		{
 			this->_speed = this->_tmpSpeed * 0.3;
 			this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
 			this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
 		}
-		this->_playerBullet->isFiring(!this->_dead);
-		this->_playerBullet->isConcentrated(true);
+		std::cout << "" << std::endl;
+		this->_concentratedPlayerBullet->isFiring(!this->_dead);
+		//this->_playerBullet->isConcentrated(true);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 		{
 			if (_cannons[i])
@@ -310,10 +313,20 @@ void Ship::manageFire()
 		}
 		return ;
 	}
-	if (this->_actions[Ship::FIRE] == true && !this->_dead)
+	else if (this->_actions[Ship::FIRE] == true && !this->_dead)
 	{
+		if (this->_concentratedPlayerBullet)
+			this->_concentratedPlayerBullet->isFiring(false);
+		if (!this->_playerBullet)
+		{
+			this->_playerBullet = new PlayerBullet(this->_bulletFileName, this->getGroup()->getState(),
+									"playerShots", this->_x,
+									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
+			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			this->getGroup()->getState().addGameObject(this->_playerBullet);
+		}
 		this->_playerBullet->isFiring(true);
-		this->_playerBullet->isConcentrated(false);
+		//this->_playerBullet->isConcentrated(false);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 		{
 			if (_cannons[i])
@@ -326,7 +339,10 @@ void Ship::manageFire()
 	}
 	else
 	{
-		this->_playerBullet->isFiring(false);
+		if (this->_playerBullet)
+			this->_playerBullet->isFiring(false);
+		if (this->_concentratedPlayerBullet)
+			this->_concentratedPlayerBullet->isFiring(false);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
 		{
 			if (_cannons[i])
@@ -544,6 +560,11 @@ void Ship::updateBulletTrajectory()
     {
       this->_playerBullet->setX(this->_x);
       this->_playerBullet->setY(this->_y - this->getSprite().getHeight() / 2);
+    }
+  if (this->_concentratedPlayerBullet)
+    {
+      this->_concentratedPlayerBullet->setX(this->_x);
+      this->_concentratedPlayerBullet->setY(this->_y - this->getSprite().getHeight() / 2);
     }
 }
 
