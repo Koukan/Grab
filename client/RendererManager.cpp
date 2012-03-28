@@ -188,6 +188,31 @@ bool				RendererManager::isFullscreen() const
 	return _fullscreen;
 }
 
+std::list<RendererManager::VideoMode>	RendererManager::getAvailableResolutions() const
+{
+	std::list<RendererManager::VideoMode>	ret;
+	RendererManager::VideoMode tmp;
+#if (SFML_VERSION_MAJOR == 2)
+	std::vector<sf::VideoMode> modes = sf::VideoMode::GetFullscreenModes();
+	for (std::size_t i = 0; i < modes.size(); ++i)
+	{
+		tmp.width = modes[i].Width;
+		tmp.height = modes[i].Height;
+		if (tmp.width >= 800 && tmp.height >= 600)
+			ret.push_back(tmp);
+	}
+#else
+	for (std::size_t i = 0; i < sf::VideoMode::GetModesCount(); ++i)
+	{
+		tmp.width = sf::VideoMode::GetMode(i).Width;
+		tmp.height = sf::VideoMode::GetMode(i).Height;
+		if (tmp.width >= 800 && tmp.height >= 600)
+			ret.push_back(tmp);
+	}
+#endif
+	return ret;
+}
+
 void				RendererManager::updateWindow()
 {
 #if (SFML_VERSION_MAJOR == 2)
