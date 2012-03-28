@@ -24,11 +24,14 @@ void		GSManager::init()
 
 void		GSManager::update(double elapsedTime)
 {
+	std::list<GameState*>::const_iterator tmp;
+
 	for (std::list<GameState*>::const_iterator it = this->_currentStates.begin();
-		 it != this->_currentStates.end(); it++)
+		 it != this->_currentStates.end();)
 	{
-		(*it)->handle(elapsedTime);
-		(*it)->update(elapsedTime);
+		tmp = it++;
+		(*tmp)->handle(elapsedTime);
+		(*tmp)->update(elapsedTime);
 	}
 	if (!this->_currentStates.empty())
 		this->_currentStates.back()->getGUI().update(elapsedTime);
