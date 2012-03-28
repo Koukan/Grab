@@ -37,7 +37,6 @@ set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
 	sfml-system
-	GLU
 )
 ENDIF(WIN32)
 #####
@@ -238,7 +237,6 @@ target_link_libraries(
 	${OPENAL_LIBRARY}
 	${SNDFILE_LIBRARY}
 	${CMAKE_THREAD_LIBS_INIT}
-	pthread
 	core
 	net
 )
