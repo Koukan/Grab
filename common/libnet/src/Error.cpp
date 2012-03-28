@@ -55,7 +55,7 @@ void			printLastError()
 {
   #if defined (_WIN32)
   std::string tmp = getLastError();
-  MessageBox(NULL, tmp.c_str(), TEXT("Error"), MB_OK);
+  //MessageBox(NULL, tmp.c_str(), TEXT("Error"), MB_OK);
   std::cerr << tmp << std::endl;
   #else
   std::cerr << getLastError() << std::endl;
