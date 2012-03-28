@@ -20,14 +20,14 @@ namespace	ShipInfo
 	};
 
 	static ShipInfo const		shipsList[] = {
+  {"Replicator", "player4", "player4", "concentratedPlayer4", 450, 200,
+   GrabPosition::MIDDLE_TOP, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER, 0},
+  {"Obliterator", "player3", "player2", "concentratedPlayer2", 450, 200,
+   GrabPosition::MIDDLE_BOTTOM, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER, 0},
   {"Conqueror", "player1", "player3", "concentratedPlayer3", 450, 400,
    GrabPosition::MIDDLE_TOP, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER, &Ship::bomb},
   {"Voyageer", "player2", "player3", "concentratedPlayer3", 450, 800,
    GrabPosition::MIDDLE_BOTTOM, GrabPosition::LEFT_TOP_CORNER, GrabPosition::RIGHT_TOP_CORNER, &Ship::shield},
-  {"Obliterator", "player3", "player3", "concentratedPlayer3", 450, 200,
-   GrabPosition::MIDDLE_BOTTOM, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER, 0},
-  {"Replicator", "player4", "player3", "concentratedPlayer3", 450, 200,
-   GrabPosition::MIDDLE_TOP, GrabPosition::LEFT_BOTTOM_CORNER, GrabPosition::RIGHT_BOTTOM_CORNER, 0},
   {"LadyBird", "player5", "player3", "concentratedPlayer3", 450, 200,
    GrabPosition::MIDDLE_TOP, GrabPosition::LEFT, GrabPosition::RIGHT, 0},
 	};
