@@ -58,7 +58,7 @@ private:
 
 	enum MazeSize
 	{
-		WIDTH = 5,
+		WIDTH = 7,
 		HEIGHT = 13
 	};
 
