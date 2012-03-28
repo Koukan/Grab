@@ -271,7 +271,8 @@ void	MonsterGenerator::generateSquad(double)
 		this->createMonster(info);
 		level += info.level;
 	} while (level < this->_squadLevel);
-	this->_elapsedTime += this->_squadTime;
+	if (this->_nbSquads + 1 < this->_nbSquadsMax)
+		this->_elapsedTime += this->_squadTime;
 	++this->_nbSquads;
 }
 
