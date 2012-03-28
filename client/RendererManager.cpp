@@ -4,6 +4,7 @@
 #include "PhysicObject.hpp"
 #include "CircleHitBox.hpp"
 #include "icon.c"
+#include <GL/glu.h>
 
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
@@ -20,6 +21,7 @@ void				RendererManager::init()
 	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
 	this->_width = video.Width;
 	this->_height = video.Height;
+	this->_window.SetView(sf::View(sf::FloatRect(0, 0, 1280, 768)));
 	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
 	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);
@@ -171,6 +173,7 @@ void				RendererManager::setResolution(int width, int height)
 {
 	this->_width = width;
 	this->_height = height;
+	this->_window.SetView(sf::View(sf::FloatRect(0, 0, 1280, 768)));
 	this->updateWindow();
 }
 

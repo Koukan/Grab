@@ -37,6 +37,7 @@ set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
 	sfml-system
+	GLU
 )
 ENDIF(WIN32)
 #####
