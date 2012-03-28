@@ -36,9 +36,13 @@ void	GSOptions::onStart()
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "selected left list arrow", "pressed left list arrow");
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "selected right list arrow", "pressed right list arrow");
   GUIList<GSOptions> *guilist = new GUIList<GSOptions>(*this, &GSOptions::changeResolution, *leftArrow, *rightArrow, 0);
-  guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1280x720", "buttonFont", *sprite, 0)));
-  guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1680x1050", "buttonFont", *sprite, 0)));
-  guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, "1920x1080", "buttonFont", *sprite, 0)));
+  std::list<RendererManager::VideoMode> modes = RendererManager::get().getAvailableResolutions();
+  std::string resolutions;
+  for (std::list<RendererManager::VideoMode>::iterator it = modes.begin(); it != modes.end(); ++it)
+	{
+		resolutions = Net::Converter::toString<int>((*it).width) + "x" + Net::Converter::toString<int>((*it).height);
+  		guilist->addElement(*(new GUIButton<GSOptions>(*this, &GSOptions::applyResolution, resolutions, "buttonFont", *sprite, 0)));
+	}
   layout->insertElementAtBegin(*guilist);
   new GUIButton<GSOptions>(*this, &GSOptions::fullscreen, "Fullscreen", "buttonFont", *sprite, layout);
   new GUILabel("IP Address", "buttonFont", "", layout);

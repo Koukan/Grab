@@ -14,6 +14,12 @@ typedef sf::PostFX		Shader;
 class RendererManager : public Core::GameStateObserver, public Net::Singleton<RendererManager>
 {
 	public:
+		struct VideoMode
+		{
+			int	width;
+			int	height;
+		};
+
 		RendererManager();
 		virtual ~RendererManager();
 		virtual void		init();
@@ -28,6 +34,7 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		void				setResolution(int width, int height);
 		void				setFullscreen(bool fullscreen);
 		bool				isFullscreen() const;
+		std::list<VideoMode>	getAvailableResolutions() const;
 
 	protected:
 		int					_width;
