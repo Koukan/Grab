@@ -9,7 +9,7 @@
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
 	this->_targetRate = 20;
-	this->_fullscreen = true;
+	this->_fullscreen = false;
 }
 
 RendererManager::~RendererManager()
@@ -21,7 +21,6 @@ void				RendererManager::init()
 	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
 	this->_width = video.Width;
 	this->_height = video.Height;
-	this->_window.SetView(sf::View(sf::FloatRect(0, 0, 1280, 768)));
 	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
 	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);
@@ -173,7 +172,6 @@ void				RendererManager::setResolution(int width, int height)
 {
 	this->_width = width;
 	this->_height = height;
-	this->_window.SetView(sf::View(sf::FloatRect(0, 0, 1280, 768)));
 	this->updateWindow();
 }
 
@@ -201,5 +199,9 @@ void				RendererManager::updateWindow()
 	_window.Create(sf::VideoMode(this->_width, this->_height), "Grab", style);
 	_window.ShowMouseCursor(!_fullscreen);
 	_window.SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
+	sf::View &view = this->_window.GetDefaultView();
+	//sf::View	view(sf::FloatRect(0, 0, 1342, 742));
+	view.SetFromRect(sf::FloatRect(0, 0, 1680, 1050));
+	this->_window.SetView(view);
 }
 
