@@ -28,9 +28,9 @@ void	GSOptions::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
-	  (RendererManager::get().getHeight() - 100) / 2, 300, 300, 5);
-  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 3);
+  Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
+	  (VIEWY - 100) / 2, 300, 300, 5);
+  layout->setY((VIEWY - layout->getHeight()) / 3);
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   Core::ButtonSprite *leftArrow = new Core::ButtonSprite("left list arrow", "selected left list arrow", "pressed left list arrow");
@@ -54,7 +54,7 @@ void	GSOptions::onStart()
 
 void	GSOptions::fullscreen()
 {
-	RendererManager::get().setFullscreen(!RendererManager::get().isFullscreen());	
+	RendererManager::get().setFullscreen(!RendererManager::get().isFullscreen());
 }
 
 void	GSOptions::returnMenu()

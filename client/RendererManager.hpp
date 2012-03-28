@@ -10,6 +10,8 @@
 	#include <SFML/Graphics/PostFX.hpp>
 typedef sf::PostFX		Shader;
 #endif
+#define		VIEWX	1680
+#define		VIEWY	1050
 
 class RendererManager : public Core::GameStateObserver, public Net::Singleton<RendererManager>
 {

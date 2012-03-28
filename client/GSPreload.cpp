@@ -32,8 +32,7 @@ void	GSPreload::onStart()
 	_sound->setVolume(20);
 	_sound->play();
   }
-  ScrollingSprite *obj = new ScrollingSprite(0, 0, RendererManager::get().getWidth(),
-	  RendererManager::get().getHeight(), ScrollingSprite::HORIZONTAL, -0.02);
+  ScrollingSprite *obj = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::HORIZONTAL, -0.02);
   //obj->pushSprite("space background");
   //obj->pushSprite("space background 2");
   //obj->pushSprite("space background 3");

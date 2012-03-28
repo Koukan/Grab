@@ -41,12 +41,12 @@ void	GSMainMenu::onStart()
 
   // add gui
 
-  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
-	  (RendererManager::get().getHeight() - 100) / 2,
+  Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
+	  (VIEWY - 100) / 2,
 	  300, 300, 10, 100, "up arrow", "down arrow");
-  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
+  layout->setY((VIEWY - layout->getHeight()) / 2);
   Core::Sprite *sp = this->getSprite("logo");
-  sp->setX((RendererManager::get().getWidth() - sp->getWidth()) / 2);
+  sp->setX((VIEWX - sp->getWidth()) / 2);
   sp->setY(50);
   this->addGameObject(sp, "gui");
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");

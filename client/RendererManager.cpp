@@ -225,11 +225,11 @@ void				RendererManager::updateWindow()
 	_window.ShowMouseCursor(!_fullscreen);
 	_window.SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
 #if (SFML_VERSION_MAJOR == 2)
-	sf::View	view(sf::FloatRect(0, 0, 1280, 768));
+	sf::View	view(sf::FloatRect(0, 0, VIEWX, VIEWY));
 #else
 	sf::View &view = this->_window.GetDefaultView();
 	//sf::View	view(sf::FloatRect(0, 0, 1342, 742));
-	view.SetFromRect(sf::FloatRect(0, 0, 1280, 768));
+	view.SetFromRect(sf::FloatRect(0, 0, VIEWX, VIEWY));
 #endif
 	this->_window.SetView(view);
 }

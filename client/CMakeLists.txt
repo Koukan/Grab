@@ -238,6 +238,7 @@ target_link_libraries(
 	${OPENAL_LIBRARY}
 	${SNDFILE_LIBRARY}
 	${CMAKE_THREAD_LIBS_INIT}
+	pthread
 	core
 	net
 )

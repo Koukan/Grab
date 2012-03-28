@@ -102,23 +102,23 @@ void		GSInGame::preload()
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1500, 8000, 1000)), "Wall");
 
 
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, RendererManager::get().getHeight() + 300,
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, VIEWY + 300,
 	  8000, 1000)), "bottomInvisibleWall");
 
   int const large = 100;
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
-	  RendererManager::get().getWidth(), large)), "invisibleWallsGrab");
+	  VIEWX, large)), "invisibleWallsGrab");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, -large + 30,
-	  RendererManager::get().getWidth(), large)), "invisibleWalls");
+	  VIEWX, large)), "invisibleWalls");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-large + 30, 0,
-	  large, RendererManager::get().getHeight())), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, RendererManager::get().getHeight() - 30,
-	  RendererManager::get().getWidth(), large)), "invisibleWalls");
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(RendererManager::get().getWidth() - 30, 0,
-	  large, RendererManager::get().getHeight())), "invisibleWalls");
+	  large, VIEWY)), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(0, VIEWY - 30,
+	  VIEWX, large)), "invisibleWalls");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(VIEWX - 30, 0,
+	  large, VIEWY)), "invisibleWalls");
 }
 
 void		GSInGame::registerShipCallbacks()

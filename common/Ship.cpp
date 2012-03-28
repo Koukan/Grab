@@ -299,7 +299,6 @@ void Ship::manageFire()
 			this->_vx = this->_vx / this->_tmpSpeed * this->_speed;
 			this->_vy = this->_vy / this->_tmpSpeed * this->_speed;
 		}
-		std::cout << "" << std::endl;
 		this->_concentratedPlayerBullet->isFiring(!this->_dead);
 		//this->_playerBullet->isConcentrated(true);
 		for (unsigned int i = 0; i < _nbMaxGrabs; ++i)
