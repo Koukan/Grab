@@ -30,6 +30,7 @@ set(CORE_TINYXML_DIR
 
 set(SRCS
 	${INCLUDES_CORE}
+	${COMMON_INCLUDE_DIR}PacketType.hpp
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp
 	${COMMON_INCLUDE_DIR}GameCommand.hpp
@@ -93,11 +94,7 @@ set_source_files_properties (
 )
 ENDIF(WIN32)
 
-set (COMMON_FILES
-	${COMMON_INCLUDE_DIR}PacketType.hpp
-)
-
-SOURCE_GROUP (common FILES(${COMMON_FILES}))
+#SOURCE_GROUP (common FILES(${COMMON_FILES}))
 
 ##### Setting the output directory for the solution
 foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )

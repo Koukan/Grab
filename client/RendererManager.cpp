@@ -9,23 +9,18 @@
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
 	this->_targetRate = 20;
-	//this->_window = 0;
-	this->_fullscreen = false;
+	this->_fullscreen = true;
 }
 
 RendererManager::~RendererManager()
 {
-		//if (_window)
-		//{
-		//_window->Close();
-		//delete _window;
-		//}
 }
 
 void				RendererManager::init()
 {
-	this->_width = 800;
-	this->_height = 600;
+	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
+	this->_width = video.Width;
+	this->_height = video.Height;
 	this->_window.SetView(sf::View(sf::FloatRect(0, 0, 1280, 768)));
 	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
