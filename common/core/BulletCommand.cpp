@@ -277,6 +277,8 @@ void		BulletCommand::doChangeDirection(double direction)
 	this->_direction = dtor(direction);
 	this->_vx = this->_speed * cos(this->_direction);
 	this->_vy = this->_speed * sin(this->_direction);
+	/*if (this->_sprite)
+		this->_sprite->setRotation(-direction);*/
 }
 
 void		BulletCommand::doChangeSpeed(double speed)
@@ -377,6 +379,11 @@ void		BulletCommand::setSpeedDirection()
 {
 	this->_direction = atan2((double)this->_vy, (double)this->_vx);
 	this->_speed = sqrt((double)(this->_vx * this->_vx) + (double)(this->_vy * this->_vy));
+	/*if (this->_sprite)
+	{
+		this->_sprite->setRotation(-rtod(this->_direction) + 90);
+		std::cout << rtod(this->_direction) << std::endl;
+	}*/
 }
 
 void		BulletCommand::insertChild(Bullet &bullet)

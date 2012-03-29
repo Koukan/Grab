@@ -94,7 +94,7 @@ void		GSInGame::preload()
 
   // load xml
   if (this->_mode == Modes::STORY)
-  	this->load("resources/map/map1.xml");
+  	this->load("resources/map/map2.xml");
   else
 	this->load("resources/map/randomMap.xml");
 

@@ -208,6 +208,19 @@ void	SFMLSprite::setColor(int r, int g, int b)
   this->SetColor(base);
 }
 
+void	SFMLSprite::setRotation(double angle)
+{
+	/*this->SetCenter((this->getWidth() / this->GetScale().x) / 2, (this->getHeight() / this->GetScale().y) / 2);
+	std::cout << "cx = " << this->GetCenter().x << " cy = " << this->GetCenter().y << std::endl;
+	//this->SetCenter(this->getWidth() / 2, this->getHeight() / 2);*/
+	this->SetRotation(static_cast<float>(angle));
+}
+
+void	SFMLSprite::rotate(double angle)
+{
+	this->Rotate(static_cast<float>(angle));
+}
+
 int		SFMLSprite::getColor(int i) const
 {
   sf::Color base = this->GetColor();
@@ -222,4 +235,9 @@ int		SFMLSprite::getColor(int i) const
 bool		SFMLSprite::isFinished() const
 {
 	return (this->_finished);
+}
+
+double	SFMLSprite::getRotation() const
+{
+	return this->GetRotation();
 }
