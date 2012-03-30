@@ -54,7 +54,7 @@ public:
   void			inputGrab1(Core::InputCommand const &cmd);
   void			inputGrab2(Core::InputCommand const &cmd);
   void			inputGrab3(Core::InputCommand const &cmd);
-  void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab);
+  void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab, int angle);
   void			setDead(bool dead, bool command = true);
   bool			isDead() const;
   virtual void	draw(double elapsedTime);
@@ -84,6 +84,7 @@ private:
   unsigned int				_nbMaxGrabs; // can be up to 4 by choosing a special power
   bool						_grabLaunched;
   std::pair<double, double>	_grabsPositions[3];
+  int						_angles[3];
   int						_colors[3];
   Core::Sound				*_fireSound;
 

@@ -110,7 +110,7 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 			{
 				ship.addCannon(new Cannon(grab.getBulletScript(), ship, Core::GameStateManager::get().getCurrentState(),
 						  	   "weapon", "cannons", "playerShots",
-							   grab.getOffsetX(), grab.getOffsetY()),
+							   grab.getOffsetX(), grab.getOffsetY(), grab.getAngle()),
 							   grab.getNum());
 				if (gl_online)
 				{

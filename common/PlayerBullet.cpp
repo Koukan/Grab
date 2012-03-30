@@ -11,24 +11,24 @@ inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
-		  double x, double y, double vx, double vy)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false)
+		  double x, double y, double vx, double vy, int angle)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
-	double x, double y, double vx, double vy)
-	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false)
+	double x, double y, double vx, double vy, int angle)
+	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
-	double vx, double vy, double xHitboxOffset, double yHitboxOffset)
+	double vx, double vy, double xHitboxOffset, double yHitboxOffset, int angle)
 	: Core::BulletCommand(state, gstate, box, false, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
-	_isFiring(true), _isConcentrated(false)
+	_isFiring(true), _isConcentrated(false), _angle(angle)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -44,18 +44,19 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 
 	if (this->_isConcentrated)
 	{
-		if (direction <= 20)
-			direction = direction / 3;
-		else if (direction >= 340)
-			direction = ((direction - 360) / 3) + 360;
-		else if (direction >= 160 && direction <= 200)
-			direction = ((direction - 180) / 3) + 180;
-		else if (direction < /*180*/270)
+		//if (direction <= 20)
+		//	direction = direction / 3;
+		//else if (direction >= 340)
+		//	direction = ((direction - 360) / 3) + 360;
+		//else if (direction >= 160 && direction <= 200)
+		//	direction = ((direction - 180) / 3) + 180;
+		if (direction < 270)
 			direction = (direction + 3 * 90) / 4;
 		else
-			direction = (direction + 3 * /*270*/(360 + 90)) / 4;
+			direction = (direction + 3 * (360 + 90)) / 4;
 		speed *= 1.2;
 	}
+	direction += this->_angle;
 
 	double		dir = dtor(direction);
 	Bullet		*bullet;
@@ -80,18 +81,19 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 
 	if (this->_isConcentrated)
 	{
-		if (direction <= 20)
-			direction = direction / 3;
-		else if (direction >= 340)
-			direction = ((direction - 360) / 3) + 360;
-		else if (direction >= 160 && direction <= 200)
-			direction = ((direction - 180) / 3) + 180;
-		else if (direction < /*180*/270)
+		//if (direction <= 20)
+		//	direction = direction / 3;
+		//else if (direction >= 340)
+		//	direction = ((direction - 360) / 3) + 360;
+		//else if (direction >= 160 && direction <= 200)
+		//	direction = ((direction - 180) / 3) + 180;
+		if (direction < 270)
 			direction = (direction + 3 * 90) / 4;
 		else
-			direction = (direction + 3 * /*270*/(360 + 90)) / 4;
+			direction = (direction + 3 * (360 + 90)) / 4;
 		speed *= 1.2;
 	}
+	direction += this->_angle;
 
 	double			dir = dtor(direction);
 	PlayerBullet	*bullet;
@@ -99,7 +101,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY());
+	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle);
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())

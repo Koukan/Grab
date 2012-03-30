@@ -40,9 +40,9 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		this->_xHitboxOffset = -this->_hitBox->getWidth() / 2;
 		this->_yHitboxOffset = -this->_hitBox->getHeight() / 2;
 	}
-	this->defineGrabPosition(info.grab1, 0);
-	this->defineGrabPosition(info.grab2, 1);
-	this->defineGrabPosition(info.grab3, 2);
+	this->defineGrabPosition(info.grab1, 0, info.grabAngle1);
+	this->defineGrabPosition(info.grab2, 1, info.grabAngle2);
+	this->defineGrabPosition(info.grab3, 2, info.grabAngle3);
 	player.setShip(this);
 }
 
@@ -116,7 +116,7 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, do
 	Grab* grab = new Grab("grab",
 				*(new Core::CircleHitBox(x, y, 10)),
 				*this, 180, _tmpSpeed * 2, nGrab, _grabsPositions[nGrab].first,
-				_grabsPositions[nGrab].second);
+				_grabsPositions[nGrab].second, _angles[nGrab]);
 	grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
 	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
 	_grabLaunched = true;
@@ -567,7 +567,7 @@ void Ship::updateBulletTrajectory()
     }
 }
 
-void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGrab)
+void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGrab, int angle)
 {
   if ((position & 8))
     _grabsPositions[nGrab].first = -_sprite->getWidth() / 2 - 20;
@@ -581,6 +581,7 @@ void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGra
     _grabsPositions[nGrab].second = 0;
   else if ((position & 4))
     _grabsPositions[nGrab].second = _sprite->getHeight() / 2 + 20;
+  _angles[nGrab] = angle;
 }
 
 unsigned int	Ship::getScore() const

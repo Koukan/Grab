@@ -7,7 +7,7 @@
 
 Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
 			   std::string const& spriteName, std::string const &cannonGroup,
-			   std::string const &shotsGroup, double offsetx, double offsety) :
+			   std::string const &shotsGroup, double offsetx, double offsety, int angle) :
   ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX() + offsetx, ship.getY() + offsety, 5)),
 		 ship.getVx(), ship.getVy()),
   _parser(parser),
@@ -16,7 +16,7 @@ Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
   _offsetX(offsetx), _offsetY(offsety), _bullet(0)
 {
 	state.addGameObject(this, cannonGroup);
-    _bullet = new PlayerBullet(_parser, this->getGroup()->getState(), _shotsGroup, _x, _y, _vx, _vy);
+    _bullet = new PlayerBullet(_parser, this->getGroup()->getState(), _shotsGroup, _x, _y, _vx, _vy, angle);
     this->getGroup()->getState().addGameObject(_bullet);
 }
 
