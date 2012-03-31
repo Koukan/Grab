@@ -576,7 +576,7 @@ void Ship::defineGrabPosition(GrabPosition::Position position, unsigned int nGra
   else if ((position & 32))
     _grabsPositions[nGrab].first = _sprite->getWidth() / 2 + 20;
   if ((position & 1))
-    _grabsPositions[nGrab].second = -_sprite->getHeight() / 2 - 20;
+    _grabsPositions[nGrab].second = -_sprite->getHeight() / 2 - 30;
   else if ((position & 2))
     _grabsPositions[nGrab].second = 0;
   else if ((position & 4))
