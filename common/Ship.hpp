@@ -118,5 +118,6 @@ private:
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
 
+  //  Sprite*		_shield;	
   void handleActions();
 };

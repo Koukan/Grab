@@ -21,6 +21,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPower(info.specialPower),
 	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound"))
+	  //	  _shield(0)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -109,6 +110,8 @@ void Ship::bomb()
 
 void Ship::shield()
 {
+  //  std::cout << "shield !" << std::endl;
+  //  _shield = new SFMLSprite();
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
