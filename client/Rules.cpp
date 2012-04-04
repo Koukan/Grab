@@ -52,7 +52,9 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	if (monster.getLife() <= 0)
 	  {
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
-	    ConcreteObject *obj = new ScoreBonus("weapon", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 3)), gamestate.getMap().getVx(), gamestate.getMap().getVy());
+	    ConcreteObject *obj = new ScoreBonus("bonus", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
+		obj->setXHitBoxOffset(-25);
+		obj->setYHitBoxOffset(-25);
 	    monster.erase();
 	    gamestate.addGameObject(obj, "scoreBonus");
 	  }
@@ -109,8 +111,8 @@ void	Rules::grabTouchPlayer(Core::GameObject& o1, Core::GameObject& o2)
 			if (!grab.getBulletScript().empty() && !ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
 			{
 				ship.addCannon(new Cannon(grab.getBulletScript(), ship, Core::GameStateManager::get().getCurrentState(),
-						  	   "weapon", "cannons", "playerShots",
-							   grab.getOffsetX(), grab.getOffsetY()),
+						  	   "bonus", "cannons", "playerShots",
+							   grab.getOffsetX(), grab.getOffsetY(), grab.getAngle()),
 							   grab.getNum());
 				if (gl_online)
 				{

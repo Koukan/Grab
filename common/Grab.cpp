@@ -8,9 +8,9 @@
 
 Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, Ship& ship,
 	   unsigned int angle, double speed, unsigned int nGrab,
-	   double offsetX, double offsetY) :
+	   double offsetX, double offsetY, int cannonAngle) :
   ConcreteObject(spriteName, hitbox, 0, 0, -10, -10), _ship(ship), _returnToShip(false),
-	  _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _nGrab(nGrab), _angle(angle)
+	  _speed(speed), _offsetX(offsetX), _offsetY(offsetY), _cannonAngle(cannonAngle), _nGrab(nGrab), _angle(angle)
 {
   if (this->_sprite)
     {
@@ -82,4 +82,9 @@ double	Grab::getOffsetX() const
 double	Grab::getOffsetY() const
 {
   return (this->_offsetY);
+}
+
+int		Grab::getAngle() const
+{
+	return (this->_cannonAngle);
 }
