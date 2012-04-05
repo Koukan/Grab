@@ -83,6 +83,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	double			_simpleXHitbox;
 	double			_simpleYHitbox;
 	std::string		_grabBullet;
+	std::string		_deathBullet;
 	Net::MTRand		_rand;
 	bool			_paused;
 

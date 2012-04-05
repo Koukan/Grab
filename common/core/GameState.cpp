@@ -11,6 +11,9 @@ GameState::GameState(const std::string &name, bool GUIautoBack) : name(name), _p
 
 GameState::~GameState()
 {
+	for (std::list<Core::Sound*>::const_iterator it = this->_sounds.begin();
+		  it != this->_sounds.end(); it++)
+		delete *it;
 }
 
 void		GameState::onStart()
@@ -45,13 +48,27 @@ void		GameState::pause(Pause paused)
 {
   this->_paused = paused;
   if (paused != NONE)
-	 this->onPause();
+	  this->onPause();
+  if (paused & PHYSIC)
+  {
+	  for (std::list<Core::Sound*>::const_iterator it = this->_sounds.begin();
+		  it != this->_sounds.end(); it++)
+		  (*it)->pause();
+  }
 }
 
 void		GameState::play()
 {
   this->_paused = NONE;
   this->onPlay();
+  for (std::list<Core::Sound*>::const_iterator it = this->_sounds.begin();
+		  it != this->_sounds.end(); it++)
+		(*it)->play();
+}
+
+void		GameState::addSound(Core::Sound &sound)
+{
+	this->_sounds.push_back(&sound);
 }
 
 GameState::Pause	GameState::getPaused() const

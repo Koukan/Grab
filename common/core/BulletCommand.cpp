@@ -81,6 +81,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
+	this->_deathBullet = state.getGenericStr("deathbullet");
 	this->managePaused(gstate);
 }
 
@@ -111,6 +112,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_simpleDamage = state.getSimpleDamage();
 	this->setSpeedDirection();
 	this->_grabBullet = state.getGenericStr("grabbullet");
+	this->_deathBullet = state.getGenericStr("deathbullet");
 	this->managePaused(gstate);
 }
 
@@ -365,6 +367,15 @@ std::string const &BulletCommand::getBulletScript() const
 
 void		BulletCommand::erase()
 {
+	if (!this->_delete && !this->_deathBullet.empty())
+	{
+		BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, _x, _y, _vx, _vy);
+		bullet->setScrollY(this->_scrollY);
+		this->_state.addGameObject(bullet, "spawner", false);
+		this->insertChild(*bullet);
+		bullet->setSeed(this->_rand());
+		bullet->setRank(this->_rank);
+	}
 	this->GameObject::erase();
 	if (this->_childs.empty())
 	{
