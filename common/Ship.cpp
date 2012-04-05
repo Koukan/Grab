@@ -632,7 +632,6 @@ unsigned int	Ship::getPowerGauge() const
 
 void		Ship::increasePowerGauge(unsigned int score)
 {
-  std::cout << _powerGauge << " " << score << std::endl;
   if (!_specialPowerActive)
     {
       _powerGauge += score;

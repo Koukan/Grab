@@ -32,7 +32,6 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	o2.erase();
 }
 
-#include <iostream>
 void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 {
 	Core::Bullet	&shot = static_cast<Core::Bullet&>(o1);
@@ -55,7 +54,6 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
 	    if (monster.score > 0)
 	      {
-		std::cout << monster.score << std::endl;
 		ConcreteObject *obj = new ScoreBonus("bonus", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
 		obj->setXHitBoxOffset(-25);
 		obj->setYHitBoxOffset(-25);
