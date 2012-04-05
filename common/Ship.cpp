@@ -21,6 +21,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPower(info.specialPower),
 	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound"))
+	  //	  _shield(0)
 {
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -109,6 +110,8 @@ void Ship::bomb()
 
 void Ship::shield()
 {
+  //  std::cout << "shield !" << std::endl;
+  //  _shield = new SFMLSprite();
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -439,8 +442,8 @@ void Ship::grab4()
 
 void Ship::setDead(bool dead, bool command)
 {
-	if (this->_dead == dead)
-		return ;
+  	if (this->_dead == dead)
+	  return ;
 	this->_dead = dead;
 	if (!dead)
 	{
@@ -458,11 +461,11 @@ void Ship::setDead(bool dead, bool command)
 	}
 	this->_delete = 3;
 	this->_powerGauge = 0;
+	this->getSprite().setTransparency(0.4f);
 	this->_player.die();
 	this->_elapsedTime = 1000;
 	if (this->_timer)
 		this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
-	this->getSprite().setTransparency(0.4f);
 	this->manageFire();
 	if (command)
 	{
