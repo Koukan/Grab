@@ -52,11 +52,14 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	if (monster.getLife() <= 0)
 	  {
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
-	    ConcreteObject *obj = new ScoreBonus("bonus", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
+	    if (monster.score > 0)
+	      {
+		ConcreteObject *obj = new ScoreBonus("bonus", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
 		obj->setXHitBoxOffset(-25);
 		obj->setYHitBoxOffset(-25);
+		gamestate.addGameObject(obj, "scoreBonus");
+	      }
 	    monster.erase();
-	    gamestate.addGameObject(obj, "scoreBonus");
 	  }
 }
 

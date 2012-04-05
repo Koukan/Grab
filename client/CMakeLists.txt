@@ -109,6 +109,8 @@ set(SRCS
 	GSJoinGame.hpp
 	GSLoading.cpp
 	GSLoading.hpp
+	GSMapChoice.cpp
+	GSMapChoice.hpp
 	GSModeSelection.cpp
 	GSModeSelection.hpp
 	GSOptions.cpp

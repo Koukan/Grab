@@ -1,7 +1,6 @@
 #include "ResourceManager.hpp"
 #include "XMLProvider.hpp"
 #include "GlobalResourceManager.hpp"
-#include <iostream>
 
 CORE_USE_NAMESPACE
 
