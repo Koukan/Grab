@@ -109,7 +109,7 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
-	this->_map = static_cast<Map*>(this->getResource("level1", 5));
+	this->_map = static_cast<Map*>(this->getResource(this->_game._map, 5));
 	MonsterGenerator	*generator = dynamic_cast<MonsterGenerator*>(this->_map);
 	if (generator)
 		generator->setSeed(this->_rand());
