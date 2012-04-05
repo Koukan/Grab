@@ -232,8 +232,8 @@ void		GSInGame::onStart()
   this->addGameObject(obj1, "background2");*/
 
 	 //test map
-  _mapObj = static_cast<Map*>(this->getResource("level1", 5));
-  this->addGameObject(_mapObj, "map");
+	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
+	this->addGameObject(_mapObj, "map");
 	if (!_online)
 		this->createShips();
   	this->registerShipCallbacks();
