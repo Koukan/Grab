@@ -85,6 +85,10 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}Cannon.cpp
 	${INCLUDES_COMMON_DIR}DestroyCommand.hpp
 	${INCLUDES_COMMON_DIR}DestroyCommand.cpp
+	${INCLUDES_COMMON_DIR}CompositeMonsterProvider.hpp
+	${INCLUDES_COMMON_DIR}CompositeMonsterProvider.cpp
+	${INCLUDES_COMMON_DIR}CompositeMonster.hpp
+	${INCLUDES_COMMON_DIR}CompositeMonster.cpp
 	main.cpp
 	SFMLFont.cpp
 	SFMLFont.hpp
