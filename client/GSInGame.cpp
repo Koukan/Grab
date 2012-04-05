@@ -54,8 +54,11 @@ void		GSInGame::preload()
   this->addGroup("map", 0);
   this->addGroup("traversableWalls", 0);
   this->addGroup("wallShot", 0);
+  this->addGroup("shields", 40);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("shields", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "wallShot", &Rules::wallTouchObject);
@@ -93,10 +96,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
   // load xml
-  if (this->_mode == Modes::STORY)
-  	this->load("resources/map/map1.xml");
-  else
-	this->load("resources/map/randomMap.xml");
+  this->load(this->_map);
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 950)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
@@ -235,8 +235,8 @@ void		GSInGame::onStart()
   this->addGameObject(obj1, "background2");*/
 
 	 //test map
-  _mapObj = static_cast<Map*>(this->getResource("level1", 5));
-  this->addGameObject(_mapObj, "map");
+	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
+	this->addGameObject(_mapObj, "map");
 	if (!_online)
 		this->createShips();
   	this->registerShipCallbacks();
@@ -270,7 +270,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerFire", &GSInGame::serverFire},
 	{"ServerGrab", &GSInGame::serverGrab},
 	{"ServerCannon", &GSInGame::serverCannon},
-	{"killPlayer", &GSInGame::killPlayer}
+	{"killPlayer", &GSInGame::killPlayer},
+	{"disableShield", &GSInGame::disableShield}
   };
 
   for (size_t i = 0;
@@ -441,7 +442,10 @@ void		GSInGame::spawnsound(GameCommand const &event)
 {
 	Core::Sound	*sound = this->getSound(event.data);
 	if (sound)
+	{
 		sound->play();
+		this->addSound(*sound);
+	}
 }
 
 void		GSInGame::decreasePaused(GameCommand const &)
@@ -539,6 +543,14 @@ void		GSInGame::killPlayer(GameCommand const &cmd)
 
 	if (ship)
 		ship->setDead(cmd.boolean, false);
+}
+
+void		GSInGame::disableShield(GameCommand const &cmd)
+{
+  Ship*		ship = cmd.player->getShip();
+
+  if (ship)
+    ship->disableShield();
 }
 
 void		GSInGame::createShips()

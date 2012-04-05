@@ -6,11 +6,11 @@ class PlayerBullet : public Core::BulletCommand
 {
 public:
 	PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
-		  double x = 0, double y = 0, double vx = 0, double vy = 0, int angle = 0);
+		  double x = 0, double y = 0, double vx = 0, double vy = 0, int angle = 0, PhysicObject *relativeObject = 0);
     PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
-		  double x = 0, double y = 0, double vx = 0, double vy = 0, int angle = 0);
+		  double x = 0, double y = 0, double vx = 0, double vy = 0, int angle = 0, PhysicObject *relativeObject = 0);
     PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
-		  double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0, int angle = 0);
+		  double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0, int angle = 0, PhysicObject *relativeObject = 0);
 	~PlayerBullet();
 
 	void			isFiring(bool firing);
@@ -29,4 +29,5 @@ private:
 	bool				_isConcentrated;
 	int					_angle;
 	uint8_t				_colors[3];
+	PhysicObject		*_relative;
 };

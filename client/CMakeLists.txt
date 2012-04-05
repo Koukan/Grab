@@ -3,9 +3,6 @@ cmake_minimum_required (VERSION 2.8)
 project(Grab_Client)
 set(TARGET_NAME grab_client)
 
-set(EXECUTABLE_OUTPUT_PATH ../)
-
-#SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/;${CMAKE_MODULE_PATH}")
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 
 ##### Linking the sfml libraries
@@ -116,6 +113,8 @@ set(SRCS
 	GSJoinGame.hpp
 	GSLoading.cpp
 	GSLoading.hpp
+	GSMapChoice.cpp
+	GSMapChoice.hpp
 	GSModeSelection.cpp
 	GSModeSelection.hpp
 	GSOptions.cpp
@@ -184,14 +183,13 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 ##### Setting the output directory for the solution
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../ )
+
 foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
     string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ../ )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ../../ )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ../../ )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_CURRENT_SOURCE_DIR}/../ )
 endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 #####
-
 
 IF(WIN32)
 add_executable(

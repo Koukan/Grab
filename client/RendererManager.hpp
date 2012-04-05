@@ -49,4 +49,5 @@ private:
 		void				updateWindow();
 		void 				drawQuadTree(Core::QuadTree const &quadTree);
 		void 				drawNode(Core::Node *node);
+		void				displayHitBox(Core::Group::gameObjectSet::const_iterator oit);
 };

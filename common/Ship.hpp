@@ -7,11 +7,8 @@
 #include "Input.hpp"
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
+#include "ShipInfo.hpp"
 
-namespace ShipInfo
-{
-  struct ShipInfo;
-}
 class	Cannon;
 class	Player;
 
@@ -64,6 +61,7 @@ public:
   void			specialPower(Core::InputCommand const& cmd);
   void			bomb();
   void			shield();
+  void			disableShield();
   void			grab4();
 
   void			setNbSecRespawn(int nbSec);
@@ -117,6 +115,12 @@ private:
   bool			_target;
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
-
+  ShipInfo::SpecialPower _specialPowerType;
+  bool			_specialPowerActive;
+  
+  union
+  {
+    ConcreteObject*	_shield;
+  };	
   void handleActions();
 };
