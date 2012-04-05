@@ -54,8 +54,11 @@ void		GSInGame::preload()
   this->addGroup("map", 0);
   this->addGroup("traversableWalls", 0);
   this->addGroup("wallShot", 0);
+  this->addGroup("shields", 40);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
+  this->setCollisionGroups("shields", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "wallShot", &Rules::wallTouchObject);
@@ -270,7 +273,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerFire", &GSInGame::serverFire},
 	{"ServerGrab", &GSInGame::serverGrab},
 	{"ServerCannon", &GSInGame::serverCannon},
-	{"killPlayer", &GSInGame::killPlayer}
+	{"killPlayer", &GSInGame::killPlayer},
+	{"disableShield", &GSInGame::disableShield}
   };
 
   for (size_t i = 0;
@@ -539,6 +543,14 @@ void		GSInGame::killPlayer(GameCommand const &cmd)
 
 	if (ship)
 		ship->setDead(cmd.boolean, false);
+}
+
+void		GSInGame::disableShield(GameCommand const &cmd)
+{
+  Ship*		ship = cmd.player->getShip();
+
+  if (ship)
+    ship->disableShield();
 }
 
 void		GSInGame::createShips()

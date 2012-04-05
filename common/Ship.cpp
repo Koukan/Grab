@@ -14,15 +14,18 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound")),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
 	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
 	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
 	  _targetx(0), _targety(0), _target(false), 
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPower(info.specialPower),
-	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound"))
-	  //	  _shield(0)
+	  _specialPowerType(info.specialPowerType),
+	  _specialPowerActive(false),
+	  _shield(0)
 {
+       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb};
+       _specialPower = powers[_specialPowerType];
 	_cannons[0] = 0;
 	_cannons[1] = 0;
 	_cannons[2] = 0;
@@ -99,6 +102,11 @@ void	Ship::move(double time)
 	move->y = static_cast<int16_t>(this->getY());
 	move->vx = this->getVx();
 	move->vy = this->getVy();
+	if (_specialPowerActive && _specialPowerType == ShipInfo::SHIELD)
+	  {
+	    _shield->setX(_x);
+	    _shield->setY(_y);
+	  }
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
@@ -110,8 +118,22 @@ void Ship::bomb()
 
 void Ship::shield()
 {
-  //  std::cout << "shield !" << std::endl;
-  //  _shield = new SFMLSprite();
+  this->_specialPowerActive = true;
+  std::cout << "shield !" << std::endl;
+  _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(this->_x, this->_y, 125)), 0, 0, -125, -125);
+  _shield->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
+  this->getGroup()->getState().addGameObject(_shield, "shields");
+
+  GameCommand* cmd = new GameCommand("disableShield");
+  cmd->player = &this->_player;
+  Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
+}
+
+void Ship::disableShield()
+{
+  this->_specialPowerActive = false;
+  this->_shield->erase();
+  this->_shield = 0;
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -461,6 +483,7 @@ void Ship::setDead(bool dead, bool command)
 	}
 	this->_delete = 3;
 	this->_powerGauge = 0;
+	this->_specialPowerActive = false;
 	this->getSprite().setTransparency(0.4f);
 	this->_player.die();
 	this->_elapsedTime = 1000;
@@ -609,9 +632,13 @@ unsigned int	Ship::getPowerGauge() const
 
 void		Ship::increasePowerGauge(unsigned int score)
 {
-  _powerGauge += score;
-  if (_powerGauge > 100)
-    _powerGauge = 100;
+  std::cout << _powerGauge << " " << score << std::endl;
+  if (!_specialPowerActive)
+    {
+      _powerGauge += score;
+      if (_powerGauge > 100)
+	_powerGauge = 100;
+    }
 }
 
 void		Ship::specialPower(Core::InputCommand const&)

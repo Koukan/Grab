@@ -1,5 +1,4 @@
 #include "CommandHandler.hpp"
-#include <iostream>
 #include <algorithm>
 
 CORE_USE_NAMESPACE

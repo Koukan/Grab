@@ -1,4 +1,3 @@
-#include <iostream>
 #include "SpriteProvider.hpp"
 #include "Converter.hpp"
 
