@@ -88,7 +88,7 @@ void				RendererManager::update(double elapsedTime)
 				for (oit = objects.begin(); oit != objects.end(); oit++)
 				{
 					static_cast<Core::DrawableObject*>(*oit)->draw(time);
-					this->displayHitBox(oit);
+					//					this->displayHitBox(oit);
 				}
 			}
 		}
