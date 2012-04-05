@@ -96,10 +96,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
 
   // load xml
-  if (this->_mode == Modes::STORY)
-  	this->load("resources/map/map1.xml");
-  else
-	this->load("resources/map/randomMap.xml");
+  this->load(this->_map);
 
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 950)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
@@ -445,7 +442,10 @@ void		GSInGame::spawnsound(GameCommand const &event)
 {
 	Core::Sound	*sound = this->getSound(event.data);
 	if (sound)
+	{
 		sound->play();
+		this->addSound(*sound);
+	}
 }
 
 void		GSInGame::decreasePaused(GameCommand const &)

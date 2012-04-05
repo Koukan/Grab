@@ -45,7 +45,7 @@ void	GSPartySettings::createParty()
 			gc->idResource = static_cast<uint32_t>(_mode);
 			gc->data = _map;
 			Core::CommandDispatcher::get().pushCommand(*gc);
-			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", nbPlayers, _online));
+			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, this->_map, nbPlayers, _online));
 		}
 		else
 		{
@@ -61,7 +61,7 @@ void	GSPartySettings::createParty()
 		}
     }
     else
-		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "", 4, _online));
+		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, this->_map, 4, _online));
 }
 
 void	GSPartySettings::nbPlayerList(Core::GUIElement &nb)
@@ -81,7 +81,6 @@ void	GSPartySettings::onStart()
   this->load("resources/xml/intro.xml");
 
   // add gui
-
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2, (VIEWY - 100) / 2, 300, 300, 0);
   layout->setY((VIEWY - layout->getHeight()) / 2);
 
@@ -90,8 +89,6 @@ void	GSPartySettings::onStart()
   Core::ButtonSprite *rightArrow = new Core::ButtonSprite("right list arrow", "selected right list arrow", "pressed right list arrow");
 
   GUIList<GSPartySettings> *guilist = new GUIList<GSPartySettings>(*this, &GSPartySettings::nbPlayerList, *leftArrow, *rightArrow, 0);
-/*  if (_mode == Modes::STORY)*/
-    //guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "1 Player", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "2 Players", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "3 Players", "buttonFont", *sprite, 0)));
   guilist->addElement(*(new GUIButton<GSPartySettings>(*this, &GSPartySettings::createParty, "4 Players", "buttonFont", *sprite, 0)));

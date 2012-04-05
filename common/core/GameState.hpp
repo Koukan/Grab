@@ -1,6 +1,7 @@
 #ifndef		_GAMESTATE_
 #define 	_GAMESTATE_
 
+#include <list>
 #include <string>
 #include "GameObjectManager.hpp"
 #include "CommandHandler.hpp"
@@ -8,6 +9,7 @@
 #include "Command.hpp"
 #include "InputManager.hpp"
 #include "GUIManager.hpp"
+#include "Sound.hpp"
 
 CORE_BEGIN_NAMESPACE
 
@@ -36,6 +38,7 @@ public:
   virtual void	update(double elapseTime = 0);
   void			pause(Pause paused = ALL);
   void			play();
+  void			addSound(Core::Sound &sound);
   Pause			getPaused() const;
   InputManager		&getInput();
   GUIManager		&getGUI();
@@ -43,9 +46,10 @@ public:
   const std::string	name;
 
 private:
-  Pause			_paused;
-  GUIManager	_GUIManager;
-  InputManager  _inputManager;
+  Pause						_paused;
+  GUIManager				_GUIManager;
+  InputManager				_inputManager;
+  std::list<Core::Sound*>	_sounds;
 };
 
 CORE_END_NAMESPACE

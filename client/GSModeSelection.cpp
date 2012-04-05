@@ -6,6 +6,7 @@
 #include "ScrollingSprite.hpp"
 #include "GSPartySettings.hpp"
 #include "GSModeSelection.hpp"
+#include "GSMapChoice.hpp"
 #include "RendererManager.hpp"
 
 GSModeSelection::GSModeSelection()
@@ -23,7 +24,6 @@ void	GSModeSelection::onStart()
   this->load("resources/xml/intro.xml");
 
   // add gui
-
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
 	  (VIEWY - 100) / 2,
 	  300, 300, -5, 100, "up arrow", "down arrow");
@@ -47,24 +47,24 @@ void	GSModeSelection::back()
 
 void	GSModeSelection::story()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::STORY); //tmp, waiting for map selection
-  Core::GameStateManager::get().pushState(*partySettings);
+  Core::GameState *state = new GSMapChoice(Modes::STORY); //tmp, waiting for map selection
+  Core::GameStateManager::get().pushState(*state);
 }
 
 void	GSModeSelection::survivalScoring()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_SCORING);
+  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_SCORING, "resources/map/randomMap.xml");
   Core::GameStateManager::get().pushState(*partySettings);
 }
 
 void	GSModeSelection::survivalHighlander()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_HIGHLANDER);
+  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_HIGHLANDER, "resources/map/randomMap.xml");
   Core::GameStateManager::get().pushState(*partySettings);
 }
 
 void	GSModeSelection::tryAndRetry()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::TRY_AND_RETRY);
+  Core::GameState *partySettings = new GSPartySettings(Modes::TRY_AND_RETRY, "resources/map/randomMap.xml");
   Core::GameStateManager::get().pushState(*partySettings);
 }

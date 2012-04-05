@@ -7,7 +7,7 @@ CORE_USE_NAMESPACE
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset,
 		double xScrolling, double yScrolling)
 	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy),
-	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _hitBox(&hitbox)
+	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _hitBox(&hitbox), _link(0)
 {
 }
 
@@ -63,6 +63,20 @@ void	PhysicObject::setStatic(bool val)
 	_static = val;
 }
 
+double		PhysicObject::getX() const
+{
+	if (this->_link)
+		return (this->_link->getX() + this->_x);
+	return (this->_x);
+}
+
+double		PhysicObject::getY() const
+{
+	if (this->_link)
+		return (this->_link->getY() + this->_y);
+	return (this->_y);
+}
+
 void	PhysicObject::setVx(double vx)
 {
   this->_vx = vx;
@@ -109,12 +123,12 @@ int		PhysicObject::getHeightElement()
 
 int		PhysicObject::getXElement()
 {
-	return (static_cast<int>(this->_x + this->_xHitboxOffset));
+	return (static_cast<int>(this->getX() + this->_xHitboxOffset));
 }
 
 int		PhysicObject::getYElement()
 {
-	return (static_cast<int>(this->_y + this->_yHitboxOffset));
+	return (static_cast<int>(this->getY() + this->_yHitboxOffset));
 }
 
 double		PhysicObject::getScrollX() const
@@ -134,10 +148,20 @@ void	PhysicObject::collide(TreeElement &elem)
 		(obj._delete && obj._delete != 3))
 		return ;
 
-	this->_hitBox->setX(this->_x + this->_xHitboxOffset);
-	this->_hitBox->setY(this->_y + this->_yHitboxOffset);
+	this->_hitBox->setX(this->getX() + this->_xHitboxOffset);
+	this->_hitBox->setY(this->getY() + this->_yHitboxOffset);
 	obj.getHitBox().setX(obj.getX() + obj.getXHitBoxOffset());
 	obj.getHitBox().setY(obj.getY() + obj.getYHitBoxOffset());
 	if (this->_hitBox->collide(obj.getHitBox()))
 		this->getGroup()->getState().callCollision(*this, obj);
+}
+
+PhysicObject	*PhysicObject::getLink() const
+{
+	return (this->_link);
+}
+
+void	PhysicObject::setLink(PhysicObject *link)
+{
+	this->_link = link;
 }

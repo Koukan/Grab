@@ -13,6 +13,8 @@ public:
   virtual ~PhysicObject();
   virtual void	draw(double) {};
   virtual void	move(double time);
+  virtual double		getX() const;
+  virtual double		getY() const;
   double		getVx() const;
   double		getVy() const;
   double		getXHitBoxOffset() const;
@@ -26,6 +28,7 @@ public:
   void			setYHitBoxOffset(double y);
   void			setHitBox(HitBox &hitBox);
   void			setStatic(bool value = true);
+  void			setLink(PhysicObject *link);
 
   int			getWidthElement();
   int			getHeightElement();
@@ -33,6 +36,7 @@ public:
   int			getYElement();
   double		getScrollX() const;
   double		getScrollY() const;
+  PhysicObject	*getLink() const;
   bool			isStatic() const;
   void			collide(TreeElement &elem);
 
@@ -45,6 +49,7 @@ protected:
 	double	_scrollY;
 	bool	_static;
 	HitBox	*_hitBox;
+	PhysicObject	*_link;
 };
 
 CORE_END_NAMESPACE

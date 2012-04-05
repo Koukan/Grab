@@ -8,7 +8,7 @@
 class GSPartySettings : public Core::GameState
 {
 public:
-  GSPartySettings(Modes::Mode mode, std::string const &map = "");
+  GSPartySettings(Modes::Mode mode, std::string const &map);
   ~GSPartySettings();
 
   void  nbPlayerList(Core::GUIElement &nb);
