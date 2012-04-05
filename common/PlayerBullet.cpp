@@ -11,24 +11,24 @@ inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
-		  double x, double y, double vx, double vy, int angle)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle)
+		  double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle), _relative(relativeObject)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
-	double x, double y, double vx, double vy, int angle)
-	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle)
+	double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject)
+	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
-	double vx, double vy, double xHitboxOffset, double yHitboxOffset, int angle)
+	double vx, double vy, double xHitboxOffset, double yHitboxOffset, int angle, PhysicObject *relativeObject)
 	: Core::BulletCommand(state, gstate, box, false, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
-	_isFiring(true), _isConcentrated(false), _angle(angle)
+	_isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -65,6 +65,12 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+	if (this->_relative)
+	{
+		bullet->setX(0);
+		bullet->setY(0);
+		bullet->setLink(this->_relative);
+	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
@@ -101,7 +107,13 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle);
+	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative);
+	if (this->_relative)
+	{
+		bullet->setX(0);
+		bullet->setY(0);
+		bullet->setLink(this->_relative);
+	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
