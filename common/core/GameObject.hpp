@@ -26,8 +26,8 @@ public:
 
 	// getter
 	uint32_t			getId() const;
-	double				getX() const;
-	double				getY() const;
+	virtual double		getX() const;
+	virtual double		getY() const;
 	Group				*getGroup() const;
 	int8_t				isDelete() const;
 	GameObject			*getRelativeObject() const;

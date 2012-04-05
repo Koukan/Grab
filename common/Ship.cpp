@@ -290,7 +290,7 @@ void Ship::manageFire()
 		{
 			this->_concentratedPlayerBullet = new PlayerBullet(this->_concentratedBulletFileName, this->getGroup()->getState(),
 									"playerShots", this->_x,
-									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
+									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy, 0, this);
 			this->_concentratedPlayerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
 		}

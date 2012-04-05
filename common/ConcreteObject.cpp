@@ -34,7 +34,7 @@ void			ConcreteObject::draw(double time)
 		if (this->_deleteSprite && this->_sprite->isFinished())
 			this->erase();
 		else
-			this->_sprite->draw(static_cast<int>(this->_x), static_cast<int>(this->_y), time);
+			this->_sprite->draw(static_cast<int>(this->getX()), static_cast<int>(this->getY()), time);
 	}
 }
 
