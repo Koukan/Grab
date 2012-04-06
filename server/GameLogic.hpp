@@ -11,7 +11,7 @@ class Map;
 class GameLogic : public Core::GameState
 {
   public:
-    GameLogic(Game &game);
+    GameLogic(Game &game, const std::string &map);
     virtual ~GameLogic();
 	virtual void		update(double elapsedTime);
 	virtual bool		handleCommand(Core::Command const &command);

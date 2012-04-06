@@ -144,12 +144,15 @@ int		Client::listGame(Net::Packet&)
 
 	for (GameManager::gamesMap::const_iterator it = map.begin(); it != map.end(); ++it)
 	{
-		Net::Packet		tmp(12);
+		Game			*game = it->second;
+		Net::Packet		tmp(15 + game->getMap().size());
 
 		tmp << static_cast<uint8_t>(TCP::GAME);
-		tmp << static_cast<uint16_t>(it->second->getId());
-		tmp << static_cast<uint8_t>(it->second->getMaxPlayers());
-		tmp << static_cast<uint8_t>(it->second->nbPlayers());
+		tmp << static_cast<uint16_t>(game->getId());
+		tmp << static_cast<uint8_t>(game->getMaxPlayers());
+		tmp << static_cast<uint8_t>(game->nbPlayers());
+		tmp << game->getType();
+		tmp << game->getMap();
 		this->handleOutputPacket(tmp);
 	}
 	Server::get().unlock();

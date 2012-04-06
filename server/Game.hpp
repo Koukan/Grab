@@ -29,6 +29,8 @@ class Game : public Core::Module
 	bool						isFull() const;
 	uint16_t					getId() const;
 	uint8_t						getMaxPlayers() const;
+	uint16_t					getType() const;
+	std::string const			&getMap() const;
 	GameLogic					&getGameLogic();
 	std::list<Client*> const	&getClients() const;
 	Player	* const 			*getPlayers() const;

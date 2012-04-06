@@ -9,8 +9,8 @@
 class GUILabel : public Core::GUIElement
 {
 public:
-  GUILabel(std::string const &name, std::string const &font, std::string const &sprite, int x, int y);
-  GUILabel(std::string const &name, std::string const &font, std::string const &sprite, Core::GUILayout *layout);
+  GUILabel(std::string const &content, std::string const &font, std::string const &sprite, int x, int y);
+  GUILabel(std::string const &content, std::string const &font, std::string const &sprite, Core::GUILayout *layout);
   ~GUILabel();
 
   virtual bool	handleGUICommand(Core::GUICommand const &command);
