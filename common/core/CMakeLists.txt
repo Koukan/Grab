@@ -159,11 +159,6 @@ include_directories (
 
 add_definitions (-DCOREDLL)
 
-IF(WIN32)
-ELSE(WIN32)
-	SET(CMAKE_C_FLAGS "-W -Wall -Wextra -g3")
-ENDIF(WIN32)
-
 add_library(
 	core
 	SHARED

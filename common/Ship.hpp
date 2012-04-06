@@ -85,6 +85,10 @@ private:
   int						_angles[3];
   int						_colors[3];
   Core::Sound				*_fireSound;
+  bool						_xFixe;
+  bool						_yFixe;
+  int						_xFireOffset;
+  int						_yFireOffset;
 
   // ship control
   enum Actions
@@ -121,6 +125,7 @@ private:
   union
   {
     ConcreteObject*	_shield;
+    ConcreteObject*	_bomb;
   };	
   void handleActions();
 };

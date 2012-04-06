@@ -11,24 +11,27 @@ inline static double dtor(double x) { return x * M_PI / 180; }
 inline static double rtod(double x) { return x * 180 / M_PI; }
 
 PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, std::string const &groupName,
-		  double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject)
-		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle), _relative(relativeObject)
+		  double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject, PhysicObject::Constraint constraint)
+		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle), _relative(relativeObject),
+		  _constraint(constraint)
 {
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
-	double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject)
-	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject)
+	double x, double y, double vx, double vy, int angle, PhysicObject *relativeObject, PhysicObject::Constraint constraint)
+	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject),
+	_constraint(constraint)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
-	double vx, double vy, double xHitboxOffset, double yHitboxOffset, int angle, PhysicObject *relativeObject)
+	double vx, double vy, double xHitboxOffset, double yHitboxOffset, int angle, PhysicObject *relativeObject, PhysicObject::Constraint constraint)
 	: Core::BulletCommand(state, gstate, box, false, vx, vy, xHitboxOffset, yHitboxOffset), _groupName(groupName),
-	_isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject)
+	_isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject),
+	_constraint(constraint)
 {
 	this->setSprite(gstate, "playershot");
 	this->setFocus("monster");
@@ -67,9 +70,11 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
 	if (this->_relative)
 	{
-		bullet->setX(0);
-		bullet->setY(0);
-		bullet->setLink(this->_relative);
+		if ((this->_constraint & PhysicObject::X) != 0)
+			bullet->setX(0);
+		if ((this->_constraint & PhysicObject::Y) != 0)
+			bullet->setY(0);
+		bullet->setLink(this->_relative, this->_constraint);
 	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
@@ -110,9 +115,11 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative);
 	if (this->_relative)
 	{
-		bullet->setX(0);
-		bullet->setY(0);
-		bullet->setLink(this->_relative);
+		if ((this->_constraint & PhysicObject::X) != 0)
+			bullet->setX(0);
+		if ((this->_constraint & PhysicObject::Y) != 0)
+			bullet->setY(0);
+		bullet->setLink(this->_relative, this->_constraint);
 	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
