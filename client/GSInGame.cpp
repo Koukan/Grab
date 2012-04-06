@@ -48,6 +48,8 @@ void		GSInGame::preload()
   this->addGroup("deadlyWalls", 5);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
+  this->addGroup("monster2"), 8;
+  this->addGroup("trigger", 5);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
   this->addGroup("impacts", 43);
@@ -57,10 +59,12 @@ void		GSInGame::preload()
   this->addGroup("wallShot", 0);
   this->addGroup("shields", 40);
 
+  this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "monster2", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
@@ -68,8 +72,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "traversableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
+  this->setCollisionGroups("grabs", "monster2", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+  this->setCollisionGroups("playerShots", "monster2", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::invisibleWallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
@@ -99,7 +105,7 @@ void		GSInGame::preload()
   // load xml
   this->load(this->_map);
 
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 950)), "shotWall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 980)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");

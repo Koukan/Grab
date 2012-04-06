@@ -52,7 +52,7 @@ void		GameState::pause(Pause paused)
   if (paused & PHYSIC)
   {
 	  for (std::list<Core::Sound*>::const_iterator it = this->_sounds.begin();
-		  it != this->_sounds.end(); it++)
+		   it != this->_sounds.end(); it++)
 		  (*it)->pause();
   }
 }
