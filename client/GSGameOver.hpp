@@ -4,6 +4,7 @@
 #include "Modes.hpp"
 #include "GameState.hpp"
 #include "Player.hpp"
+#include "Font.hpp"
 
 class GSGameOver : public Core::GameState
 {
@@ -11,18 +12,18 @@ public:
   GSGameOver(bool victory, std::list<Player *>& players, Modes::Mode mode,
 	     std::string const& map, unsigned int nbPlayers, bool online);
 
-  virtual ~GSGameOver();
-  virtual void onStart();
-  virtual void onEnd();
-  virtual bool	handleCommand(Core::Command const &command);
-  void		retry();
-  void		returnToMainMenu();
+  virtual		~GSGameOver();
+  virtual void		onStart();
+  virtual bool		handleCommand(Core::Command const &command);
+  void			retry();
+  void			returnToMainMenu();
 
 private:
-  bool		_victory;
-  std::list<Player *>& _players;
-  Modes::Mode	_mode;
-  std::string const& _map;
-  unsigned int _nbPlayers;
-  bool		_online;
+  bool			_victory;
+  std::list<Player *>&	_players;
+  Modes::Mode		_mode;
+  std::string const&	_map;
+  unsigned int		_nbPlayers;
+  bool			_online;
+  Core::CoreFont*	_state;
 };

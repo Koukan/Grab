@@ -102,11 +102,6 @@ void	Ship::move(double time)
 	move->y = static_cast<int16_t>(this->getY());
 	move->vx = this->getVx();
 	move->vy = this->getVy();
-	if (_specialPowerActive && _specialPowerType == ShipInfo::SHIELD && _shield)
-	  {
-	    _shield->setX(_x);
-	    _shield->setY(_y);
-	  }
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
@@ -122,10 +117,11 @@ void Ship::shield()
     {
       this->_specialPowerActive = true;
       std::cout << "shield !" << std::endl;
-      _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(this->_x, this->_y, 125)), 0, 0, -125, -125);
+      _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(0, 0, 125)), 0, 0, -125, -125);
 
       this->getGroup()->getState().addGameObject(_shield, "shields");
       this->copyColor(this->_shield->getSprite());
+      this->_shield->setLink(this);
       GameCommand* cmd = new GameCommand("disableShield");
       cmd->player = &this->_player;
       Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
@@ -140,6 +136,7 @@ void Ship::disableShield()
       this->_shield->setSprite("shield-disparition");
       this->_shield->setDeleteSprite(true);
       this->copyColor(this->_shield->getSprite());
+      this->setLink(0);
     }
 }
 

@@ -25,7 +25,8 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 	  _nbPlayers(nbPlayers), _nbDie(0), _online(online),
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
-	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits)
+	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits),
+	  _gameOver(false)
 {
 	Rules::setOnline(online);
 }
@@ -331,7 +332,7 @@ bool		GSInGame::playerDie(Player &)
 		    (*it)->setLife(life);
 		    (*it)->getShip()->setDead(false);
 		  }
-			Core::GameStateManager::get().pushState(*new GSContinue(), PHYSIC);
+		Core::GameStateManager::get().pushState(*new GSContinue(*this, _players), PHYSIC);
 	      }
 	    else
 	      {
@@ -349,10 +350,7 @@ void		GSInGame::setSeed(uint32_t seed)
 
 void		GSInGame::gameover(bool victory)
 {
-  if (!victory)
-    std::cout << "Game Over !!!" << std::endl;
-  else
-    std::cout << "You win !!!" << std::endl;
+  _gameOver = 0;
   this->pause(PHYSIC);
   Core::GameStateManager::get().pushState(*(new GSGameOver(victory, _players, _mode,
 							   _map, _nbPlayers, _online)), Core::GameState::PHYSIC);
@@ -602,4 +600,17 @@ unsigned int	GSInGame::getNbPlayers() const
 unsigned int	GSInGame::getNbDie() const
 {
   return (_nbDie);
+}
+
+void		GSInGame::setGameOver(int gameOver)
+{
+  this->_gameOver = gameOver;
+}
+
+void		GSInGame::update(double)
+{
+  if (_gameOver == 1)
+    this->gameover(true);
+  else if (_gameOver == 2)
+    this->gameover(false);
 }

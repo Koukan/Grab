@@ -2,28 +2,28 @@ cmake_minimum_required (VERSION 2.8)
 
 project(Grab_Server)
 
-set(COMMON_INCLUDE_DIR "../common/")
+set(COMMON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/")
 
-set(NET_SRCS_DIR "../common/libnet/src/")
-set(NET_INCLUDE_DIR "../common/libnet/include")
-set(NET_MUTEX_INCLUDE_DIR "../common/libnet/include/thread/")
-set(NET_MUTEX_SRCS_DIR "../common/libnet/src/thread/")
+set(NET_SRCS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/libnet/src/")
+set(NET_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/libnet/include")
+set(NET_MUTEX_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/libnet/include/thread/")
+set(NET_MUTEX_SRCS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/libnet/src/thread/")
 
 ##### Linking core
 set(CORE_DIR
-	"../common/core/"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../common/core/"
 )
 set(CORE_CALLBACK_DIR
-	"../common/core/Callback_Impl/"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../common/core/Callback_Impl/"
 )
 set(CORE_QUADTREE_INCLUDE_DIR
-	"../common/core/QuadTree/"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../common/core/QuadTree/"
 )
 set(CORE_BULLETML_DIR
-	"../common/core/bulletml/"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../common/core/bulletml/"
 )
 set(CORE_TINYXML_DIR
-	"../common/core/tinyxml/"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../common/core/tinyxml/"
 )
 
 set(SRCS
@@ -116,7 +116,7 @@ add_executable(
 ENDIF(WIN32)
 
 #add_subdirectory(../common/libnet ../common/libnet_build)
-add_subdirectory(../common/core ../common/libcore_build)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../common/core ${CMAKE_CURRENT_SOURCE_DIR}/../common/libcore_build)
 
 include_directories (
 	${NET_INCLUDE_DIR}
@@ -127,7 +127,7 @@ include_directories (
 	${CORE_BULLETML_DIR}
 	${CORE_TINYXML_DIR}
 	${COMMON_INCLUDE_DIR}
-	.
+	${CMAKE_CURRENT_SOURCE_DIR}/.
 )
 
 find_package (Threads)
