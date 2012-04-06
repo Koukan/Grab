@@ -48,6 +48,7 @@ void		GSInGame::preload()
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
   this->addGroup("monster2"), 8;
+  this->addGroup("trigger", 5);
   this->addGroup("background2", 2);
   this->addGroup("background3", 3);
   this->addGroup("impacts", 43);
@@ -57,6 +58,7 @@ void		GSInGame::preload()
   this->addGroup("wallShot", 0);
   this->addGroup("shields", 40);
 
+  this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "wallShot", &Rules::wallTouchObject);

@@ -227,3 +227,7 @@ void		Rules::setOnline(bool online)
 	gl_online = online;
 }
 
+void		Rules::playerTouchTrigger(Core::GameObject&, Core::GameObject& o2)
+{
+	o2.erase();
+}
