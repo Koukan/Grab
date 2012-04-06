@@ -5,22 +5,34 @@
 #include "RendererManager.hpp"
 #include "Player.hpp"
 
-GSContinue::GSContinue(GSInGame& ingame, std::list<Player *> const & players) :
+GSContinue::GSContinue(GSInGame& ingame, std::list<Player *> const & players,
+		       unsigned int nbContinues) :
   Core::GameState("continue"),
   _time(10),
   _continue(false),
   _timer(this->getFont("bigNumbersFont")),
   _info(this->getFont("bigNumbersFont")),
+  _nbContinues(this->getFont("listGameFont")),
   _inGame(ingame), _players(players)
 {
-  _timer->setText(Net::Converter::toString<int>(_time));
-  _timer->setX(VIEWX / 2 - _timer->getWidth() / 2);
-  _timer->setY(VIEWY / 2 - _timer->getHeight() / 2);
-  _info->setText("CONTINUE ?");
-  _info->setX(VIEWX / 2 - _info->getWidth() / 2);
-  _info->setY(VIEWY / 2 - _info->getHeight() / 2 - 100);
-  this->addGameObject(_info);
-  this->addGameObject(_timer);
+  if (_timer && _info)
+    {
+      _timer->setText(Net::Converter::toString<int>(_time));
+      _timer->setX(VIEWX / 2 - _timer->getWidth() / 2);
+      _timer->setY(VIEWY / 2 - _timer->getHeight() / 2);
+      _info->setText("CONTINUE ?");
+      _info->setX(VIEWX / 2 - _info->getWidth() / 2);
+      _info->setY(VIEWY / 2 - _info->getHeight() / 2 - 100);
+      this->addGameObject(_info);
+      this->addGameObject(_timer);
+    }
+  if (_nbContinues)
+    {
+      _nbContinues->setText("Continues : " + Net::Converter::toString<unsigned int>(nbContinues));
+      _nbContinues->setX(VIEWX / 2 - _nbContinues->getWidth() / 2 + 200);
+      _nbContinues->setY(VIEWY / 2 - _nbContinues->getHeight() / 2 + 200);
+      this->addGameObject(_nbContinues);
+    }
 }
 
 GSContinue::~GSContinue()
@@ -28,9 +40,9 @@ GSContinue::~GSContinue()
 
 void GSContinue::onStart()
 {
-  for (std::list<Player *>::const_iterator it = this->_players.begin();
-       it != this->_players.end();
-       ++it)
+   for (std::list<Player *>::const_iterator it = this->_players.begin();
+  it != this->_players.end();
+    ++it)
     {
       if ((*it)->getType() == Player::KEYBOARD)
 	{
@@ -49,7 +61,7 @@ void GSContinue::onStart()
 	  this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
 						 *this, &GSContinue::returnToGame,
 						 static_cast<int>((*it)->getAction(Player::PAUSE).JoystickButton.Button));
-	}
+						 }
     }
 }
 

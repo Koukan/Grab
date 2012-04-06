@@ -13,13 +13,16 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
   _victory(victory), _players(players), _mode(mode), _map(map),
   _nbPlayers(nbPlayers), _online(online), _state(this->getFont("bigNumbersFont"))
 {
-  if (victory)
-    _state->setText("VICTORY !!!");
-  else
-    _state->setText("YOU LOOOOOOSE !!!");
-  _state->setX(VIEWX / 2 - _state->getWidth() / 2);
-  _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
-  this->addGameObject(_state);
+  if (_state)
+    {
+      if (victory)
+	_state->setText("VICTORY !!!");
+      else
+	_state->setText("YOU LOOOOOOSE !!!");
+      _state->setX(VIEWX / 2 - _state->getWidth() / 2);
+      _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
+      this->addGameObject(_state);
+    }
 }
 
 GSGameOver::~GSGameOver()

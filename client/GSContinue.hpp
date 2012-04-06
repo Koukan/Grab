@@ -9,7 +9,7 @@ class Player;
 class GSContinue : public Core::GameState
 {
 public:
-  GSContinue(GSInGame& inGame, std::list<Player *> const & players);
+  GSContinue(GSInGame& inGame, std::list<Player *> const & players, unsigned int nbContinues);
   ~GSContinue();
   virtual void onStart();
   virtual void update(double elapsedTime);
@@ -21,6 +21,7 @@ private:
   bool				_continue;
   Core::CoreFont*		_timer;
   Core::CoreFont*		_info;
+  Core::CoreFont*		_nbContinues;
   GSInGame&			_inGame;
   std::list<Player *> const &	_players;
 };

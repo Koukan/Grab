@@ -26,7 +26,7 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits),
-	  _gameOver(false)
+	  _gameOver(0) 
 {
 	Rules::setOnline(online);
 }
@@ -231,9 +231,12 @@ void		GSInGame::onStart()
 	GameState *state = Core::GameStateManager::get().getGameState("Preload");
 	if (state)
 		state->pause();
-  /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
-  obj1->pushSprite("star background");
-  this->addGameObject(obj1, "background2");*/
+	ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
+	obj1->pushSprite("stars");
+	this->addGameObject(obj1, "background2");
+	ScrollingSprite *obj2 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.2);
+	obj2->pushSprite("clouds");
+	this->addGameObject(obj2, "background2");
 
 	 //test map
 	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
@@ -329,10 +332,11 @@ bool		GSInGame::playerDie(Player &)
 		for (std::list<Player *>::iterator it = this->_players.begin();
 		     it != this->_players.end(); ++it)
 		  {
+		    (*it)->getShip()->resetState();
 		    (*it)->setLife(life);
 		    (*it)->getShip()->setDead(false);
 		  }
-		Core::GameStateManager::get().pushState(*new GSContinue(*this, _players), PHYSIC);
+		Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
 	      }
 	    else
 	      {
