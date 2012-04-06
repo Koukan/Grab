@@ -1,11 +1,15 @@
 #pragma once
 
 #include "GameState.hpp"
+#include <list>
+
+class GSInGame;
+class Player;
 
 class GSContinue : public Core::GameState
 {
 public:
-  GSContinue();
+  GSContinue(GSInGame& inGame, std::list<Player *> const & players);
   ~GSContinue();
   virtual void onStart();
   virtual void update(double elapsedTime);
@@ -15,5 +19,8 @@ public:
 private:
   int				_time;
   bool				_continue;
-  Core::CoreFont*	_timer;
+  Core::CoreFont*		_timer;
+  Core::CoreFont*		_info;
+  GSInGame&			_inGame;
+  std::list<Player *> const &	_players;
 };

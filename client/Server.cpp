@@ -7,6 +7,7 @@
 #include "GameListCommand.hpp"
 #include "ResourceCommand.hpp"
 #include "Command.hpp"
+#include "Modes.hpp"
 
 Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
 		_name(""), _game(0)
@@ -80,11 +81,18 @@ bool		Server::treatGamePacket(Net::Packet &packet)
 	uint16_t	idGame;
 	uint8_t		nbPlayers;
 	uint8_t		state;
+	uint16_t	type;
+	std::string	map;
 
 	packet >> idGame;
 	packet >> nbPlayers;
 	packet >> state;
-	Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("listGame", idGame, nbPlayers, state)));
+	GameListCommand *cmd = new GameListCommand("listGame", idGame, nbPlayers, state);
+	packet >> cmd->type;
+	if (cmd->type > Modes::TRY_AND_RETRY)
+		cmd->type = Modes::STORY;
+	packet >> cmd->_login;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 	return true;
 }
 

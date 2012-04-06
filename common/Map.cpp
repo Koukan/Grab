@@ -8,7 +8,9 @@ Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _n
 {}
 
 Map::~Map()
-{}
+{
+	
+}
 
 Core::Resource    *Map::clone() const
 {

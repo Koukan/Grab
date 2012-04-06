@@ -125,6 +125,7 @@ private:
   union
   {
     ConcreteObject*	_shield;
+    ConcreteObject*	_bomb;
   };	
   void handleActions();
 };
