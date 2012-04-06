@@ -9,9 +9,9 @@
 #include "Converter.hpp"
 #include "Ship.hpp"
 
-Game::Game(uint16_t id, uint8_t maxPlayers, Modes::Mode type, std::string const &str)
-  : Core::Module("Game" + id, 20), _logic(*this),
-	  _id(id), _maxPlayers(maxPlayers), _type(type), _map(str), _readyPlayers(0), _nbPlayers(0)
+Game::Game(uint16_t id, uint8_t maxPlayers, Modes::Mode type, std::string const &map)
+  : Core::Module("Game" + id, 20), _logic(*this, map),
+	  _id(id), _maxPlayers(maxPlayers), _type(type), _map(map), _readyPlayers(0), _nbPlayers(0)
 {
 	Server::get().loadModule(*this);
 	::memset(this->_players, 0, sizeof(this->_players));
@@ -138,6 +138,16 @@ uint16_t	Game::getId() const
 uint8_t     Game::getMaxPlayers() const
 {
 	return this->_maxPlayers;
+}
+
+uint16_t	Game::getType() const
+{
+	return this->_type;
+}
+
+std::string	const	&Game::getMap() const
+{
+	return this->_map;
 }
 
 std::list<Client*> const &Game::getClients() const

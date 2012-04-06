@@ -11,7 +11,7 @@
 #include "Cannon.hpp"
 #include "MonsterGenerator.hpp"
 
-GameLogic::GameLogic(Game &game)
+GameLogic::GameLogic(Game &game, const std::string &map)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false), _map(0)
 {
 	this->addGroup("spawners");
@@ -31,7 +31,7 @@ GameLogic::GameLogic(Game &game)
 	this->addGroup("scoreBonus", 42);
 	this->addGroup("map", 0);
 
-	this->load("resources/map/map1.xml");
+	this->load(map);
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(3000, -2000, 1000, 8000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
 	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");

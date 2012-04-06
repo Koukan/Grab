@@ -20,5 +20,6 @@ private:
   GUIVLayout *_vlayout;
   GUIHLayout *_hlayout;
   Core::ButtonSprite const *_sprite;
+  Core::ButtonSprite const *_longbutton;
   bool _isListed;
 };

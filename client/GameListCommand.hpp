@@ -16,6 +16,7 @@ public:
   uint16_t	idGame;
   uint8_t	nbPlayers;
   uint8_t	state;
-  std::string const _login;
+  uint16_t	type;
+  std::string _login;
   PlayerStatus::Type _status;
 };
