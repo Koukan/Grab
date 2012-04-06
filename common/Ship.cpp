@@ -102,7 +102,7 @@ void	Ship::move(double time)
 	move->y = static_cast<int16_t>(this->getY());
 	move->vx = this->getVx();
 	move->vy = this->getVy();
-	if (_specialPowerActive && _specialPowerType == ShipInfo::SHIELD)
+	if (_specialPowerActive && _specialPowerType == ShipInfo::SHIELD && _shield)
 	  {
 	    _shield->setX(_x);
 	    _shield->setY(_y);
@@ -118,22 +118,29 @@ void Ship::bomb()
 
 void Ship::shield()
 {
-  this->_specialPowerActive = true;
-  std::cout << "shield !" << std::endl;
-  _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(this->_x, this->_y, 125)), 0, 0, -125, -125);
-  _shield->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
-  this->getGroup()->getState().addGameObject(_shield, "shields");
+  if (!_shield)
+    {
+      this->_specialPowerActive = true;
+      std::cout << "shield !" << std::endl;
+      _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(this->_x, this->_y, 125)), 0, 0, -125, -125);
 
-  GameCommand* cmd = new GameCommand("disableShield");
-  cmd->player = &this->_player;
-  Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
+      this->getGroup()->getState().addGameObject(_shield, "shields");
+      this->copyColor(this->_shield->getSprite());
+      GameCommand* cmd = new GameCommand("disableShield");
+      cmd->player = &this->_player;
+      Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
+    }
 }
 
 void Ship::disableShield()
 {
-  this->_specialPowerActive = false;
-  this->_shield->erase();
-  this->_shield = 0;
+  if (this->_shield)
+    {
+      this->_specialPowerActive = false;
+      this->_shield->setSprite("shield-disparition");
+      this->_shield->setDeleteSprite(true);
+      this->copyColor(this->_shield->getSprite());
+    }
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -483,7 +490,8 @@ void Ship::setDead(bool dead, bool command)
 	}
 	this->_delete = 3;
 	this->_powerGauge = 0;
-	this->_specialPowerActive = false;
+	if (this->_specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
+	  this->disableShield();
 	this->getSprite().setTransparency(0.4f);
 	this->_player.die();
 	this->_elapsedTime = 1000;
