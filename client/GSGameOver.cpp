@@ -11,31 +11,37 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       unsigned int nbPlayers, bool online) :
   Core::GameState("gameOver"),
   _victory(victory), _players(players), _mode(mode), _map(map),
-  _nbPlayers(nbPlayers), _online(online)
-{}
+  _nbPlayers(nbPlayers), _online(online), _state(this->getFont("bigNumbersFont"))
+{
+  if (victory)
+    _state->setText("VICTORY !!!");
+  else
+    _state->setText("YOU LOOOOOOSE !!!");
+  _state->setX(VIEWX / 2 - _state->getWidth() / 2);
+  _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
+  this->addGameObject(_state);
+}
 
 GSGameOver::~GSGameOver()
 {}
 
 void GSGameOver::onStart()
 {
-  Core::GUILayout *layout = new GUIVLayout(RendererManager::get().getWidth() / 2,
-					   RendererManager::get().getHeight() / 3 * 2,
+  Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
+					   VIEWY / 3 * 2,
 					   300, 300, 10, 100, "up arrow", "down arrow");
-  layout->setY((RendererManager::get().getHeight() - layout->getHeight()) / 2);
+  layout->setY((VIEWY - layout->getHeight()) / 2);
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
   new GUIButton<GSGameOver>(*this, &GSGameOver::returnToMainMenu, "Go to Main Menu", "buttonFont", *sprite, layout);
 }
-
-void GSGameOver::onEnd()
-{}
 
 bool	GSGameOver::handleCommand(Core::Command const &)
 {
   return false;
 }
 
+#include <iostream>
 void	GSGameOver::retry()
 {
 	Core::GameStateManager::get().popState();
@@ -51,9 +57,10 @@ void	GSGameOver::retry()
 		  (*it)->setLife(3);
 	      }
 	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-	    Core::GameStateManager::get().pushState(*gs);
+	    std::cout << _map << std::endl;
 	    gs->preload();
-	  }
+	    Core::GameStateManager::get().pushState(*gs);
+		}
 }
 
 void	GSGameOver::returnToMainMenu()

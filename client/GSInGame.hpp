@@ -22,6 +22,7 @@ public:
 	virtual ~GSInGame();
 	virtual void	onStart();
 	virtual void	onEnd();
+	virtual void	update(double elapsedTime);
 	virtual bool	handleCommand(Core::Command const &command);
 	void			preload();
 	unsigned int	getNbPlayers() const;
@@ -30,6 +31,7 @@ public:
 	Map&			getMap() const;
 	void			setSeed(uint32_t seed);
 	void		gameover(bool victory);
+	void		setGameOver(int gameOver);
 
 private:
 	template<typename T>
@@ -91,4 +93,5 @@ private:
 	Net::MTRand						_rand;
 	Map*							_mapObj;
 	unsigned int						_nbCredits;
+	int							_gameOver; // 1 -> victory, 2 -> defeat
 };
