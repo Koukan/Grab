@@ -65,14 +65,14 @@ void	PhysicObject::setStatic(bool val)
 
 double		PhysicObject::getX() const
 {
-	if (this->_link)
+	if (this->_link && (this->_constraint & PhysicObject::X) != 0)
 		return (this->_link->getX() + this->_x);
 	return (this->_x);
 }
 
 double		PhysicObject::getY() const
 {
-	if (this->_link)
+	if (this->_link && (this->_constraint & PhysicObject::Y) != 0)
 		return (this->_link->getY() + this->_y);
 	return (this->_y);
 }
@@ -161,7 +161,8 @@ PhysicObject	*PhysicObject::getLink() const
 	return (this->_link);
 }
 
-void	PhysicObject::setLink(PhysicObject *link)
+void	PhysicObject::setLink(PhysicObject *link, PhysicObject::Constraint constraint)
 {
+	this->_constraint = constraint;
 	this->_link = link;
 }

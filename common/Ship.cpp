@@ -15,6 +15,10 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound")),
+	  _xFixe(info.xConstraint),
+	  _yFixe(info.yConstraint),
+	  _xFireOffset(info.xFireOffset),
+	  _yFireOffset(info.yFireOffset),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
 	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
 	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
@@ -317,9 +321,14 @@ void Ship::manageFire()
 	{
 		if (!this->_concentratedPlayerBullet)
 		{
+			int constraint = 0;
+			if (this->_xFixe)
+				constraint |= PhysicObject::X;
+			if (this->_yFixe)
+				constraint |= PhysicObject::Y;
 			this->_concentratedPlayerBullet = new PlayerBullet(this->_concentratedBulletFileName, this->getGroup()->getState(),
-									"playerShots", this->_x,
-									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy, 0, this);
+									"playerShots", this->_x + this->_xFireOffset,
+									this->_y + this->_yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
 			this->_concentratedPlayerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
 		}
@@ -351,8 +360,8 @@ void Ship::manageFire()
 		if (!this->_playerBullet)
 		{
 			this->_playerBullet = new PlayerBullet(this->_bulletFileName, this->getGroup()->getState(),
-									"playerShots", this->_x,
-									this->_y - this->getSprite().getHeight() / 2, this->_vx, this->_vy);
+									"playerShots", this->_x + this->_xFireOffset,
+									this->_y + this->_yFireOffset, this->_vx, this->_vy);
 			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 			this->getGroup()->getState().addGameObject(this->_playerBullet);
 		}
@@ -591,13 +600,13 @@ void Ship::updateBulletTrajectory()
 {
   if (this->_playerBullet)
     {
-      this->_playerBullet->setX(this->_x);
-      this->_playerBullet->setY(this->_y - this->getSprite().getHeight() / 2);
+      this->_playerBullet->setX(this->_x + this->_xFireOffset);
+      this->_playerBullet->setY(this->_y + this->_yFireOffset);
     }
   if (this->_concentratedPlayerBullet)
     {
-      this->_concentratedPlayerBullet->setX(this->_x);
-      this->_concentratedPlayerBullet->setY(this->_y - this->getSprite().getHeight() / 2);
+      this->_concentratedPlayerBullet->setX(this->_x + this->_xFireOffset);
+      this->_concentratedPlayerBullet->setY(this->_y + this->_yFireOffset);
     }
 }
 

@@ -9,6 +9,14 @@ CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ PhysicObject : public DrawableObject, public TreeElement
 {
 public:
+	enum Constraint
+	{
+		X = 1,
+		Y = 2,
+		ALL = 3
+	};
+
+
   PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0, double xScrolling = 0, double yScrolling = 0);
   virtual ~PhysicObject();
   virtual void	draw(double) {};
@@ -28,7 +36,7 @@ public:
   void			setYHitBoxOffset(double y);
   void			setHitBox(HitBox &hitBox);
   void			setStatic(bool value = true);
-  void			setLink(PhysicObject *link);
+  void			setLink(PhysicObject *link, PhysicObject::Constraint constraint = PhysicObject::ALL);
 
   int			getWidthElement();
   int			getHeightElement();
@@ -50,6 +58,7 @@ protected:
 	bool	_static;
 	HitBox	*_hitBox;
 	PhysicObject	*_link;
+	PhysicObject::Constraint _constraint;
 };
 
 CORE_END_NAMESPACE
