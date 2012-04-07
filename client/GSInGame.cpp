@@ -37,7 +37,7 @@ GSInGame::~GSInGame()
 
 void		GSInGame::preload()
 {
-  this->addGroup("spawners");
+  this->addGroup("spawners", 0);
   this->addGroup("players", 40);
   this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
@@ -48,15 +48,15 @@ void		GSInGame::preload()
   this->addGroup("deadlyWalls", 5);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
-  this->addGroup("monster2"), 8;
+  this->addGroup("monster2", 8);
   this->addGroup("trigger", 5);
   this->addGroup("background", 2);
   this->addGroup("starobjects", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
   this->addGroup("map", 0);
-  this->addGroup("traversableWalls", 0);
-  this->addGroup("wallShot", 0);
+  this->addGroup("traversableWalls", 5);
+  this->addGroup("wallShot", 9);
   this->addGroup("shields", 40);
 
   this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);

@@ -76,15 +76,15 @@ private:
 	void		createShips();
 
 	uint16_t						_idPlayer;
-	std::list<Player *>					&_players;
+	std::list<Player *>				&_players;
 	Modes::Mode						_mode;
 	std::string const				_map;
 	unsigned int					_nbPlayers;
 	unsigned int					_nbDie;
 	bool							_online;
 	std::vector<uint32_t>			_scores;
-	std::vector<Core::CoreFont*>				 _scoreFonts;
-	std::vector<Core::CoreFont*>				_nameFonts;
+	std::vector<Core::CoreFont*>	_scoreFonts;
+	std::vector<Core::CoreFont*>	_nameFonts;
 	uint32_t						_rangeBegin;
 	uint32_t						_rangeEnd;
 	uint32_t						_currentId;
@@ -92,6 +92,6 @@ private:
 	double							_elapsedTime;
 	Net::MTRand						_rand;
 	Map*							_mapObj;
-	unsigned int						_nbCredits;
-	int							_gameOver; // 1 -> victory, 2 -> defeat
+	unsigned int					_nbCredits;
+	int								_gameOver; // 1 -> victory, 2 -> defeat
 };
