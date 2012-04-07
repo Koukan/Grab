@@ -32,6 +32,7 @@ private:
   ALuint		_buffer;
   ALuint		_source;
   bool			_loop;
+  bool			_first;
 
   OpenALSound();
 };

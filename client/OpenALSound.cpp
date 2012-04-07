@@ -4,7 +4,7 @@
 #include "OpenALSound.hpp"
 
 OpenALSound::OpenALSound(std::string const &path)
-	: _loop(false)
+	: _loop(false), _first(true)
 {
   SNDFILE               *file;
   SF_INFO               fileinfos;
@@ -47,6 +47,9 @@ OpenALSound::OpenALSound(std::string const &path)
 OpenALSound::OpenALSound(OpenALSound const& other)
 {
   alGenSources(1, &(this->_source));
+  _buffer = other._buffer;
+  _loop = other._loop;
+  _first = false;
   alSourcei(this->_source, AL_BUFFER, other._buffer);
   alSourcei(this->_source, AL_LOOPING, other._loop);
 }
@@ -54,14 +57,17 @@ OpenALSound::OpenALSound(OpenALSound const& other)
 OpenALSound::~OpenALSound()
 {
 	this->stop();
-  	alDeleteSources(1, &(this->_source));
+	alSourcei(this->_source, AL_BUFFER, 0);
+	alDeleteSources(1, &(this->_source));
+	if (_first)
+		alDeleteBuffers(1, &(this->_buffer));
 }
 
 void			OpenALSound::unloadSound() const
 {
-  alDeleteBuffers(1, &(this->_buffer));
   alSourcei(this->_source, AL_BUFFER, 0);
   alDeleteSources(1, &(this->_source));
+  alDeleteBuffers(1, &(this->_buffer));
 }
 
 void			OpenALSound::play()
