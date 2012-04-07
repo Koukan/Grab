@@ -56,6 +56,7 @@ void		GSInGame::preload()
   this->addGroup("traversableWalls", 0);
   this->addGroup("wallShot", 0);
   this->addGroup("shields", 40);
+  this->addGroup("blackHoles", 40);
 
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
@@ -95,6 +96,9 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "traversableWalls", &Rules::grabTouchWall);
   this->setCollisionGroups("grabs", "invisibleWallsGrab", &Rules::grabTouchWall);
   this->setCollisionGroups("players", "scoreBonus", &Rules::playerTouchScore);
+  this->setCollisionGroups("blackHoles", "shot", &Rules::blackHoleTouchObject);
+  this->setCollisionGroups("blackHoles", "wallShot", &Rules::blackHoleTouchObject);
+  this->setCollisionGroups("blackHoles", "monster", &Rules::blackHoleTouchObject);
 
   // load xml
   this->load(this->_map);

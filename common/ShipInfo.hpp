@@ -9,7 +9,8 @@ namespace	ShipInfo
 	  {
 	    NONE = 0,
 	    SHIELD,
-	    BOMB
+	    BOMB,
+		BLACKHOLE
 	  };
 
 	struct	ShipInfo
@@ -37,7 +38,7 @@ namespace	ShipInfo
   {"Replicator", "player4", "player4", "concentratedPlayer4", false, false, 500, 200,
    GrabPosition::MIDDLE_TOP, 0, GrabPosition::LEFT_BOTTOM_CORNER, 0, GrabPosition::RIGHT_BOTTOM_CORNER, 0, SHIELD, 0, -40},
   {"Obliterator", "player3", "player2", "concentratedPlayer2", true, false, 500, 200,
-   GrabPosition::MIDDLE_BOTTOM, 180, GrabPosition::LEFT_BOTTOM_CORNER, 90, GrabPosition::RIGHT_BOTTOM_CORNER, -90, NONE, 0, 0},
+   GrabPosition::MIDDLE_BOTTOM, 180, GrabPosition::LEFT_BOTTOM_CORNER, 90, GrabPosition::RIGHT_BOTTOM_CORNER, -90, BLACKHOLE, 0, 0},
   {"Conqueror", "player1", "player3", "concentratedPlayer3", true, true, 500, 400,
    GrabPosition::MIDDLE_TOP, 0, GrabPosition::LEFT_BOTTOM_CORNER, 0, GrabPosition::RIGHT_BOTTOM_CORNER, 0, BOMB, 0, -40},
   {"Voyageer", "player2", "player3", "concentratedPlayer3", true, true, 500, 800,

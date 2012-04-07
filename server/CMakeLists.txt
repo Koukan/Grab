@@ -28,6 +28,9 @@ set(CORE_TINYXML_DIR
 
 set(SRCS
 	${INCLUDES_CORE}
+	${COMMON_INCLUDE_DIR}BlackHole.hpp
+	${COMMON_INCLUDE_DIR}BlackHole.cpp
+	${COMMON_INCLUDE_DIR}PacketType.hpp
 	${COMMON_INCLUDE_DIR}PacketType.hpp
 	${COMMON_INCLUDE_DIR}Resources.hpp
 	${COMMON_INCLUDE_DIR}Resources.cpp

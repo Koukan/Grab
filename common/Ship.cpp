@@ -8,6 +8,7 @@
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
 #include "Converter.hpp"
+#include "BlackHole.hpp"
 
 Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
@@ -26,9 +27,9 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPowerType(info.specialPowerType),
 	  _specialPowerActive(false),
-	  _shield(0)
+	  _shield(0), _blackHole(0)
 {
-       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb};
+       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
        _specialPower = powers[_specialPowerType];
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -112,7 +113,7 @@ void	Ship::move(double time)
 #include <iostream>
 void Ship::bomb()
 {
-  std::cout << "throw bomb !" << std::endl; 
+  std::cout << "throw bomb !" << std::endl;
 }
 
 void Ship::shield()
@@ -142,6 +143,15 @@ void Ship::disableShield()
       this->copyColor(this->_shield->getSprite());
       this->setLink(0);
     }
+}
+
+void	Ship::blackHole()
+{
+	if (!this->_blackHole)
+	{
+		std::cout << "blackHole !" << std::endl;
+		this->_blackHole = new BlackHole(this->_x, this->_y, this->getGroup()->getState());
+	}
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)

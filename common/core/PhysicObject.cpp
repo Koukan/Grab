@@ -6,7 +6,7 @@ CORE_USE_NAMESPACE
 
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset,
 		double xScrolling, double yScrolling)
-	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy),
+	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _ax(0), _ay(0),
 	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _hitBox(&hitbox), _link(0)
 {
 }
@@ -77,6 +77,16 @@ double		PhysicObject::getY() const
 	return (this->_y);
 }
 
+double		PhysicObject::getAx() const
+{
+	return (this->_ax);
+}
+
+double		PhysicObject::getAy() const
+{
+	return (this->_ay);
+}
+
 void	PhysicObject::setVx(double vx)
 {
   this->_vx = vx;
@@ -85,6 +95,16 @@ void	PhysicObject::setVx(double vx)
 void	PhysicObject::setVy(double vy)
 {
   this->_vy = vy;
+}
+
+void	PhysicObject::setAx(double ax)
+{
+	this->_ax = ax;
+}
+
+void	PhysicObject::setAy(double ay)
+{
+	this->_ay = ay;
 }
 
 void	PhysicObject::setScrollX(double scrollX)
@@ -104,10 +124,18 @@ void	PhysicObject::setHitBox(HitBox &hitBox)
 
 void	PhysicObject::move(double time)
 {
-	if (!this->_static && (this->_vx || this->_vy || this->_scrollX || this->_scrollY))
+	if (!this->_static)
 	{
-		this->_x += (this->_vx + this->_scrollX) * time;
-		this->_y += (this->_vy + this->_scrollY) * time;
+		if (this->_ax || this->_ay)
+		{
+			this->_vx += this->_ax * time;
+			this->_vy += this->_ay * time;
+		}
+		if (this->_vx || this->_vy || this->_scrollX || this->_scrollY)
+		{
+			this->_x += (this->_vx + this->_scrollX) * time;
+			this->_y += (this->_vy + this->_scrollY) * time;
+		}
 	}
 }
 

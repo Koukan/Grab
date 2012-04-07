@@ -64,6 +64,8 @@ set(INCLUDES_COMMON_DIR "../common/")
 
 set(SRCS
 	${INCLUDES_CORE}
+	${INCLUDES_COMMON_DIR}BlackHole.hpp
+	${INCLUDES_COMMON_DIR}BlackHole.cpp
 	${INCLUDES_COMMON_DIR}PacketType.hpp
 	${INCLUDES_COMMON_DIR}Resources.hpp
 	${INCLUDES_COMMON_DIR}Resources.cpp

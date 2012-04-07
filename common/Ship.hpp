@@ -61,6 +61,7 @@ public:
   void			specialPower(Core::InputCommand const& cmd);
   void			bomb();
   void			shield();
+  void			blackHole();
   void			disableShield();
   void			grab4();
 
@@ -126,6 +127,7 @@ private:
   {
     ConcreteObject*	_shield;
     ConcreteObject*	_bomb;
+	ConcreteObject*	_blackHole;
   };	
   void handleActions();
 };

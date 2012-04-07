@@ -25,11 +25,15 @@ public:
   virtual double		getY() const;
   double		getVx() const;
   double		getVy() const;
+  double		getAx() const;
+  double		getAy() const;
   double		getXHitBoxOffset() const;
   double		getYHitBoxOffset() const;
   HitBox		&getHitBox() const;
   void			setVx(double);
   void			setVy(double);
+  void			setAx(double ax);
+  void			setAy(double ay);
   void			setScrollX(double);
   void			setScrollY(double);
   void			setXHitBoxOffset(double x);
@@ -51,6 +55,8 @@ public:
 protected:
 	double	_vx;
 	double	_vy;
+	double	_ax;
+	double	_ay;
 	double	_xHitboxOffset;
 	double	_yHitboxOffset;
 	double	_scrollX;

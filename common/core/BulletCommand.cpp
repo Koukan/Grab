@@ -21,7 +21,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
-	  _paused(paused), score(0)
+	  _paused(paused), _isCommanded(true), score(0)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -41,7 +41,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
-	  _paused(paused), score(0)
+	  _paused(paused), _isCommanded(true), score(0)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -60,7 +60,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	: Bullet(x, y, vx, vy), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
-	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
+	  _nextId(1), _focus("players"), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -91,7 +91,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
-	  _nextId(1), _focus("players"), _paused(paused), score(state.getGenericInt("score"))
+	  _nextId(1), _focus("players"), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -276,6 +276,8 @@ void		BulletCommand::doVanish()
 
 void		BulletCommand::doChangeDirection(double direction)
 {
+	if (!this->_isCommanded)
+		return ;
 	this->_direction = dtor(direction);
 	this->_vx = this->_speed * cos(this->_direction);
 	this->_vy = this->_speed * sin(this->_direction);
@@ -285,6 +287,8 @@ void		BulletCommand::doChangeDirection(double direction)
 
 void		BulletCommand::doChangeSpeed(double speed)
 {
+	if (!this->_isCommanded)
+		return ;
 	this->_speed = speed;
 	this->_vx = this->_speed * cos(this->_direction);
 	this->_vy = this->_speed * sin(this->_direction);
@@ -292,12 +296,16 @@ void		BulletCommand::doChangeSpeed(double speed)
 
 void		BulletCommand::doAccelX(double speedx)
 {
+	if (!this->_isCommanded)
+		return ;
 	this->_vx = speedx;
 	this->setSpeedDirection();
 }
 
 void		BulletCommand::doAccelY(double speedy)
 {
+	if (!this->_isCommanded)
+		return ;
 	this->_vy = speedy;
 	this->setSpeedDirection();
 }
@@ -403,4 +411,14 @@ void		BulletCommand::insertChild(Bullet &bullet)
 	bullet.setParent(this);
 	this->_childs[this->_nextId] = &bullet;
 	++this->_nextId;
+}
+
+void		BulletCommand::isCommanded(bool commanded)
+{
+	this->_isCommanded = commanded;
+}
+
+bool		BulletCommand::isCommanded() const
+{
+	return (this->_isCommanded);
 }

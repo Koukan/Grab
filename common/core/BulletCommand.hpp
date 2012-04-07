@@ -41,6 +41,8 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
     virtual double	getBulletSpeedY();
 	void			removeChild(uint32_t id);
 
+	void			isCommanded(bool commanded);
+	bool			isCommanded() const;
 	void			setFocus(std::string const &name);
 	void			setRank(double rank);
     virtual void	move(double time);
@@ -86,6 +88,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	std::string		_deathBullet;
 	Net::MTRand		_rand;
 	bool			_paused;
+	bool			_isCommanded;
 
  public:
 	unsigned int const	score;
