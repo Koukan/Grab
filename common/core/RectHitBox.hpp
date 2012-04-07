@@ -21,6 +21,7 @@ public:
 	bool collideCircle(CircleHitBox &circle);
 	bool collideRect(RectHitBox &rect);
 	bool collidePoly(PolyHitBox &poly);
+	HitBox *clone() const;
 
 	double getWidthRect() const;
 	double getHeightRect() const;

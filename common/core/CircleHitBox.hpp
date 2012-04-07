@@ -20,6 +20,7 @@ public:
 	bool collideCircle(CircleHitBox &circle);
 	bool collideRect(RectHitBox &rect);
 	bool collidePoly(PolyHitBox &poly);
+	HitBox *clone() const;
 
 	double getRadius() const;
 
