@@ -39,6 +39,11 @@ bool CircleHitBox::collidePoly(PolyHitBox &poly)
 	return (HitBox::CircleCollidePoly(*this, poly));
 }
 
+HitBox *CircleHitBox::clone() const
+{
+	return (new CircleHitBox(*this));
+}
+
 bool CircleHitBox::collide(HitBox &hitbox)
 {
 	return (hitbox.collideCircle(*this));

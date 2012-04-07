@@ -5,16 +5,17 @@
 #include "GameState.hpp"
 
 Map::Map() : Core::PhysicObject(*new Core::RectHitBox(0, 0, 10, 10), 0, 100), _nbPaused(0), _prevY(0)
-{}
+{
+}
 
 Map::~Map()
 {
-	
 }
 
 Core::Resource    *Map::clone() const
 {
-	return (new Map(*this));
+	Map *tmp =  new Map(*this);
+	return (tmp);
 }
 
 void		Map::addEnd(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
