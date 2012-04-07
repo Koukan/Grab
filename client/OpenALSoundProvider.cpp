@@ -25,5 +25,5 @@ Core::Sound	*OpenALSoundProvider::addSound(std::string const &soundname, std::st
 	if (it == this->_resources.end())
 		return new OpenALSound(soundfile);
 	else
-	  return static_cast<Core::Sound*>(it->second);
+		return static_cast<Core::Sound*>(it->second);
 }
