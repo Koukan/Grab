@@ -50,8 +50,8 @@ void		GSInGame::preload()
   this->addGroup("monster", 10);
   this->addGroup("monster2"), 8;
   this->addGroup("trigger", 5);
-  this->addGroup("background2", 2);
-  this->addGroup("background3", 3);
+  this->addGroup("background", 2);
+  this->addGroup("starobjects", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
   this->addGroup("map", 0);
@@ -232,20 +232,30 @@ void		GSInGame::registerShipCallbacks()
   }
 }
 
+#include <iostream>
 void		GSInGame::onStart()
 {
 	GameState *state = Core::GameStateManager::get().getGameState("Preload");
 	if (state)
 		state->pause();
-	ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
+	ScrollingSprite *obj1 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0.075);
 	obj1->pushSprite("stars");
-	this->addGameObject(obj1, "background2");
-	ScrollingSprite *obj2 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.2);
+	this->addGameObject(obj1, "starobjects");
+	ScrollingSprite *obj2 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0.2);
 	obj2->pushSprite("clouds");
-	this->addGameObject(obj2, "background2");
-
+	this->addGameObject(obj2, "starobjects");
+	ScrollingSprite *obj3 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0);
+	obj3->pushSprite("ingame background");
+	//	obj3->pushSprite("ingame background 2");
+	//	obj3->pushSprite("ingame background 3");
+	this->addGameObject(obj3, "background");
 	 //test map
 	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
+	std::cout << "get " << this->_map << std::endl;
+	if (_mapObj)
+	  std::cout << "get mapObj" << std::endl;
+	else
+	  std::cout << "wadafuk my getObj is null !" << std::endl;
 	this->addGameObject(_mapObj, "map");
 	if (!_online)
 		this->createShips();

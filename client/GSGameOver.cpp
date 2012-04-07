@@ -60,10 +60,10 @@ void	GSGameOver::retry()
 		  (*it)->setLife(3);
 	      }
 	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-	    std::cout << _map << std::endl;
+	    std::cout << "send " << _map << " to retry" << std::endl;
 	    gs->preload();
 	    Core::GameStateManager::get().pushState(*gs);
-		}
+	  }
 }
 
 void	GSGameOver::returnToMainMenu()
