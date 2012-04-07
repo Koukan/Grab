@@ -22,6 +22,13 @@ ConcreteObject::~ConcreteObject()
 		delete this->_sprite;
 }
 
+void	ConcreteObject::move(double time)
+{
+	this->PhysicObject::move(time);
+	this->setAx(0);
+	this->setAy(0);
+}
+
 void	ConcreteObject::setDeleteSprite(bool isDel)
 {
 	this->_deleteSprite = isDel;

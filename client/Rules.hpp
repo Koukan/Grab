@@ -16,5 +16,6 @@ namespace Rules
 	void		invisibleWallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o2);
   	void		playerTouchScore(Core::GameObject& o1, Core::GameObject& o2);
   	void		blackHoleTouchObject(Core::GameObject& o1, Core::GameObject& o2);
+	void		playerTouchTrigger(Core::GameObject& o1, Core::GameObject& o2);
 	void		setOnline(bool online);
 };

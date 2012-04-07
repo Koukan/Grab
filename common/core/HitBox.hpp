@@ -28,6 +28,7 @@ public:
 	virtual bool collideCircle(CircleHitBox &circle) = 0;
 	virtual bool collideRect(RectHitBox &rect) = 0;
 	virtual bool collidePoly(PolyHitBox &poly) = 0;
+	virtual HitBox *clone() const = 0;
 
 	static bool CircleCollideRect(CircleHitBox &circle, RectHitBox &rect);
 	static bool CircleCollidePoly(CircleHitBox &circle, PolyHitBox &poly);

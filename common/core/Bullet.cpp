@@ -46,6 +46,13 @@ void		Bullet::draw(double elapsedTime)
 	  this->_sprite->draw(static_cast<int>(this->getX()), static_cast<int>(this->getY()), elapsedTime);
 }
 
+void		Bullet::move(double time)
+{
+	this->PhysicObject::move(time);
+	this->setAx(0);
+	this->setAy(0);
+}
+
 void		Bullet::setSprite(ResourceManager &resource, std::string const &name)
 {
 	if (this->_sprite)

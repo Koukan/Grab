@@ -429,9 +429,13 @@ void BulletMLRunnerImpl::runRepeat() {
 		action != 0,
 		"repeat elem must have contents action or actionRef");
 
-	repeatStack_.push(new RepeatElem(0, timesNum, action));
-
-	act_ = action;
+	if (timesNum)
+	{
+		repeatStack_.push(new RepeatElem(0, timesNum, action));
+		act_ = action;
+	}
+	else
+		act_ = 0;
 }
 
 void BulletMLRunnerImpl::runFireRef() {

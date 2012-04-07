@@ -11,6 +11,7 @@ public:
   ConcreteObject(Core::Sprite *sprite, Core::HitBox & hitbox, double vx, double vy, double xHitboxOffset = 0, double yHitboxOffset = 0);
   virtual ~ConcreteObject();
   virtual void draw(double);
+  virtual void	move(double time);
 
   void  setSprite(std::string const &spriteName);
   void	setSprite(Core::Sprite* sprite);

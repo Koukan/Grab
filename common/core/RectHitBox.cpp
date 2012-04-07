@@ -8,7 +8,7 @@ RectHitBox::RectHitBox(double x, double y, double width, double height)
 {
 }
 
-RectHitBox::~RectHitBox(void)
+RectHitBox::~RectHitBox()
 {
 }
 
@@ -36,6 +36,11 @@ bool RectHitBox::collideRect(RectHitBox &rect)
 bool RectHitBox::collidePoly(PolyHitBox &poly)
 {
 	return (HitBox::RectCollidePoly(*this, poly));
+}
+
+HitBox *RectHitBox::clone() const
+{
+	return (new RectHitBox(*this));
 }
 
 bool RectHitBox::collide(HitBox &hitbox)

@@ -13,13 +13,16 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
   _victory(victory), _players(players), _mode(mode), _map(map),
   _nbPlayers(nbPlayers), _online(online), _state(this->getFont("bigNumbersFont"))
 {
-  if (victory)
-    _state->setText("VICTORY !!!");
-  else
-    _state->setText("YOU LOOOOOOSE !!!");
-  _state->setX(VIEWX / 2 - _state->getWidth() / 2);
-  _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
-  this->addGameObject(_state);
+  if (_state)
+    {
+      if (victory)
+	_state->setText("VICTORY !!!");
+      else
+	_state->setText("YOU LOOOOOOSE !!!");
+      _state->setX(VIEWX / 2 - _state->getWidth() / 2);
+      _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
+      this->addGameObject(_state);
+    }
 }
 
 GSGameOver::~GSGameOver()
@@ -57,10 +60,10 @@ void	GSGameOver::retry()
 		  (*it)->setLife(3);
 	      }
 	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-	    std::cout << _map << std::endl;
+	    std::cout << "send " << _map << " to retry" << std::endl;
 	    gs->preload();
 	    Core::GameStateManager::get().pushState(*gs);
-		}
+	  }
 }
 
 void	GSGameOver::returnToMainMenu()

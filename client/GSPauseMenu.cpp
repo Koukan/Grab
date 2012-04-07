@@ -46,9 +46,12 @@ void	GSPauseMenu::onStart()
 	  (VIEWY - 100) / 2, 300, 300, 20);
   layout->setY((VIEWY - layout->getHeight()) / 2);
   Core::Sprite *s = this->getSprite("black background");
-  s->setX(0);
-  s->setY(0);
-  this->addGameObject(s, "background", 1);
+  if (s)
+  {
+	  s->setX(0);
+	  s->setY(0);
+	  this->addGameObject(s, "background", 1);
+  }
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 

@@ -128,7 +128,7 @@ int					RendererManager::getWidth() const
 
 int					RendererManager::getHeight() const
 {
-	return this->_height;
+  	return this->_height;
 }
 
 void				RendererManager::setResolution(int width, int height)

@@ -18,6 +18,7 @@ public:
 
 
   PhysicObject(HitBox &hitBox, double vx = 0, double vy = 0, double xHitboxOffset = 0, double yHitboxOffset = 0, double xScrolling = 0, double yScrolling = 0);
+  PhysicObject(PhysicObject const &other);
   virtual ~PhysicObject();
   virtual void	draw(double) {};
   virtual void	move(double time);

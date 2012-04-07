@@ -344,7 +344,7 @@ void		BulletCommand::move(double time)
 	_turn += time * 50;
 	this->run();
 	if (!this->_end)
-		PhysicObject::move(time);
+		Bullet::move(time);
 	else
 		this->erase();
 }

@@ -26,6 +26,7 @@ class CORE_DLLREQ Bullet : public PhysicObject
 	void			setBulletId(uint32_t id);
 	void			setLife(int32_t life);
 	void			setDamage(int32_t damage);
+    virtual void	move(double time);
 
 	// getter
 	BulletCommand	*getParent() const;

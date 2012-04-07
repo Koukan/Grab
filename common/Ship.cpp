@@ -114,6 +114,7 @@ void	Ship::move(double time)
 void Ship::bomb()
 {
   std::cout << "throw bomb !" << std::endl;
+  //  _bomb = new ConcreteObject("weapon", *(new Core::CircleHitBox(0, 0, 
 }
 
 void Ship::shield()
@@ -147,11 +148,11 @@ void Ship::disableShield()
 
 void	Ship::blackHole()
 {
-	if (!this->_blackHole)
-	{
+	//if (!this->_blackHole)
+	//{
 		std::cout << "blackHole !" << std::endl;
 		this->_blackHole = new BlackHole(this->_x, this->_y, this->getGroup()->getState());
-	}
+	//}
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -673,3 +674,10 @@ void		Ship::specialPower(Core::InputCommand const&)
     }
 }
 
+void		Ship::resetState()
+{
+  for (int i = 0; i < Ship::NBACTIONS; ++i)
+    {
+      _actions[i] = false;
+    }
+}

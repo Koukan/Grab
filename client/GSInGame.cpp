@@ -26,7 +26,7 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits),
-	  _gameOver(false)
+	  _gameOver(0) 
 {
 	Rules::setOnline(online);
 }
@@ -37,7 +37,7 @@ GSInGame::~GSInGame()
 
 void		GSInGame::preload()
 {
-  this->addGroup("spawners");
+  this->addGroup("spawners", 0);
   this->addGroup("players", 40);
   this->addGroup("playerShots", 40);
   this->addGroup("grabs", 40);
@@ -48,20 +48,25 @@ void		GSInGame::preload()
   this->addGroup("deadlyWalls", 5);
   this->addGroup("shot", 9); // monster shot
   this->addGroup("monster", 10);
-  this->addGroup("background2", 2);
-  this->addGroup("background3", 3);
+  this->addGroup("monster2", 8);
+  this->addGroup("trigger", 5);
+  this->addGroup("background", 2);
+  this->addGroup("starobjects", 3);
   this->addGroup("impacts", 43);
   this->addGroup("scoreBonus", 42);
   this->addGroup("map", 0);
-  this->addGroup("traversableWalls", 0);
-  this->addGroup("wallShot", 0);
+  this->addGroup("traversableWalls", 5);
+  this->addGroup("wallShot", 9);
   this->addGroup("shields", 40);
-  this->addGroup("blackHoles", 40);
+  this->addGroup("blackHoles", 3);
+  this->addGroup("particles", 3);
 
+  this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("shields", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "monster2", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "wallShot", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
@@ -69,8 +74,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "traversableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("grabs", "monster", &Rules::grabTouchMonster);
+  this->setCollisionGroups("grabs", "monster2", &Rules::grabTouchMonster);
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+  this->setCollisionGroups("playerShots", "monster2", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::invisibleWallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
@@ -99,11 +106,13 @@ void		GSInGame::preload()
   this->setCollisionGroups("blackHoles", "shot", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoles", "wallShot", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoles", "monster", &Rules::blackHoleTouchObject);
+  this->setCollisionGroups("blackHoles", "monster2", &Rules::blackHoleTouchObject);
+  this->setCollisionGroups("blackHoles", "particles", &Rules::blackHoleTouchObject);
 
   // load xml
   this->load(this->_map);
 
-  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 950)), "shotWall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 980)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
@@ -230,15 +239,23 @@ void		GSInGame::registerShipCallbacks()
   }
 }
 
+#include <iostream>
 void		GSInGame::onStart()
 {
 	GameState *state = Core::GameStateManager::get().getGameState("Preload");
 	if (state)
 		state->pause();
-  /*ScrollingSprite *obj1 = new ScrollingSprite(0, 0, 1024, 768, ScrollingSprite::VERTICAL, 0.075);
-  obj1->pushSprite("star background");
-  this->addGameObject(obj1, "background2");*/
-
+	ScrollingSprite *obj1 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0.075);
+	obj1->pushSprite("stars");
+	this->addGameObject(obj1, "starobjects");
+	ScrollingSprite *obj2 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0.2);
+	obj2->pushSprite("clouds");
+	this->addGameObject(obj2, "starobjects");
+	ScrollingSprite *obj3 = new ScrollingSprite(0, 0, VIEWX, VIEWY, ScrollingSprite::VERTICAL, 0);
+	obj3->pushSprite("ingame background");
+	//	obj3->pushSprite("ingame background 2");
+	//	obj3->pushSprite("ingame background 3");
+	this->addGameObject(obj3, "background");
 	 //test map
 	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
 	this->addGameObject(_mapObj, "map");
@@ -333,10 +350,11 @@ bool		GSInGame::playerDie(Player &)
 		for (std::list<Player *>::iterator it = this->_players.begin();
 		     it != this->_players.end(); ++it)
 		  {
+		    (*it)->getShip()->resetState();
 		    (*it)->setLife(life);
 		    (*it)->getShip()->setDead(false);
 		  }
-		Core::GameStateManager::get().pushState(*new GSContinue(*this, _players), PHYSIC);
+		Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
 	      }
 	    else
 	      {

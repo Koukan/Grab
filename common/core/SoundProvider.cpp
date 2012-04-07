@@ -31,7 +31,6 @@ void	SoundProvider::handleXML(TiXmlNode *parent, ResourceManager &manager)
 		else if (name == "loop" && attrib->Value() == "true")
 			loop = true;
     }
-	std::cout << "add sound \"" << soundName << "\" loop = " << loop << std::endl;
 	Sound *sound = this->addSound(soundName, soundFile);
 	if (sound)
 	{

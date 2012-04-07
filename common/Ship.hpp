@@ -70,6 +70,7 @@ public:
   void			setScore(unsigned int score);
   unsigned int		getPowerGauge() const;
   void			increasePowerGauge(unsigned int score);
+  void			resetState();
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);

@@ -70,7 +70,7 @@ void		Resource::removeUse() const
 {
 	--this->_use;
 	if (this->_use == 0)
-		delete this;
+		this->_resourceProvider->deleteResource(this->_resourceName);
 }
 
 uint32_t	Resource::getUse() const

@@ -55,7 +55,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
 	    if (monster.score > 0)
 	      {
-		ConcreteObject *obj = new ScoreBonus("bonus", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
+		ConcreteObject *obj = new ScoreBonus("bonusScore", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
 		obj->setXHitBoxOffset(-25);
 		obj->setYHitBoxOffset(-25);
 		gamestate.addGameObject(obj, "scoreBonus");
@@ -228,15 +228,14 @@ void		Rules::blackHoleTouchObject(Core::GameObject& blackHole, Core::GameObject&
 	Core::BulletCommand *b = dynamic_cast<Core::BulletCommand *>(&obj);
 	if (b != 0)
 		b->isCommanded(false);
-	double const power = 200;
+	double const power = 300;
 	double vx = blackHole.getX() - obj.getX();
 	double vy = blackHole.getY() - obj.getY();
 	double angle = ::atan2(vy, vx);
-	//double distance = vx * vx + vy * vy;
+	double distance = (1000 - ::sqrt(vx * vx + vy * vy)) / 1000;
 	Core::PhysicObject &o = static_cast<Core::PhysicObject &>(obj);
-	//double norme = ::sqrt(o.getVx() * o.getVx() + o.getVy() * o.getVy());
-	o.setAx(::cos(angle) * power/* + norme * 2 - 10)*/);
-	o.setAy(::sin(angle) * power/* + norme * 2 - 10)*/);
+	o.setAx(o.getAx() + ::cos(angle) * power * distance);
+	o.setAy(o.getAy() + ::sin(angle) * power * distance);
 	o.setVx(o.getVx() * 0.99);
 	o.setVy(o.getVy() * 0.99);
 }
@@ -246,3 +245,7 @@ void		Rules::setOnline(bool online)
 	gl_online = online;
 }
 
+void		Rules::playerTouchTrigger(Core::GameObject&, Core::GameObject& o2)
+{
+	o2.erase();
+}
