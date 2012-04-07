@@ -21,7 +21,6 @@ Resource::~Resource()
 {
 	if (this->_use != 0)
 		--this->_use;
-	std::cout << "ptr resource " << this << std::endl;
 	if (this->_resourceProvider && this->_use == 0)
 		this->_resourceProvider->deleteResource(this->_resourceName);
 }

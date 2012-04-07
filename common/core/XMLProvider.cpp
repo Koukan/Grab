@@ -22,7 +22,6 @@ void		XMLProvider::deleteResource(std::string const &name)
 	if (it != this->_resources.end())
 	{
 		this->_ids.erase(it->second->getResourceId());
-		std::cout << "ptr delete xmlresource " << it->second << std::endl;
 		it->second->_resourceProvider = 0;
 		delete it->second;
 		this->_resources.erase(it);

@@ -30,7 +30,11 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 		else if (name == "random" && attrib->Value() == "true")
 			random = true;
 	}
-	_current = (random) ? new MonsterGenerator(0) : new Map();
+	ResourceMap::iterator	it = this->_resources.find(mapName);
+	if (it != this->_resources.end())
+		_current = static_cast<Map*>(it->second);
+	else
+		_current = (random) ? new MonsterGenerator(0) : new Map();
 	this->addResource(mapName, *_current, manager);
 	_current->setScrollingSpeed(scrollingSpeed);
 	for (TiXmlNode *child = parent->FirstChild(); child;

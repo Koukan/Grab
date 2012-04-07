@@ -251,11 +251,6 @@ void		GSInGame::onStart()
 	this->addGameObject(obj3, "background");
 	 //test map
 	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
-	std::cout << "get " << this->_map << std::endl;
-	if (_mapObj)
-	  std::cout << "get mapObj" << std::endl;
-	else
-	  std::cout << "wadafuk my getObj is null !" << std::endl;
 	this->addGameObject(_mapObj, "map");
 	if (!_online)
 		this->createShips();
