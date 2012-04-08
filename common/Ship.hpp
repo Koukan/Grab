@@ -19,6 +19,7 @@ public:
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
+  void			setSpecialPowerActive(bool isActive);
   virtual void	setPosition(double x, double y, double z = 0);
   void			setGrabLaunched(bool grabLaunched);
   bool			getGrabLaunched() const;
@@ -128,7 +129,6 @@ private:
   {
     ConcreteObject*	_shield;
     ConcreteObject*	_bomb;
-	ConcreteObject*	_blackHole;
   };	
   void handleActions();
 };

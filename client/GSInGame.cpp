@@ -59,6 +59,7 @@ void		GSInGame::preload()
   this->addGroup("wallShot", 9);
   this->addGroup("shields", 40);
   this->addGroup("blackHoles", 3);
+  this->addGroup("blackHoleEnd", 3);
   this->addGroup("particles", 3);
 
   this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
@@ -69,6 +70,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("Wall", "monster2", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
   this->setCollisionGroups("Wall", "wallShot", &Rules::wallTouchObject);
+  this->setCollisionGroups("Wall", "particles", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "walls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "breakableWalls", &Rules::wallTouchObject);
   this->setCollisionGroups("bottomInvisibleWall", "deadlyWalls", &Rules::wallTouchObject);
@@ -108,6 +110,10 @@ void		GSInGame::preload()
   this->setCollisionGroups("blackHoles", "monster", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoles", "monster2", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoles", "particles", &Rules::blackHoleTouchObject);
+  this->setCollisionGroups("blackHoleEnd", "shot", &Rules::blackHoleEndTouchShot);
+  this->setCollisionGroups("blackHolesEnd", "wallShot", &Rules::blackHoleEndTouchShot);
+  this->setCollisionGroups("blackHoleEnd", "monster", &Rules::blackHoleEndTouchMonster);
+  this->setCollisionGroups("blackHoleEnd", "monster2", &Rules::blackHoleEndTouchMonster);
 
   // load xml
   this->load(this->_map);

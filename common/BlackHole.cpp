@@ -1,8 +1,10 @@
 #include "BlackHole.hpp"
 #include "CircleHitBox.hpp"
+#include "Ship.hpp"
 
-BlackHole::BlackHole(double x, double y, Core::GameState &gameState)
-	: ConcreteObject(""/*"blackHole"*/, *(new Core::CircleHitBox(x, y, 500)), 0, 0, -500, -500), _gameState(gameState), _elapsedTime(0), _angle(0), _nbParticles(500)
+BlackHole::BlackHole(double x, double y, Core::GameState &gameState, Ship &ship)
+	: ConcreteObject(""/*"blackHole"*/, *(new Core::CircleHitBox(x, y, 500)), 0, 0, -500, -500),
+	_gameState(gameState), _elapsedTime(0), _elapsedTime2(15000), _angle(0), _nbParticles(200), _end(0), _ship(ship)
 {
 	this->_gameState.addGameObject(this, "blackHoles");
 }
@@ -36,16 +38,41 @@ void	BlackHole::createParticle(int angle)
 
 void BlackHole::draw(double elapsedTime)
 {
-	if (this->_elapsedTime <= 0)
+	if (this->_elapsedTime2 <= 0)
 	{
-		this->createParticle(this->_angle);
-		this->createParticle(this->_angle + 180);
-		this->createParticle(this->_angle + 90);
-		this->createParticle(this->_angle + 180 + 90);
-		this->_angle = (this->_angle + 20) % 360;
-		this->_elapsedTime += 100;
+		if (!this->_end)
+		{
+			this->_end = new ConcreteObject("", *(new Core::CircleHitBox(this->_x, this->_y, 200)), 0, 0, -200, -200);
+			this->_gameState.addGameObject(this->_end, "blackHoleEnd");
+		}
+		else
+		{
+			this->_end->erase();
+			this->erase();
+			this->_ship.setSpecialPowerActive(false);
+			return ;
+		}
+		this->_elapsedTime2 += 500;
 	}
 	else
-		this->_elapsedTime -= elapsedTime;
-	this->ConcreteObject::draw(elapsedTime);
+	{
+		this->_elapsedTime2 -= elapsedTime;
+		if (this->_elapsedTime <= 0)
+		{
+			this->createParticle(this->_angle);
+			this->createParticle(this->_angle + 180);
+			this->createParticle(this->_angle + 90);
+			this->createParticle(this->_angle + 180 + 90);
+			this->_angle = (this->_angle + 20) % 360;
+			this->_elapsedTime += 100;
+		}
+		else
+			this->_elapsedTime -= elapsedTime;
+		this->ConcreteObject::draw(elapsedTime);
+	}
+}
+
+bool	BlackHole::isEnd() const
+{
+	return (this->_end != 0);
 }

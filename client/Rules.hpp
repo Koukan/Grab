@@ -17,5 +17,7 @@ namespace Rules
   	void		playerTouchScore(Core::GameObject& o1, Core::GameObject& o2);
   	void		blackHoleTouchObject(Core::GameObject& o1, Core::GameObject& o2);
 	void		playerTouchTrigger(Core::GameObject& o1, Core::GameObject& o2);
+	void		blackHoleEndTouchShot(Core::GameObject& blackHole, Core::GameObject& obj);
+	void		blackHoleEndTouchMonster(Core::GameObject& blackHole, Core::GameObject& obj);
 	void		setOnline(bool online);
 };

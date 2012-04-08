@@ -9,6 +9,7 @@
 #include "ScoreBonus.hpp"
 #include "GSInGame.hpp"
 #include "BulletCommand.hpp"
+#include "BlackHole.hpp"
 #include <cmath>
 
 static bool		gl_online = false;
@@ -55,9 +56,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	    GSInGame &gamestate = static_cast<GSInGame &>(Core::GameStateManager::get().getCurrentState());
 	    if (monster.score > 0)
 	      {
-		ConcreteObject *obj = new ScoreBonus("bonusScore", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 25)), 0, 150);
-		obj->setXHitBoxOffset(-25);
-		obj->setYHitBoxOffset(-25);
+		ConcreteObject *obj = new ScoreBonus("bonusScore", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 40)), 0, 150, -40, -40);
 		gamestate.addGameObject(obj, "scoreBonus");
 	      }
 	    monster.erase();
@@ -226,18 +225,29 @@ void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
 void		Rules::blackHoleTouchObject(Core::GameObject& blackHole, Core::GameObject& obj)
 {
 	Core::BulletCommand *b = dynamic_cast<Core::BulletCommand *>(&obj);
-	if (b != 0)
+	if (b != 0 && !b->isEnd())
 		b->isCommanded(false);
 	double const power = 300;
 	double vx = blackHole.getX() - obj.getX();
 	double vy = blackHole.getY() - obj.getY();
 	double angle = ::atan2(vy, vx);
 	double distance = (1000 - ::sqrt(vx * vx + vy * vy)) / 1000;
+	distance *= distance;
 	Core::PhysicObject &o = static_cast<Core::PhysicObject &>(obj);
-	o.setAx(o.getAx() + ::cos(angle) * power * distance);
-	o.setAy(o.getAy() + ::sin(angle) * power * distance);
-	o.setVx(o.getVx() * 0.99);
-	o.setVy(o.getVy() * 0.99);
+	if (static_cast<BlackHole &>(blackHole).isEnd())
+	{
+		o.setAx(o.getAx() - ::cos(angle) * power * distance * 2);
+		o.setAy(o.getAy() - ::sin(angle) * power * distance * 2);
+		o.setVx(o.getVx() * 1.01);
+		o.setVy(o.getVy() * 1.01);
+	}
+	else
+	{
+		o.setAx(o.getAx() + ::cos(angle) * power * distance);
+		o.setAy(o.getAy() + ::sin(angle) * power * distance);
+		o.setVx(o.getVx() * 0.99);
+		o.setVy(o.getVy() * 0.99);
+	}
 }
 
 void		Rules::setOnline(bool online)
@@ -248,4 +258,18 @@ void		Rules::setOnline(bool online)
 void		Rules::playerTouchTrigger(Core::GameObject&, Core::GameObject& o2)
 {
 	o2.erase();
+}
+
+void		Rules::blackHoleEndTouchShot(Core::GameObject& /*blackHole*/, Core::GameObject& obj)
+{
+	obj.erase();
+}
+
+void		Rules::blackHoleEndTouchMonster(Core::GameObject& /*blackHole*/, Core::GameObject& obj)
+{
+	Core::BulletCommand *b = dynamic_cast<Core::BulletCommand *>(&obj);
+	if (b)
+		b->isCommanded(true);
+	else
+		obj.erase();
 }

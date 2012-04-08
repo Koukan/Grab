@@ -22,12 +22,12 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 	  _yFireOffset(info.yFireOffset),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
 	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
-	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")), 
-	  _targetx(0), _targety(0), _target(false), 
+	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")),
+	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPowerType(info.specialPowerType),
 	  _specialPowerActive(false),
-	  _shield(0), _blackHole(0)
+	  _shield(0)
 {
        static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
        _specialPower = powers[_specialPowerType];
@@ -142,17 +142,15 @@ void Ship::disableShield()
       this->_shield->setSprite("shield-disparition");
       this->_shield->setDeleteSprite(true);
       this->copyColor(this->_shield->getSprite());
+	  this->_shield = 0;
       this->setLink(0);
     }
 }
 
 void	Ship::blackHole()
 {
-	//if (!this->_blackHole)
-	//{
-		std::cout << "blackHole !" << std::endl;
-		this->_blackHole = new BlackHole(this->_x, this->_y, this->getGroup()->getState());
-	//}
+		this->_specialPowerActive = true;
+		new BlackHole(this->_x, this->_y, this->getGroup()->getState(), *this);
 }
 
 void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -164,6 +162,11 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, do
 	grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
 	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
 	_grabLaunched = true;
+}
+
+void	Ship::setSpecialPowerActive(bool isActive)
+{
+	this->_specialPowerActive = isActive;
 }
 
 void Ship::setGrabLaunched(bool grabLaunched)
