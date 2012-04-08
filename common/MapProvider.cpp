@@ -108,11 +108,12 @@ void    MapProvider::handleElem(TiXmlNode *parent, Core::ResourceManager &, void
 	  (_current->*func)(monstername, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
-void	MapProvider::handleRandomElem(TiXmlNode *parent, Core::ResourceManager &, void (MonsterGenerator::*func)(std::string const &name, bool scrollable, size_t level))
+void	MapProvider::handleRandomElem(TiXmlNode *parent, Core::ResourceManager &, void (MonsterGenerator::*func)(std::string const &name, bool scrollable, size_t level, int, int))
 {
 	std::string     name, monstername;
 	bool			scrollable = true;
 	size_t			level = 1;
+	int				min = 0, max = 1280;
 
 	for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute();
 		 attrib != 0; attrib = attrib->Next())
@@ -123,9 +124,13 @@ void	MapProvider::handleRandomElem(TiXmlNode *parent, Core::ResourceManager &, v
 		else if (name == "scrollable" && attrib->Value() == "false")
 			scrollable = false;
 		else if (name == "level")
-			level = Net::Converter::toInt<size_t>(attrib->Value());;
+			level = Net::Converter::toInt<size_t>(attrib->Value());
+		else if (name == "min")
+			min = Net::Converter::toInt<int>(attrib->Value());
+		else if (name == "max")
+			max = Net::Converter::toInt<int>(attrib->Value());
 	}
 	MonsterGenerator *gen;
 	if (!monstername.empty() && (gen = dynamic_cast<MonsterGenerator *>(_current)))
-	  (gen->*func)(monstername, scrollable, level);
+	  (gen->*func)(monstername, scrollable, level, min, max);
 }

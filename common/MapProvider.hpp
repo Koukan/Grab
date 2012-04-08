@@ -17,7 +17,7 @@ class	MapProvider : public Core::XMLProvider
 			void    		handleElem(TiXmlNode *, Core::ResourceManager &,
 				void (Map::*func)(std::string const &, size_t, size_t, int, int, bool, bool, int, size_t));
 			void    		handleRandomElem(TiXmlNode *, Core::ResourceManager &,
-				void (MonsterGenerator::*func)(std::string const &name, bool scrollable, size_t level));
+				void (MonsterGenerator::*func)(std::string const &name, bool scrollable, size_t level, int, int));
 
 			Map			*_current;
 };

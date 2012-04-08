@@ -14,29 +14,31 @@ public:
 
 	virtual Core::Resource    *clone() const;
 	virtual	void	move(double time);
-	void	addRandomBoss(std::string const &name, bool scrollable, size_t level);
-	void	addRandomMonster(std::string const &name, bool scrollable, size_t level);
-	void	addMazeMonster(std::string const &name, bool scrollable, size_t level);
-	void	addRandomWall(std::string const &name, bool scrollable, size_t level);
-	void	addRandomHWall(std::string const &name, bool scrollable, size_t level);
-	void	addRandomVWall(std::string const &name, bool scrollable, size_t level);
-	void	addRandomBreakableWall(std::string const &name, bool scrollable, size_t level);
-	void	addSquadSound(std::string const &name, bool scrollable, size_t level);
-	void	addBossSound(std::string const &name, bool scrollable, size_t level);
+	void	addRandomBoss(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addRandomMonster(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addMazeMonster(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addRandomWall(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addRandomHWall(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addRandomVWall(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addRandomBreakableWall(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addSquadSound(std::string const &name, bool scrollable, size_t level, int min, int max);
+	void	addBossSound(std::string const &name, bool scrollable, size_t level, int min, int max);
 
 	void	setSeed(uint32_t seed);
 
 private:
 	struct MonsterInfo
 	{
-		MonsterInfo(size_t level, std::string const &name, bool scrollable)
-			: level(level), name(name), scrollable(scrollable) {}
+		MonsterInfo(size_t level, std::string const &name, bool scrollable, int xmin, int xmax)
+			: level(level), name(name), scrollable(scrollable), xmin(xmin), xmax(xmax) {}
 
 		bool	operator<(MonsterInfo const &info) const { return (this->level < info.level); }
 
 		size_t		level;
 		std::string	name;
 		bool		scrollable;
+		int			xmin;
+		int			xmax;
 	};
 
 	enum WallType
