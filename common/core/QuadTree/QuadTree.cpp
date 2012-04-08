@@ -219,7 +219,7 @@ Node	*QuadTree::eraseNode(Node *node, int nodeNb)
 
 void	QuadTree::pop(TreeElement &elem)
 {
-	int nodeNb = this->findNodeNb(elem);
+	int nodeNb = elem.getNodeNb();
 	Node *node = elem.getNode();
 	if (node)
 	{
