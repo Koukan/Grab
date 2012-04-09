@@ -50,6 +50,7 @@ void		SFMLSpriteProvider::addImage(std::string const &path, Core::Sprite &sprite
 			this->_use[path]++;
 	}
 	this->_sprites[sprite.getResourceName()] = path;
+	sprite.setCenter();
 }
 
 void		SFMLSpriteProvider::deleteResource(std::string const &name)

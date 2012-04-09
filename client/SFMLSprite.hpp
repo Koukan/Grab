@@ -27,6 +27,8 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 		virtual void		setColor(int r, int g, int b);
 		virtual void		setRotation(double angle);
 		virtual void		rotate(double angle);
+		virtual void		setCenter(double x, double y);
+		virtual void		setCenter();
 		virtual void		draw(double elapsedTime = 0);
 		virtual void		draw(int x, int y, double elapsedTime = 0);
 

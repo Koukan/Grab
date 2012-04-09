@@ -32,6 +32,8 @@ public:
 	virtual void	setVanish(bool) {}
 	virtual void	setRotation(double) {}
 	virtual void	rotate(double) {}
+	virtual void	setCenter(double, double) {}
+	virtual void	setCenter() {}
 
 	// getter
 	virtual int		getWidth() const { return 0; }

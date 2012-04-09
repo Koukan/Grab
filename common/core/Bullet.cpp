@@ -5,6 +5,12 @@
 
 CORE_USE_NAMESPACE
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+inline static double rtod(double x) { return x * 180.0 / M_PI; }
+
 Bullet::Bullet(double x, double y, double vx, double vy)
 	: PhysicObject(*new CircleHitBox(x, y, 1), vx, vy), _sprite(0), _parent(0), _bulletId(0),
 	  _life(1), _damage(1)
@@ -27,6 +33,8 @@ Bullet::Bullet(ResourceManager &resource, std::string const & sprite, HitBox &bo
   try
   {
 	this->_sprite = resource.getSprite(sprite);
+	if (this->_sprite)
+		this->_sprite->setRotation(rtod(atan2(vy, vx)));
   }
   catch (...)
   {
@@ -58,6 +66,8 @@ void		Bullet::setSprite(ResourceManager &resource, std::string const &name)
 	if (this->_sprite)
 		delete this->_sprite;
 	this->_sprite = resource.getSprite(name);
+	if (this->_sprite)
+		this->_sprite->setRotation(rtod(atan2(_vy, _vx)));
 }
 
 void		Bullet::setSprite(Sprite *sprite)
@@ -65,6 +75,8 @@ void		Bullet::setSprite(Sprite *sprite)
 	if (this->_sprite)
 		delete this->_sprite;
 	this->_sprite = sprite;
+	if (this->_sprite)
+		this->_sprite->setRotation(rtod(atan2(_vy, _vx)));
 }
 
 void		Bullet::setParent(BulletCommand *bullet)
