@@ -599,11 +599,10 @@ void		GSInGame::createShips()
   unsigned int			i = 0;
   for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
     {
-		ship = new Ship(**it, *(*it)->getShipInfo(), playerColors[i].r,
+		ship = new Ship(**it, *(*it)->getShipInfo(), *this, playerColors[i].r,
 				playerColors[i].g, playerColors[i].b);
 		ship->setY(600);
 		ship->setX(i * 250 + 150);
-		this->addGameObject(ship, "players");
     }
 }
 

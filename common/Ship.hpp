@@ -8,6 +8,7 @@
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
 #include "ShipInfo.hpp"
+#include "GameState.hpp"
 
 class	Cannon;
 class	Player;
@@ -15,7 +16,7 @@ class	Player;
 class Ship : public ConcreteObject
 {
 public:
-  Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
+  Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, int r, int g, int b,
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 

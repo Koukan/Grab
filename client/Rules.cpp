@@ -26,7 +26,7 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
 		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
 	explosion->setDeleteSprite(true);
-	Core::Sprite *sprite = &explosion->getSprite();
+	Core::Sprite *sprite = explosion->getSprite();
 	explosion->setX(shot.getX());
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
@@ -44,7 +44,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	ConcreteObject *explosion = new ConcreteObject("fireImpact", *(new Core::CircleHitBox(0, 0, 1)),
 		monster.getVx() + monster.getScrollX(), monster.getVy() + monster.getScrollY());
 	explosion->setDeleteSprite(true);
-	Core::Sprite *sprite = &explosion->getSprite();
+	Core::Sprite *sprite = explosion->getSprite();
 	explosion->setX(shot.getX());
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
@@ -92,7 +92,7 @@ void	Rules::grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2)
 		grab.setBulletScript(obj.getBulletScript());
 		grab.setReturnToShip(true);
 		grab.setSprite("grab-action");
-		grab.getShip().copyColor(grab.getSprite());
+		grab.getShip().copyColor(*grab.getSprite());
 		if (!gl_online)
 		{
 			obj.setLife(obj.getLife() - 5);

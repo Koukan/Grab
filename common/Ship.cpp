@@ -10,25 +10,26 @@
 #include "Converter.hpp"
 #include "BlackHole.hpp"
 
-Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
+Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
-	  _fireSound(Core::GameStateManager::get().getCurrentState().getSound("playerShotSound")),
+	  _fireSound(state.getSound("playerShotSound")),
 	  _xFixe(info.xConstraint),
 	  _yFixe(info.yConstraint),
 	  _xFireOffset(info.xFireOffset),
 	  _yFireOffset(info.yFireOffset),
 	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
 	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
-	  _timer(Core::GameStateManager::get().getCurrentState().getFont("listGameFont")),
+	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPowerType(info.specialPowerType),
 	  _specialPowerActive(false),
 	  _shield(0)
 {
+	state.addGameObject(this, "players");
        static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
        _specialPower = powers[_specialPowerType];
 	_cannons[0] = 0;
@@ -48,11 +49,15 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		//this->_sprite->setColor(r, g, b);
 		this->_xHitboxOffset = -this->_hitBox->getWidth() / 2;
 		this->_yHitboxOffset = -this->_hitBox->getHeight() / 2;
+		Core::Sprite *aura = state.getSprite("playerAura");
+		if (aura)
+		{
+			ConcreteObject *obj = new ConcreteObject(aura, *new Core::CircleHitBox(0, 0, 1), 0, 0);
+			obj->setLink(this);
+			aura->setColor(r, g, b);
+			state.addGameObject(obj, "playerAuras");
+		}
 	}
-	ConcreteObject *obj = new ConcreteObject("playerAura", *new Core::CircleHitBox(0, 0, 1), 0, 0);
-	obj->setLink(this);
-	obj->getSprite().setColor(r, g, b);
-	Core::GameStateManager::get().getCurrentState().addGameObject(obj, "playerAuras");
 	this->defineGrabPosition(info.grab1, 0, info.grabAngle1);
 	this->defineGrabPosition(info.grab2, 1, info.grabAngle2);
 	this->defineGrabPosition(info.grab3, 2, info.grabAngle3);
@@ -130,7 +135,8 @@ void Ship::shield()
       _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(0, 0, 125)), 0, 0, -125, -125);
 
       this->getGroup()->getState().addGameObject(_shield, "shields");
-      this->copyColor(this->_shield->getSprite());
+	  if (this->_shield->getSprite())
+      	this->copyColor(*this->_shield->getSprite());
       this->_shield->setLink(this);
       GameCommand* cmd = new GameCommand("disableShield");
       cmd->player = &this->_player;
@@ -145,7 +151,8 @@ void Ship::disableShield()
       this->_specialPowerActive = false;
       this->_shield->setSprite("shield-disparition");
       this->_shield->setDeleteSprite(true);
-      this->copyColor(this->_shield->getSprite());
+	  if (this->_shield->getSprite())
+     	 this->copyColor(*this->_shield->getSprite());
 	  this->_shield = 0;
       this->setLink(0);
     }
@@ -163,7 +170,8 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, do
 				*(new Core::CircleHitBox(x, y, 10)),
 				*this, 180, _tmpSpeed * 2, nGrab, _grabsPositions[nGrab].first,
 				_grabsPositions[nGrab].second, _angles[nGrab]);
-	grab->getSprite().setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
+	if (grab->getSprite())
+		grab->getSprite()->setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
 	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
 	_grabLaunched = true;
 }
@@ -500,7 +508,8 @@ void Ship::setDead(bool dead, bool command)
 	this->_dead = dead;
 	if (!dead)
 	{
-		this->getSprite().setTransparency(1);
+		if (this->getSprite())
+			this->getSprite()->setTransparency(1);
 		this->manageFire();
 		if (command)
 		{
@@ -516,7 +525,8 @@ void Ship::setDead(bool dead, bool command)
 	this->_powerGauge = 0;
 	if (this->_specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
 	  this->disableShield();
-	this->getSprite().setTransparency(0.4f);
+	if (this->getSprite())
+		this->getSprite()->setTransparency(0.4f);
 	this->_player.die();
 	this->_elapsedTime = 1000;
 	if (this->_timer)
@@ -549,7 +559,6 @@ void Ship::draw(double elapsedTime)
 		}
 		else
 			this->_elapsedTime -= elapsedTime;
-	Core::Sprite const &sprite = this->getSprite();
 	this->_timer->draw(static_cast<int>(this->_x - this->_timer->getWidth() / 2),
 		static_cast<int>(this->_y - this->_timer->getHeight() / 2), elapsedTime);
 	}

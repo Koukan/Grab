@@ -71,12 +71,11 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 			Ship					*ship;
 			if (!(*it)->getShip())
 				this->_nbShip++;
-			ship = new Ship(**it, *(*it)->getShipInfo(), playerColors[i].r,
+			ship = new Ship(**it, *(*it)->getShipInfo(), this->_game, playerColors[i].r,
 							playerColors[i].g, playerColors[i].b);
 			ship->setX(cmd.x);
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);
-			this->_game.addGameObject(ship, "players");
 			return ;
 		}
 		i++;
