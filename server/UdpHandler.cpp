@@ -38,7 +38,9 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::firestate, true},
 			{&UdpHandler::updatecannon, true},
 			{&UdpHandler::launchgrab, true},
-			{&UdpHandler::deadPlayer, true}
+			{&UdpHandler::deadPlayer, true},
+			{0, false},
+			{&UdpHandler::bonus, true}
 	};
 	uint8_t				type;
 
@@ -205,22 +207,21 @@ int         UdpHandler::pong(Net::Packet &, Client &client)
 
 int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 {
-	if (client.getGame())
-	{
-		uint8_t			n;
-		GameCommand		*cmd = new GameCommand("fireState");
+	if (!client.getGame())
+		return 1;
+	uint8_t			n;
+	GameCommand		*cmd = new GameCommand("fireState");
 
-		packet >> cmd->idObject;
-		packet >> n;
-		cmd->idResource = n;
-		client.getGameLogic()->pushCommand(*cmd);
+	packet >> cmd->idObject;
+	packet >> n;
+	cmd->idResource = n;
+	client.getGameLogic()->pushCommand(*cmd);
 
-		// broadcast to other client
-		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
-		delete broadcast;
-		// end broadcast
-	}
+	// broadcast to other client
+	Net::Packet		*broadcast = packet.clone();
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+	delete broadcast;
+	// end broadcast
 	return 1;
 }
 
@@ -246,33 +247,38 @@ int         UdpHandler::updatecannon(Net::Packet &packet, Client &client)
 	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
 	delete broadcast;
 	// end broadcast
-
 	return 1;
 }
 
 int         UdpHandler::launchgrab(Net::Packet &packet, Client &client)
 {
-	if (client.getGame())
-	{
-		Net::Packet			*broadcast = packet.clone();
-		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
-		delete broadcast;
-	}
+	if (!client.getGame())
+		return 1;
+	Net::Packet			*broadcast = packet.clone();
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+	delete broadcast;
 	return 1;
 }
 
 int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 {
-	if (client.getGame())
-	{
-		GameCommand		*cmd = new GameCommand("killPlayer");
-		packet >> cmd->idObject;
-		packet >> cmd->boolean;
-		client.getGameLogic()->pushCommand(*cmd);
+	if (!client.getGame())
+		return 1;
+	GameCommand		*cmd = new GameCommand("killPlayer");
+	packet >> cmd->idObject;
+	packet >> cmd->boolean;
+	client.getGameLogic()->pushCommand(*cmd);
+	Net::Packet		*broadcast = packet.clone();
+	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
+	delete broadcast;
+	return 1;
+}
 
-		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), true, &client);
-		delete broadcast;
-	}
+int			UdpHandler::bonus(Net::Packet &packet, Client &client)	
+{
+	if (!client.getGame())
+		return 1;
+
+
 	return 1;
 }
