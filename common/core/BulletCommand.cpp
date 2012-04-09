@@ -6,11 +6,11 @@
 #include "RectHitBox.hpp"
 #include "CommandDispatcher.hpp"
 
+CORE_USE_NAMESPACE
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
-
-CORE_USE_NAMESPACE
 
 inline static double dtor(double x) { return x * M_PI / 180.0; }
 inline static double rtod(double x) { return x * 180.0 / M_PI; }
@@ -281,8 +281,8 @@ void		BulletCommand::doChangeDirection(double direction)
 	this->_direction = dtor(direction);
 	this->_vx = this->_speed * cos(this->_direction);
 	this->_vy = this->_speed * sin(this->_direction);
-	/*if (this->_sprite)
-		this->_sprite->setRotation(-direction);*/
+	if (this->_sprite)
+		this->_sprite->setRotation(-direction + 90);
 }
 
 void		BulletCommand::doChangeSpeed(double speed)
@@ -292,6 +292,8 @@ void		BulletCommand::doChangeSpeed(double speed)
 	this->_speed = speed;
 	this->_vx = this->_speed * cos(this->_direction);
 	this->_vy = this->_speed * sin(this->_direction);
+	if (this->_sprite)
+		this->_sprite->setRotation(-rtod(this->_direction) + 90);
 }
 
 void		BulletCommand::doAccelX(double speedx)
@@ -398,11 +400,8 @@ void		BulletCommand::setSpeedDirection()
 {
 	this->_direction = atan2((double)this->_vy, (double)this->_vx);
 	this->_speed = sqrt((double)(this->_vx * this->_vx) + (double)(this->_vy * this->_vy));
-	/*if (this->_sprite)
-	{
+	if (this->_sprite)
 		this->_sprite->setRotation(-rtod(this->_direction) + 90);
-		std::cout << rtod(this->_direction) << std::endl;
-	}*/
 }
 
 void		BulletCommand::insertChild(Bullet &bullet)

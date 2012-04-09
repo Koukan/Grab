@@ -75,6 +75,7 @@ void		SFMLSprite::update(double elapsedTime)
 void		SFMLSprite::setScale(float x, float y)
 {
 	this->SetScale(x, y);
+	this->setCenter();
 }
 
 void		SFMLSprite::setSpeed(double rate)
@@ -101,6 +102,7 @@ void		SFMLSprite::setTranslate(int x, int y)
 {
 	this->_tx = x;
 	this->_ty = y;
+	this->setCenter();
 }
 
 void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
@@ -125,6 +127,7 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 		}
 		top += spacey + height;
 	}
+	this->setCenter();
 }
 
 void		SFMLSprite::setBack(bool val)
@@ -210,10 +213,17 @@ void	SFMLSprite::setColor(int r, int g, int b)
 
 void	SFMLSprite::setRotation(double angle)
 {
-	/*this->SetCenter((this->getWidth() / this->GetScale().x) / 2, (this->getHeight() / this->GetScale().y) / 2);
-	std::cout << "cx = " << this->GetCenter().x << " cy = " << this->GetCenter().y << std::endl;
-	//this->SetCenter(this->getWidth() / 2, this->getHeight() / 2);*/
 	this->SetRotation(static_cast<float>(angle));
+}
+
+void	SFMLSprite::setCenter(double x, double y)
+{
+	this->SetCenter(x, y);
+}
+
+void	SFMLSprite::setCenter()
+{
+	this->setCenter(this->getWidth() / this->GetScale().x / 2, this->getHeight() / this->GetScale().y / 2);
 }
 
 void	SFMLSprite::rotate(double angle)
