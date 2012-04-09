@@ -5,6 +5,7 @@
 namespace Rules
 {
 	void		wallTouchObject(Core::GameObject&, Core::GameObject&);
+	void		limitWallTouchObject(Core::GameObject&, Core::GameObject&);
 	void		shotTouchMonster(Core::GameObject&, Core::GameObject&);
 	void		shotTouchPlayer(Core::GameObject&, Core::GameObject&);
 	void		deadlyWallsTouchPlayers(Core::GameObject&, Core::GameObject&);
