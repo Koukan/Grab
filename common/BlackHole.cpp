@@ -1,6 +1,7 @@
 #include "BlackHole.hpp"
 #include "CircleHitBox.hpp"
 #include "Ship.hpp"
+#include <cmath>
 
 BlackHole::BlackHole(double x, double y, Core::GameState &gameState, Ship &ship)
 	: ConcreteObject(""/*"blackHole"*/, *(new Core::CircleHitBox(x, y, 500)), 0, 0, -500, -500),
