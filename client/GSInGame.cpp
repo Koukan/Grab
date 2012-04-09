@@ -61,6 +61,7 @@ void		GSInGame::preload()
   this->addGroup("blackHoles", 3);
   this->addGroup("blackHoleEnd", 3);
   this->addGroup("particles", 3);
+  this->addGroup("playerAuras", 3);
 
   this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
@@ -111,7 +112,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("blackHoles", "monster2", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoles", "particles", &Rules::blackHoleTouchObject);
   this->setCollisionGroups("blackHoleEnd", "shot", &Rules::blackHoleEndTouchShot);
-  this->setCollisionGroups("blackHolesEnd", "wallShot", &Rules::blackHoleEndTouchShot);
+  this->setCollisionGroups("blackHoleEnd", "wallShot", &Rules::blackHoleEndTouchShot);
   this->setCollisionGroups("blackHoleEnd", "monster", &Rules::blackHoleEndTouchMonster);
   this->setCollisionGroups("blackHoleEnd", "monster2", &Rules::blackHoleEndTouchMonster);
 
