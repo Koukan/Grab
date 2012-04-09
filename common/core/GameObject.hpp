@@ -23,6 +23,7 @@ public:
 	virtual void		setPosition(double x, double y, double z = 0);
 	void				setGroup(Group *group);
 	void				setRelativeObject(GameObject *obj);
+	void				setDelete(int8_t value);
 
 	// getter
 	uint32_t			getId() const;

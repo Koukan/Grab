@@ -80,6 +80,11 @@ void		GameObject::setRelativeObject(GameObject *obj)
 	this->_relativeObject = obj;
 }
 
+void		GameObject::setDelete(int8_t value)
+{
+	this->_delete = value;
+}
+
 void		GameObject::erase()
 {
 	this->_delete = 1;

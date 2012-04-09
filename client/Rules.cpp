@@ -31,6 +31,11 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	explosion->setY(shot.getY());
 	sprite->setColor(shot.getSprite()->getColor(0), shot.getSprite()->getColor(1), shot.getSprite()->getColor(2));
 	gameState.addGameObject(explosion, "impacts", 100);
+}
+
+void	Rules::limitWallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
+{
+	o2.setDelete(1);
 	o2.erase();
 }
 
