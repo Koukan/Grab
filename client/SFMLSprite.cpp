@@ -218,7 +218,11 @@ void	SFMLSprite::setRotation(double angle)
 
 void	SFMLSprite::setCenter(double x, double y)
 {
-	this->SetCenter(x, y);
+	#if (SFML_VERSION_MAJOR == 2)
+		this->SetOrigin(x, y);
+	#else
+		this->SetCenter(x, y);
+	#endif	
 }
 
 void	SFMLSprite::setCenter()
