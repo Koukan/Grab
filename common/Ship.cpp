@@ -42,13 +42,17 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, int r, int g, int b,
 		this->_actions[i] = false;
 
 	if (this->_timer)
-		this->_timer->setColor(r, g, b);
+		this->_timer->setColor(/*r*/0, /*g*/0, /*b*/0);
 	if (this->_sprite)
 	{
-		this->_sprite->setColor(r, g, b);
+		//this->_sprite->setColor(r, g, b);
 		this->_xHitboxOffset = -this->_hitBox->getWidth() / 2;
 		this->_yHitboxOffset = -this->_hitBox->getHeight() / 2;
 	}
+	ConcreteObject *obj = new ConcreteObject("playerAura", *new Core::CircleHitBox(0, 0, 1), 0, 0);
+	obj->setLink(this);
+	obj->getSprite().setColor(r, g, b);
+	Core::GameStateManager::get().getCurrentState().addGameObject(obj, "playerAuras");
 	this->defineGrabPosition(info.grab1, 0, info.grabAngle1);
 	this->defineGrabPosition(info.grab2, 1, info.grabAngle2);
 	this->defineGrabPosition(info.grab3, 2, info.grabAngle3);
