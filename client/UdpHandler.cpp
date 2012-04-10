@@ -38,7 +38,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::fireState, true},
 			{&UdpHandler::updateCannon, true},
 			{&UdpHandler::launchGrab, true},
-			{&UdpHandler::deadPlayer, true}
+			{&UdpHandler::deadPlayer, true},
+			{&UdpHandler::bonus, true}
 	};
 	uint64_t			time;
 	uint8_t				type;
@@ -197,6 +198,14 @@ int			UdpHandler::deadPlayer(Net::Packet &packet, uint64_t)
 	GameCommand	*gc = new GameCommand("killPlayer");
 	packet >> gc->idObject;
 	packet >> gc->boolean;
+	Core::CommandDispatcher::get().pushCommand(*gc);
+	return 1;
+}
+
+int			UdpHandler::bonus(Net::Packet &packet, uint64_t timediff)
+{	
+	GameCommand	*gc = new GameCommand("bonus");
+	packet >> gc->idObject;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

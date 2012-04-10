@@ -41,6 +41,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		launchGrab(Core::Command const &command);
 	void		updateCannon(Core::Command const &command);
 	void		deadPlayer(Core::Command const &command);
+	void		bonus(Core::Command const &command);
 
 // Command TCP
 
