@@ -379,7 +379,7 @@ void		BulletCommand::erase()
 {
 	if (!this->_delete && !this->_deathBullet.empty())
 	{
-		BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, _x, _y, _vx, _vy);
+		BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, this->getX(), this->getY(), _vx, _vy);
 		bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, "spawner", false);
 		this->insertChild(*bullet);
