@@ -31,6 +31,7 @@ private:
 	int			updateCannon(Net::Packet &packet, uint64_t timediff);
 	int			launchGrab(Net::Packet &packet, uint64_t timediff);
 	int			deadPlayer(Net::Packet &packet, uint64_t timediff);
+	int			bonus(Net::Packet &packet, uint64_t timediff);
 
 	bool		testPacketId(uint32_t id);
 

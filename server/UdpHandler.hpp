@@ -39,6 +39,8 @@ private:
 	int         deadPlayer(Net::Packet &packet, Client&);
 	int			bonus(Net::Packet &packet, Client&);	
 
+	void		broadcastPacket(Net::Packet &packet, Client &client, bool reliable = true);
+
 	uint64_t	_time_recv;
 };
 

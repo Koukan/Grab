@@ -61,6 +61,7 @@ public:
   void			updateBulletTrajectory();
   void			launchGrab(std::string const &group, unsigned int nGrab, double x, double y);
   void			specialPower(Core::InputCommand const& cmd);
+  void			specialPower();
   void			bomb();
   void			shield();
   void			blackHole();

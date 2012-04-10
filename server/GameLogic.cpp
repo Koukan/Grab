@@ -88,7 +88,8 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 			{"fireState", &GameLogic::fireStateCommand},
 			{"killPlayer", &GameLogic::killPlayerCommand},
 			{"decreasePaused", &GameLogic::decreasePaused},
-			{"increasePaused", &GameLogic::increasePaused}
+			{"increasePaused", &GameLogic::increasePaused},
+			{"bonus", &GameLogic::bonusCommand}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -195,4 +196,14 @@ void		GameLogic::decreasePaused(Core::Command const &)
 void		GameLogic::increasePaused(Core::Command const &)
 {
 	this->_map->increasePaused();
+}
+
+void		GameLogic::bonusCommand(Core::Command const &command)
+{	
+	GameCommand const	&gc = static_cast<GameCommand const &>(command);
+
+	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
+	if (!ship)
+		return ;
+	ship->specialPower();
 }

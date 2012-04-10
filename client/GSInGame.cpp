@@ -301,7 +301,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerGrab", &GSInGame::serverGrab},
 	{"ServerCannon", &GSInGame::serverCannon},
 	{"killPlayer", &GSInGame::killPlayer},
-	{"disableShield", &GSInGame::disableShield}
+	{"disableShield", &GSInGame::disableShield},
+	{"bonus", &GSInGame::bonus}
   };
 
   for (size_t i = 0;
@@ -575,10 +576,18 @@ void		GSInGame::killPlayer(GameCommand const &cmd)
 
 void		GSInGame::disableShield(GameCommand const &cmd)
 {
-  Ship*		ship = cmd.player->getShip();
+  	Ship*		ship = cmd.player->getShip();
 
-  if (ship)
-    ship->disableShield();
+  	if (ship)
+  		ship->disableShield();
+}
+
+void        GSInGame::bonus(GameCommand const &cmd)
+{
+	Ship    *ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
+
+	if (ship)
+		ship->specialPower();
 }
 
 void		GSInGame::createShips()

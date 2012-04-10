@@ -683,11 +683,19 @@ void		Ship::increasePowerGauge(unsigned int score)
 
 void		Ship::specialPower(Core::InputCommand const&)
 {
+	this->specialPower();
+}
+
+void		Ship::specialPower()
+{
   if (_powerGauge == 100 && _specialPower)
     {
       _powerGauge = 0;
       (this->*_specialPower)();
     }
+	GameCommand	*cmd = new GameCommand("Bonus");
+	cmd->idObject = this->getId();
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 }
 
 void		Ship::resetState()

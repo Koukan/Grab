@@ -50,6 +50,7 @@ class GameLogic : public Core::GameState
 	void				killPlayerCommand(Core::Command const &);
 	void				decreasePaused(Core::Command const &);
 	void				increasePaused(Core::Command const &);
+	void				bonusCommand(Core::Command const &);
 
 	Game				&_game;
 	int					_nbEnemies;
