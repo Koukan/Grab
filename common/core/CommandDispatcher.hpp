@@ -14,11 +14,6 @@ class CORE_DLLREQ CommandDispatcher : public Module, public Net::Singleton<Comma
 	virtual void		init();
 	virtual void		update(double elapsedTime = 0);
 	virtual void		destroy();
-	void				start();
-	void				stop();
-
-  private:
-	bool				_update;
 };
 
 CORE_END_NAMESPACE
