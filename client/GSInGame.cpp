@@ -524,7 +524,7 @@ void		GSInGame::serverFire(GameCommand const &cmd)
 {
 	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
 
-	if (ship)
+	if (ship && ship->isGood(cmd.score))
 	{
 		switch (cmd.idResource)
 		{
