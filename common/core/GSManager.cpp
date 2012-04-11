@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "GSManager.hpp"
+#include "CommandDispatcher.hpp"
 
 CORE_BEGIN_NAMESPACE
 
@@ -24,21 +25,17 @@ void		GSManager::init()
 
 void		GSManager::update(double elapsedTime)
 {
-	if (this->_addStates.empty())
+	std::list<GameState*>::const_iterator tmp;
+	for (std::list<GameState*>::const_iterator it = this->_currentStates.begin();
+		 it != this->_currentStates.end();)
 	{
-		std::list<GameState*>::const_iterator tmp;
-		for (std::list<GameState*>::const_iterator it = this->_currentStates.begin();
-			 it != this->_currentStates.end();)
-		{
-			tmp = it++;
-			(*tmp)->handle(elapsedTime);
-			(*tmp)->update(elapsedTime);
-		}
-		if (!this->_currentStates.empty())
-			this->_currentStates.back()->getGUI().update(elapsedTime);
+		tmp = it++;
+		(*tmp)->handle(elapsedTime);
+		(*tmp)->update(elapsedTime);
 	}
+	if (!this->_currentStates.empty())
+		this->_currentStates.back()->getGUI().update(elapsedTime);
 	this->removeDelete();
-	this->addNewState();
 }
 
 void		GSManager::destroy()
@@ -48,7 +45,7 @@ void		GSManager::destroy()
 bool		GSManager::pushState(GameState &state,
 						GameState::Pause paused)
 {
-	this->_addStates.push(AddState(&state, true, paused, false));
+	push(state, true, paused, false);
 	return true;
 }
 
@@ -56,7 +53,7 @@ bool		GSManager::changeState(GameState &state,
 					      GameState::Pause paused, bool del)
 {
 	pop(false, del);
-	this->_addStates.push(AddState(&state, false, paused, false));
+	push(state, false, paused, false);
 	return true;
 }
 
@@ -99,21 +96,6 @@ void		GSManager::addDelete(GameState *state)
 {
 	if (state)
 		_deleted.push_back(state);
-}
-
-void		GSManager::addNewState()
-{
-	if (!this->_addStates.empty())
-	{
-		AddState	&state = this->_addStates.front();
-		if (state.ready)
-		{
-			push(*state.state, state.changed, state.paused, state.resume);
-			this->_addStates.pop();
-		}
-		else
-			state.ready = true;
-	}
 }
 
 void		GSManager::removeDelete()

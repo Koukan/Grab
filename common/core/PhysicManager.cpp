@@ -4,7 +4,7 @@
 
 CORE_USE_NAMESPACE
 
-PhysicManager::PhysicManager() : GameStateObserver("PhysicManager")
+PhysicManager::PhysicManager() : GameStateObserver("PhysicManager"), _notified(false)
 {
 	this->_targetRate = 20;
 }
@@ -29,7 +29,21 @@ void		PhysicManager::update(double elapsedTime)
 
 	for (std::list<GameState*>::const_iterator it = this->_list.begin();
 		it != this->_list.end(); it++)
+	{
 		PhysicManager::apply(**it, elapsedTime);
+		if (this->_notified)
+		{
+			this->_notified = false;
+			break ;
+		}
+	}
+}
+
+void		PhysicManager::notified(Observable<std::list<GameState*> > &source,
+									std::list<GameState*> &arg)
+{
+	this->_notified = true;
+	GameStateObserver::notified(source, arg);
 }
 
 void		PhysicManager::apply(GameState &state, double elapsedTime)

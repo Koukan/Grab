@@ -18,6 +18,7 @@ GSLoading::~GSLoading()
 
 void		GSLoading::onStart()
 {
+	std::cout << "enter in loading" << std::endl;
 	_game.preload();
 }
 
@@ -71,8 +72,9 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 			Ship					*ship;
 			if (!(*it)->getShip())
 				this->_nbShip++;
-			ship = new Ship(**it, *(*it)->getShipInfo(), this->_game, playerColors[i].r,
-							playerColors[i].g, playerColors[i].b);
+			ship = new Ship(**it, *(*it)->getShipInfo(), this->_game,
+					Color(playerColors[i].r, playerColors[i].g, 
+					      playerColors[i].b));
 			ship->setX(cmd.x);
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);
@@ -87,5 +89,6 @@ void		GSLoading::setSeed(Core::Command const &command)
 	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
 
 	this->_game.setSeed(cmd.idObject);
+	std::cout << "seed rec7" << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
 }

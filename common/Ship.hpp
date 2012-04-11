@@ -8,15 +8,21 @@
 #include "PlayerBullet.hpp"
 #include "Grab.hpp"
 #include "ShipInfo.hpp"
-#include "GameState.hpp"
+#include "Color.hpp"
 
+namespace Core
+{
+  class GameState;
+}
+
+class	Color;
 class	Cannon;
 class	Player;
 
 class Ship : public ConcreteObject
 {
 public:
-  Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, int r, int g, int b,
+  Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, Color const &color,
 	   unsigned int nbMaxGrabs = 3);
   ~Ship();
 
@@ -78,24 +84,7 @@ public:
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
-  Player					&_player;
-  double					_speed;
-  double					_tmpSpeed;
-  int						_fireFrequency;
-  bool						_dead;
-  Cannon*					_cannons[4];
-  unsigned int				_nbMaxGrabs; // can be up to 4 by choosing a special power
-  bool						_grabLaunched;
-  std::pair<double, double>	_grabsPositions[3];
-  int						_angles[3];
-  int						_colors[3];
-  Core::Sound				*_fireSound;
-  bool						_xFixe;
-  bool						_yFixe;
-  int						_xFireOffset;
-  int						_yFireOffset;
-
-  // ship control
+ // ship control
   enum Actions
   {
 	  UP,
@@ -107,12 +96,23 @@ private:
 	  NBACTIONS
   };
 
+  ShipInfo::ShipInfo const &			_caracs;
+  Player					&_player;
+  double					_speed;
+  double					_tmpSpeed;
+  bool						_dead;
+  Cannon*					_cannons[4];
+  unsigned int				_nbMaxGrabs; // can be up to 4 by choosing a special power
+  bool						_grabLaunched;
+  std::pair<double, double>	_grabsPositions[3];
+  int						_angles[3];
+  Color						_color;
+  Core::Sound				*_fireSound;
+
   float			_joyPosX;
   float			_joyPosY;
   bool			_actions[Ship::NBACTIONS];
 
-  std::string	_bulletFileName;
-  std::string	_concentratedBulletFileName;
   PlayerBullet	*_playerBullet;
   PlayerBullet	*_concentratedPlayerBullet;
   unsigned int	_score;
@@ -124,7 +124,6 @@ private:
   bool			_target;
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
-  ShipInfo::SpecialPower _specialPowerType;
   bool			_specialPowerActive;
   
   union

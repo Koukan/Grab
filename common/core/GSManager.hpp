@@ -30,28 +30,13 @@ public:
 
 protected:
   void			addDelete(GameState *state);
-  void			addNewState();
   void			removeDelete();
 
 private:
-	struct	AddState
-	{
-		AddState(GameState *state, bool changed, GameState::Pause paused, bool resume)
-			: state(state), changed(changed), paused(paused), resume(resume), ready(false)
-		{
-		}
-		GameState			*state;
-		bool				changed;
-		GameState::Pause	paused;
-		bool				resume;
-		bool				ready;
-	};
-
   bool			push(GameState &state, bool changed, GameState::Pause paused, bool resume);
   void			pop(bool changed, bool del);
 
 protected:
-  std::queue<AddState>		_addStates;
   std::list<GameState*>		_loadedStates;
   std::list<GameState*>		_currentStates;
   std::list<GameState*>		_deleted;

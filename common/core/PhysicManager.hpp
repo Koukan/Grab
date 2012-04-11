@@ -17,12 +17,15 @@ class CORE_DLLREQ PhysicManager : public GameStateObserver
     virtual void	update(double elapsedTime);
 	virtual void	destroy();
 	static void		apply(GameState &state, double elapsedTime);
+	virtual void	notified(Observable<std::list<GameState*> > &source,
+				   			 std::list<GameState*> &arg);
 
   private:
     static void		move(GameObjectManager::groupsMap const &, double);
     static void		collide(GameObjectManager::groupsMap const&,
 							GameObjectManager::collisionGroupsMap const&);
 
+	bool					_notified;
 	std::list<GameState*>	_list;
 };
 
