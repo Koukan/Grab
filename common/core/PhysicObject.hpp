@@ -11,6 +11,7 @@ class CORE_DLLREQ PhysicObject : public DrawableObject, public TreeElement
 public:
 	enum Constraint
 	{
+		NONE = 0,
 		X = 1,
 		Y = 2,
 		ALL = 3

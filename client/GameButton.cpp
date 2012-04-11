@@ -13,11 +13,16 @@ GameButton::~GameButton()
 {
 }
 
+void	GameButton::setMap(std::string const &map)
+{
+	_map = map;
+}
+
 void GameButton::push()
 {
   GameCommand *command = new GameCommand("ConnectGame");
   command->idObject = this->_id;
 
   Core::CommandDispatcher::get().pushCommand(*command);
-  Core::GameStateManager::get().changeState(*(new GSBindPlayer(Modes::STORY, "", _nbPlayers, true)));
+  Core::GameStateManager::get().changeState(*(new GSBindPlayer(Modes::STORY, _map, _nbPlayers, true)));
 }

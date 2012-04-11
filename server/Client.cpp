@@ -66,7 +66,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
-	//Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
+	Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != 0)
 	{
 		return (this->*methods[type])(packet);
