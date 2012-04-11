@@ -225,8 +225,8 @@ void		Game::startGame()
 
 	cmd = new GameCommand("Startgame");
 	cmd->game = this;
-	Core::CommandDispatcher::get().pushCommand(*cmd);
 	_logic.startGame();
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 }
 
 void		Game::ready()

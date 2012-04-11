@@ -14,34 +14,48 @@
 GameLogic::GameLogic(Game &game, const std::string &map)
   : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false), _map(0)
 {
-	this->addGroup("spawners");
-	this->addGroup("players", 40);
-	this->addGroup("playerShots", 40);
-	this->addGroup("grabs", 40);
-	this->addGroup("cannons", 42);
-	this->addGroup("Wall", 0);
-	this->addGroup("walls", 4);
-	this->addGroup("breakableWalls", 3);
-	this->addGroup("deadlyWalls", 5);
-	this->addGroup("shot", 9); // monster shot
-	this->addGroup("monster", 10);
-	this->addGroup("background2", 2);
-	this->addGroup("background3", 3);
-	this->addGroup("impacts", 43);
-	this->addGroup("scoreBonus", 42);
-	this->addGroup("map", 0);
+  this->addGroup("spawners", 0);
+  this->addGroup("players", 40);
+  this->addGroup("playerShots", 40);
+  this->addGroup("grabs", 40);
+  this->addGroup("cannons", 42);
+  this->addGroup("Wall", 0);
+  this->addGroup("walls", 4);
+  this->addGroup("breakableWalls", 3);
+  this->addGroup("deadlyWalls", 5);
+  this->addGroup("shot", 9); // monster shot
+  this->addGroup("monster", 10);
+  this->addGroup("monster2", 8);
+  this->addGroup("trigger", 5);
+  this->addGroup("background", 2);
+  this->addGroup("starobjects", 3);
+  this->addGroup("impacts", 43);
+  this->addGroup("scoreBonus", 42);
+  this->addGroup("map", 0);
+  this->addGroup("traversableWalls", 5);
+  this->addGroup("wallShot", 9);
+  this->addGroup("shields", 40);
+  this->addGroup("blackHoles", 3);
+  this->addGroup("blackHoleEnd", 3);
+  this->addGroup("particles", 3);
+  this->addGroup("playerAuras", 3);
 
 	this->load(map);
-	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(3000, -2000, 1000, 8000)), "Wall");
-	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
-	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, -2000, 8000, 1000)), "Wall");
-	this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-3000, 1000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 980)), "shotWall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -2000, 8000, 1000)), "Wall");
+  this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, 1500, 8000, 1000)), "Wall");
 
-	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
+
+
+  	this->setCollisionGroups("Wall", "shot", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "playerShots", &Rules::wallTouchObject);
 	this->setCollisionGroups("Wall", "monster", &Rules::wallTouchObject);
 	this->setCollisionGroups("walls", "playerShots", &Rules::wallTouchObject);
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
+  	this->setCollisionGroups("playerShots", "monster2", &Rules::shotTouchMonster);
+  	this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
 	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 	this->_rand.seed(rand());
