@@ -46,7 +46,7 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 			if (command.action == Core::GUICommand::SELECT)
 				return this->selectCommand(command);
 			else if (this->_isSelect && command.action == Core::GUICommand::BACK)
-				return this->backCommand();
+				return this->backCommand(command);
 		}
 	}
 	else if (command.type != Core::GUICommand::DIRECTION &&
@@ -59,12 +59,17 @@ bool	GUIPlayerButton::selectCommand(Core::GUICommand const &command)
 {
 	if (this->_isReady)
 		return (true);
+	GUIPlayerButton	*button = this->_bindPlayer.selectedBy(command.playerType);
+	if (button != 0 && button != this)
+		return (false);
 	if (!this->_isSelect)
 	{
+
 		if (this->_bindPlayer.isOnline())
 			this->_bindPlayer.addDemand(command.playerType);
 		else
 		{
+			this->_bindPlayer.addSelected(this, command.playerType);
 			this->_playerType = command.playerType;
 			this->_player = new Player(static_cast<Player::type>(command.playerType));
 			this->changeToSelect();
@@ -87,7 +92,7 @@ bool	GUIPlayerButton::selectCommand(Core::GUICommand const &command)
 	return (true);
 }
 
-bool	GUIPlayerButton::backCommand()
+bool	GUIPlayerButton::backCommand(Core::GUICommand const &command)
 {
 	if (this->_isReady)
 	{
@@ -95,7 +100,10 @@ bool	GUIPlayerButton::backCommand()
 		this->_bindPlayer.updatePlayer(_nb, _ship, _isReady);
 	}
 	else
+	{
 		this->changeToEmpty();
+		this->_bindPlayer.removeSelected(command.playerType);
+	}
 	return (true);
 }
 

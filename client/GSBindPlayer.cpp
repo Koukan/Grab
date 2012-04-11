@@ -115,6 +115,25 @@ void	GSBindPlayer::addDemand(Core::GUICommand::PlayerType type)
 	this->_demands[_id++] = type;
 }
 
+void	GSBindPlayer::addSelected(GUIPlayerButton *button, Core::GUICommand::PlayerType playerType)
+{
+	this->_binds[playerType] = button;
+}
+
+void	GSBindPlayer::removeSelected(Core::GUICommand::PlayerType playerType)
+{
+	this->_binds.erase(playerType);
+}
+
+GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerType) const
+{
+	std::map<Core::GUICommand::PlayerType, GUIPlayerButton*>::const_iterator	it = this->_binds.find(playerType);
+
+	if (it != this->_binds.end())
+		return it->second;
+	return 0;
+}
+
 void	GSBindPlayer::answerBind(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const&>(command);

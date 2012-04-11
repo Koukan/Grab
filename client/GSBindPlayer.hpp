@@ -18,8 +18,10 @@ public:
 	void			addDemand(Core::GUICommand::PlayerType type);
 	void			removePlayer(uint32_t nb, Core::GUICommand::PlayerType type);
 	void			updatePlayer(uint32_t nb, uint32_t ship, bool ready);
-
 	bool			isOnline() const;
+	void			addSelected(GUIPlayerButton*, Core::GUICommand::PlayerType);
+	void			removeSelected(Core::GUICommand::PlayerType);
+	GUIPlayerButton	*selectedBy(Core::GUICommand::PlayerType) const;
 
 private:
 	void			answerBind(Core::Command const &command);
@@ -46,4 +48,5 @@ private:
 	uint32_t					_id;
 	DemandMap					_demands;
 	std::list<GUIPlayerButton*>	_buttons;
+	std::map<Core::GUICommand::PlayerType, GUIPlayerButton*>	_binds;
 };
