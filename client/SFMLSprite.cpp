@@ -213,7 +213,11 @@ void	SFMLSprite::setColor(int r, int g, int b)
 
 void	SFMLSprite::setRotation(double angle)
 {
-	this->SetRotation(static_cast<float>(angle));
+	#if (SFML_VERSION_MAJOR == 2)
+		this->SetRotation(static_cast<float>(-angle));
+	#else
+		this->SetRotation(static_cast<float>(angle));
+	#endif	
 }
 
 void	SFMLSprite::setCenter(double x, double y)
