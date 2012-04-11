@@ -14,10 +14,8 @@ Grab::Grab(std::string const &spriteName, Core::HitBox& hitbox, Ship& ship,
 {
   if (this->_sprite)
     {
-		this->_x -= this->_sprite->getWidth() / 2;
-		this->_y -= this->_sprite->getHeight() / 2;
-      this->_xHitboxOffset = (this->_sprite->getWidth() - this->_hitBox->getWidth()) / 2;
-      this->_yHitboxOffset = (this->_sprite->getHeight() - this->_hitBox->getHeight()) / 2;
+      this->_xHitboxOffset = -this->_hitBox->getWidth() / 2;
+      this->_yHitboxOffset = -this->_hitBox->getHeight() / 2;
     }
 
   this->_vx = sin(angle * M_PI / 180) * _speed;
@@ -63,8 +61,8 @@ void	Grab::move(double time)
     {
       double vx, vy, angle;
 
-      vx = _ship.getX()/* + _ship.getSprite().getWidth() / 2*/ - _x - _sprite->getWidth() / 2;
-      vy = _ship.getY()/* + _ship.getSprite().getHeight() / 2*/ - _y - _sprite->getHeight() / 2;
+      vx = _ship.getX() - _x;
+      vy = _ship.getY() - _y;
 
       angle = atan2(vy, vx);
 
