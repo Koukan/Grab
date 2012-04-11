@@ -164,7 +164,7 @@ void	Ship::blackHole()
 		new BlackHole(this->_x, this->_y, this->getGroup()->getState(), *this);
 }
 
-void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
+void 	Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
 {
 	Grab* grab = new Grab("grab",
 				*(new Core::CircleHitBox(x, y, 10)),
