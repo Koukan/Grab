@@ -211,6 +211,7 @@ int         UdpHandler::firestate(Net::Packet &packet, Client &client)
 	packet >> cmd->idObject;
 	packet >> n;
 	cmd->idResource = n;
+	cmd->score = client.getLastRecvId();
 	client.getGameLogic()->pushCommand(*cmd);
 	this->broadcastPacket(packet, client);
 	return 1;

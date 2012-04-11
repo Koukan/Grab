@@ -159,6 +159,7 @@ int			UdpHandler::fireState(Net::Packet &packet, uint64_t)
 	packet >> gc->idObject;
 	packet >> n;
 	gc->idResource = n;
+	gc->score = _lastPacketId;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

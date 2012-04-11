@@ -127,7 +127,7 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 		}
 		top += spacey + height;
 	}
-	this->setCenter();
+	this->setCenter(width / this->GetScale().x / 2, height / this->GetScale().y / 2);
 }
 
 void		SFMLSprite::setBack(bool val)

@@ -181,7 +181,7 @@ void		GameLogic::fireStateCommand(Core::Command const &command)
 	GameCommand const	&gc = static_cast<GameCommand const &>(command);
 
 	Ship	*ship = static_cast<Ship*>(this->getGameObject(gc.idObject));
-	if (!ship)
+	if (!ship && !ship->isGood(gc.score))
 		return ;
 	if (gc.idResource == 0)
 		ship->releaseFire();

@@ -58,6 +58,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	this->defineGrabPosition(info.grab2, 1, info.grabAngle2);
 	this->defineGrabPosition(info.grab3, 2, info.grabAngle3);
 	player.setShip(this);
+	_lastId = 0;
 }
 
 Ship::~Ship()
@@ -441,6 +442,16 @@ void	Ship::releaseSpecialFire()
 	this->manageFire();
 	if (!this->_actions[Ship::FIRE] && this->_fireSound)
 		this->_fireSound->pause();
+}
+
+bool	Ship::isGood(uint32_t id)
+{
+	if (id > this->_lastId)
+	{
+		this->_lastId = id;
+		return true;
+	}
+	return false;
 }
 
 void Ship::inputFire(Core::InputCommand const& /*cmd*/)
