@@ -113,7 +113,7 @@ void		GSManager::addNewState()
 		{
 			push(*state.state, state.changed, state.paused, state.resume);
 			this->_addStates.pop();
-			if (!this->_addStates.empty())
+			if (this->_addStates.empty())
 				CommandDispatcher::get().start();
 		}
 		else
