@@ -96,7 +96,6 @@ void		SFMLSprite::setPingpong(bool pingpong)
 void		SFMLSprite::setUp(bool up)
 {
 	this->_up = up;
-	this->setCenter();
 }
 
 void		SFMLSprite::setTranslate(int x, int y)
@@ -128,7 +127,7 @@ void		SFMLSprite::setGrid(uint32_t left, uint32_t top, uint32_t width,
 		}
 		top += spacey + height;
 	}
-	this->setCenter();
+	this->setCenter(width / this->GetScale().x / 2, height / this->GetScale().y / 2);
 }
 
 void		SFMLSprite::setBack(bool val)
