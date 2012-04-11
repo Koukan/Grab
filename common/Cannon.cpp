@@ -8,7 +8,7 @@
 Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
 			   std::string const& spriteName, std::string const &cannonGroup,
 			   std::string const &shotsGroup, double offsetx, double offsety, int angle) :
-  ConcreteObject(spriteName, *(new Core::CircleHitBox(/*ship.getX() + */offsetx, /*ship.getY() + */offsety, 5)),
+  ConcreteObject(spriteName, *(new Core::CircleHitBox(ship.getX() + offsetx, ship.getY() + offsety, 5)),
 		 ship.getVx(), ship.getVy()),
   _parser(parser),
   _ship(ship),
@@ -23,11 +23,6 @@ Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
 
 Cannon::~Cannon()
 {}
-
-void	Cannon::draw(double time)
-{
-  _sprite->draw(static_cast<int>(_x), static_cast<int>(_y), time);
-}
 
 void	Cannon::fire()
 {

@@ -13,8 +13,6 @@ public:
 		 std::string const &shootGroup, double offsetx = 0, double offsety = 0, int angle = 0);
   ~Cannon();
 
-  virtual void draw(double elapsedTime);
-
   void	fire();
   void	stopFire();
   PlayerBullet*	getBullet() const;
