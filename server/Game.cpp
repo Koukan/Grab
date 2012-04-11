@@ -196,7 +196,7 @@ void		Game::loadGame()
 
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
-		ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), _logic, 0, 0, 0);
+	  ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), _logic, Color(0, 0, 0));
 		ship->setX(x);
 		ship->setY(600);
 		cmd = new GameCommand("ShipSpawn");

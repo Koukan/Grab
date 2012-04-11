@@ -15,7 +15,7 @@ namespace Core
   class GameState;
 }
 
-class	Color;
+struct	Color;
 class	Cannon;
 class	Player;
 
