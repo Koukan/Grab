@@ -42,6 +42,7 @@ public:
   void			releaseFire();
   void			specialFire();
   void			releaseSpecialFire();
+  bool			isGood(uint32_t id);
 
   void			inputUp(Core::InputCommand const &cmd);
   void			inputDown(Core::InputCommand const &cmd);
@@ -122,6 +123,7 @@ private:
   double		_targetx;
   double		_targety;
   bool			_target;
+  uint32_t		_lastId;
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
   bool			_specialPowerActive;
