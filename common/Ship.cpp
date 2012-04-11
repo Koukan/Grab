@@ -13,25 +13,22 @@
 Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, int r, int g, int b,
 		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
-	  _player(player), _speed(info.speed), _tmpSpeed(info.speed), _fireFrequency(info.fireFrequency),
+	  _caracs(info),
+	  _player(player), _speed(info.speed), _tmpSpeed(info.speed),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
 	  _fireSound(state.getSound("playerShotSound")),
-	  _xFixe(info.xConstraint),
-	  _yFixe(info.yConstraint),
-	  _xFireOffset(info.xFireOffset),
-	  _yFireOffset(info.yFireOffset),
-	  _joyPosX(0), _joyPosY(0), _bulletFileName(info.bulletFileName), _concentratedBulletFileName(info.concentratedBulletFileName),
-	  _playerBullet(0), _concentratedPlayerBullet(0), _score(0), _nbSecRespawn(0),
+	  _joyPosX(0), _joyPosY(0),
+	  _playerBullet(0), _concentratedPlayerBullet(0),
+	  _score(0), _nbSecRespawn(0),
 	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPowerType(info.specialPowerType),
 	  _specialPowerActive(false),
 	  _shield(0)
 {
 	state.addGameObject(this, "players");
        static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
-       _specialPower = powers[_specialPowerType];
+       _specialPower = powers[_caracs.specialPowerType];
 	_cannons[0] = 0;
 	_cannons[1] = 0;
 	_cannons[2] = 0;
@@ -86,8 +83,6 @@ void	Ship::setPosition(double x, double y, double)
 
 void	Ship::move(double time)
 {
-	//if (this->_dead)
-	//	return ;
 	if (_target == true)
 	{
 		if ((this->_vx >= 0 && this->_x + this->_vx > this->_targetx) ||
@@ -345,13 +340,13 @@ void Ship::manageFire()
 		if (!this->_concentratedPlayerBullet)
 		{
 			int constraint = 0;
-			if (this->_xFixe)
+			if (this->_caracs.xConstraint)
 				constraint |= PhysicObject::X;
-			if (this->_yFixe)
+			if (this->_caracs.yConstraint)
 				constraint |= PhysicObject::Y;
-			this->_concentratedPlayerBullet = new PlayerBullet(this->_concentratedBulletFileName, this->getGroup()->getState(),
-									"playerShots", this->_x + this->_xFireOffset,
-									this->_y + this->_yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
+			this->_concentratedPlayerBullet = new PlayerBullet(this->_caracs.concentratedBulletFileName, this->getGroup()->getState(),
+									"playerShots", this->_x + this->_caracs.xFireOffset,
+									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
 			this->_concentratedPlayerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
 		}
@@ -382,9 +377,9 @@ void Ship::manageFire()
 			this->_concentratedPlayerBullet->isFiring(false);
 		if (!this->_playerBullet)
 		{
-			this->_playerBullet = new PlayerBullet(this->_bulletFileName, this->getGroup()->getState(),
-									"playerShots", this->_x + this->_xFireOffset,
-									this->_y + this->_yFireOffset, this->_vx, this->_vy);
+			this->_playerBullet = new PlayerBullet(this->_caracs.bulletFileName, this->getGroup()->getState(),
+									"playerShots", this->_x + this->_caracs.xFireOffset,
+									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy);
 			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
 			this->getGroup()->getState().addGameObject(this->_playerBullet);
 		}
@@ -523,7 +518,7 @@ void Ship::setDead(bool dead, bool command)
 	}
 	this->_delete = 3;
 	this->_powerGauge = 0;
-	if (this->_specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
+	if (this->_caracs.specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
 	  this->disableShield();
 	if (this->getSprite())
 		this->getSprite()->setTransparency(0.4f);
@@ -624,13 +619,13 @@ void Ship::updateBulletTrajectory()
 {
   if (this->_playerBullet)
     {
-      this->_playerBullet->setX(this->_x + this->_xFireOffset);
-      this->_playerBullet->setY(this->_y + this->_yFireOffset);
+      this->_playerBullet->setX(this->_x + this->_caracs.xFireOffset);
+      this->_playerBullet->setY(this->_y + this->_caracs.yFireOffset);
     }
   if (this->_concentratedPlayerBullet)
     {
-      this->_concentratedPlayerBullet->setX(this->_x + this->_xFireOffset);
-      this->_concentratedPlayerBullet->setY(this->_y + this->_yFireOffset);
+      this->_concentratedPlayerBullet->setX(this->_x + this->_caracs.xFireOffset);
+      this->_concentratedPlayerBullet->setY(this->_y + this->_caracs.yFireOffset);
     }
 }
 

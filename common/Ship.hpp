@@ -78,10 +78,10 @@ public:
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
 
+  ShipInfo::ShipInfo const &			_caracs;
   Player					&_player;
   double					_speed;
   double					_tmpSpeed;
-  int						_fireFrequency;
   bool						_dead;
   Cannon*					_cannons[4];
   unsigned int				_nbMaxGrabs; // can be up to 4 by choosing a special power
@@ -92,8 +92,6 @@ private:
   Core::Sound				*_fireSound;
   bool						_xFixe;
   bool						_yFixe;
-  int						_xFireOffset;
-  int						_yFireOffset;
 
   // ship control
   enum Actions
@@ -124,7 +122,6 @@ private:
   bool			_target;
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
-  ShipInfo::SpecialPower _specialPowerType;
   bool			_specialPowerActive;
   
   union
