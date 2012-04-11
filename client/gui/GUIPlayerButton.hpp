@@ -31,7 +31,7 @@ public:
 
 private:
 	bool			selectCommand(Core::GUICommand const &command);
-	bool			backCommand();
+	bool			backCommand(Core::GUICommand const &command);
 	bool			directionCommand(Core::GUICommand const &command);
 	bool			bindState(Core::GUICommand const &command);
 

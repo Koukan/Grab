@@ -174,6 +174,7 @@ double		BulletCommand::getAimDirection()
 		double			x = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
 		double			y = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
 
+		this->setRelativeObject(0);
 		return rtod(::atan2(y, x));
 	}
 	return 90;

@@ -8,6 +8,7 @@
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
 #include "ShipInfo.hpp"
+#include "Game.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
   : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
@@ -20,6 +21,8 @@ GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned in
 
 GSBindPlayer::~GSBindPlayer()
 {
+	if (this->_online)
+		Game::get().unloadModule("NetworkModule");
 }
 
 void	GSBindPlayer::onStart()
@@ -113,6 +116,25 @@ void	GSBindPlayer::addDemand(Core::GUICommand::PlayerType type)
 	}
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("demandPlayer", _id));
 	this->_demands[_id++] = type;
+}
+
+void	GSBindPlayer::addSelected(GUIPlayerButton *button, Core::GUICommand::PlayerType playerType)
+{
+	this->_binds[playerType] = button;
+}
+
+void	GSBindPlayer::removeSelected(Core::GUICommand::PlayerType playerType)
+{
+	this->_binds.erase(playerType);
+}
+
+GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerType) const
+{
+	std::map<Core::GUICommand::PlayerType, GUIPlayerButton*>::const_iterator	it = this->_binds.find(playerType);
+
+	if (it != this->_binds.end())
+		return it->second;
+	return 0;
 }
 
 void	GSBindPlayer::answerBind(Core::Command const &command)
