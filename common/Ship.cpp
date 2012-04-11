@@ -9,13 +9,15 @@
 #include "Player.hpp"
 #include "Converter.hpp"
 #include "BlackHole.hpp"
+#include "GameState.hpp"
 
-Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, int r, int g, int b,
+Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, Color const & color,
 		   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _caracs(info),
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed),
 	  _dead(false), _nbMaxGrabs(nbMaxGrabs), _grabLaunched(false),
+	  _color(color),
 	  _fireSound(state.getSound("playerShotSound")),
 	  _joyPosX(0), _joyPosY(0),
 	  _playerBullet(0), _concentratedPlayerBullet(0),
@@ -33,9 +35,6 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	_cannons[1] = 0;
 	_cannons[2] = 0;
 	_cannons[3] = 0;
-	_colors[0] = r;
-	_colors[1] = g;
-	_colors[2] = b;
 	for (int i = 0; i < Ship::NBACTIONS; ++i)
 		this->_actions[i] = false;
 
@@ -51,7 +50,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 		{
 			ConcreteObject *obj = new ConcreteObject(aura, *new Core::CircleHitBox(0, 0, 1), 0, 0);
 			obj->setLink(this);
-			aura->setColor(r, g, b);
+			aura->setColor(_color.r, _color.g, _color.b);
 			state.addGameObject(obj, "playerAuras");
 		}
 	}
@@ -166,7 +165,7 @@ void Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, do
 				*this, 180, _tmpSpeed * 2, nGrab, _grabsPositions[nGrab].first,
 				_grabsPositions[nGrab].second, _angles[nGrab]);
 	if (grab->getSprite())
-		grab->getSprite()->setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
+		grab->getSprite()->setColor(this->_color.r, this->_color.g, this->_color.b);
 	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
 	_grabLaunched = true;
 }
@@ -203,7 +202,7 @@ void	Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 		if (_cannons[nGrab])
 			_cannons[nGrab]->erase();
 		_cannons[nGrab] = cannon;
-		cannon->setColor(_colors[0], _colors[1], _colors[2]);
+		cannon->setColor(_color.r, _color.g, _color.b);
 		this->manageFire();
 	}
 }
@@ -347,7 +346,7 @@ void Ship::manageFire()
 			this->_concentratedPlayerBullet = new PlayerBullet(this->_caracs.concentratedBulletFileName, this->getGroup()->getState(),
 									"playerShots", this->_x + this->_caracs.xFireOffset,
 									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
-			this->_concentratedPlayerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			this->_concentratedPlayerBullet->setColor(_color.r, _color.g, _color.b);
 			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
 		}
 		if (this->_playerBullet)
@@ -380,7 +379,7 @@ void Ship::manageFire()
 			this->_playerBullet = new PlayerBullet(this->_caracs.bulletFileName, this->getGroup()->getState(),
 									"playerShots", this->_x + this->_caracs.xFireOffset,
 									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy);
-			this->_playerBullet->setColor(_colors[0], _colors[1], _colors[2]);
+			this->_playerBullet->setColor(_color.r, _color.g, _color.b);
 			this->getGroup()->getState().addGameObject(this->_playerBullet);
 		}
 		this->_playerBullet->isFiring(true);
@@ -592,7 +591,7 @@ void Ship::releaseCannon(unsigned int nb)
 
 void Ship::copyColor(Core::Sprite &sprite)
 {
-	sprite.setColor(_colors[0], _colors[1], _colors[2]);
+	sprite.setColor(_color.r, _color.g, _color.b);
 }
 
 void Ship::updateCannonsTrajectory()

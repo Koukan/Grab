@@ -11,10 +11,12 @@ PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxO
 {
 }
 
-PhysicObject::PhysicObject(PhysicObject const &other) : _vx(other._vx), _vy(other._vy),
-	_xHitboxOffset(other._xHitboxOffset), _yHitboxOffset(other._yHitboxOffset),
-	_scrollX(other._scrollX), _scrollY(other._scrollY), _static(other._static),
-	_hitBox(other._hitBox->clone()), _link(other._link), _constraint(other._constraint)
+PhysicObject::PhysicObject(PhysicObject const &other) : 
+  _vx(other._vx), _vy(other._vy),
+  _ax(other._ax), _ay(other._ay),
+  _xHitboxOffset(other._xHitboxOffset), _yHitboxOffset(other._yHitboxOffset),
+  _scrollX(other._scrollX), _scrollY(other._scrollY), _static(other._static),
+  _hitBox(other._hitBox->clone()), _link(other._link), _constraint(other._constraint)
 
 {
 }

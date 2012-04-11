@@ -18,6 +18,7 @@
 #include "GSGameOver.hpp"
 #include "GSContinue.hpp"
 #include "MonsterGenerator.hpp"
+#include "Color.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -603,14 +604,15 @@ void		GSInGame::createShips()
 		{96, 254, 1},
 		{0, 255, 185},
 		{255, 57, 0}
-	};
+  };
 
   Ship					*ship;
   unsigned int			i = 0;
   for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
     {
-		ship = new Ship(**it, *(*it)->getShipInfo(), *this, playerColors[i].r,
-				playerColors[i].g, playerColors[i].b);
+		ship = new Ship(**it, *(*it)->getShipInfo(), *this, Color(playerColors[i].r, 
+									  playerColors[i].g,
+									  playerColors[i].b));
 		ship->setY(600);
 		ship->setX(i * 250 + 150);
     }

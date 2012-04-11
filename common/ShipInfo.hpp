@@ -43,7 +43,7 @@ namespace	ShipInfo
   {"Voyageer", "player2", "player3", "concentratedPlayer3", true, true, 500,
    GrabPosition::MIDDLE_BOTTOM, 0, GrabPosition::LEFT_TOP_CORNER, 0, GrabPosition::RIGHT_TOP_CORNER, 0, SHIELD, 0, -40},
   {"LadyBird", "player5", "player3", "concentratedPlayer3", true, true, 500,
-   GrabPosition::MIDDLE_TOP, 0, GrabPosition::LEFT, 0, GrabPosition::RIGHT, 0, NONE, 0, -40},
+   GrabPosition::MIDDLE_TOP, 0, GrabPosition::LEFT, 0, GrabPosition::RIGHT, 0, SHIELD, 0, -40},
 	};
 	static unsigned int const	shipsListSize = sizeof(shipsList) / sizeof(*shipsList);
 };
