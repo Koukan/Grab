@@ -5,7 +5,7 @@
 CORE_USE_NAMESPACE
 
 CommandDispatcher::CommandDispatcher()
-	: Module("CommandDispatcher", 5)
+	: Module("CommandDispatcher", 5), _update(true)
 {
 }
 
@@ -19,9 +19,20 @@ void			CommandDispatcher::init()
 
 void			CommandDispatcher::update(double elapsedTime)
 {
-	this->handle(elapsedTime);
+	if (_update)
+		this->handle(elapsedTime);
 }
 
 void			CommandDispatcher::destroy()
 {
+}
+
+void			CommandDispatcher::start()
+{
+	_update = true;
+}
+
+void			CommandDispatcher::stop()
+{
+	_update = false;
 }

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "GSManager.hpp"
+#include "CommandDispatcher.hpp"
 
 CORE_BEGIN_NAMESPACE
 
@@ -48,6 +49,7 @@ void		GSManager::destroy()
 bool		GSManager::pushState(GameState &state,
 						GameState::Pause paused)
 {
+	CommandDispatcher::get().stop();
 	this->_addStates.push(AddState(&state, true, paused, false));
 	return true;
 }
@@ -55,6 +57,7 @@ bool		GSManager::pushState(GameState &state,
 bool		GSManager::changeState(GameState &state,
 					      GameState::Pause paused, bool del)
 {
+	CommandDispatcher::get().stop();
 	pop(false, del);
 	this->_addStates.push(AddState(&state, false, paused, false));
 	return true;
@@ -110,6 +113,8 @@ void		GSManager::addNewState()
 		{
 			push(*state.state, state.changed, state.paused, state.resume);
 			this->_addStates.pop();
+			if (this->_addStates.empty())
+				CommandDispatcher::get().start();
 		}
 		else
 			state.ready = true;
