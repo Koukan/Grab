@@ -68,14 +68,12 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
-	if (this->_relative)
-	{
-		if ((this->_constraint & PhysicObject::X) != 0)
-			bullet->setX(0);
-		if ((this->_constraint & PhysicObject::Y) != 0)
-			bullet->setY(0);
+	if ((this->_constraint & PhysicObject::X) != 0)
+		bullet->setX(0);
+	if ((this->_constraint & PhysicObject::Y) != 0)
+		bullet->setY(0);
+	if (this->_constraint != Core::PhysicObject::NONE)
 		bullet->setLink(this->_relative, this->_constraint);
-	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
@@ -112,15 +110,13 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative);
-	if (this->_relative)
-	{
-		if ((this->_constraint & PhysicObject::X) != 0)
-			bullet->setX(0);
-		if ((this->_constraint & PhysicObject::Y) != 0)
-			bullet->setY(0);
+	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative, this->_constraint);
+	if ((this->_constraint & PhysicObject::X) != 0)
+		bullet->setX(0);
+	if ((this->_constraint & PhysicObject::Y) != 0)
+		bullet->setY(0);
+	if (this->_constraint != Core::PhysicObject::NONE)
 		bullet->setLink(this->_relative, this->_constraint);
-	}
 	bullet->setXHitBoxOffset(-4);
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
@@ -182,4 +178,25 @@ void	PlayerBullet::isConcentrated(bool concentrated)
 bool	PlayerBullet::isConcentrated() const
 {
 	return (this->_isConcentrated);
+}
+
+void	PlayerBullet::erase()
+{
+	if (!this->_delete && !this->_deathBullet.empty())
+	{
+		BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, this->getX(), this->getY(), _vx, _vy);
+		bullet->setScrollY(this->_scrollY);
+		this->_state.addGameObject(bullet, "spawner", false);
+		this->insertChild(*bullet);
+		bullet->setSeed(this->_rand());
+		bullet->setRank(this->_rank);
+	}
+	this->GameObject::erase();
+	if (this->_childs.empty())
+	{
+		if (this->_parent)
+			this->_parent->removeChild(this->_bulletId);
+	}
+	else
+		this->_delete = 2;
 }
