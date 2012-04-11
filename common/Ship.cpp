@@ -204,6 +204,7 @@ void	Ship::addCannon(Cannon *cannon, unsigned int nGrab)
 			_cannons[nGrab]->erase();
 		_cannons[nGrab] = cannon;
 		cannon->setColor(_color.r, _color.g, _color.b);
+		cannon->setLink(this);
 		this->manageFire();
 	}
 }
@@ -255,7 +256,7 @@ void Ship::handleActions()
 		this->_vy = vy * this->_speed / distance;
 	}
 	this->updateBulletTrajectory();
-	this->updateCannonsTrajectory();
+this->updateCannonsTrajectory();
 }
 
 void Ship::inputUp(Core::InputCommand const &/*cmd*/)
@@ -595,6 +596,7 @@ void Ship::releaseCannon(unsigned int nb)
 {
 	if (nb > 4 || !_cannons[nb])
 		return ;
+	_cannons[nb]->setLink(0);
 	_cannons[nb]->stopFire();
 	_cannons[nb]->erase();
 	_cannons[nb] = 0;
