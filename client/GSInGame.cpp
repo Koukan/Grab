@@ -63,6 +63,7 @@ void		GSInGame::preload()
   this->addGroup("blackHoleEnd", 3);
   this->addGroup("particles", 3);
   this->addGroup("playerAuras", 3);
+  this->addGroup("playerAurasPower", 4);
 
   this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::limitWallTouchObject);
@@ -390,10 +391,9 @@ void		GSInGame::gameover(bool victory)
 
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
-	if (!_online)
-		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::PHYSIC);
-	else
-		Core::GameStateManager::get().pushState(*(new GSPauseMenu()), Core::GameState::NONE);
+  Core::GameState::Pause pause = (!_online ? (Core::GameState::PHYSIC) : (Core::GameState::NONE));
+  Core::GameStateManager::get().pushState(*(new GSPauseMenu(_players, _mode,
+							    _map, _nbPlayers, _online)), pause);
 }
 
 void		GSInGame::score(GameCommand const &event)

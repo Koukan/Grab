@@ -127,6 +127,8 @@ private:
   unsigned int		_powerGauge;
   void (Ship::*_specialPower)();
   bool			_specialPowerActive;
+  ConcreteObject*	_electricAura;
+  Core::GameState&	_state;
   
   union
   {
@@ -134,4 +136,5 @@ private:
     ConcreteObject*	_bomb;
   };	
   void handleActions();
+  void resetPowerGauge();
 };
