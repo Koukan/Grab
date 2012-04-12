@@ -686,9 +686,12 @@ void		Ship::increasePowerGauge(unsigned int score)
 	{
 	  _electricAura = new ConcreteObject("playerAuraPower",
 					     *new Core::CircleHitBox(0, 0, 5), 0, 0);
-	  _electricAura->setLink(this);
-	  this->copyColor(*_electricAura->getSprite());
-	  _state.addGameObject(_electricAura, "playerAurasPower");
+	  if (_electricAura)
+	    {
+	      _electricAura->setLink(this);
+	      this->copyColor(*_electricAura->getSprite());
+	      _state.addGameObject(_electricAura, "playerAurasPower");
+	    }
 	}
     }
 }
