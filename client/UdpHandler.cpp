@@ -55,6 +55,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 		{
 			uint32_t	id_packet;
 			packet >> id_packet;
+			std::cout << "receive packet with id : " << id_packet << std::endl;
 			this->testPacketId(id_packet);
 		}
 		return (this->*methods[type].func)(packet, time);
@@ -223,6 +224,7 @@ bool		UdpHandler::testPacketId(uint32_t id)
 			packet << static_cast<uint8_t>(UDP::RETRIEVE);
 			packet << id;
 			this->handleOutputPacket(packet);
+			std::cout << "ask for packet id : " << id << std::endl;
 		}
 		return true;
 	}
