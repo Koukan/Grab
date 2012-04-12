@@ -39,6 +39,7 @@ GameLogic::GameLogic(Game &game, const std::string &map)
   this->addGroup("blackHoleEnd", 3);
   this->addGroup("particles", 3);
   this->addGroup("playerAuras", 3);
+  this->addGroup("playerAurasPower", 4);
 
 	this->load(map);
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 980)), "shotWall");

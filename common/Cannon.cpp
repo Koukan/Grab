@@ -15,7 +15,8 @@ Cannon::Cannon(std::string const &parser, Ship &ship, Core::GameState &state,
   _shotsGroup(shotsGroup),
   _offsetX(offsetx), _offsetY(offsety), _bullet(0)
 {
-	ship.copyColor(*this->getSprite());
+  if (this->getSprite())
+    ship.copyColor(*this->getSprite());
 	state.addGameObject(this, cannonGroup);
     _bullet = new PlayerBullet(_parser, this->getGroup()->getState(), _shotsGroup, _x, _y, _vx, _vy, angle);
     this->getGroup()->getState().addGameObject(_bullet);

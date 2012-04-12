@@ -219,7 +219,7 @@ void		NetworkModule::sendUDPPacket(Net::Packet &packet,
 	for (std::list<Client*>::const_iterator it = list.begin();
 		 it != list.end(); it++)
 	{
-		if (player == *it)
+		if (player == *it || (*it)->getUDPAddr().getSize() == 0)
 			continue ;
 		if (needId)
 		{
@@ -263,6 +263,7 @@ void		NetworkModule::loadgameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
 
+		std::cout << "loadgame sent" << std::endl;
 	if (Server::get().gameExist(cmd.game))
 	{
 		Net::Packet	packet(2);
@@ -325,11 +326,9 @@ void		NetworkModule::sendPing()
 {
 	GameManager::gamesMap const &map = Server::get().getGameList();
 
-	Net::Packet     pong(18);
-	pong << static_cast<uint64_t>(0);
+	Net::Packet     pong(9);
+	pong << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	pong << static_cast<uint8_t>(UDP::PING);
-	pong << static_cast<uint8_t>(0);
-	pong << Net::Clock::getMsSinceEpoch();
 	for (GameManager::gamesMap::const_iterator it = map.begin(); it != map.end(); ++it)
 		this->sendUDPPacket(pong, (*it).second->getClients(), false, 0);
 	Server::get().unlock();

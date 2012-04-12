@@ -111,7 +111,9 @@ void		Game::changePlayersStatus(int i, int ship, bool ready)
 		{
 			this->_readyPlayers++;
 			if (this->_readyPlayers == this->_maxPlayers)
+			{
 				this->loadGame();
+			}
 		}
 		else if (!ready && this->_players[i]->isReady())
 			this->_readyPlayers--;

@@ -15,7 +15,9 @@ PlayerBullet::PlayerBullet(std::string const &parser, Core::GameState &gstate, s
 		  : Core::BulletCommand(parser, gstate, x, y, vx, vy), _groupName(groupName), _isFiring(false), _isConcentrated(false), _angle(angle), _relative(relativeObject),
 		  _constraint(constraint)
 {
-	this->setFocus("monster");
+	this->removeFocus("players");
+	this->addFocus("monster");
+	this->addFocus("monster2");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::string const &groupName,
@@ -25,7 +27,10 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 {
 	if (!this->getSprite())
 		this->setSprite(gstate, "playershot");
-	this->setFocus("monster");
+	this->setSprite(gstate, "playershot");
+	this->removeFocus("players");
+	this->addFocus("monster");
+	this->addFocus("monster2");
 }
 
 PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::HitBox &box, std::string const &groupName,
@@ -36,7 +41,10 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::
 {
 	if (!this->getSprite())
 		this->setSprite(gstate, "playershot");
-	this->setFocus("monster");
+	this->setSprite(gstate, "playershot");
+	this->removeFocus("players");
+	this->addFocus("monster");
+	this->addFocus("monster2");
 }
 
 PlayerBullet::~PlayerBullet()
