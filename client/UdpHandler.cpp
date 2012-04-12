@@ -222,9 +222,9 @@ bool		UdpHandler::testPacketId(uint32_t id)
 			Net::Packet	packet(13);
 			packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 			packet << static_cast<uint8_t>(UDP::RETRIEVE);
-			packet << id;
+			packet << _lastPacketId;
 			this->handleOutputPacket(packet);
-			std::cout << "ask for packet id : " << id << std::endl;
+			std::cout << "ask for packet id : " << _lastPacketId << std::endl;
 		}
 		return true;
 	}

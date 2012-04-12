@@ -179,6 +179,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 
 	packet >> packet_id;
 	Net::Packet const *tmp = client.getPacket(packet_id);
+	std::cout << "retrieve a packet with id : " << packet_id << " " << tmp << std::endl;
 	if (tmp)
 		this->handleOutputPacket(*tmp);
 	return 1;
