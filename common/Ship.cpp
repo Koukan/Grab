@@ -344,11 +344,16 @@ void Ship::manageFire()
 				constraint |= PhysicObject::X;
 			if (this->_caracs.yConstraint)
 				constraint |= PhysicObject::Y;
+			this->_concentratedPlayerBullet = new PlayerBullet(/*this->_caracs.concentratedBulletFileName*/"explosionConcentratedPlayer3", this->getGroup()->getState(),
+									"playerShots", this->_x + this->_caracs.xFireOffset,
+									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
+			this->_concentratedPlayerBullet->isFiring(true);
+			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet, "spawner");
 			this->_concentratedPlayerBullet = new PlayerBullet(this->_caracs.concentratedBulletFileName, this->getGroup()->getState(),
 									"playerShots", this->_x + this->_caracs.xFireOffset,
 									this->_y + this->_caracs.yFireOffset, this->_vx, this->_vy, 0, this, static_cast<PhysicObject::Constraint>(constraint));
 			this->_concentratedPlayerBullet->setColor(_color.r, _color.g, _color.b);
-			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet);
+			this->getGroup()->getState().addGameObject(this->_concentratedPlayerBullet, "spawner");
 		}
 		if (this->_playerBullet)
 			this->_playerBullet->isFiring(false);

@@ -59,9 +59,13 @@ void		PhysicManager::apply(GameState &state, double elapsedTime)
 	tmptime = elapsedTime;
 	for (; tmptime >= 0; tmptime -= CUTTIME)
 	{
+		std::cout << "ghiberiogh 1" << std::endl;
 		time = ((static_cast<int>(tmptime) > CUTTIME) ? CUTTIME : tmptime) / 1000;
+		std::cout << "ghiberiogh 2" << std::endl;
 		PhysicManager::move(groups, time);
+		std::cout << "ghiberiogh 3" << std::endl;
 		PhysicManager::collide(groups, collisionGroups);
+		std::cout << "ghiberiogh 4" << std::endl;
 	}
 }
 
