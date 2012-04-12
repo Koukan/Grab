@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include "Net.hpp"
 #include "bulletmlrunner.h"
 #include "Sprite.hpp"
@@ -43,7 +44,8 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 
 	void			isCommanded(bool commanded);
 	bool			isCommanded() const;
-	void			setFocus(std::string const &name);
+	void			addFocus(std::string const &name);
+	void			removeFocus(std::string const &name);
 	void			setRank(double rank);
     virtual void	move(double time);
 	void			setSeed(uint32_t seed);
@@ -65,30 +67,30 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	void			setSpeedDirection();
 	void			insertChild(Bullet &bullet);
 
-	double			_direction;
-	double			_speed;
-    double			_turn;
-    bool			_end;
-    GameState		&_state;
-	Shape			_shape;
-	uint32_t		_width;
-	uint32_t		_height;
-	double			_rank;
-	uint32_t		_nextId;
-	uint32_t		_simpleLife;
-	double			_lifeRank;
-	uint32_t		_simpleDamage;
-	std::string		_focus;
-	BulletMap		_childs;
-	std::string		_simpleSprite;
-	std::string		_simpleGroup;
-	double			_simpleXHitbox;
-	double			_simpleYHitbox;
-	std::string		_grabBullet;
-	std::string		_deathBullet;
-	Net::MTRand		_rand;
-	bool			_paused;
-	bool			_isCommanded;
+	double					_direction;
+	double					_speed;
+    double					_turn;
+    bool					_end;
+    GameState				&_state;
+	Shape					_shape;
+	uint32_t				_width;
+	uint32_t				_height;
+	double					_rank;
+	uint32_t				_nextId;
+	uint32_t				_simpleLife;
+	double					_lifeRank;
+	uint32_t				_simpleDamage;
+	std::set<std::string>	_focus;
+	BulletMap				_childs;
+	std::string				_simpleSprite;
+	std::string				_simpleGroup;
+	double					_simpleXHitbox;
+	double					_simpleYHitbox;
+	std::string				_grabBullet;
+	std::string				_deathBullet;
+	Net::MTRand				_rand;
+	bool					_paused;
+	bool					_isCommanded;
 
  public:
 	unsigned int const	score;
