@@ -113,8 +113,8 @@ void		Client::addPacket(uint32_t id, Net::Packet &packet)
 
 Net::Packet const	*Client::getPacket(uint32_t id) const
 {
-	for (packetsList::const_iterator it = this->_packets.end();
-		 it != this->_packets.begin() && it->first > id; it--)
+	for (packetsList::const_reverse_iterator it = this->_packets.rbegin();
+		 it != this->_packets.rend() && it->first >= id; it++)
 	{
 		if (it->first == id)
 			return &(it->second);
