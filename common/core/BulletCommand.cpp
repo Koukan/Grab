@@ -20,7 +20,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	: Bullet(x, y, vx, vy), BulletMLRunner(gstate.getBulletParser(parser)),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
+	  _width(1), _height(1), _rank(1), _nextId(1),
 	  _paused(paused), _isCommanded(true), score(0)
 {
 	this->_shape = BulletCommand::Circle;
@@ -33,6 +33,7 @@ BulletCommand::BulletCommand(std::string const &parser, GameState &gstate,
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 	this->managePaused(gstate);
+	this->addFocus("players");
 }
 
 BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
@@ -40,7 +41,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	: Bullet(x, y, vx, vy), BulletMLRunner(&parser),
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
-	  _width(1), _height(1), _rank(1), _nextId(1), _focus("players"),
+	  _width(1), _height(1), _rank(1), _nextId(1),
 	  _paused(paused), _isCommanded(true), score(0)
 {
 	this->_shape = BulletCommand::Circle;
@@ -53,6 +54,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	this->_simpleDamage = 1;
 	this->setSpeedDirection();
 	this->managePaused(gstate);
+	this->addFocus("players");
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool paused,
@@ -60,7 +62,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	: Bullet(x, y, vx, vy), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
-	  _nextId(1), _focus("players"), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
+	  _nextId(1), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -83,6 +85,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate, bool pause
 	this->_grabBullet = state.getGenericStr("grabbullet");
 	this->_deathBullet = state.getGenericStr("deathbullet");
 	this->managePaused(gstate);
+	this->addFocus("players");
 }
 
 BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
@@ -91,7 +94,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	: Bullet(box, vx, vy, xHitboxOffset, yHitboxOffset), BulletMLRunner(&state),
 	  _direction(0), _speed(0), _turn(0), _end(false), _state(gstate),
 	  _width(state.getSimpleWidth()), _height(state.getSimpleHeight()), _rank(1),
-	  _nextId(1), _focus("players"), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
+	  _nextId(1), _paused(paused), _isCommanded(true), score(state.getGenericInt("score"))
 {
 	if (state.getSimpleShape() == "circle")
 		this->_shape = BulletCommand::Circle;
@@ -114,6 +117,7 @@ BulletCommand::BulletCommand(BulletMLState &state, GameState &gstate,
 	this->_grabBullet = state.getGenericStr("grabbullet");
 	this->_deathBullet = state.getGenericStr("deathbullet");
 	this->managePaused(gstate);
+	this->addFocus("players");
 }
 
 BulletCommand::~BulletCommand()
@@ -141,31 +145,40 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
+	this->setRelativeObject(0);
 	if (!this->_relativeObject || this->_relativeObject->isDelete())
 	{
-		Group	*group = this->_state.getGroup(this->_focus);
-		if (group)
+		GameObject	*obj = 0;
+		uint32_t	distance = static_cast<uint32_t>(-1);
+		Group		*group;
+		int			x, y;
+		for (std::set<std::string>::const_iterator it = this->_focus.begin();
+			it != this->_focus.end(); it++)
 		{
-			uint32_t	distance = static_cast<uint32_t>(-1);
-			GameObject	*obj = 0;
-			uint32_t	calc;
-			for (Group::gameObjectSet::const_iterator it = group->getObjects().begin();
-				 it != group->getObjects().end(); it++)
+			group = this->_state.getGroup(*it);
+			if (group)
 			{
-				if ((*it)->isDelete())
-					continue;
-				calc = static_cast<int>((*it)->getX() * (*it)->getX() + (*it)->getY() * (*it)->getY());
-				if (calc < distance)
+				uint32_t	calc;
+				for (Group::gameObjectSet::const_iterator it = group->getObjects().begin();
+				 it != group->getObjects().end(); it++)
 				{
-					distance = calc;
-					obj = *it;
+					if ((*it)->isDelete())
+						continue;
+					x = this->getX() - (*it)->getX();
+					y = this->getY() - (*it)->getY();
+					calc = static_cast<int>(x * x + y * y);
+					if (calc < distance)
+					{
+						distance = calc;
+						obj = *it;
+					}
 				}
 			}
-			if (obj)
-				this->setRelativeObject(obj);
-			else
-				this->setRelativeObject(0);
 		}
+		if (obj)
+			this->setRelativeObject(obj);
+		else
+			this->setRelativeObject(0);
 	}
 	if (this->_relativeObject)
 	{
@@ -173,8 +186,6 @@ double		BulletCommand::getAimDirection()
 		HitBox			&hb = ph->getHitBox();
 		double			x = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
 		double			y = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
-
-		this->setRelativeObject(0);
 		return rtod(::atan2(y, x));
 	}
 	return 90;
@@ -330,9 +341,14 @@ void		BulletCommand::removeChild(uint32_t id)
 		this->erase();
 }
 
-void		BulletCommand::setFocus(std::string const &name)
+void		BulletCommand::addFocus(std::string const &name)
 {
-	this->_focus = name;
+	this->_focus.insert(name);
+}
+
+void		BulletCommand::removeFocus(std::string const &name)
+{
+	this->_focus.erase(name);
 }
 
 void		BulletCommand::setRank(double rank)
