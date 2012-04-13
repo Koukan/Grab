@@ -140,7 +140,6 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 		bullet->getSprite()->setTransparency(0.75);
 	}
 	bullet->setColor(_colors[0], _colors[1], _colors[2]);
-	std::cout << "<<" << state->getGroup() << std::endl;
 	if (state->getGroup() == "")
 		this->_state.addGameObject(bullet, this->_groupName);
 	else
@@ -205,6 +204,7 @@ void	PlayerBullet::erase()
 	{
 		PlayerBullet	*bullet = new PlayerBullet(this->_deathBullet, _state,
 									"playerShots", this->getX(), this->getY(), 0, 0, this->_angle, this->_relative, this->_constraint);
+		bullet->setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
 		bullet->isFiring(true);
 		//BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, this->getX(), this->getY(), _vx, _vy);
 		//bullet->setScrollY(this->_scrollY);

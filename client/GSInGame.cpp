@@ -600,7 +600,7 @@ void		GSInGame::createShips()
     int g;
     int b;
   } playerColors[] = {
-		{255, 0, 217},
+		{255, 0, 0},
 		{96, 254, 1},
 		{0, 255, 185},
 		{255, 57, 0}
