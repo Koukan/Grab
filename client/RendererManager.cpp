@@ -18,9 +18,15 @@ RendererManager::~RendererManager()
 
 void				RendererManager::init()
 {
+	#if (SFML_VERSION_MAJOR == 2)
+	sf::VideoMode video = sf::VideoMode::getDesktopMode();
+	this->_width = video.width;
+	this->_height = video.height;
+	#else
 	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
 	this->_width = video.Width;
 	this->_height = video.Height;
+	#endif
 	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
 	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);
@@ -32,11 +38,11 @@ void RendererManager::drawNode(Core::Node *node)
 {
 	#if (SFML_VERSION_MAJOR == 2)
 		sf::RectangleShape  rect(sf::Vector2f(node->getSize(), node->getSize()));
-		rect.SetOutlineColor(sf::Color(255, 255, 255, 50));
-		rect.SetFillColor(sf::Color(0, 0, 0,0));
-		rect.SetOutlineThickness(2.0);
-		rect.SetPosition(node->getX(), node->getY());
-		this->_window.Draw(rect);
+		rect.setOutlineColor(sf::Color(255, 255, 255, 50));
+		rect.setFillColor(sf::Color(0, 0, 0,0));
+		rect.setOutlineThickness(2.0);
+		rect.setPosition(node->getX(), node->getY());
+		this->_window.draw(rect);
 	#else
 		this->_window.Draw(sf::Shape::Rectangle(static_cast<float>(node->getX()), static_cast<float>(node->getY()),
 			static_cast<float>(node->getX() + node->getSize()), static_cast<float>(node->getY() + node->getSize()),
@@ -104,12 +110,20 @@ void				RendererManager::destroy()
 
 void				RendererManager::clear()
 {
+	#if (SFML_VERSION_MAJOR == 2)
+	_window.clear();
+	#else
 	_window.Clear();
+	#endif
 }
 
 void				RendererManager::flip()
 {
+	#if (SFML_VERSION_MAJOR == 2)
+	_window.display();
+	#else
 	_window.Display();
+	#endif
 }
 
 sf::RenderWindow	*RendererManager::getWindow()
@@ -158,11 +172,11 @@ std::list<RendererManager::VideoMode>	RendererManager::getAvailableResolutions()
 	std::list<RendererManager::VideoMode>	ret;
 	RendererManager::VideoMode tmp;
 #if (SFML_VERSION_MAJOR == 2)
-	std::vector<sf::VideoMode> modes = sf::VideoMode::GetFullscreenModes();
+	std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 	for (std::size_t i = 0; i < modes.size(); ++i)
 	{
-		tmp.width = modes[i].Width;
-		tmp.height = modes[i].Height;
+		tmp.width = modes[i].width;
+		tmp.height = modes[i].height;
 		if (tmp.width >= 800 && tmp.height >= 600)
 			ret.push_back(tmp);
 	}
@@ -182,20 +196,21 @@ void				RendererManager::updateWindow()
 {
 #if (SFML_VERSION_MAJOR == 2)
 	sf::Uint32 style = (_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default;
+	_window.create(sf::VideoMode(this->_width, this->_height), "Grab", style);
+	_window.setMouseCursorVisible(!_fullscreen);
+	_window.setIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
+	sf::View	view(sf::FloatRect(0, 0, VIEWX, VIEWY));
+	 this->_window.setView(view);
 #else
 	sf::Uint32 style = (_fullscreen) ? sf::Style::Fullscreen : (sf::Style::Resize | sf::Style::Close);
-#endif
 	_window.Create(sf::VideoMode(this->_width, this->_height), "Grab", style);
 	_window.ShowMouseCursor(!_fullscreen);
 	_window.SetIcon(grab_icon.width, grab_icon.height, grab_icon.pixel_data);
-#if (SFML_VERSION_MAJOR == 2)
-	sf::View	view(sf::FloatRect(0, 0, VIEWX, VIEWY));
-#else
 	sf::View &view = this->_window.GetDefaultView();
 	//sf::View	view(sf::FloatRect(0, 0, 1342, 742));
 	view.SetFromRect(sf::FloatRect(0, 0, VIEWX, VIEWY));
-#endif
 	this->_window.SetView(view);
+#endif
 }
 
 void	RendererManager::displayHitBox(Core::Group::gameObjectSet::const_iterator oit)
@@ -206,11 +221,11 @@ void	RendererManager::displayHitBox(Core::Group::gameObjectSet::const_iterator o
 		Core::CircleHitBox &hitbox = dynamic_cast<Core::CircleHitBox&>(tmp->getHitBox());
 		#if (SFML_VERSION_MAJOR == 2)
 		sf::CircleShape  circle(hitbox.getRadius());
-		circle.SetOutlineColor(sf::Color(255, 255, 255));
-		circle.SetFillColor(sf::Color(0, 0, 0, 0));
-		circle.SetOutlineThickness(2.0);
-		circle.SetPosition(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset());
-		this->_window.Draw(circle);
+		circle.setOutlineColor(sf::Color(255, 255, 255));
+		circle.setFillColor(sf::Color(0, 0, 0, 0));
+		circle.setOutlineThickness(2.0);
+		circle.setPosition(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset());
+		this->_window.draw(circle);
 		#else
 		this->_window.Draw(sf::Shape::Circle(tmp->getX() + tmp->getXHitBoxOffset() + hitbox.getRadius(), tmp->getY() + tmp->getYHitBoxOffset() + hitbox.getRadius(), hitbox.getRadius(), sf::Color(0, 0, 0,0), 2.0, sf::Color(0, 255, 0)));
 		#endif
@@ -222,11 +237,11 @@ void	RendererManager::displayHitBox(Core::Group::gameObjectSet::const_iterator o
 			Core::RectHitBox &hitbox = dynamic_cast<Core::RectHitBox&>(tmp->getHitBox());
 			#if (SFML_VERSION_MAJOR == 2)
 			sf::RectangleShape  rect(sf::Vector2f(hitbox.getWidth(), hitbox.getHeight()));
-			rect.SetOutlineColor(sf::Color(255, 255, 255));
-			rect.SetFillColor(sf::Color(0, 0, 0,0));
-			rect.SetOutlineThickness(2.0);
-			rect.SetPosition(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset());
-			this->_window.Draw(rect);
+			rect.setOutlineColor(sf::Color(255, 255, 255));
+			rect.setFillColor(sf::Color(0, 0, 0,0));
+			rect.setOutlineThickness(2.0);
+			rect.setPosition(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset());
+			this->_window.draw(rect);
 			#else
 			this->_window.Draw(sf::Shape::Rectangle(tmp->getX() + tmp->getXHitBoxOffset(), tmp->getY() + tmp->getYHitBoxOffset(), tmp->getX() + tmp->getXHitBoxOffset() + hitbox.getWidth(), tmp->getY() + tmp->getYHitBoxOffset() + hitbox.getHeight(), sf::Color(0, 0, 0,0), 2.0, sf::Color(0, 255, 0)));
 			#endif

@@ -6,15 +6,13 @@ SFMLFont::SFMLFont(std::string const &fileName, unsigned int size)
   : _window(RendererManager::get().getWindow())
 {
 	#if (SFML_VERSION_MAJOR == 2)
-		this->_font.LoadFromFile(fileName);
+		this->_font.loadFromFile(fileName);
+		this->_str.setCharacterSize(size);
+		this->_str.setFont(this->_font);
 	#else
 		this->_font.LoadFromFile(fileName, 40);
-	#endif
-	this->_str.SetFont(this->_font);
-	#if (SFML_VERSION_MAJOR == 2)
-		this->_str.SetCharacterSize(size);
-	#else
 		this->_str.SetSize(static_cast<float>(size));
+		this->_str.SetFont(this->_font);
 	#endif
 }
 
@@ -31,22 +29,32 @@ void	SFMLFont::draw(double /*elapsedTime*/)
 {
 		//this->_str.SetX(static_cast<float>(this->_x));
 		//this->_str.SetY(static_cast<float>(this->_y));
-  this->_str.SetPosition(static_cast<float>(this->_x), static_cast<float>(this->_y));
-  this->_window->Draw(this->_str);
+  #if (SFML_VERSION_MAJOR == 2)
+	this->_str.setPosition(static_cast<float>(this->_x), static_cast<float>(this->_y));
+	this->_window->draw(this->_str);
+  #else
+  	this->_str.SetPosition(static_cast<float>(this->_x), static_cast<float>(this->_y));
+  	this->_window->Draw(this->_str);
+  #endif
 }
 
 void	SFMLFont::draw(int x, int y, double /*elapsedTime*/)
 {
 		//this->_str.SetX(static_cast<float>(x));
 		//this->_str.SetY(static_cast<float>(y));
-  this->_str.SetPosition(static_cast<float>(x), static_cast<float>(y));
-  this->_window->Draw(this->_str);
+ 	#if (SFML_VERSION_MAJOR == 2)
+	this->_str.setPosition(static_cast<float>(x), static_cast<float>(y));
+ 	this->_window->draw(this->_str);
+	#else
+	this->_str.SetPosition(static_cast<float>(x), static_cast<float>(y));
+ 	this->_window->Draw(this->_str);
+	#endif
 }
 
 void	SFMLFont::setText(std::string const & text)
 {
   #if (SFML_VERSION_MAJOR == 2)
-  this->_str.SetString(text);
+  this->_str.setString(text);
   #else
   this->_str.SetText(text);
   #endif
@@ -54,26 +62,42 @@ void	SFMLFont::setText(std::string const & text)
 
 void	SFMLFont::setColor(int r, int g, int b)
 {
+  #if (SFML_VERSION_MAJOR == 2)
+  sf::Color base = this->_str.getColor();
+
+  base.r = r;
+  base.g = g;
+  base.b = b;
+  this->_str.setColor(base);
+  #else
   sf::Color base = this->_str.GetColor();
 
   base.r = r;
   base.g = g;
   base.b = b;
   this->_str.SetColor(base);
+  #endif
 }
 
 void	SFMLFont::setTransparency(int a)
 {
+  #if (SFML_VERSION_MAJOR == 2)
+  sf::Color base = this->_str.getColor();
+
+  base.a = a;
+  this->_str.setColor(base);
+  #else
   sf::Color base = this->_str.GetColor();
 
   base.a = a;
   this->_str.SetColor(base);
+  #endif
 }
 
 int	SFMLFont::getWidth() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-	return (this->_str.GetLocalBounds().Width);
+	return (this->_str.getLocalBounds().width);
    	#else
   	return (static_cast<int>(this->_str.GetRect().GetWidth()));
 	#endif
@@ -82,7 +106,7 @@ int	SFMLFont::getWidth() const
 int	SFMLFont::getHeight() const
 {
 	#if (SFML_VERSION_MAJOR == 2)
-	return (this->_str.GetLocalBounds().Height);
+	return (this->_str.getLocalBounds().height);
 	#else
   	return (static_cast<int>(this->_str.GetRect().GetHeight()));
 	#endif
