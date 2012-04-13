@@ -39,6 +39,7 @@ int  main(int ac, char **av)
 {
   SetupNetwork  		init;
   InetAddr				test("127.0.0.1", "25557");
+
   Net::DefaultSyncPolicy reactor;
 /*  Acceptor<Client>		acceptor;
 
