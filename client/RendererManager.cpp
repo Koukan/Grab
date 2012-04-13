@@ -9,7 +9,7 @@
 RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
 {
 	this->_targetRate = 20;
-	this->_fullscreen = false;
+	this->_fullscreen = true;
 }
 
 RendererManager::~RendererManager()
