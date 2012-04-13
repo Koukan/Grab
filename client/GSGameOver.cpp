@@ -5,6 +5,9 @@
 #include "GUIButton.hpp"
 #include "SFMLFont.hpp"
 #include "GSInGame.hpp"
+#include "Converter.hpp"
+#include "GUIHLayout.hpp"
+#include "GUILabel.hpp"
 
 GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       Modes::Mode mode, std::string const& map, 
@@ -22,6 +25,19 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
       _state->setX(VIEWX / 2 - _state->getWidth() / 2);
       _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
       this->addGameObject(_state);
+
+      GUIHLayout *layout = new GUIHLayout(500, VIEWY / 2, 500, 0, 50);
+
+      Ship* ship;
+      for (std::list<Player *>::const_iterator it = players.begin();
+	   it != players.end(); ++it)
+	{
+	  ship = (*it)->getShip();
+	  if (ship)
+	    {
+	      new GUILabel(Net::Converter::toString<unsigned int>(ship->getScore()), "bigNumbersFont", "", layout);
+	    }
+	}
     }
 }
 
@@ -31,9 +47,8 @@ GSGameOver::~GSGameOver()
 void GSGameOver::onStart()
 {
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
-					   VIEWY / 3 * 2,
+					   VIEWY / 4 * 3,
 					   300, 300, 10, 100, "up arrow", "down arrow");
-  layout->setY((VIEWY - layout->getHeight()) / 2);
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
   new GUIButton<GSGameOver>(*this, &GSGameOver::returnToMainMenu, "Go to Main Menu", "buttonFont", *sprite, layout);

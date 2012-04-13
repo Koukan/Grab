@@ -25,6 +25,8 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, std::s
 	: Core::BulletCommand(state, gstate, false, x, y, vx, vy), _groupName(groupName), _isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject),
 	_constraint(constraint)
 {
+	if (!this->getSprite())
+		this->setSprite(gstate, "playershot");
 	this->setSprite(gstate, "playershot");
 	this->removeFocus("players");
 	this->addFocus("monster");
@@ -37,6 +39,8 @@ PlayerBullet::PlayerBullet(BulletMLState &state, Core::GameState &gstate, Core::
 	_isFiring(true), _isConcentrated(false), _angle(angle), _relative(relativeObject),
 	_constraint(constraint)
 {
+	if (!this->getSprite())
+		this->setSprite(gstate, "playershot");
 	this->setSprite(gstate, "playershot");
 	this->removeFocus("players");
 	this->addFocus("monster");
@@ -50,7 +54,6 @@ PlayerBullet::~PlayerBullet()
 void	PlayerBullet::createSimpleBullet(double direction, double speed)
 {
 	double		vx, vy;
-
 	if (this->_isConcentrated)
 	{
 		//if (direction <= 20)
@@ -73,7 +76,10 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
-	bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+	if (this->_simpleSprite == "")
+		bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
+	else
+		bullet = new Core::Bullet(_state, this->_simpleSprite, *box, vx, vy, 0, 0);
 	if ((this->_constraint & PhysicObject::X) != 0)
 		bullet->setX(0);
 	if ((this->_constraint & PhysicObject::Y) != 0)
@@ -87,7 +93,10 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 		bullet->getSprite()->setTransparency(0.75);
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	}
-	this->_state.addGameObject(bullet, this->_groupName/*this->_simpleGroup*/);
+	if (this->_simpleGroup == "")
+		this->_state.addGameObject(bullet, this->_groupName);
+	else
+		this->_state.addGameObject(bullet, this->_simpleGroup);
 }
 
 void	PlayerBullet::createBullet(BulletMLState* state, double direction, double speed)
@@ -131,7 +140,10 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 		bullet->getSprite()->setTransparency(0.75);
 	}
 	bullet->setColor(_colors[0], _colors[1], _colors[2]);
-	this->_state.addGameObject(bullet, this->_groupName);
+	if (state->getGroup() == "")
+		this->_state.addGameObject(bullet, this->_groupName);
+	else
+		this->_state.addGameObject(bullet, state->getGroup());
 	bullet->setSeed(this->_rand());
 	delete state;
 }
@@ -190,8 +202,12 @@ void	PlayerBullet::erase()
 {
 	if (!this->_delete && !this->_deathBullet.empty())
 	{
-		BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, this->getX(), this->getY(), _vx, _vy);
-		bullet->setScrollY(this->_scrollY);
+		PlayerBullet	*bullet = new PlayerBullet(this->_deathBullet, _state,
+									"playerShots", this->getX(), this->getY(), 0, 0, this->_angle, this->_relative, this->_constraint);
+		bullet->setColor(this->_colors[0], this->_colors[1], this->_colors[2]);
+		bullet->isFiring(true);
+		//BulletCommand	*bullet = new BulletCommand(this->_deathBullet, _state, this->getX(), this->getY(), _vx, _vy);
+		//bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, "spawner", false);
 		this->insertChild(*bullet);
 		bullet->setSeed(this->_rand());
