@@ -221,7 +221,7 @@ void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
   Ship& ship = static_cast<Ship&>(o1);
   ScoreBonus& score = static_cast<ScoreBonus&>(o2);
 
-  if (ship.getPlayer().getType() == Player::ONLINE || ship.isDead())
+  if (ship.isDead())
 	return ;
   ship.setScore(ship.getScore() + score.score);
   ship.increasePowerGauge(score.score);
