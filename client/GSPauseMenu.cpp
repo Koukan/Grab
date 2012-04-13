@@ -49,8 +49,7 @@ void	GSPauseMenu::onStart()
   // add gui
 
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
-	  (VIEWY - 100) / 2, 300, 300, 20);
-  layout->setY((VIEWY - layout->getHeight()) / 2);
+	  (VIEWY - 300) / 2, 300, 300, 20);
   Core::Sprite *s = this->getSprite("black background");
   if (s)
   {
