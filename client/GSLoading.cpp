@@ -54,12 +54,12 @@ void		GSLoading::shipSpawn(Core::Command const &command)
     int g;
     int b;
   } playerColors[] =
-      {
-	{255, 0, 0},
-	{0, 255, 0},
-	{0, 0, 255},
-	{255, 255, 0}
-      };
+  {
+      {255, 0, 230},
+		{96, 254, 1},
+		{0, 255, 185},
+		{255, 57, 0}
+};
 
 	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
 	uint32_t				i = 0;
