@@ -129,6 +129,8 @@ set(SRCS
 	GSMainMenu.hpp
 	GSPartySettings.cpp
 	GSPartySettings.hpp
+	GSSplashScreen.cpp
+	GSSplashScreen.hpp
 	InputModule.cpp
 	InputModule.hpp
 	main.cpp

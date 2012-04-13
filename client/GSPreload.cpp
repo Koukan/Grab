@@ -25,6 +25,7 @@ bool		GSPreload::handleCommand(Core::Command const &)
 void	GSPreload::onStart()
 {
   this->load("resources/xml/intro.xml");
+  this->addGroup("background", 1);
   _sound = this->getSound("intro-sound");
   if (_sound)
   {
@@ -37,7 +38,7 @@ void	GSPreload::onStart()
   //obj->pushSprite("space background 2");
   //obj->pushSprite("space background 3");
   obj->pushSprite("space background 4");
-  this->addGameObject(obj, "background", 1);
+  this->addGameObject(obj, "background");
 }
 
 void	GSPreload::onPause()

@@ -3,9 +3,7 @@
 #include "RendererManager.hpp"
 #include "InputModule.hpp"
 #include "PhysicManager.hpp"
-#include "GSPreload.hpp"
-#include "GSInGame.hpp"
-#include "GSMainMenu.hpp"
+#include "GSSplashScreen.hpp"
 #include "CommandDispatcher.hpp"
 #include "Net.hpp"
 #include "NetworkModule.hpp"
@@ -57,8 +55,7 @@ void		Game::init()
   this->loadModule(Core::GameStateManager::get());
   this->loadModule(NetworkModule::get());
   Core::CommandDispatcher::get().registerHandler(Core::GameStateManager::get());
-  Core::GameStateManager::get().pushState(*new GSPreload);
-  Core::GameStateManager::get().pushState(*new GSMainMenu, Core::GameState::NONE);
+  Core::GameStateManager::get().pushState(*new GSSplashScreen);
 }
 
 void		Game::readPreferencesFile()
