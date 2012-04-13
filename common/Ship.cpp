@@ -128,8 +128,7 @@ void Ship::shield()
       this->_specialPowerActive = true;
       std::cout << "shield !" << std::endl;
       _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(0, 0, 125)), 0, 0, -125, -125);
-
-      this->getGroup()->getState().addGameObject(_shield, "shields");
+      _state.addGameObject(_shield, "shields");
 	  if (this->_shield->getSprite())
       	this->copyColor(*this->_shield->getSprite());
       this->_shield->setLink(this);
@@ -166,7 +165,7 @@ void 	Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, d
 				_grabsPositions[nGrab].second, _angles[nGrab]);
 	if (grab->getSprite())
 		grab->getSprite()->setColor(this->_color.r, this->_color.g, this->_color.b);
-	Core::GameStateManager::get().getCurrentState().addGameObject(grab, group);
+	_state.addGameObject(grab, group);
 	_grabLaunched = true;
 }
 
@@ -698,7 +697,12 @@ void		Ship::increasePowerGauge(unsigned int score)
 
 void		Ship::specialPower(Core::InputCommand const&)
 {
-	this->specialPower();
+	GameCommand	*cmd = new GameCommand("Bonus");
+	cmd->idObject = this->getId();
+	Core::CommandDispatcher::get().pushCommand(*cmd);
+	GameCommand	*tmp = new GameCommand("bonus");
+	tmp->idObject = this->getId();
+	Core::CommandDispatcher::get().pushCommand(*tmp);
 }
 
 void		Ship::specialPower()
@@ -708,9 +712,6 @@ void		Ship::specialPower()
       this->resetPowerGauge();
       (this->*_specialPower)();
     }
-	GameCommand	*cmd = new GameCommand("Bonus");
-	cmd->idObject = this->getId();
-	Core::CommandDispatcher::get().pushCommand(*cmd);
 }
 
 void		Ship::resetState()

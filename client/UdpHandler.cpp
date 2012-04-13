@@ -135,11 +135,11 @@ int         UdpHandler::retrieve(Net::Packet &packet, uint64_t)
 
 int         UdpHandler::ping(Net::Packet &, uint64_t time_recv)
 {
-	Net::Packet     pong(18);
+	Net::Packet     pong(9);
 	pong << static_cast<uint64_t>(time_recv);
 	pong << static_cast<uint8_t>(UDP::PONG);
 	NetworkModule::get().sendPacketUDP(pong);
-	Net::Packet     pong2(18);
+	Net::Packet     pong2(9);
 	pong2 << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	pong2 << static_cast<uint8_t>(UDP::PING);
 	NetworkModule::get().sendPacketUDP(pong2);
