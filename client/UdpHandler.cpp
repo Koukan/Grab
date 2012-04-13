@@ -39,6 +39,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::updateCannon, true},
 			{&UdpHandler::launchGrab, true},
 			{&UdpHandler::deadPlayer, true},
+			{0, false},
 			{&UdpHandler::bonus, true}
 	};
 	uint64_t			time;
