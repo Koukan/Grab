@@ -19,6 +19,7 @@
 #include "GSContinue.hpp"
 #include "MonsterGenerator.hpp"
 #include "Color.hpp"
+#include "ScoreBonus.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -518,7 +519,14 @@ void		GSInGame::destroy(GameCommand const &event)
 		tmp = static_cast<Core::BulletCommand *>(tmp->getChild(*it));
 	}
 	if (tmp && it == cmd.ids.end())
+	{
+	    if (tmp->score > 0)
+	      {
+			ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
+			this->addGameObject(obj, "scoreBonus");
+	      }
 		tmp->erase();
+	}
 }
 
 void		GSInGame::serverFire(GameCommand const &cmd)
