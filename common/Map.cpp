@@ -99,3 +99,11 @@ void		Map::setScrollingSpeed(double vy)
 {
 	this->_vy = vy;
 }
+
+void		Map::clear()
+{
+	this->_monsters.clear();
+	this->_decorations.clear();
+	this->_nbPaused = 0;
+	this->_prevY = 0;
+}

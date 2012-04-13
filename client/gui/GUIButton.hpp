@@ -69,7 +69,7 @@ public:
     if (this->_font)
       {
 	this->_font->draw(static_cast<int>(this->_x + (this->_width - this->_font->getWidth()) / 2) - 7,
-			  static_cast<int>(this->_y + (this->_height - this->_font->getHeight()) / 2 + 2), elapseTime);
+			  static_cast<int>(this->_y + 35), elapseTime);
       }
   }
 
@@ -79,7 +79,7 @@ public:
     if (this->_font)
       {
 	this->_font->draw(x + (this->_width - this->_font->getWidth()) / 2 - 7,
-			  y + (this->_height - this->_font->getHeight()) / 2 + 2, elapseTime);
+			  y + 35, elapseTime);
       }
   }
 

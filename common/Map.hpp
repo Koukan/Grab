@@ -19,6 +19,7 @@ class	Map : public Core::Resource, public Core::PhysicObject
 		void	decreasePaused();
 		void	increasePaused();
 		virtual void	setScrollingSpeed(double vy);
+		void	clear();
 
 	protected:
 	void    addElem(std::string const &command, std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);

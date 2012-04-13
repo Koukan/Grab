@@ -10,6 +10,7 @@ GSManager::GSManager() : Module("GSManager", 20)
 
 GSManager::~GSManager()
 {
+
 	this->removeDelete();
 	for (std::list<GameState*>::iterator it = this->_currentStates.begin();
 		 it != this->_currentStates.end(); it++)

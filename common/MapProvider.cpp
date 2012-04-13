@@ -32,7 +32,10 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 	}
 	ResourceMap::iterator	it = this->_resources.find(mapName);
 	if (it != this->_resources.end())
+	{
 		_current = static_cast<Map*>(it->second);
+		_current->clear();
+	}
 	else
 		_current = (random) ? new MonsterGenerator(0) : new Map();
 	this->addResource(mapName, *_current, manager);
