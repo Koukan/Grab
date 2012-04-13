@@ -699,6 +699,7 @@ void		Ship::specialPower(Core::InputCommand const&)
 {
 	GameCommand	*tmp = new GameCommand("bonus");
 	tmp->idObject = this->getId();
+	tmp->boolean = true;
 	Core::CommandDispatcher::get().pushCommand(*tmp);
 }
 
@@ -708,9 +709,6 @@ void		Ship::specialPower()
     {
       this->resetPowerGauge();
       (this->*_specialPower)();
-		GameCommand	*cmd = new GameCommand("Bonus");
-		cmd->idObject = this->getId();
-		Core::CommandDispatcher::get().pushCommand(*cmd);
     }
 }
 

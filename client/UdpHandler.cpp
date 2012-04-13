@@ -209,6 +209,7 @@ int			UdpHandler::bonus(Net::Packet &packet, uint64_t timediff)
 {	
 	GameCommand	*gc = new GameCommand("bonus");
 	packet >> gc->idObject;
+	gc->boolean = false;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }

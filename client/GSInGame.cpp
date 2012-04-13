@@ -597,7 +597,14 @@ void        GSInGame::bonus(GameCommand const &cmd)
 	Ship    *ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
 
 	if (ship)
+	{
 		ship->specialPower();
+		if (!cmd.boolean)
+			return ;
+		GameCommand	*cmd = new GameCommand("Bonus");
+		cmd->idObject = ship->getId();
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
 }
 
 void		GSInGame::createShips()
