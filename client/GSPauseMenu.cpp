@@ -26,19 +26,13 @@ GSPauseMenu::~GSPauseMenu()
 
 void	GSPauseMenu::returnMainMenu()
 {
-  Core::GameStateManager::get().popState();
-  Core::GameStateManager::get().popState();
-  Core::GameStateManager::get().popState();
-  Core::GameStateManager::get().popState();
-  Core::GameStateManager::get().popState();
+	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
+		Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::resumeGame()
 {
-  GameState *state = Core::GameStateManager::get().getGameState("Game");
-  if (state)
-	state->play();
-  Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::onStart()
