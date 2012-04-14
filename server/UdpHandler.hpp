@@ -38,6 +38,7 @@ private:
 	int         launchgrab(Net::Packet &packet, Client&);
 	int         deadPlayer(Net::Packet &packet, Client&);
 	int			bonus(Net::Packet &packet, Client&);	
+	int			aura(Net::Packet &packet, Client&);	
 
 	void		broadcastPacket(Net::Packet &packet, Client &client, bool reliable = true);
 
