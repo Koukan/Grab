@@ -42,6 +42,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		updateCannon(Core::Command const &command);
 	void		deadPlayer(Core::Command const &command);
 	void		bonus(Core::Command const &command);
+	void		auraActivated(Core::Command const &command);
 
 // Command TCP
 

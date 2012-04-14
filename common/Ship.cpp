@@ -25,8 +25,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPowerActive(false), _electricAura(0),
-	  _state(state), _shield(0)
+	  _specialPowerActive(false), _electricAura(0), _powerAura(state.getSprite("playerAuraPower")), _state(state), _shield(0)
 {
 	state.addGameObject(this, "players");
        static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
@@ -682,16 +681,7 @@ void		Ship::increasePowerGauge(unsigned int score)
       if (_powerGauge > 100)
 	_powerGauge = 100;
       if (_powerGauge == 100 && !_electricAura)
-	{
-	  _electricAura = new ConcreteObject("playerAuraPower",
-					     *new Core::CircleHitBox(0, 0, 5), 0, 0);
-	  if (_electricAura)
-	    {
-	      _electricAura->setLink(this);
-	      this->copyColor(*_electricAura->getSprite());
-	      _state.addGameObject(_electricAura, "playerAurasPower");
-	    }
-	}
+		this->displayAura();
     }
 }
 
@@ -728,4 +718,18 @@ void		Ship::resetPowerGauge()
       _electricAura = 0;
     }
   _powerGauge = 0;
+}
+
+void		Ship::displayAura()
+{
+  if (!_powerAura)
+	return ;
+ 	 _electricAura = new ConcreteObject(_powerAura,
+				  *new Core::CircleHitBox(0, 0, 5), 0, 0);
+ 	 _electricAura->setLink(this);
+  	this->copyColor(*_electricAura->getSprite());
+  	_state.addGameObject(_electricAura, "playerAurasPower");
+	GameCommand		*cmd = new GameCommand("AuraActivated");
+	cmd->idObject = this->_id;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 }

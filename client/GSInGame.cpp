@@ -306,7 +306,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerCannon", &GSInGame::serverCannon},
 	{"killPlayer", &GSInGame::killPlayer},
 	{"disableShield", &GSInGame::disableShield},
-	{"bonus", &GSInGame::bonus}
+	{"bonus", &GSInGame::bonus},
+	{"aura", &GSInGame::aura}
   };
 
   for (size_t i = 0;
@@ -606,6 +607,14 @@ void        GSInGame::bonus(GameCommand const &cmd)
 		cmd->idObject = ship->getId();
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
+}
+
+void		GSInGame::aura(GameCommand const &cmd)
+{
+  	Ship*		ship = cmd.player->getShip();
+
+  	if (ship)
+  		ship->displayAura();
 }
 
 void		GSInGame::createShips()

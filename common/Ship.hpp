@@ -81,6 +81,7 @@ public:
   unsigned int		getPowerGauge() const;
   void			increasePowerGauge(unsigned int score);
   void			resetState();
+  void			displayAura();
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
@@ -128,6 +129,7 @@ private:
   void (Ship::*_specialPower)();
   bool			_specialPowerActive;
   ConcreteObject*	_electricAura;
+  Core::Sprite		*_powerAura;
   Core::GameState&	_state;
   
   union
