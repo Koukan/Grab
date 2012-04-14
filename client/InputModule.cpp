@@ -129,15 +129,20 @@ void		InputModule::update(double)
 
  sf::RenderWindow *ptr = RendererManager::get().getWindow();
  #if (SFML_VERSION_MAJOR == 2)
- while (ptr->PollEvent(ev))
+ while (ptr->pollEvent(ev))
  #else
  while (ptr->GetEvent(ev))
  #endif
  {
    Core::InputCommand *tmp = new Core::InputCommand();
 
+	#if (SFML_VERSION_MAJOR == 2)
+   tmp->Type = static_cast<Core::InputCommand::EventType>(ev.type);
+	::memcpy(&tmp->Size, &ev.size, 12);
+	#else
    tmp->Type = static_cast<Core::InputCommand::EventType>(ev.Type);
 	::memcpy(&tmp->Size, &ev.Size, 12);
+	#endif
    if (tmp->Type == Core::InputCommand::Closed)
 	  Game::get().quit();
 	#if (SFML_VERSION_MAJOR != 2)

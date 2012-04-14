@@ -245,7 +245,8 @@ void		GSInGame::registerShipCallbacks()
 			  (*it)->getType() - 1);
 		  this->getInput().registerInputCallback((*it)->getAction(Player::SPECIAL_POWER).Type,
 			 *ship, &Ship::specialPower,
-		         static_cast<int>((*it)->getAction(Player::SPECIAL_POWER).JoystickButton.Button));
+		         static_cast<int>((*it)->getAction(Player::SPECIAL_POWER).JoystickButton.Button),
+				 (*it)->getType() - 1);
 	  }
   }
 }
