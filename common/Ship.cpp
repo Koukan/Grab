@@ -509,7 +509,7 @@ void Ship::grab4()
 void Ship::setDead(bool dead, bool command)
 {
   	if (this->_dead == dead)
-	  return ;
+		return ;
 	this->_dead = dead;
 	if (!dead)
 	{

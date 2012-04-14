@@ -80,31 +80,31 @@ void			Player::respawn()
 void			Player::die()
 {
 	if (this->_life != -1)
-	  {
+	{
 	    this->_life--;
 	    if (this->_life > 0)
-	      this->respawn();
+			this->respawn();
 	    else
-	      {
-		GSInGame	*state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
+		{
+			GSInGame	*state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
 
-		if (state)
-		  state->playerDie(*this);
-	      }
-	  }
+			if (state)
+				state->playerDie(*this);
+		}
+	}
 	else // in this part, a "dead player" is a player in ghost mode
-	  {
-	    ++this->_nbDie;
+	{
+		++this->_nbDie;
 	    Core::Group *group = this->_ship->getGroup();
 
 	    if (group)
-	      {
-		GSInGame&	state = static_cast<GSInGame&>(group->getState());
-
-		if (!state.playerDie(*this))
-		  this->respawn();
-	      }
-	  }
+		{
+			GSInGame&	state = static_cast<GSInGame&>(group->getState());
+			
+			if (!state.playerDie(*this))
+				this->respawn();
+		}
+	}
 }
 
 Player::type	Player::getType() const

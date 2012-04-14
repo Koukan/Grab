@@ -350,31 +350,30 @@ bool		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
 	if (this->_nbDie == this->_nbPlayers)
-	  {
+	{
 	    if (this->_nbCredits > 0)
-	      {
-		unsigned int	life = Modes::modesList[_mode].singleNbLife;
-
-		this->_nbDie = 0;
-
-		--this->_nbCredits;
-		if (this->_players.size() != 1)
-		  life = Modes::modesList[_mode].multiNbLife;
-		for (std::list<Player *>::iterator it = this->_players.begin();
-		     it != this->_players.end(); ++it)
-		  {
-		    (*it)->getShip()->resetState();
-		    (*it)->setLife(life);
-		    (*it)->getShip()->setDead(false);
-		  }
-		Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
-	      }
-	    else
-	      {
-		this->gameover(false);
-		return (true);
-	      }
-	  }
+		{
+			unsigned int	life = Modes::modesList[_mode].singleNbLife;
+			
+			this->_nbDie = 0;
+			--this->_nbCredits;
+			if (this->_players.size() != 1)
+				life = Modes::modesList[_mode].multiNbLife;
+			for (std::list<Player *>::iterator it = this->_players.begin();
+				 it != this->_players.end(); ++it)
+			{
+				(*it)->getShip()->resetState();
+				(*it)->setLife(life);
+				(*it)->getShip()->setDead(false);
+			}
+			Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
+		}
+		else
+		{
+			this->gameover(false);
+			return (true);
+		}
+	}
 	return (false);
 }
 
