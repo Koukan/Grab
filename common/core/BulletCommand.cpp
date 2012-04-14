@@ -219,10 +219,10 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 	Bullet		*bullet;
 
 	if (_shape == BulletCommand::Circle)
-		box = new CircleHitBox(_x, _y,
+		box = new CircleHitBox(this->getX(), this->getY(),
 			static_cast<double>(_width));
 	else if (_shape == BulletCommand::Rectangle)
-		box = new RectHitBox(_x, _y,
+		box = new RectHitBox(this->getX(), this->getY(),
 			static_cast<double>(_width),
 			static_cast<double>(_height));
 	vx = speed * cos(dir);
@@ -247,10 +247,10 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	BulletCommand	*bullet;
 
 	if (state->getShape() == "circle")
-		box = new CircleHitBox(_x, _y,
+		box = new CircleHitBox(this->getX(), this->getY(),
 			static_cast<double>(state->getRadius()));
 	else if (state->getShape() == "rectangle")
-		box = new RectHitBox(_x, _y,
+		box = new RectHitBox(this->getX(), this->getY(),
 			static_cast<double>(state->getWidth()),
 			static_cast<double>(state->getHeight()));
 	vx = speed * cos(dir);
@@ -266,7 +266,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 	}
 	else
 	{
-		bullet = new BulletCommand(*state, _state, _paused, _x, _y, vx, vy);
+		bullet = new BulletCommand(*state, _state, _paused, this->getX(), this->getY(), vx, vy);
 		bullet->setScrollY(this->_scrollY);
 		this->_state.addGameObject(bullet, state->getGroup(), false);
 		this->insertChild(*bullet);

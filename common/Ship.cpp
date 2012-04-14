@@ -29,7 +29,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	  _state(state), _shield(0)
 {
 	state.addGameObject(this, "players");
-       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
+       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole, &Ship::missile};
        _specialPower = powers[_caracs.specialPowerType];
 	_cannons[0] = 0;
 	_cannons[1] = 0;
@@ -138,6 +138,15 @@ void Ship::shield()
       cmd->player = &this->_player;
       Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
     }
+}
+
+void Ship::missile()
+{
+	PlayerBullet *bullet = new PlayerBullet("youpi", this->getGroup()->getState(), "playerShots", 0, 0);
+	bullet->setColor(_color.r, _color.g, _color.b);
+	bullet->isFiring(true);
+	bullet->setLink(this);
+	this->getGroup()->getState().addGameObject(bullet, "spawner");
 }
 
 void Ship::disableShield()
