@@ -26,6 +26,7 @@ public:
 	int	setNonBlocking(bool flag);
 	bool isBlocking() const;
 	int	setReuseAddr(bool flag);
+	int setBufferReceiveSize(int size);
 	int getLocalAddr(InetAddr &addr) const;
 	int getRemoteAddr(InetAddr &addr) const;
 	Handle	getHandle() const;

@@ -16,6 +16,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
+	this->getIOHandler().setBufferReceiveSize(1024);
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
