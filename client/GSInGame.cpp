@@ -610,7 +610,7 @@ void        GSInGame::bonus(GameCommand const &cmd)
 
 void		GSInGame::aura(GameCommand const &cmd)
 {
-  	Ship*		ship = cmd.player->getShip();
+	Ship    *ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
 
   	if (ship)
   		ship->displayAura();
