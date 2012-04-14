@@ -350,11 +350,11 @@ void		GSInGame::displayScores()
 bool		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
-	if (this->_nbDie == this->_nbPlayers)
+	if (this->_nbDie == this->_players.size())
 	{
 	    if (this->_nbCredits > 0)
 		{
-			unsigned int	life = Modes::modesList[_mode].singleNbLife;
+			int	life = Modes::modesList[_mode].singleNbLife;
 			
 			this->_nbDie = 0;
 			--this->_nbCredits;
@@ -367,7 +367,7 @@ bool		GSInGame::playerDie(Player &)
 				(*it)->setLife(life);
 				(*it)->getShip()->setDead(false);
 			}
-			Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
+			Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), (_online) ? NONE : PHYSIC);
 		}
 		else
 		{
