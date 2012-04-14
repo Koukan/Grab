@@ -56,8 +56,7 @@ Packet	*Packet::duplicate() const
 {
  if (!_data)
 	  return 0;
-  Packet *ret = new Packet(*_data, _size);
-  ret->setDestination(_addr);
+  Packet *ret = new Packet(*this);
   return ret;
 }
 
