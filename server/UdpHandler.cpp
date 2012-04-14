@@ -33,7 +33,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::move, false},
 			{&UdpHandler::score, false},
 			{&UdpHandler::statement, false},
-			{&UdpHandler::retrieve, false},
+			{&UdpHandler::retrieve, true},
 			{&UdpHandler::ping, false},
 			{&UdpHandler::pong, false},
 			{&UdpHandler::firestate, true},
@@ -72,13 +72,14 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 
 void		UdpHandler::sendRetrieve(uint32_t id, Client &client)
 {
-	Net::Packet			retrieve(18);
+	Net::Packet			retrieve(17);
 	retrieve << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	retrieve << static_cast<uint8_t>(UDP::RETRIEVE);
+	retrieve << 0;
 	retrieve << id;
 	std::list<Client *>	tmp;
 	tmp.push_back(&client);
-	NetworkModule::get().sendUDPPacket(retrieve, tmp, false);
+	NetworkModule::get().sendUDPPacket(retrieve, tmp, true);
 }
 
 
@@ -187,7 +188,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 		std::list<Client*>	list;
 		list.push_back(&client);
 		Net::Packet *packet = tmp->duplicate();
-		NetworkModule::get().sendUDPPacket(*packet, list, false, 0);
+		NetworkModule::get().sendUDPPacket(*packet, list, false);
 		delete packet;
 	}
 	return 1;
