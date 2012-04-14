@@ -731,6 +731,8 @@ void		Ship::resetPowerGauge()
 
 void		Ship::displayAura()
 {
+	if (_electricAura)
+		return ;
   Core::Sprite *powerAura = _state.getSprite("playerAuraPower");
   if (!powerAura)
 	return ;
