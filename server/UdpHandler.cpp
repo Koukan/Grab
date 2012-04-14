@@ -186,6 +186,15 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 		std::list<Client*>	list;
 		list.push_back(&client);
 		Net::Packet *packet = tmp->duplicate();
+		char *base = packet->base();
+		for (size_t i = 1; i <= packet->size(); i++)
+		{
+		  int a = base[i - 1];
+		  std::cout << a << "-";
+		  if (i % 4 == 0)
+		    std::cout << " ";
+		}
+		std::cout << std::endl;
 		NetworkModule::get().sendUDPPacket(*packet, list, false, 0);
 		delete packet;
 	}
