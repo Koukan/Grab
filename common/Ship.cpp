@@ -69,30 +69,32 @@ Ship::~Ship()
 
 void	Ship::setPosition(double x, double y, double)
 {
-	_targetx = x;
-	_targety = y;
+	_targetx = x + this->_vx * 0.03;
+	_targety = y + this->_vy * 0.03;
 	_target = true;
-	double	angle = atan2(y - this->_y, x - this->_x);
+	double	angle = atan2(y - this->_targety, x - this->_targetx);
 	this->_vx = cos(angle) * this->_speed;
 	this->_vy = sin(angle) * this->_speed;
-	//this->_x = x;
-	//this->_y = y;
-	//this->_vx = 0;
-	//this->_vy = 0;
+	/*this->_x = x;
+	this->_y = y;
+	this->_vx = 0;
+	this->_vy = 0;*/
 }
 
 void	Ship::move(double time)
 {
 	if (_target == true)
 	{
-		if ((this->_vx >= 0 && this->_x + this->_vx > this->_targetx) ||
-			(this->_vx < 0 && this->_x + this->_vx < this->_targetx))
+		double vx = this->_vx * time;
+		double vy = this->_vy * time;
+		if ((vx >= 0 && this->_x + vx > this->_targetx) ||
+			(vx < 0 && this->_x + vx < this->_targetx))
 		{
 			this->_vx = 0;
 			this->_x = this->_targetx;
 		}
-		if ((this->_vy >= 0 && this->_y + this->_vy > this->_targety) ||
-			(this->_vy < 0 && this->_y + this->_vy < this->_targety))
+		if ((vy >= 0 && this->_y + vy > this->_targety) ||
+			(vy < 0 && this->_y + vy < this->_targety))
 		{
 			this->_vy = 0;
 			this->_y = this->_targety;
@@ -103,7 +105,7 @@ void	Ship::move(double time)
 	this->Core::PhysicObject::move(time);
 	this->updateBulletTrajectory();
 	this->updateCannonsTrajectory();
-	if (this->_vx == 0 && this->_vy == 0)
+	if ((this->_vx == 0 && this->_vy == 0) || this->_player.getType() == Player::ONLINE)
 		return ;
 	GameCommand	*move = new GameCommand("Move");
 	move->idObject = this->getId();
