@@ -353,8 +353,8 @@ void		NetworkModule::sendPacketUDP(Net::Packet &packet, bool needId)
 		packet.wr_ptr(9);
 		id = _sentPacketId++;
 		packet << id;
-		_packets.insert(_packets.end(), std::pair<uint32_t, Net::Packet>(id, Net::Packet(packet)));
-		if (_packets.size() > 50)
+		_packets.insert(_packets.end(), std::pair<uint32_t, Net::Packet>(id, packet));
+		if (_packets.size() > 500)
 			_packets.erase(_packets.begin());
 	}
 	this->_udp.handleOutputPacket(packet);
@@ -369,5 +369,5 @@ void        NetworkModule::retrievePacket(uint32_t id)
 {
 	std::map<uint32_t, Net::Packet>::iterator it = _packets.find(id);
 	if (it != _packets.end())
-		this->_udp.handleOutputPacket(it->second);
+		this->sendPacketUDP(it->second, false);
 }

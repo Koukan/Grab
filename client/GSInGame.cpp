@@ -350,32 +350,31 @@ void		GSInGame::displayScores()
 bool		GSInGame::playerDie(Player &)
 {
 	this->_nbDie++;
-	if (this->_nbDie == this->_nbPlayers)
-	  {
+	if (this->_nbDie == this->_players.size())
+	{
 	    if (this->_nbCredits > 0)
-	      {
-		unsigned int	life = Modes::modesList[_mode].singleNbLife;
-
-		this->_nbDie = 0;
-
-		--this->_nbCredits;
-		if (this->_players.size() != 1)
-		  life = Modes::modesList[_mode].multiNbLife;
-		for (std::list<Player *>::iterator it = this->_players.begin();
-		     it != this->_players.end(); ++it)
-		  {
-		    (*it)->getShip()->resetState();
-		    (*it)->setLife(life);
-		    (*it)->getShip()->setDead(false);
-		  }
-		Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), PHYSIC);
-	      }
-	    else
-	      {
-		this->gameover(false);
-		return (true);
-	      }
-	  }
+		{
+			int	life = Modes::modesList[_mode].singleNbLife;
+			
+			this->_nbDie = 0;
+			--this->_nbCredits;
+			if (this->_players.size() != 1)
+				life = Modes::modesList[_mode].multiNbLife;
+			for (std::list<Player *>::iterator it = this->_players.begin();
+				 it != this->_players.end(); ++it)
+			{
+				(*it)->getShip()->resetState();
+				(*it)->setLife(life);
+				(*it)->getShip()->setDead(false);
+			}
+			Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), (_online) ? NONE : PHYSIC);
+		}
+		else
+		{
+			this->gameover(false);
+			return (true);
+		}
+	}
 	return (false);
 }
 
@@ -574,7 +573,7 @@ void		GSInGame::serverCannon(GameCommand const &cmd)
 		if (cmd.data.empty())
 			ship->releaseCannon(cmd.idResource);
 		else
-			ship->addCannon(new Cannon(cmd.data, *ship, *this, "weapon", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
+			ship->addCannon(new Cannon(cmd.data, *ship, *this, "bonus", "cannons", "playerShots", cmd.x, cmd.y), cmd.idResource);
 	}
 }
 
@@ -611,7 +610,7 @@ void        GSInGame::bonus(GameCommand const &cmd)
 
 void		GSInGame::aura(GameCommand const &cmd)
 {
-  	Ship*		ship = cmd.player->getShip();
+	Ship    *ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
 
   	if (ship)
   		ship->displayAura();

@@ -107,7 +107,7 @@ void		Client::resetPacketId()
 void		Client::addPacket(uint32_t id, Net::Packet &packet)
 {
 	this->_packets.push_back(std::make_pair(id, packet));
-	while (this->_packets.size() > 50)
+	while (this->_packets.size() > 500)
 		this->_packets.pop_front();
 }
 

@@ -33,7 +33,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::move, false},
 			{0, false},
 			{&UdpHandler::statement, false},
-			{&UdpHandler::retrieve, false},
+			{&UdpHandler::retrieve, true},
 			{&UdpHandler::ping, false},
 			{&UdpHandler::pong, false},
 			{&UdpHandler::fireState, true},
@@ -229,11 +229,12 @@ bool		UdpHandler::testPacketId(uint32_t id)
 		++_lastPacketId;
 		for (; _lastPacketId != id; ++_lastPacketId)
 		{
-			Net::Packet	packet(13);
+			Net::Packet	packet(17);
 			packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 			packet << static_cast<uint8_t>(UDP::RETRIEVE);
+			packet << 0;
 			packet << _lastPacketId;
-			this->handleOutputPacket(packet);
+			NetworkModule::get().sendPacketUDP(packet, true);
 			std::cout << "ask for packet id : " << _lastPacketId << std::endl;
 		}
 		return true;

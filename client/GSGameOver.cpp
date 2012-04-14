@@ -81,9 +81,6 @@ void	GSGameOver::retry()
 
 void	GSGameOver::returnToMainMenu()
 {
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
+	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
+		Core::GameStateManager::get().popState();
 }
