@@ -16,6 +16,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
+	this->getIOHandler().setBufferReceiveSize(1024);
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
@@ -40,7 +41,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::launchgrab, true},
 			{&UdpHandler::deadPlayer, true},
 			{0, false},
-			{&UdpHandler::bonus, true}
+			{&UdpHandler::bonus, true},
+			{&UdpHandler::aura, true}
 	};
 	uint8_t				type;
 
@@ -271,6 +273,14 @@ int			UdpHandler::bonus(Net::Packet &packet, Client &client)
 	GameCommand		*cmd = new GameCommand("bonus");
 	packet >> cmd->idObject;
 	client.getGameLogic()->pushCommand(*cmd);
+	this->broadcastPacket(packet, client);
+	return 1;
+}
+
+int         UdpHandler::aura(Net::Packet &packet, Client &client)
+{
+	if (!client.getGame())
+		return 1;
 	this->broadcastPacket(packet, client);
 	return 1;
 }

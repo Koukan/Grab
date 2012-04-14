@@ -12,6 +12,11 @@ class Client;
 class Player
 {
   public:
+	enum type
+	{
+			ONLINE
+	};
+
     Player(uint8_t id, Client &client);
     virtual ~Player();
 
@@ -23,6 +28,7 @@ class Player
 	ShipInfo::ShipInfo const	*getShipInfo() const;
 	Client						&getClient() const;
 	int							getLife() const;
+	Player::type				getType() const;
 
 	//setter
 	void				setShip(Ship *ship);

@@ -18,7 +18,6 @@ GSLoading::~GSLoading()
 
 void		GSLoading::onStart()
 {
-	std::cout << "enter in loading" << std::endl;
 	_game.preload();
 }
 
@@ -89,6 +88,5 @@ void		GSLoading::setSeed(Core::Command const &command)
 	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
 
 	this->_game.setSeed(cmd.idObject);
-	std::cout << "seed rec7" << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*new Core::Command("Ready"));
 }
