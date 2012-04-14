@@ -683,7 +683,14 @@ void		Ship::increasePowerGauge(unsigned int score)
       if (_powerGauge > 100)
 	_powerGauge = 100;
       if (_powerGauge == 100 && !_electricAura)
+	  {
 		this->displayAura();
+		if (this->_player.getType() == Player::ONLINE)
+			return ;
+		GameCommand		*cmd = new GameCommand("AuraActivated");
+		cmd->idObject = this->_id;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	  }
     }
 }
 
@@ -732,7 +739,4 @@ void		Ship::displayAura()
  	 _electricAura->setLink(this);
   	this->copyColor(*_electricAura->getSprite());
   	_state.addGameObject(_electricAura, "playerAurasPower");
-	GameCommand		*cmd = new GameCommand("AuraActivated");
-	cmd->idObject = this->_id;
-	Core::CommandDispatcher::get().pushCommand(*cmd);
 }
