@@ -25,7 +25,7 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPowerActive(false), _electricAura(0), _powerAura(state.getSprite("playerAuraPower")), _state(state), _shield(0)
+	  _specialPowerActive(false), _electricAura(0), _state(state), _shield(0)
 {
 	state.addGameObject(this, "players");
        static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole};
@@ -724,9 +724,10 @@ void		Ship::resetPowerGauge()
 
 void		Ship::displayAura()
 {
-  if (!_powerAura)
+  Core::Sprite *powerAura = _state.getSprite("playerAuraPower");
+  if (!powerAura)
 	return ;
- 	 _electricAura = new ConcreteObject(_powerAura,
+ 	 _electricAura = new ConcreteObject(powerAura,
 				  *new Core::CircleHitBox(0, 0, 5), 0, 0);
  	 _electricAura->setLink(this);
   	this->copyColor(*_electricAura->getSprite());

@@ -129,7 +129,6 @@ private:
   void (Ship::*_specialPower)();
   bool			_specialPowerActive;
   ConcreteObject*	_electricAura;
-  Core::Sprite		*_powerAura;
   Core::GameState&	_state;
   
   union
