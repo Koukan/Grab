@@ -25,9 +25,8 @@ void	GSModeSelection::onStart()
 
   // add gui
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
-	  (VIEWY - 100) / 2,
-	  300, 300, -5, 100, "up arrow", "down arrow");
-  layout->setY((VIEWY - layout->getHeight()) / 2);
+	  (VIEWY - 300) / 2,
+	  300, 300, 10, 100, "up arrow", "down arrow");
   Core::Sprite *sp = this->getSprite("logo");
   sp->setX((VIEWX - sp->getWidth()) / 2);
   sp->setY(50);

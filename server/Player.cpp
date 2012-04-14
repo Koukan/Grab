@@ -78,3 +78,8 @@ void		Player::die()
 void		Player::respawn()
 {
 }
+
+Player::type	Player::getType() const
+{
+	return Player::ONLINE;
+}
