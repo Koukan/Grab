@@ -71,6 +71,7 @@ public:
   void			specialPower();
   void			bomb();
   void			shield();
+  void			missile();
   void			blackHole();
   void			disableShield();
   void			grab4();
