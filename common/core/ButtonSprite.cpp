@@ -51,30 +51,30 @@ void ButtonSprite::draw(int x, int y, double elapseTime)
 
 int ButtonSprite::getWidth() const
 {
-  if (this->_defaultSprite && this->_selectedSprite && this->_clickedSprite)
-  {
-	if (this->_defaultSprite->getWidth() > this->_selectedSprite->getWidth() &&
-		  this->_defaultSprite->getWidth() > this->_clickedSprite->getWidth())
-		return (this->_defaultSprite->getWidth());
-	else if (this->_clickedSprite->getWidth() > this->_defaultSprite->getWidth() &&
-		  this->_clickedSprite->getWidth() > this->_selectedSprite->getWidth())
-		 return (this->_clickedSprite->getWidth());
-	return (this->_selectedSprite->getWidth());
-  }
-  return (0);
+  unsigned int defaultSp = (this->_defaultSprite) ? (this->_defaultSprite->getWidth()) : (0);
+  unsigned int selectedSp = (this->_selectedSprite) ? (this->_selectedSprite->getWidth()) : (0);
+  unsigned int clickedSp = (this->_clickedSprite) ? (this->_clickedSprite->getWidth()) : (0);
+
+  if (defaultSp > selectedSp &&
+      defaultSp > clickedSp)
+    return (defaultSp);
+  else if (clickedSp > defaultSp &&
+	   clickedSp > selectedSp)
+    return (clickedSp);
+  return (selectedSp);
 }
 
 int ButtonSprite::getHeight() const
 {
-  if (this->_defaultSprite && this->_selectedSprite && this->_clickedSprite)
-  {
-	 if (this->_defaultSprite->getHeight() > this->_selectedSprite->getHeight() &&
-		this->_defaultSprite->getHeight() > this->_clickedSprite->getHeight())
-    return (this->_defaultSprite->getHeight());
-	else if (this->_clickedSprite->getHeight() > this->_defaultSprite->getHeight() &&
-      this->_clickedSprite->getHeight() > this->_selectedSprite->getHeight())
-    return (this->_clickedSprite->getHeight());
-	return (this->_selectedSprite->getHeight());
-  }
-  return (0);
+  unsigned int defaultSp = (this->_defaultSprite) ? (this->_defaultSprite->getHeight()) : (0);
+  unsigned int selectedSp = (this->_selectedSprite) ? (this->_selectedSprite->getHeight()) : (0);
+  unsigned int clickedSp = (this->_clickedSprite) ? (this->_clickedSprite->getHeight()) : (0);
+
+  if (defaultSp > selectedSp &&
+      defaultSp > clickedSp)
+    return (defaultSp);
+  else if (clickedSp > defaultSp &&
+	   clickedSp > selectedSp)
+    return (clickedSp);
+  return (selectedSp);
 }

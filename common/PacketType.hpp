@@ -17,7 +17,8 @@ namespace UDP
 		LAUNCHGRAB = 10,
 		DEADPLAYER = 11,
 		AUTH = 12,
-		BONUS = 13
+		BONUS = 13,
+		AURAACTIVE = 14
 	};
 }
 

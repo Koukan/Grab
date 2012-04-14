@@ -29,7 +29,7 @@ int	Socket::open(InetAddr const &addr, int type, int protocol)
   if (_handle != INVALID_HANDLE)
 	this->close();
 #if defined (_WIN32)
-  _handle = WSASocket(addr.getFamily(), type, protocol, NULL, 0, WSA_FLAG_OVERLAPPED);
+  _handle = WSASocket(addr.getFamily(), type, protocol, NULL, 0, 0/*WSA_FLAG_OVERLAPPED*/);
 #else
   _handle = ::socket(addr.getFamily(), type, protocol);
 #endif
@@ -73,8 +73,14 @@ bool Socket::isBlocking() const
 
 int	Socket::setReuseAddr(bool flag)
 {
-  sockopt val = (flag) ? 1 : 0;
-  return this->setSockOpt(SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+  	sockopt val = (flag) ? 1 : 0;
+  	return this->setSockOpt(SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+}
+
+int	Socket::setBufferReceiveSize(int size)
+{
+	sockopt val = size;
+	return this->setSockOpt(SOL_SOCKET, SO_RCVBUF, &val, sizeof(val));
 }
 
 int Socket::getLocalAddr(InetAddr& addr) const

@@ -80,7 +80,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"launchGrab", &NetworkModule::launchGrab},
 		{"updateCannon", &NetworkModule::updateCannon},
 		{"deadPlayer", &NetworkModule::deadPlayer},
-		{"Bonus", &NetworkModule::bonus}
+		{"Bonus", &NetworkModule::bonus},
+		{"AuraActivated", &NetworkModule::auraActivated}
 		/*must be completed */
 	};
 
@@ -296,6 +297,19 @@ void		NetworkModule::bonus(Core::Command const &command)
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::BONUS);
+	packet << 0;
+	packet << cmd.idObject;
+	this->sendPacketUDP(packet, true);
+}
+
+void		NetworkModule::auraActivated(Core::Command const &command)
+{
+	
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(18);
+
+	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	packet << static_cast<uint8_t>(UDP::AURAACTIVE);
 	packet << 0;
 	packet << cmd.idObject;
 	this->sendPacketUDP(packet, true);

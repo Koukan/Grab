@@ -42,9 +42,8 @@ void	GSMainMenu::onStart()
   // add gui
 
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
-	  (VIEWY - 100) / 2,
-	  300, 300, 10, 100, "up arrow", "down arrow");
-  layout->setY((VIEWY - layout->getHeight()) / 2);
+	  (VIEWY - 300) / 2,
+	  600, 300, 10, 100, "up arrow", "down arrow");
   Core::Sprite *sp = this->getSprite("logo");
   sp->setX((VIEWX - sp->getWidth()) / 2);
   sp->setY(50);
@@ -53,7 +52,7 @@ void	GSMainMenu::onStart()
   sp->setX((VIEWX - sp->getWidth()) / 2);
   sp->setY(200);
   this->addGameObject(sp, "gui");
-  Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
+  Core::ButtonSprite *sprite = new Core::ButtonSprite("", "selected button", "pressed button");
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::modeSelection, "Create Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::joinGame, "Join Game", "buttonFont", *sprite, layout);
   new GUIButton<GSMainMenu>(*this, &GSMainMenu::options, "Options", "buttonFont", *sprite, layout);
