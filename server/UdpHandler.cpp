@@ -181,7 +181,13 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 	Net::Packet const *tmp = client.getPacket(packet_id);
 	std::cout << "retrieve a packet with id : " << packet_id << " " << tmp << std::endl;
 	if (tmp)
-		this->handleOutputPacket(*tmp);
+	{
+		std::list<Client*>	list;
+		list.push_back(&client);
+		Net::Packet *packet = tmp->duplicate();
+		NetworkModule::get().sendUDPPacket(*packet, list, false, 0);
+		delete packet;
+	}
 	return 1;
 }
 
@@ -254,6 +260,7 @@ int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 	packet >> cmd->idObject;
 	packet >> cmd->boolean;
 	client.getGameLogic()->pushCommand(*cmd);
+	this->broadcastPacket(packet, client);
 	return 1;
 }
 
