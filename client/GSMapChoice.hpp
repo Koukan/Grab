@@ -6,7 +6,7 @@
 class GSMapChoice : public Core::GameState
 {
 public:
-	GSMapChoice(Modes::Mode mode);
+	GSMapChoice(Modes::Mode mode, int nbPlayers, bool online);
 	~GSMapChoice();
 
 	virtual void		onStart();
@@ -16,6 +16,8 @@ public:
 
 private:
 	Modes::Mode							_mode;
+	int									_nbPlayers;
+	bool								_online;
 	std::string							_map;
 	std::map<std::string, std::string>	_maps;
 };

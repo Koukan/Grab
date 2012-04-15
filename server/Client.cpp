@@ -61,7 +61,10 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			0,
 			&Client::demandPlayer,
 			&Client::updatePlayer,
-			&Client::removePlayer
+			&Client::removePlayer,
+			0,
+			0,
+			&Client::mapChoice
 	};
 	uint8_t			type;
 
@@ -327,6 +330,34 @@ int		Client::removePlayer(Net::Packet &packet)
 		broadcast << static_cast<uint8_t>(TCP::REMOVEPLAYER);
 		broadcast << static_cast<uint8_t>(nb);
 		NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
+		return 1;
+	}
+	return 0;
+}
+
+int					Client::mapChoice(Net::Packet &packet)
+{
+	std::string		map;
+	packet >> map;
+	if (this->_game)
+	{
+		this->_game->setMap(map);
+		Player	* const *players = this->_game->getPlayers();
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (players[i] != 0)
+			{
+				Net::Packet		answer(4);
+				answer << static_cast<uint8_t>(TCP::UPDATEPLAYER);
+				answer << static_cast<uint8_t>(i);
+				answer << static_cast<uint8_t>(players[i]->getShipType());
+				answer << players[i]->isReady();
+				this->handleOutputPacket(answer);
+			}
+		}
+		Net::Packet		*broadcast = packet.clone();
+		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
+		delete broadcast;
 		return 1;
 	}
 	return 0;

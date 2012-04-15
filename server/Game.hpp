@@ -24,6 +24,7 @@ class Game : public Core::Module
 	void			changePlayersStatus(int nb, int ship, bool ready);
 	void			loadGame();
 	void			ready();
+	void			setMap(std::string const &map);
 
 	//getter
 	bool						isFull() const;

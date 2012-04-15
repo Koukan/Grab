@@ -49,6 +49,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	int			demandPlayer(Net::Packet &packet);
 	int			updatePlayer(Net::Packet &packet);
 	int			removePlayer(Net::Packet &packet);
+	int			mapChoice(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();
