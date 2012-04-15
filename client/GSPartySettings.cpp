@@ -13,13 +13,15 @@
 #include "GSManager.hpp"
 #include "GSLoading.hpp"
 #include "GSPartySettings.hpp"
+#include "GSMapChoice.hpp"
 #include "GSBindPlayer.hpp"
 #include "Converter.hpp"
 #include "Game.hpp"
 #include "RendererManager.hpp"
+#include "Modes.hpp"
 
-GSPartySettings::GSPartySettings(Modes::Mode mode, std::string const &map)
-  : Core::GameState("partySettings", true), _mode(mode), _map(map), _online(true), _error(0)
+GSPartySettings::GSPartySettings(Modes::Mode mode)
+  : Core::GameState("partySettings", true), _mode(mode), _online(true), _error(0)
 {
 }
 
@@ -34,18 +36,18 @@ void	GSPartySettings::back()
 
 void	GSPartySettings::createParty()
 {
+	int nbPlayers = 4;
 	if (_online)
     {
 		if (NetworkModule::get().connect())
 		{
 	  		Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Connection", NetworkModule::get().getName())));
-			int nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
+			nbPlayers = Net::Converter::toInt<int>(this->_nbPlayers);
 			GameCommand *gc = new GameCommand("CreateGame");
 			gc->idObject = nbPlayers;
 			gc->idResource = static_cast<uint32_t>(_mode);
-			gc->data = _map;
+			gc->data = "resources/map/map1.xml";
 			Core::CommandDispatcher::get().pushCommand(*gc);
-			Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, this->_map, nbPlayers, _online));
 		}
 		else
 		{
@@ -58,10 +60,14 @@ void	GSPartySettings::createParty()
 			this->_error->setX((VIEWX - this->_error->getWidth()) / 2);
 			this->_error->setY(100);
 			Game::get().unloadModule("NetworkModule");
+			return ;
 		}
     }
-    else
-		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, this->_map, 4, _online));
+	if (_mode == Modes::STORY)
+		Core::GameStateManager::get().pushState(*new GSMapChoice(this->_mode, nbPlayers, _online));
+	else
+		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, "resources/map/randomMap.xml", nbPlayers, _online));
+
 }
 
 void	GSPartySettings::nbPlayerList(Core::GUIElement &nb)

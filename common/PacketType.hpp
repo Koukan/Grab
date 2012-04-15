@@ -17,7 +17,8 @@ namespace UDP
 		LAUNCHGRAB = 10,
 		DEADPLAYER = 11,
 		AUTH = 12,
-		BONUS = 13
+		BONUS = 13,
+		AURAACTIVE = 14
 	};
 }
 
@@ -46,7 +47,10 @@ namespace TCP
 		UPDATEPLAYER = 18,
 		REMOVEPLAYER = 19,
 		SHIPSPAWN = 20,
-		SEED = 21
+		SEED = 21,
+		MAPCHOICE = 22,
+		REBIND = 23,
+		MASTER = 24
 	};
 }
 

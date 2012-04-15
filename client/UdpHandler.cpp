@@ -16,6 +16,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
+	this->getIOHandler().setBufferReceiveSize(1024);
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
@@ -32,7 +33,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::move, false},
 			{0, false},
 			{&UdpHandler::statement, false},
-			{&UdpHandler::retrieve, false},
+			{&UdpHandler::retrieve, true},
 			{&UdpHandler::ping, false},
 			{&UdpHandler::pong, false},
 			{&UdpHandler::fireState, true},
@@ -40,7 +41,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::launchGrab, true},
 			{&UdpHandler::deadPlayer, true},
 			{0, false},
-			{&UdpHandler::bonus, true}
+			{&UdpHandler::bonus, true},
+			{&UdpHandler::auraActive, true}
 	};
 	uint64_t			time;
 	uint8_t				type;
@@ -128,6 +130,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, uint64_t)
 {
 	uint32_t	id;
 	packet >> id;
+	std::cout  << "Server retrieve Packet id = " << id << std::endl;
 	NetworkModule::get().retrievePacket(id);
 	return 1;
 }
@@ -203,11 +206,19 @@ int			UdpHandler::deadPlayer(Net::Packet &packet, uint64_t)
 	return 1;
 }
 
-int			UdpHandler::bonus(Net::Packet &packet, uint64_t timediff)
+int			UdpHandler::bonus(Net::Packet &packet, uint64_t)
 {	
 	GameCommand	*gc = new GameCommand("bonus");
 	packet >> gc->idObject;
 	gc->boolean = false;
+	Core::CommandDispatcher::get().pushCommand(*gc);
+	return 1;
+}
+
+int			UdpHandler::auraActive(Net::Packet &packet, uint64_t)
+{	
+	GameCommand	*gc = new GameCommand("aura");
+	packet >> gc->idObject;
 	Core::CommandDispatcher::get().pushCommand(*gc);
 	return 1;
 }
@@ -219,11 +230,12 @@ bool		UdpHandler::testPacketId(uint32_t id)
 		++_lastPacketId;
 		for (; _lastPacketId != id; ++_lastPacketId)
 		{
-			Net::Packet	packet(13);
+			Net::Packet	packet(17);
 			packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 			packet << static_cast<uint8_t>(UDP::RETRIEVE);
+			packet << 0;
 			packet << _lastPacketId;
-			this->handleOutputPacket(packet);
+			NetworkModule::get().sendPacketUDP(packet, true);
 			std::cout << "ask for packet id : " << _lastPacketId << std::endl;
 		}
 		return true;

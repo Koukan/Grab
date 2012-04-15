@@ -80,7 +80,10 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"launchGrab", &NetworkModule::launchGrab},
 		{"updateCannon", &NetworkModule::updateCannon},
 		{"deadPlayer", &NetworkModule::deadPlayer},
-		{"Bonus", &NetworkModule::bonus}
+		{"Bonus", &NetworkModule::bonus},
+		{"AuraActivated", &NetworkModule::auraActivated},
+		{"MapChoice", &NetworkModule::mapChoiceCommand},
+		{"ReBind", &NetworkModule::reBindCommand}
 		/*must be completed */
 	};
 
@@ -229,6 +232,24 @@ void		NetworkModule::readyCommand(Core::Command const &)
 	this->_server->handleOutputPacket(packet);
 }
 
+void		NetworkModule::mapChoiceCommand(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(2 + cmd.data.size());
+
+	packet << static_cast<uint8_t>(TCP::MAPCHOICE);
+	packet << cmd.data;
+	this->_server->handleOutputPacket(packet);
+}
+
+void		NetworkModule::reBindCommand(Core::Command const &command)
+{
+	Net::Packet		packet(1);
+
+	packet << static_cast<uint8_t>(TCP::REBIND);
+	this->_server->handleOutputPacket(packet);
+}
+
 void		NetworkModule::fireCommand(Core::Command const &command)
 {
 	Net::Packet		packet(18);
@@ -301,6 +322,18 @@ void		NetworkModule::bonus(Core::Command const &command)
 	this->sendPacketUDP(packet, true);
 }
 
+void		NetworkModule::auraActivated(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(18);
+
+	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
+	packet << static_cast<uint8_t>(UDP::AURAACTIVE);
+	packet << 0;
+	packet << cmd.idObject;
+	this->sendPacketUDP(packet, true);
+}
+
 void		NetworkModule::setName(std::string const &name)
 {
 	this->_name = name;
@@ -339,8 +372,8 @@ void		NetworkModule::sendPacketUDP(Net::Packet &packet, bool needId)
 		packet.wr_ptr(9);
 		id = _sentPacketId++;
 		packet << id;
-		_packets.insert(_packets.end(), std::pair<uint32_t, Net::Packet>(id, Net::Packet(packet)));
-		if (_packets.size() > 50)
+		_packets.insert(_packets.end(), std::pair<uint32_t, Net::Packet>(id, packet));
+		if (_packets.size() > 500)
 			_packets.erase(_packets.begin());
 	}
 	this->_udp.handleOutputPacket(packet);
@@ -355,5 +388,5 @@ void        NetworkModule::retrievePacket(uint32_t id)
 {
 	std::map<uint32_t, Net::Packet>::iterator it = _packets.find(id);
 	if (it != _packets.end())
-		this->_udp.handleOutputPacket(it->second);
+		this->sendPacketUDP(it->second, false);
 }

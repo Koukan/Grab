@@ -1,6 +1,7 @@
 #include "GameButton.hpp"
 #include "GameStateManager.hpp"
 #include "CommandDispatcher.hpp"
+#include "GSMapChoice.hpp"
 #include "GSBindPlayer.hpp"
 #include "GameCommand.hpp"
 
@@ -24,5 +25,6 @@ void GameButton::push()
   command->idObject = this->_id;
 
   Core::CommandDispatcher::get().pushCommand(*command);
-  Core::GameStateManager::get().changeState(*(new GSBindPlayer(Modes::STORY, _map, _nbPlayers, true)));
+  Core::GameStateManager::get().changeState(*(new GSMapChoice(Modes::STORY, _nbPlayers, true)));
+  Core::GameStateManager::get().pushState(*(new GSBindPlayer(Modes::STORY, _map, _nbPlayers, true)));
 }

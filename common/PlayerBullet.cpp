@@ -73,7 +73,7 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	double		dir = dtor(direction);
 	Bullet		*bullet;
 
-	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
+	Core::HitBox		*box = new Core::CircleHitBox(this->getX(), this->getY(), 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	if (this->_simpleSprite == "")
@@ -122,7 +122,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	double			dir = dtor(direction);
 	PlayerBullet	*bullet;
 
-	Core::HitBox		*box = new Core::CircleHitBox(_x, _y, 4);
+	Core::HitBox		*box = new Core::CircleHitBox(this->getX(), this->getY(), 4);
 	vx = speed * cos(dir);
 	vy = -speed * sin(dir);
 	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative, this->_constraint);

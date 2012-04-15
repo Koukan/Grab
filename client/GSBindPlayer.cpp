@@ -11,24 +11,30 @@
 #include "Game.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
-  : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
+  : Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0), _gameBegin(false)
 {
 	this->_players[0] = 0;
 	this->_players[1] = 0;
 	this->_players[2] = 0;
 	this->_players[3] = 0;
+	this->_mapFont = this->getFont("listGameFont");
+	this->changeMap(map);
+	this->addGameObject(_mapFont);
 }
 
 GSBindPlayer::~GSBindPlayer()
 {
-	if (this->_online)
-		Game::get().unloadModule("NetworkModule");
 }
 
 void	GSBindPlayer::onStart()
 {
 	// load xml
 	this->load("resources/xml/intro.xml");
+
+	this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+		*this, &GSBindPlayer::back, static_cast<int>(Core::Keyboard::Escape));
+	this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
+		*this, &GSBindPlayer::back, static_cast<int>(1));
 
 	// add gui
 
@@ -43,13 +49,27 @@ void	GSBindPlayer::onStart()
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
 }
 
+void	GSBindPlayer::onResume()
+{
+	if (!this->_gameBegin)
+		return ;
+	this->_gameBegin = false;
+	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
+		it != this->_buttons.end(); it++)
+		(*it)->changeToSelect();
+	if (!this->_online || !Game::get().isMaster())
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new Core::Command("ReBind"));
+}
+
 bool	GSBindPlayer::handleCommand(Core::Command const &command)
 {
 	Method		tab[] = {
 		{"answerBind", &GSBindPlayer::answerBind},
 		{"updatePlayerPacket", &GSBindPlayer::updatePlayer},
 		{"removePlayer", &GSBindPlayer::removePlayer},
-		{"goToLoadGame", &GSBindPlayer::goToLoadGame}
+		{"goToLoadGame", &GSBindPlayer::goToLoadGame},
+		{"mapChoice", &GSBindPlayer::mapChoice}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -72,6 +92,7 @@ void	GSBindPlayer::goToLoadGame(Core::Command const &)
 		if (this->_players[i])
 			players->push_back(this->_players[i]);
 	}
+	this->_gameBegin = true;
 	Core::GameStateManager::get().pushState(*new GSLoading(*players, this->_mode, this->_map, this->_nbPlayers, this->_online));
 }
 
@@ -98,6 +119,7 @@ void	GSBindPlayer::goToInGame()
 	if (players->size() == 1 && this->_players[0])
 	  this->_players[0]->setLife(Modes::modesList[_mode].singleNbLife);
 	state->preload();
+	this->_gameBegin = true;
 	Core::GameStateManager::get().pushState(*state);
 }
 
@@ -135,6 +157,17 @@ GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerTyp
 	if (it != this->_binds.end())
 		return it->second;
 	return 0;
+}
+
+void	GSBindPlayer::changeMap(std::string const &map)
+{
+	this->mapChoice(map);
+	if (_online)
+	{
+		GameCommand *cmd = new GameCommand("MapChoice");
+		cmd->data = this->_map;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
 }
 
 void	GSBindPlayer::answerBind(Core::Command const &command)
@@ -189,6 +222,23 @@ void	GSBindPlayer::removePlayer(Core::Command const &command)
 	}
 }
 
+void	GSBindPlayer::mapChoice(std::string const &map)
+{
+	this->_map = map;
+	size_t slash = this->_map.find_last_of('/');
+	slash = (slash == std::string::npos) ? 0 : slash + 1;
+	size_t point = this->_map.find_last_of('.') - slash;
+	this->_mapFont->setText("Map: " + _map.substr(slash, point));
+	this->_mapFont->setX(VIEWX / 2 - this->_mapFont->getWidth() / 2);
+	this->_mapFont->setY(200);
+}
+
+void	GSBindPlayer::mapChoice(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	this->mapChoice(cmd.data);
+}
+
 void	GSBindPlayer::updatePlayer(uint32_t nb, uint32_t ship, bool ready)
 {
 	if (this->_online)
@@ -214,5 +264,16 @@ void	GSBindPlayer::updatePlayer(Core::Command const &command)
 			return ;
 		}
 		i++;
+	}
+}
+
+void	GSBindPlayer::back(Core::InputCommand const &)
+{
+	if (Game::get().isMaster())
+		Core::GameStateManager::get().popState(false);
+	else
+	{
+		Core::GameStateManager::get().popState();
+		Core::GameStateManager::get().popState();
 	}
 }

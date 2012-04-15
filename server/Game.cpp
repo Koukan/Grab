@@ -76,7 +76,11 @@ void		Game::removeClient(Client &client)
 	std::list<Client*>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), &client);
 
 	if (it != this->_clients.end())
+	{
 		this->_clients.erase(it);
+		if (client.isMaster() && !this->_clients.empty())
+			this->_clients.front()->setMaster(true);
+	}
 }
 
 Player		*Game::addPlayer(Client &client)
@@ -240,4 +244,16 @@ void		Game::ready()
 			return ;
 	}
 	this->startGame();
+}
+
+void		Game::setMap(std::string const &map)
+{
+	this->_map = map;
+}
+
+void		Game::reset()
+{
+	this->_readyPlayers = 0;
+	Core::Command	*cmd = new Core::Command("reset");
+	this->_logic.pushCommand(*cmd);
 }

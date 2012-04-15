@@ -220,6 +220,8 @@ void	GUIPlayerButton::addPlayer(Core::GUICommand::PlayerType type)
 
 void	GUIPlayerButton::updatePlayer(uint32_t ship, bool ready)
 {
+	if (this->_playerType != Core::GUICommand::ALL && this->_playerType != Core::GUICommand::ONLINE);
+		return ;
 	this->_playerType = Core::GUICommand::ONLINE;
 	this->_ship = ship;
 	if (!this->_player)
@@ -258,6 +260,8 @@ void	GUIPlayerButton::changeToEmpty()
 
 void	GUIPlayerButton::changeToSelect()
 {
+	if (!this->_player)
+		return ;
 	this->_sprite.updateState(Core::ButtonSprite::SELECTED);
 	if (this->_font)
 	{

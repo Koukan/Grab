@@ -51,6 +51,7 @@ class GameLogic : public Core::GameState
 	void				decreasePaused(Core::Command const &);
 	void				increasePaused(Core::Command const &);
 	void				bonusCommand(Core::Command const &);
+	void				resetCommand(Core::Command const &);
 
 	Game				&_game;
 	int					_nbEnemies;

@@ -46,24 +46,24 @@ void	GSModeSelection::back()
 
 void	GSModeSelection::story()
 {
-  Core::GameState *state = new GSMapChoice(Modes::STORY); //tmp, waiting for map selection
+  Core::GameState *state = new GSPartySettings(Modes::STORY); //tmp, waiting for map selection
   Core::GameStateManager::get().pushState(*state);
 }
 
 void	GSModeSelection::survivalScoring()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_SCORING, "resources/map/randomMap.xml");
+  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_SCORING);
   Core::GameStateManager::get().pushState(*partySettings);
 }
 
 void	GSModeSelection::survivalHighlander()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_HIGHLANDER, "resources/map/randomMap.xml");
+  Core::GameState *partySettings = new GSPartySettings(Modes::SURVIVAL_HIGHLANDER);
   Core::GameStateManager::get().pushState(*partySettings);
 }
 
 void	GSModeSelection::tryAndRetry()
 {
-  Core::GameState *partySettings = new GSPartySettings(Modes::TRY_AND_RETRY, "resources/map/randomMap.xml");
+  Core::GameState *partySettings = new GSPartySettings(Modes::TRY_AND_RETRY);
   Core::GameStateManager::get().pushState(*partySettings);
 }

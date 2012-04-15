@@ -42,6 +42,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		updateCannon(Core::Command const &command);
 	void		deadPlayer(Core::Command const &command);
 	void		bonus(Core::Command const &command);
+	void		auraActivated(Core::Command const &command);
 
 // Command TCP
 
@@ -54,6 +55,8 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		unBindPlayerCommand(Core::Command const &command);
 	void		updatePlayerCommand(Core::Command const &command);
 	void		readyCommand(Core::Command const &command);
+	void		mapChoiceCommand(Core::Command const &command);
+	void		reBindCommand(Core::Command const &command);
 
 	struct	Method
 	{

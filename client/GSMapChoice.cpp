@@ -3,16 +3,20 @@
 #include "GUIVLayout.hpp"
 #include "GUIList.hpp"
 #include "GUIButton.hpp"
-#include "GSPartySettings.hpp"
+#include "GSBindPlayer.hpp"
+#include "Game.hpp"
 
-GSMapChoice::GSMapChoice(Modes::Mode mode)
-	: Core::GameState("mapChoice", true), _mode(mode)
+GSMapChoice::GSMapChoice(Modes::Mode mode, int nbPlayers, bool online)
+	: Core::GameState("mapChoice", true), _mode(mode), _nbPlayers(nbPlayers), _online(online)
 {
 }
 
 
 GSMapChoice::~GSMapChoice()
 {
+	if (this->_online)
+		Game::get().unloadModule("NetworkModule");
+	Core::GameStateManager::get().removeLoadedState("bindPlayers");
 }
 
 void		GSMapChoice::onStart()
@@ -47,7 +51,14 @@ void		GSMapChoice::mapChoice(Core::GUIElement &elem)
 
 void		GSMapChoice::createParty()
 {
-	Core::GameStateManager::get().pushState(*new GSPartySettings(this->_mode, this->_map));
+	GSBindPlayer	*state = static_cast<GSBindPlayer*>(Core::GameStateManager::get().getLoadedState("bindPlayers"));
+	if (state)
+	{
+		state->changeMap(this->_map);
+		Core::GameStateManager::get().pushState("bindPlayers");
+	}
+	else
+		Core::GameStateManager::get().pushState(*new GSBindPlayer(this->_mode, this->_map, _nbPlayers, _online));
 }
 
 void		GSMapChoice::back()

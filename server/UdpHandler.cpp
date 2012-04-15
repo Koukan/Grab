@@ -16,6 +16,7 @@ UdpHandler::~UdpHandler()
 
 void		UdpHandler::init()
 {
+	this->getIOHandler().setBufferReceiveSize(1024);
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
@@ -32,7 +33,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::move, false},
 			{&UdpHandler::score, false},
 			{&UdpHandler::statement, false},
-			{&UdpHandler::retrieve, false},
+			{&UdpHandler::retrieve, true},
 			{&UdpHandler::ping, false},
 			{&UdpHandler::pong, false},
 			{&UdpHandler::firestate, true},
@@ -40,7 +41,8 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 			{&UdpHandler::launchgrab, true},
 			{&UdpHandler::deadPlayer, true},
 			{0, false},
-			{&UdpHandler::bonus, true}
+			{&UdpHandler::bonus, true},
+			{&UdpHandler::aura, true}
 	};
 	uint8_t				type;
 
@@ -70,20 +72,21 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 
 void		UdpHandler::sendRetrieve(uint32_t id, Client &client)
 {
-	Net::Packet			retrieve(18);
+	Net::Packet			retrieve(17);
 	retrieve << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	retrieve << static_cast<uint8_t>(UDP::RETRIEVE);
+	retrieve << 0;
 	retrieve << id;
 	std::list<Client *>	tmp;
 	tmp.push_back(&client);
-	NetworkModule::get().sendUDPPacket(retrieve, tmp, false);
+	NetworkModule::get().sendUDPPacket(retrieve, tmp, true);
 }
 
 
 void		UdpHandler::verify(uint32_t id, Client &client)
 {
 	for (uint32_t i = client.getLastRecvId() + 1; i < id; ++i)
-		this->sendRetrieve(id, client);
+		this->sendRetrieve(i, client);
 	if (id > client.getLastRecvId())
 		client.setLastRecvId(id);
 }
@@ -185,7 +188,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 		std::list<Client*>	list;
 		list.push_back(&client);
 		Net::Packet *packet = tmp->duplicate();
-		NetworkModule::get().sendUDPPacket(*packet, list, false, 0);
+		NetworkModule::get().sendUDPPacket(*packet, list, false);
 		delete packet;
 	}
 	return 1;
@@ -271,6 +274,14 @@ int			UdpHandler::bonus(Net::Packet &packet, Client &client)
 	GameCommand		*cmd = new GameCommand("bonus");
 	packet >> cmd->idObject;
 	client.getGameLogic()->pushCommand(*cmd);
+	this->broadcastPacket(packet, client);
+	return 1;
+}
+
+int         UdpHandler::aura(Net::Packet &packet, Client &client)
+{
+	if (!client.getGame())
+		return 1;
 	this->broadcastPacket(packet, client);
 	return 1;
 }

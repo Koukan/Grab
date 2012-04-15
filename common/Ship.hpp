@@ -71,6 +71,7 @@ public:
   void			specialPower();
   void			bomb();
   void			shield();
+  void			missile();
   void			blackHole();
   void			disableShield();
   void			grab4();
@@ -81,6 +82,7 @@ public:
   unsigned int		getPowerGauge() const;
   void			increasePowerGauge(unsigned int score);
   void			resetState();
+  void			displayAura();
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);

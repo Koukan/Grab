@@ -36,6 +36,9 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	bool				isReady() const;
 	std::list<Player*> const	&getPlayers() const;
 
+	bool				isMaster() const;
+	void				setMaster(bool value);
+
   private:
 	typedef std::list<std::pair<uint32_t, Net::Packet> >	packetsList;
 
@@ -49,6 +52,8 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	int			demandPlayer(Net::Packet &packet);
 	int			updatePlayer(Net::Packet &packet);
 	int			removePlayer(Net::Packet &packet);
+	int			mapChoice(Net::Packet &packet);
+	int			reBind(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();
@@ -62,6 +67,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	uint64_t			_nblatency;
 	double				_latency;
 	bool				_ready;
+	bool				_master;
 	packetsList			_packets;
 	std::list<Player*>	_players;
 	Net::InetAddr		_udpaddr;

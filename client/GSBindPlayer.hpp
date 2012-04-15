@@ -13,6 +13,7 @@ public:
 	~GSBindPlayer();
 
 	virtual void	onStart();
+	virtual void	onResume();
 	virtual bool	handleCommand(Core::Command const &command);
 	void			goToInGame();
 	void			addDemand(Core::GUICommand::PlayerType type);
@@ -22,12 +23,16 @@ public:
 	void			addSelected(GUIPlayerButton*, Core::GUICommand::PlayerType);
 	void			removeSelected(Core::GUICommand::PlayerType);
 	GUIPlayerButton	*selectedBy(Core::GUICommand::PlayerType) const;
+	void			changeMap(std::string const &map);
+	virtual void	back(Core::InputCommand const &cmd);
 
 private:
 	void			answerBind(Core::Command const &command);
 	void			removePlayer(Core::Command const &command);
 	void			updatePlayer(Core::Command const &command);
 	void			goToLoadGame(Core::Command const &command);
+	void			mapChoice(std::string const &map);
+	void			mapChoice(Core::Command const &command);
 	void			shipSpawn(Core::Command const &command);
 
 	typedef std::map<uint32_t, Core::GUICommand::PlayerType> DemandMap;
@@ -38,15 +43,16 @@ private:
 	};
 
 	Modes::Mode					_mode;
-	std::string const			_map;
+	std::string					_map;
 	unsigned int				_nbPlayers;
 	bool						_online;
 	Player						*_players[4];
-
 	int							_nbReady;
 	int							_nbPending;
 	uint32_t					_id;
+	bool						_gameBegin;
 	DemandMap					_demands;
 	std::list<GUIPlayerButton*>	_buttons;
 	std::map<Core::GUICommand::PlayerType, GUIPlayerButton*>	_binds;
+	Core::CoreFont				*_mapFont;
 };
