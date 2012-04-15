@@ -75,10 +75,6 @@ void	Ship::setPosition(double x, double y, double)
 	double	angle = atan2(y - this->_targety, x - this->_targetx);
 	this->_vx = cos(angle) * this->_speed;
 	this->_vy = sin(angle) * this->_speed;
-	/*this->_x = x;
-	this->_y = y;
-	this->_vx = 0;
-	this->_vy = 0;*/
 }
 
 void	Ship::move(double time)
@@ -128,7 +124,6 @@ void Ship::shield()
   if (!_shield)
     {
       this->_specialPowerActive = true;
-      std::cout << "shield !" << std::endl;
       _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(0, 0, 125)), 0, 0, -125, -125);
       _state.addGameObject(_shield, "shields");
 	  if (this->_shield->getSprite())
