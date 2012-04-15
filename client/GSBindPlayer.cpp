@@ -167,7 +167,7 @@ GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerTyp
 void	GSBindPlayer::changeMap(std::string const &map)
 {
 	this->mapChoice(map);
-	if (_online)
+	if (_online && Game::get().isMaster())
 	{
 		GameCommand *cmd = new GameCommand("MapChoice");
 		cmd->data = this->_map;
