@@ -21,10 +21,12 @@
 GSJoinGame::GSJoinGame()
   : Core::GameState("joinGame", true), _isListed(false)
 {
+	Game::get().setMaster(false);
 };
 
 GSJoinGame::~GSJoinGame()
 {
+	Game::get().setMaster(true);
 }
 
 void	GSJoinGame::onStart()

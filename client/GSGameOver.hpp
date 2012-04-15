@@ -17,6 +17,8 @@ public:
   virtual bool		handleCommand(Core::Command const &command);
   void			retry();
   void			returnToMainMenu();
+  void			reBind();
+  void			changeMap();
 
 private:
   bool			_victory;

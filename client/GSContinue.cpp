@@ -91,3 +91,8 @@ void GSContinue::update(double elapsedTime)
 	}
     }
 }
+
+bool	GSContinue::handleCommand(Core::Command const &cmd)
+{
+	return this->_inGame.handleCommand(cmd);
+}
