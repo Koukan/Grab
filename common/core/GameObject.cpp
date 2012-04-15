@@ -87,15 +87,18 @@ void		GameObject::setDelete(int8_t value)
 
 void		GameObject::erase()
 {
-	this->_delete = 1;
-	this->_group->getState().addDeleteObject(this);
-	for (std::list<GameObject*>::iterator it = this->_objects.begin();
-		 it != this->_objects.end(); it++)
-		(*it)->_relativeObject = 0;
-	this->_objects.clear();
-	if (this->_relativeObject)
-		this->_relativeObject->removeGameObject(this);
-	this->_relativeObject = 0;
+	if (!this->_delete || this->_delete == 3)
+	{
+		this->_delete = 1;
+		this->_group->getState().addDeleteObject(this);
+		for (std::list<GameObject*>::iterator it = this->_objects.begin();
+			 it != this->_objects.end(); it++)
+			(*it)->_relativeObject = 0;
+		this->_objects.clear();
+		if (this->_relativeObject)
+			this->_relativeObject->removeGameObject(this);
+		this->_relativeObject = 0;
+	}
 }
 
 void		GameObject::addGameObject(GameObject &obj)

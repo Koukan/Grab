@@ -42,6 +42,7 @@ public:
   void			setYHitBoxOffset(double y);
   void			setHitBox(HitBox &hitBox);
   void			setStatic(bool value = true);
+  void			setCollidable(bool value = true);
   void			setLink(PhysicObject *link, PhysicObject::Constraint constraint = PhysicObject::ALL);
 
   int			getWidthElement();
@@ -52,6 +53,7 @@ public:
   double		getScrollY() const;
   PhysicObject	*getLink() const;
   bool			isStatic() const;
+  bool			isCollidable() const;
   void			collide(TreeElement &elem);
 
 protected:
@@ -64,6 +66,7 @@ protected:
 	double	_scrollX;
 	double	_scrollY;
 	bool	_static;
+	bool	_collidable;
 	HitBox	*_hitBox;
 	PhysicObject	*_link;
 	PhysicObject::Constraint _constraint;
