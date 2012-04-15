@@ -11,14 +11,14 @@
 #include "Game.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
-  : Core::GameState("bindPlayers", true), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
+  : Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
 {
 	this->_players[0] = 0;
 	this->_players[1] = 0;
 	this->_players[2] = 0;
 	this->_players[3] = 0;
 	this->_mapFont = this->getFont("listGameFont");
-	this->mapChoice(map);
+	this->changeMap(map);
 	this->addGameObject(_mapFont);
 }
 
@@ -31,6 +31,11 @@ void	GSBindPlayer::onStart()
 	// load xml
 	this->load("resources/xml/intro.xml");
 
+	this->getInput().registerInputCallback(Core::InputCommand::KeyReleased,
+		*this, &GSBindPlayer::back, static_cast<int>(Core::Keyboard::Escape));
+	this->getInput().registerInputCallback(Core::InputCommand::JoystickButtonReleased,
+		*this, &GSBindPlayer::back, static_cast<int>(1));
+
 	// add gui
 
 	Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
@@ -42,12 +47,6 @@ void	GSBindPlayer::onStart()
 
 	for (unsigned int i = 0; i < this->_nbPlayers; ++i)
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
-	if (_online)
-	{
-		GameCommand *cmd = new GameCommand("MapChoice");
-		cmd->data = this->_map;
-		Core::CommandDispatcher::get().pushCommand(*cmd);
-	}
 }
 
 bool	GSBindPlayer::handleCommand(Core::Command const &command)
@@ -145,6 +144,17 @@ GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerTyp
 	return 0;
 }
 
+void	GSBindPlayer::changeMap(std::string const &map)
+{
+	this->mapChoice(map);
+	if (_online)
+	{
+		GameCommand *cmd = new GameCommand("MapChoice");
+		cmd->data = this->_map;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
+}
+
 void	GSBindPlayer::answerBind(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const&>(command);
@@ -240,4 +250,9 @@ void	GSBindPlayer::updatePlayer(Core::Command const &command)
 		}
 		i++;
 	}
+}
+
+void	GSBindPlayer::back(Core::InputCommand const &)
+{
+	Core::GameStateManager::get().popState(false);
 }

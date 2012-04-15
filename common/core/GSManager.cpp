@@ -43,6 +43,20 @@ void		GSManager::destroy()
 {
 }
 
+bool		GSManager::pushState(std::string const &name,
+								 GameState::Pause paused)
+{
+	std::list<GameState*>::const_iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
+
+	if (it != this->_loadedStates.end())
+	{
+		push(**it, true, paused, true);
+		this->_loadedStates.erase(it);
+		return true;
+	}
+	return false;
+}
+
 bool		GSManager::pushState(GameState &state,
 						GameState::Pause paused)
 {
@@ -65,20 +79,35 @@ void		GSManager::popState(bool del)
 		this->registerHandler(*_currentStates.back());
 }
 
-GameState	&GSManager::getCurrentState()
+void		GSManager::removeLoadedState(std::string const &name)
 {
-	return *_currentStates.back();
+	std::list<GameState*>::const_iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
+
+	if (it != _loadedStates.end())
+	{
+		addDelete(*it);
+		this->_loadedStates.erase(it);
+	}
 }
 
-std::list<GameState *> const & GSManager::getCurrentStates() const
+GameState	&GSManager::getCurrentState() const
 {
-  return _currentStates;
+	return *_currentStates.back();
 }
 
 GameState	*GSManager::getGameState(std::string const &name) const
 {
 	std::list<GameState*>::const_iterator it = find(_currentStates.begin(), _currentStates.end(), name);
 	if (it != _currentStates.end())
+		return *it;
+	return 0;
+}
+
+GameState	*GSManager::getLoadedState(std::string const &name) const
+{
+	std::list<GameState*>::const_iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
+
+	if (it != _loadedStates.end())
 		return *it;
 	return 0;
 }

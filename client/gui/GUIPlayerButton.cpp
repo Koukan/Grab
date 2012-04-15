@@ -220,7 +220,8 @@ void	GUIPlayerButton::addPlayer(Core::GUICommand::PlayerType type)
 
 void	GUIPlayerButton::updatePlayer(uint32_t ship, bool ready)
 {
-	this->_playerType = Core::GUICommand::ONLINE;
+	if (this->_playerType == Core::GUICommand::ALL);
+		this->_playerType = Core::GUICommand::ONLINE;
 	this->_ship = ship;
 	if (!this->_player)
 	{
