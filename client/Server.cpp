@@ -45,7 +45,9 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::removePlayerPacket,
 			&Server::shipSpawnPacket,
 			&Server::seedPacket,
-			&Server::mapChoicePacket
+			&Server::mapChoicePacket,
+			&Server::reBindPacket,
+			&Server::masterPacket
 	};
 	uint8_t			type;
 
@@ -248,5 +250,17 @@ bool		Server::mapChoicePacket(Net::Packet &packet)
 
 	packet >> cmd->data;
 	Core::CommandDispatcher::get().pushCommand(*cmd);
+	return true;
+}
+
+bool		Server::reBindPacket(Net::Packet &)
+{
+	Core::CommandDispatcher::get().pushCommand(*new Core::Command("reBind"));
+	return true;
+}
+
+bool		Server::masterPacket(Net::Packet &)
+{
+	Game::get().setMaster(true);
 	return true;
 }

@@ -8,6 +8,7 @@
 #include "Converter.hpp"
 #include "GUIHLayout.hpp"
 #include "GUILabel.hpp"
+#include "Game.hpp"
 
 GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       Modes::Mode mode, std::string const& map, 
@@ -51,6 +52,11 @@ void GSGameOver::onStart()
 					   300, 300, 10, 100, "up arrow", "down arrow");
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
+  if (Game::get().isMaster())
+  {
+	  new GUIButton<GSGameOver>(*this, &GSGameOver::reBind, "Change Ship", "buttonFont", *sprite, layout);
+	  new GUIButton<GSGameOver>(*this, &GSGameOver::changeMap, "Change Map", "buttonFont", *sprite, layout);
+  }
   new GUIButton<GSGameOver>(*this, &GSGameOver::returnToMainMenu, "Go to Main Menu", "buttonFont", *sprite, layout);
 }
 
@@ -83,4 +89,17 @@ void	GSGameOver::returnToMainMenu()
 {
 	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
 		Core::GameStateManager::get().popState();
+}
+
+void	GSGameOver::reBind()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+}
+
+void	GSGameOver::changeMap()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState(false);
 }

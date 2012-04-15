@@ -25,6 +25,7 @@ class Game : public Core::Module
 	void			loadGame();
 	void			ready();
 	void			setMap(std::string const &map);
+	void			reset();
 
 	//getter
 	bool						isFull() const;

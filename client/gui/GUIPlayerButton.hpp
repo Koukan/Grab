@@ -28,6 +28,7 @@ public:
 	virtual void	addPlayer(Core::GUICommand::PlayerType type);
 	void			changeToEmpty();
 	void			updatePlayer(uint32_t ship, bool ready);
+	void	changeToSelect();
 
 private:
 	bool			selectCommand(Core::GUICommand const &command);
@@ -51,7 +52,6 @@ private:
 	unsigned int				_bindIndex;
 	uint32_t					_nb;
 
-	void	changeToSelect();
 	void	changeToReady();
 	void	changeShip();
 };

@@ -141,7 +141,7 @@ void Ship::shield()
 
 void Ship::missile()
 {
-	PlayerBullet *bullet = new PlayerBullet("youpi", this->getGroup()->getState(), "playerShots", 0, 0);
+	PlayerBullet *bullet = new PlayerBullet("specialPowerPlayer3", this->getGroup()->getState(), "playerShots", 0, 0);
 	bullet->setColor(_color.r, _color.g, _color.b);
 	bullet->isFiring(true);
 	bullet->setLink(this);

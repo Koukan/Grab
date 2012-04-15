@@ -103,7 +103,8 @@ bool		GameLogic::handleCommand(Core::Command const &command)
 			{"killPlayer", &GameLogic::killPlayerCommand},
 			{"decreasePaused", &GameLogic::decreasePaused},
 			{"increasePaused", &GameLogic::increasePaused},
-			{"bonus", &GameLogic::bonusCommand}
+			{"bonus", &GameLogic::bonusCommand},
+			{"reset", &GameLogic::resetCommand}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -221,4 +222,14 @@ void		GameLogic::bonusCommand(Core::Command const &command)
 	if (!ship)
 		return ;
 	ship->specialPower();
+}
+
+void		GameLogic::resetCommand(Core::Command const &command)
+{
+	this->_gameStarted = false;
+	if (this->_map)
+	{
+		this->_map->erase();
+		this->_map = 0;
+	}
 }
