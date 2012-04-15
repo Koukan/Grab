@@ -7,7 +7,7 @@ CORE_USE_NAMESPACE
 PhysicObject::PhysicObject(HitBox &hitbox, double vx, double vy, double xHitboxOffset, double yHitboxOffset,
 		double xScrolling, double yScrolling)
 	: DrawableObject(hitbox.getX(), hitbox.getY()), TreeElement(), _vx(vx), _vy(vy), _ax(0), _ay(0),
-	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _hitBox(&hitbox), _link(0)
+	_xHitboxOffset(xHitboxOffset), _yHitboxOffset(yHitboxOffset), _scrollX(xScrolling), _scrollY(yScrolling), _static(false), _collidable(true),_hitBox(&hitbox), _link(0)
 {
 }
 
@@ -15,9 +15,7 @@ PhysicObject::PhysicObject(PhysicObject const &other) :
   _vx(other._vx), _vy(other._vy),
   _ax(other._ax), _ay(other._ay),
   _xHitboxOffset(other._xHitboxOffset), _yHitboxOffset(other._yHitboxOffset),
-  _scrollX(other._scrollX), _scrollY(other._scrollY), _static(other._static),
-  _hitBox(other._hitBox->clone()), _link(other._link), _constraint(other._constraint)
-
+  _scrollX(other._scrollX), _scrollY(other._scrollY), _static(other._static), _collidable(other._collidable), _hitBox(other._hitBox->clone()), _link(other._link), _constraint(other._constraint)
 {
 }
 
@@ -73,6 +71,16 @@ bool	PhysicObject::isStatic() const
 void	PhysicObject::setStatic(bool val)
 {
 	_static = val;
+}
+
+bool	PhysicObject::isCollidable() const
+{
+	return _collidable;
+}
+
+void	PhysicObject::setCollidable(bool val)
+{
+	_collidable = val;
 }
 
 double		PhysicObject::getX() const
@@ -184,10 +192,8 @@ double		PhysicObject::getScrollY() const
 void	PhysicObject::collide(TreeElement &elem)
 {
 	PhysicObject 		&obj = static_cast<PhysicObject &>(elem);
-	if ((this->_delete && this->_delete != 3) ||
-		(obj._delete && obj._delete != 3))
+	if (this->_delete || !this->isCollidable() || obj._delete || !obj.isCollidable())
 		return ;
-
 	this->_hitBox->setX(this->getX() + this->_xHitboxOffset);
 	this->_hitBox->setY(this->getY() + this->_yHitboxOffset);
 	obj.getHitBox().setX(obj.getX() + obj.getXHitBoxOffset());
