@@ -10,7 +10,7 @@
 #include "Ship.hpp"
 
 Game::Game(uint16_t id, uint8_t maxPlayers, Modes::Mode type, std::string const &map)
-  : Core::Module("Game" + id, 20), _logic(*this, map),
+  : Core::Module("Game" + id, 20), _logic(new GameLogic(*this, map)),
 	  _id(id), _maxPlayers(maxPlayers), _type(type), _map(map), _readyPlayers(0), _nbPlayers(0)
 {
 	Server::get().loadModule(*this);
@@ -45,8 +45,8 @@ void		Game::updateGameState(double elapsedTime)
 {
 	Net::ScopedLock		lock(this->_mutex);
 
-	Core::PhysicManager::apply(this->_logic, elapsedTime);
-	this->_logic.update(elapsedTime);
+	Core::PhysicManager::apply(*this->_logic, elapsedTime);
+	this->_logic->update(elapsedTime);
 }
 
 bool		Game::addClient(Client &client)
@@ -56,7 +56,7 @@ bool		Game::addClient(Client &client)
 		client.setId(this->_clients.size());
 		this->_clients.push_back(&client);
 		// send Resource
-		std::list<Core::Resource*> const	& list = _logic.getResource();
+		std::list<Core::Resource*> const	& list = _logic->getResource();
 		for (std::list<Core::Resource*>::const_iterator it = list.begin();
 		 	 it != list.end(); it++)
 		{
@@ -168,7 +168,7 @@ Player	* const *Game::getPlayers() const
 
 GameLogic	&Game::getGameLogic()
 {
-  	return _logic;
+  	return *_logic;
 }
 
 void		Game::loadGame()
@@ -185,7 +185,7 @@ void		Game::loadGame()
 		//uint32_t	begin = (i + 1) * 10000000 + 1000000001;
 		//uint32_t	end = begin + 9999999;
 		//std::string	id = "shootClient" + Net::Converter::toString((i + 1));
-		//_logic.addGroup(id, 10, begin, end);
+		//_logic->addGroup(id, 10, begin, end);
 		//cmd = new GameCommand("RangeId");
 		//cmd->idObject = begin;
 		//cmd->idResource = end;
@@ -202,7 +202,7 @@ void		Game::loadGame()
 
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
-	  ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), _logic, Color(0, 0, 0));
+	  ship = new Ship(*this->_players[i], *this->_players[i]->getShipInfo(), *_logic, Color(0, 0, 0));
 		ship->setX(x);
 		ship->setY(600);
 		cmd = new GameCommand("ShipSpawn");
@@ -218,7 +218,7 @@ void		Game::loadGame()
 
 	// send pseudo random seed
 	cmd = new GameCommand("Seed");
-	cmd->idObject = this->_logic.getSeed();
+	cmd->idObject = this->_logic->getSeed();
 	cmd->game = this;
 	Core::CommandDispatcher::get().pushCommand(*cmd);
 	// end pseudo random seed
@@ -231,7 +231,7 @@ void		Game::startGame()
 
 	cmd = new GameCommand("Startgame");
 	cmd->game = this;
-	_logic.startGame();
+	_logic->startGame();
 	Core::CommandDispatcher::get().pushCommand(*cmd);
 }
 
@@ -253,9 +253,16 @@ void		Game::setMap(std::string const &map)
 
 void		Game::reset()
 {
+	Net::ScopedLock		lock(this->_mutex);
+
 	this->_readyPlayers = 0;
-	Core::Command	*cmd = new Core::Command("reset");
-	this->_logic.pushCommand(*cmd);
 	for (size_t i = 0; i < this->_maxPlayers; i++)
+	{
+		if (!this->_players[i])
+			continue ;
+		this->_players[i]->setReady(false);
 		this->_players[i]->setShip(0);
+	}
+	delete this->_logic;
+	this->_logic = new GameLogic(*this, this->_map);
 }
