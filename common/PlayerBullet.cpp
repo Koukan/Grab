@@ -152,8 +152,8 @@ double	PlayerBullet::getAimDirection()
 {
 	double	tmp = this->BulletCommand::getAimDirection();
 
-	if (!this->_relativeObject)
-		return 270;
+	/*if (!this->_relativeObject)
+		return 270;*/
 	return tmp;
 }
 

@@ -255,13 +255,13 @@ Group			*GameObjectManager::getGroup(std::string const &name) const
 
 void			GameObjectManager::addDeleteObject(GameObject *obj)
 {
-	if (std::find(_deleteList.begin(), _deleteList.end(), obj) == _deleteList.end())
-		this->_deleteList.push_back(obj);
+	if (obj)
+		this->_deleteList.insert(obj);
 }
 
 void			GameObjectManager::deleteObjects()
 {
-	for (std::list<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end(); it++)
+	for (std::set<GameObject *>::iterator it = this->_deleteList.begin(); it != this->_deleteList.end(); it++)
 	{
 		if ((*it)->isDelete() == 1)
 		{

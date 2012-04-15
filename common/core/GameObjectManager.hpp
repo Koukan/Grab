@@ -121,7 +121,7 @@ class CORE_DLLREQ GameObjectManager : public TimeEffectManager
 	Range						_range;
     groupsMap					_groups;
     groupsDisplay				_display;
-	std::list<GameObject*>		_deleteList;
+	std::set<GameObject*>		_deleteList;
 };
 
 #include "GameObjectManager.ipp"
