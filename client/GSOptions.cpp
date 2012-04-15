@@ -59,10 +59,16 @@ void	GSOptions::fullscreen()
 
 void	GSOptions::returnMenu()
 {
-		//NetworkModule::get().setName(this->_name->getText());
   NetworkModule::get().setIP(this->_ip->getText());
   NetworkModule::get().setPort(this->_port->getText());
-  Game::get().savePreferencesFile(/*this->_name->getText()*/"", this->_ip->getText(), this->_port->getText());
+  std::vector<std::string>		tab;
+  tab.push_back(this->_ip->getText());
+  tab.push_back(this->_port->getText());
+  tab.push_back(RendererManager::get().isFullscreen() ? "true" : "false");
+  size_t pos = _resolution.find("x");
+  tab.push_back(this->_resolution.substr(0, pos));
+  tab.push_back(this->_resolution.substr(pos + 1));
+  Game::get().savePreferencesFile(tab);
   Core::GameStateManager::get().popState();
 }
 
