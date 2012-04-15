@@ -46,7 +46,7 @@ void		GSManager::destroy()
 bool		GSManager::pushState(std::string const &name,
 								 GameState::Pause paused)
 {
-	std::list<GameState*>::const_iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
+	std::list<GameState*>::iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
 
 	if (it != this->_loadedStates.end())
 	{
@@ -81,7 +81,7 @@ void		GSManager::popState(bool del)
 
 void		GSManager::removeLoadedState(std::string const &name)
 {
-	std::list<GameState*>::const_iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
+	std::list<GameState*>::iterator it = find(_loadedStates.begin(), _loadedStates.end(), name);
 
 	if (it != _loadedStates.end())
 	{
