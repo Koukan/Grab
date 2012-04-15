@@ -44,7 +44,7 @@ void	GSBindPlayer::onStart()
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
 	if (_online)
 	{
-		GameCommand *cmd = new GameCommand("MapChange");
+		GameCommand *cmd = new GameCommand("MapChoice");
 		cmd->data = this->_map;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}

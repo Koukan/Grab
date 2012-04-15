@@ -41,7 +41,6 @@ GameLogic::GameLogic(Game &game, const std::string &map)
   this->addGroup("playerAuras", 3);
   this->addGroup("playerAurasPower", 4);
 
-	this->load(map);
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-1000, -1000, 4000, 980)), "shotWall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(2000, -2000, 1000, 8000)), "Wall");
   this->addGameObject(new Core::PhysicObject(*new Core::RectHitBox(-2000, -2000, 1000, 8000)), "Wall");
@@ -125,6 +124,7 @@ Game		&GameLogic::getGame() const
 
 void		GameLogic::startGame()
 {
+	this->load(this->_game.getMap());
 	this->_map = static_cast<Map*>(this->getResource(this->_game._map, 5));
 	MonsterGenerator	*generator = dynamic_cast<MonsterGenerator*>(this->_map);
 	if (generator)
