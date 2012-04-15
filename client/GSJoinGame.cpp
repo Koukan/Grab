@@ -86,6 +86,7 @@ bool	GSJoinGame::handleCommand(Core::Command const &command)
 	  	std::string str = id + "  Players " + state + "/" + nbPlayers + " Mode:" + Modes::modesList[cmd.type].name + " Map:" + cmd._login.substr(slash, point);
 	  	GameButton *button = new GameButton(cmd.idGame, cmd.nbPlayers, str, *this->_longbutton, this->_vlayout);
 		button->setMap(cmd._login);
+		button->setMode(cmd.type);
 	  	this->_isListed = true;
 	}
     else
