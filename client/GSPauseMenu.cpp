@@ -11,28 +11,17 @@
 #include "Player.hpp"
 #include "GSInGame.hpp"
 
-GSPauseMenu::GSPauseMenu(std::list<Player *>& players,
+GSPauseMenu::GSPauseMenu(GSInGame &inGame, std::list<Player *>& players,
 			 Modes::Mode mode, std::string const& map, 
 			 unsigned int nbPlayers, bool online)
-  : Core::GameState("pauseMenu", true),
+  : Core::GameState("pauseMenu", true), _inGame(inGame),
     _players(players), _mode(mode), _map(map),
     _nbPlayers(nbPlayers), _online(online)
-
-{}
+{
+}
 
 GSPauseMenu::~GSPauseMenu()
 {
-}
-
-void	GSPauseMenu::returnMainMenu()
-{
-	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
-		Core::GameStateManager::get().popState();
-}
-
-void	GSPauseMenu::resumeGame()
-{
-	Core::GameStateManager::get().popState();
 }
 
 void	GSPauseMenu::onStart()
@@ -55,8 +44,42 @@ void	GSPauseMenu::onStart()
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::resumeGame, "Resume Game", "buttonFont", *sprite, layout);
+  if (Game::get().isMaster())
+  {
+	new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::reBind, "Change Ship", "buttonFont", *sprite, layout);
+	new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::changeMap, "Change Map", "buttonFont", *sprite, layout);
+  }
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::retry, "Retry", "buttonFont", *sprite, layout);
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::returnMainMenu, "Return to Menu", "buttonFont", *sprite, layout);
+}
+
+bool	GSPauseMenu::handleCommand(Core::Command const &cmd)
+{
+	return this->_inGame.handleCommand(cmd);
+}
+
+void	GSPauseMenu::returnMainMenu()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
+		Core::GameStateManager::get().popState();
+}
+
+void	GSPauseMenu::resumeGame()
+{
+	Core::GameStateManager::get().popState();
+}
+
+void	GSPauseMenu::reBind()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+}
+
+void	GSPauseMenu::changeMap()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState(false);
 }
 
 void	GSPauseMenu::retry()
@@ -65,17 +88,17 @@ void	GSPauseMenu::retry()
 	Core::GameStateManager::get().popState();
 
 	if (!_online)
-	  {
-	    for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
-	      {
-		if (_nbPlayers > 1)
-		  (*it)->setLife(-1);
-		else
-		  (*it)->setLife(3);
-	      }
-	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-	    gs->preload();
-	    Core::GameStateManager::get().pushState(*gs);
-	  }
+	{
+		for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+		{
+			if (_nbPlayers > 1)
+				(*it)->setLife(-1);
+			else
+				(*it)->setLife(3);
+		}
+		GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
+		gs->preload();
+		Core::GameStateManager::get().pushState(*gs);
+	}
 }
 

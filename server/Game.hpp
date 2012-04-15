@@ -25,6 +25,7 @@ class Game : public Core::Module
 	void			loadGame();
 	void			ready();
 	void			setMap(std::string const &map);
+	void			reset();
 
 	//getter
 	bool						isFull() const;
@@ -39,7 +40,7 @@ class Game : public Core::Module
   private:
 	void			startGame();
 
-	GameLogic			_logic;
+	GameLogic			*_logic;
 	uint16_t			_id;
 	uint8_t				_maxPlayers;
 	Modes::Mode			_type;

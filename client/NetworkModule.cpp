@@ -82,7 +82,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"deadPlayer", &NetworkModule::deadPlayer},
 		{"Bonus", &NetworkModule::bonus},
 		{"AuraActivated", &NetworkModule::auraActivated},
-		{"MapChoice", &NetworkModule::mapChoice}
+		{"MapChoice", &NetworkModule::mapChoiceCommand},
+		{"ReBind", &NetworkModule::reBindCommand}
 		/*must be completed */
 	};
 
@@ -231,13 +232,21 @@ void		NetworkModule::readyCommand(Core::Command const &)
 	this->_server->handleOutputPacket(packet);
 }
 
-void		NetworkModule::mapChoice(Core::Command const &command)
+void		NetworkModule::mapChoiceCommand(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
 	Net::Packet			packet(2 + cmd.data.size());
 
 	packet << static_cast<uint8_t>(TCP::MAPCHOICE);
 	packet << cmd.data;
+	this->_server->handleOutputPacket(packet);
+}
+
+void		NetworkModule::reBindCommand(Core::Command const &command)
+{
+	Net::Packet		packet(1);
+
+	packet << static_cast<uint8_t>(TCP::REBIND);
 	this->_server->handleOutputPacket(packet);
 }
 

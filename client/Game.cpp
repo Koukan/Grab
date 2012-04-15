@@ -18,7 +18,7 @@ int Game::NB_CHAR_NAME = 7;
 int	Game::NB_CHAR_IP = 100;
 int Game::NB_CHAR_PORT = 5;
 
-Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE.c_str()), _preferences(3)
+Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE.c_str()), _preferences(3), _master(true)
 {
 	if (this->_preferencesFile.is_open())
 	  this->readPreferencesFile();
@@ -98,4 +98,14 @@ std::string const &Game::getPort() const
 void		Game::quit()
 {
 	this->destroy();
+}
+
+bool		Game::isMaster() const
+{
+	return this->_master;
+}
+
+void		Game::setMaster(bool value)
+{
+	this->_master = value;
 }

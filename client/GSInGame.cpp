@@ -305,9 +305,10 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerGrab", &GSInGame::serverGrab},
 	{"ServerCannon", &GSInGame::serverCannon},
 	{"killPlayer", &GSInGame::killPlayer},
-	{"disableShield", &GSInGame::disableShield},
+	{"disableSpecialPower", &GSInGame::disableSpecialPower},
 	{"bonus", &GSInGame::bonus},
-	{"aura", &GSInGame::aura}
+	{"aura", &GSInGame::aura},
+	{"reBind", &GSInGame::reBind}
   };
 
   for (size_t i = 0;
@@ -394,7 +395,7 @@ void		GSInGame::gameover(bool victory)
 void		GSInGame::inputEscape(Core::InputCommand const &/*event*/)
 {
   Core::GameState::Pause pause = (!_online ? (Core::GameState::PHYSIC) : (Core::GameState::NONE));
-  Core::GameStateManager::get().pushState(*(new GSPauseMenu(_players, _mode,
+  Core::GameStateManager::get().pushState(*(new GSPauseMenu(*this, _players, _mode,
 							    _map, _nbPlayers, _online)), pause);
 }
 
@@ -585,12 +586,12 @@ void		GSInGame::killPlayer(GameCommand const &cmd)
 		ship->setDead(cmd.boolean, false);
 }
 
-void		GSInGame::disableShield(GameCommand const &cmd)
+void		GSInGame::disableSpecialPower(GameCommand const &cmd)
 {
   	Ship*		ship = cmd.player->getShip();
 
   	if (ship)
-  		ship->disableShield();
+  		ship->stopSpecialPower();
 }
 
 void        GSInGame::bonus(GameCommand const &cmd)
@@ -614,6 +615,12 @@ void		GSInGame::aura(GameCommand const &cmd)
 
   	if (ship)
   		ship->displayAura();
+}
+
+void		GSInGame::reBind(GameCommand const &)
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
 }
 
 void		GSInGame::createShips()

@@ -13,6 +13,7 @@ public:
 	~GSBindPlayer();
 
 	virtual void	onStart();
+	virtual void	onResume();
 	virtual bool	handleCommand(Core::Command const &command);
 	void			goToInGame();
 	void			addDemand(Core::GUICommand::PlayerType type);
@@ -46,10 +47,10 @@ private:
 	unsigned int				_nbPlayers;
 	bool						_online;
 	Player						*_players[4];
-
 	int							_nbReady;
 	int							_nbPending;
 	uint32_t					_id;
+	bool						_gameBegin;
 	DemandMap					_demands;
 	std::list<GUIPlayerButton*>	_buttons;
 	std::map<Core::GUICommand::PlayerType, GUIPlayerButton*>	_binds;

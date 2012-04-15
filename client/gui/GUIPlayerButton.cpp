@@ -46,10 +46,7 @@ bool	GUIPlayerButton::handleGUICommand(Core::GUICommand const &command)
 			if (command.action == Core::GUICommand::SELECT)
 				return this->selectCommand(command);
 			else if (this->_isSelect && command.action == Core::GUICommand::BACK)
-			{
-				std::cout << "test input " << std::endl;
 				return this->backCommand(command);
-			}
 		}
 	}
 	else if (command.type != Core::GUICommand::DIRECTION &&
@@ -223,7 +220,7 @@ void	GUIPlayerButton::addPlayer(Core::GUICommand::PlayerType type)
 
 void	GUIPlayerButton::updatePlayer(uint32_t ship, bool ready)
 {
-	if (this->_playerType != Core::GUICommand::ALL && this->_playerType != Core::GUICommand::ONLINE);
+	if (this->_playerType != Core::GUICommand::ALL && this->_playerType != Core::GUICommand::ONLINE && this->_player)
 		return ;
 	this->_playerType = Core::GUICommand::ONLINE;
 	this->_ship = ship;
@@ -263,6 +260,8 @@ void	GUIPlayerButton::changeToEmpty()
 
 void	GUIPlayerButton::changeToSelect()
 {
+	if (!this->_player)
+		return ;
 	this->_sprite.updateState(Core::ButtonSprite::SELECTED);
 	if (this->_font)
 	{

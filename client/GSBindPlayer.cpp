@@ -11,7 +11,7 @@
 #include "Game.hpp"
 
 GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online)
-  : Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0)
+  : Core::GameState("bindPlayers"), _mode(mode), _map(map), _nbPlayers(nbPlayers), _online(online), _nbReady(0), _nbPending(0), _id(0), _gameBegin(false)
 {
 	this->_players[0] = 0;
 	this->_players[1] = 0;
@@ -49,6 +49,24 @@ void	GSBindPlayer::onStart()
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
 }
 
+void	GSBindPlayer::onResume()
+{
+	if (!this->_gameBegin)
+		return ;
+	this->_gameBegin = false;
+	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
+		it != this->_buttons.end(); it++)
+		(*it)->changeToSelect();
+	for (size_t i = 0; i < 4; ++i)
+		{
+			if (_players[i])
+				_players[i]->setShip(0);
+		}
+	if (!this->_online || !Game::get().isMaster())
+		return ;
+	Core::CommandDispatcher::get().pushCommand(*new Core::Command("ReBind"));
+}
+
 bool	GSBindPlayer::handleCommand(Core::Command const &command)
 {
 	Method		tab[] = {
@@ -79,6 +97,7 @@ void	GSBindPlayer::goToLoadGame(Core::Command const &)
 		if (this->_players[i])
 			players->push_back(this->_players[i]);
 	}
+	this->_gameBegin = true;
 	Core::GameStateManager::get().pushState(*new GSLoading(*players, this->_mode, this->_map, this->_nbPlayers, this->_online));
 }
 
@@ -105,6 +124,7 @@ void	GSBindPlayer::goToInGame()
 	if (players->size() == 1 && this->_players[0])
 	  this->_players[0]->setLife(Modes::modesList[_mode].singleNbLife);
 	state->preload();
+	this->_gameBegin = true;
 	Core::GameStateManager::get().pushState(*state);
 }
 
@@ -147,7 +167,7 @@ GUIPlayerButton	*GSBindPlayer::selectedBy(Core::GUICommand::PlayerType playerTyp
 void	GSBindPlayer::changeMap(std::string const &map)
 {
 	this->mapChoice(map);
-	if (_online)
+	if (_online && Game::get().isMaster())
 	{
 		GameCommand *cmd = new GameCommand("MapChoice");
 		cmd->data = this->_map;
@@ -254,5 +274,11 @@ void	GSBindPlayer::updatePlayer(Core::Command const &command)
 
 void	GSBindPlayer::back(Core::InputCommand const &)
 {
-	Core::GameStateManager::get().popState(false);
+	if (Game::get().isMaster())
+		Core::GameStateManager::get().popState(false);
+	else
+	{
+		Core::GameStateManager::get().popState();
+		Core::GameStateManager::get().popState();
+	}
 }

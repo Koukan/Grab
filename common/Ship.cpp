@@ -8,8 +8,11 @@
 #include "CommandDispatcher.hpp"
 #include "Player.hpp"
 #include "Converter.hpp"
-#include "BlackHole.hpp"
+#include "BlackHolePower.hpp"
 #include "GameState.hpp"
+#include "SpecialPower.hpp"
+#include "Shield.hpp"
+#include "Missile.hpp"
 
 Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, Color const & color,
 		   unsigned int nbMaxGrabs)
@@ -25,11 +28,16 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
-	  _specialPowerActive(false), _electricAura(0), _state(state), _shield(0)
+	  _specialPower(0),
+	  _specialPowerActive(false), _electricAura(0), _state(state)
 {
-	state.addGameObject(this, "players");
-       static void (Ship::*powers[])() = {0, &Ship::shield, &Ship::bomb, &Ship::blackHole, &Ship::missile};
-       _specialPower = powers[_caracs.specialPowerType];
+       state.addGameObject(this, "players");
+       if (info.specialPowerType == ShipInfo::SHIELD)
+	 _specialPower = new Shield(*this, _state);
+       else if (info.specialPowerType == ShipInfo::MISSILE)
+	 _specialPower = new Missile(*this, _state, _color);
+       else if (info.specialPowerType == ShipInfo::BLACKHOLE)
+	 _specialPower = new BlackHolePower(*this, _state);
 	_cannons[0] = 0;
 	_cannons[1] = 0;
 	_cannons[2] = 0;
@@ -74,10 +82,6 @@ void	Ship::setPosition(double x, double y, double)
 	double	angle = atan2(y - this->_targety, x - this->_targetx);
 	this->_vx = cos(angle) * this->_speed;
 	this->_vy = sin(angle) * this->_speed;
-	/*this->_x = x;
-	this->_y = y;
-	this->_vx = 0;
-	this->_vy = 0;*/
 }
 
 void	Ship::move(double time)
@@ -120,51 +124,6 @@ void Ship::bomb()
 {
   std::cout << "throw bomb !" << std::endl;
   //  _bomb = new ConcreteObject("weapon", *(new Core::CircleHitBox(0, 0, 
-}
-
-void Ship::shield()
-{
-  if (!_shield)
-    {
-      this->_specialPowerActive = true;
-      std::cout << "shield !" << std::endl;
-      _shield = new ConcreteObject("shield", *(new Core::CircleHitBox(0, 0, 125)), 0, 0, -125, -125);
-      _state.addGameObject(_shield, "shields");
-	  if (this->_shield->getSprite())
-      	this->copyColor(*this->_shield->getSprite());
-      this->_shield->setLink(this);
-      GameCommand* cmd = new GameCommand("disableShield");
-      cmd->player = &this->_player;
-      Core::CommandDispatcher::get().pushCommand(*cmd, 5000);
-    }
-}
-
-void Ship::missile()
-{
-	PlayerBullet *bullet = new PlayerBullet("specialPowerPlayer3", this->getGroup()->getState(), "playerShots", 0, 0);
-	bullet->setColor(_color.r, _color.g, _color.b);
-	bullet->isFiring(true);
-	bullet->setLink(this);
-	this->getGroup()->getState().addGameObject(bullet, "spawner");
-}
-
-void Ship::disableShield()
-{
-  if (this->_shield)
-    {
-      this->_specialPowerActive = false;
-      this->_shield->setSprite("shield-disparition");
-      this->_shield->setDeleteSprite(true);
-	  if (this->_shield->getSprite())
-     	 this->copyColor(*this->_shield->getSprite());
-	  this->_shield = 0;
-    }
-}
-
-void	Ship::blackHole()
-{
-		this->_specialPowerActive = true;
-		new BlackHole(this->_x, this->_y, this->getGroup()->getState(), *this);
 }
 
 void 	Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
@@ -531,13 +490,12 @@ void Ship::setDead(bool dead, bool command)
 			cmd->boolean = false;
 			Core::CommandDispatcher::get().pushCommand(*cmd);
 		}
-		this->_delete = 0;
+		this->setCollidable();
 		return ;
 	}
-	this->_delete = 3;
+	this->setCollidable(false);
 	this->resetPowerGauge();
-	if (this->_caracs.specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
-	  this->disableShield();
+	this->stopSpecialPower();
 	if (this->getSprite())
 		this->getSprite()->setTransparency(0.4f);
 	this->_player.die();
@@ -608,7 +566,7 @@ void Ship::releaseCannon(unsigned int nb)
 	_cannons[nb] = 0;
 }
 
-void Ship::copyColor(Core::Sprite &sprite)
+void Ship::copyColor(Core::Sprite &sprite) const
 {
 	sprite.setColor(_color.r, _color.g, _color.b);
 }
@@ -674,6 +632,11 @@ void		Ship::setScore(unsigned int score)
   _score = score;
 }
 
+Color const &	Ship::getColor() const
+{
+  return _color;
+}
+
 void		Ship::setNbSecRespawn(int nbSec)
 {
 	this->_nbSecRespawn = nbSec;
@@ -716,8 +679,14 @@ void		Ship::specialPower()
   if (_powerGauge == 100 && _specialPower)
     {
       this->resetPowerGauge();
-      (this->*_specialPower)();
+      this->_specialPower->start();
     }
+}
+
+void		Ship::stopSpecialPower()
+{
+  if (_specialPower)
+    _specialPower->stop();
 }
 
 void		Ship::resetState()

@@ -3,6 +3,7 @@
 #include <string>
 #include "DrawableObject.hpp"
 #include "Resource.hpp"
+#include "Color.hpp"
 
 CORE_BEGIN_NAMESPACE
 
@@ -18,6 +19,7 @@ public:
 	// setter
 	virtual void	setText(std::string const & /*text*/){}
 	virtual void	setColor(int, int, int) {}
+	virtual void	setColor(Color const &color) {}
 	virtual void	setTransparency(int) {}
 
 	// getter

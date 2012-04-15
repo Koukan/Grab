@@ -26,11 +26,14 @@ public:
   std::string const &getName() const;
   std::string const &getIP() const;
   std::string const &getPort() const;
+  bool		isMaster() const;
+  void		setMaster(bool value);
 
 private:
   bool						_quit;
   std::fstream				_preferencesFile;
   std::vector<std::string>	_preferences;
+  bool						_master;
 };
 
 #endif		/* _GAME_ */

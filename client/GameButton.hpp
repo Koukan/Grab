@@ -9,10 +9,12 @@ public:
   ~GameButton();
 
   void	setMap(std::string const &map);
+  void	setMode(int mode);
   void 	push();
 
 private:
   int 			_id;
   int 			_nbPlayers;
   std::string	_map;
+  int			_mode;
 };

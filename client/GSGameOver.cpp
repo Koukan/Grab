@@ -8,6 +8,7 @@
 #include "Converter.hpp"
 #include "GUIHLayout.hpp"
 #include "GUILabel.hpp"
+#include "Game.hpp"
 
 GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       Modes::Mode mode, std::string const& map, 
@@ -21,21 +22,32 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
       if (victory)
 	_state->setText("VICTORY !!!");
       else
-	_state->setText("YOU LOOOOOOSE !!!");
+	_state->setText("YOU LOOOOOSE !!!");
       _state->setX(VIEWX / 2 - _state->getWidth() / 2);
       _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
       this->addGameObject(_state);
 
-      GUIHLayout *layout = new GUIHLayout(500, VIEWY / 2, 500, 0, 50);
-
       Ship* ship;
+
+      unsigned int x = VIEWX / (_nbPlayers + 1);
+      Core::CoreFont* score;
       for (std::list<Player *>::const_iterator it = players.begin();
 	   it != players.end(); ++it)
 	{
 	  ship = (*it)->getShip();
 	  if (ship)
 	    {
-	      new GUILabel(Net::Converter::toString<unsigned int>(ship->getScore()), "bigNumbersFont", "", layout);
+	      score = this->getFont("bigNumbersFont");
+	      if (score)
+		{
+		  score->setColor(ship->getColor());
+		  score->setText(Net::Converter::toString<unsigned int>(ship->getScore()));
+		  score->setX(x - score->getWidth() / 2);
+		  x += VIEWX / (_nbPlayers + 1);
+		  score->setY(VIEWY / 2 - 100);
+		  this->addGameObject(score);
+		}
+	      //	      new GUILabel(Net::Converter::toString<unsigned int>(ship->getScore()), "bigNumbersFont", "", layout);
 	    }
 	}
     }
@@ -47,10 +59,15 @@ GSGameOver::~GSGameOver()
 void GSGameOver::onStart()
 {
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
-					   VIEWY / 4 * 3,
-					   300, 300, 10, 100, "up arrow", "down arrow");
+					   VIEWY / 2,
+					   300, 500, 10, 100, "up arrow", "down arrow");
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
   new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
+  if (Game::get().isMaster())
+  {
+	  new GUIButton<GSGameOver>(*this, &GSGameOver::reBind, "Change Ship", "buttonFont", *sprite, layout);
+	  new GUIButton<GSGameOver>(*this, &GSGameOver::changeMap, "Change Map", "buttonFont", *sprite, layout);
+  }
   new GUIButton<GSGameOver>(*this, &GSGameOver::returnToMainMenu, "Go to Main Menu", "buttonFont", *sprite, layout);
 }
 
@@ -83,4 +100,17 @@ void	GSGameOver::returnToMainMenu()
 {
 	while (Core::GameStateManager::get().getCurrentState().name != "mainMenu")
 		Core::GameStateManager::get().popState();
+}
+
+void	GSGameOver::reBind()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+}
+
+void	GSGameOver::changeMap()
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
+		Core::GameStateManager::get().popState();
+	Core::GameStateManager::get().popState(false);
 }
