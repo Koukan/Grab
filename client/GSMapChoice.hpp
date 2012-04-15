@@ -2,6 +2,7 @@
 
 #include "GameState.hpp"
 #include "Modes.hpp"
+#include "GSBindPlayer.hpp"
 
 class GSMapChoice : public Core::GameState
 {
@@ -18,6 +19,7 @@ private:
 	Modes::Mode							_mode;
 	int									_nbPlayers;
 	bool								_online;
+	GSBindPlayer						*_bindPlayer;
 	std::string							_map;
 	std::map<std::string, std::string>	_maps;
 };

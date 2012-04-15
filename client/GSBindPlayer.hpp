@@ -22,6 +22,8 @@ public:
 	void			addSelected(GUIPlayerButton*, Core::GUICommand::PlayerType);
 	void			removeSelected(Core::GUICommand::PlayerType);
 	GUIPlayerButton	*selectedBy(Core::GUICommand::PlayerType) const;
+	void			changeMap(std::string const &map);
+	virtual void	back(Core::InputCommand const &cmd);
 
 private:
 	void			answerBind(Core::Command const &command);
