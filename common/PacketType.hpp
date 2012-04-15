@@ -48,7 +48,9 @@ namespace TCP
 		REMOVEPLAYER = 19,
 		SHIPSPAWN = 20,
 		SEED = 21,
-		MAPCHOICE = 22
+		MAPCHOICE = 22,
+		REBIND = 23,
+		MASTER = 24
 	};
 }
 

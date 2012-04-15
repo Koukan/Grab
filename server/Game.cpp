@@ -246,3 +246,10 @@ void		Game::setMap(std::string const &map)
 {
 	this->_map = map;
 }
+
+void		Game::reset()
+{
+	this->_readyPlayers = 0;
+	Core::Command	*cmd = new Core::Command("reset");
+	this->_logic.pushCommand(*cmd);
+}

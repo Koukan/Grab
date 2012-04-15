@@ -5,7 +5,7 @@
 #include "NetworkModule.hpp"
 
 Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
-		_id(0), _name(""), _game(0), _idPacket(0), _idRecvPacket(0), _idShip(0), _nblatency(0), _latency(0), _ready(false)
+		_id(0), _name(""), _game(0), _idPacket(0), _idRecvPacket(0), _idShip(0), _nblatency(0), _latency(0), _ready(false), _master(false)
 {
 }
 
@@ -64,7 +64,8 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			&Client::removePlayer,
 			0,
 			0,
-			&Client::mapChoice
+			&Client::mapChoice,
+			&Client::reBind
 	};
 	uint8_t			type;
 
@@ -231,6 +232,7 @@ int		Client::createGame(Net::Packet &packet)
 		Core::Logger::logger << "Game created with " << int(maxClient) << " players of type "
 			   	<< int(type) << ", on map " << map << " by " << addr.getHost(NI_NUMERICHOST);
 		game->addClient(*this);
+		this->_master = true;
 		return 1;
 	}
 	Core::Logger::logger << addr.getHost(NI_NUMERICHOST) << " try to create game but server is full";
@@ -337,10 +339,10 @@ int		Client::removePlayer(Net::Packet &packet)
 
 int					Client::mapChoice(Net::Packet &packet)
 {
-	std::string		map;
-	packet >> map;
-	if (this->_game)
+	if (this->_game && this->_master)
 	{
+		std::string		map;
+		packet >> map;
 		this->_game->setMap(map);
 		Player	* const *players = this->_game->getPlayers();
 		for (size_t i = 0; i < 4; i++)
@@ -355,6 +357,19 @@ int					Client::mapChoice(Net::Packet &packet)
 				this->handleOutputPacket(answer);
 			}
 		}
+		Net::Packet		*broadcast = packet.clone();
+		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
+		delete broadcast;
+		return 1;
+	}
+	return 0;
+}
+
+int					Client::reBind(Net::Packet &packet)
+{
+	if (this->_game && this->_master)
+	{
+		this->_game->reset();
 		Net::Packet		*broadcast = packet.clone();
 		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
 		delete broadcast;
@@ -429,4 +444,20 @@ void				Client::setUDPAddr(Net::InetAddr &addr)
 Net::InetAddr const 		&Client::getUDPAddr() const
 {
 	return _udpaddr;
+}
+
+bool					Client::isMaster() const
+{
+	return this->_master;
+}
+
+void					Client::setMaster(bool value)
+{
+	this->_master = value;
+	if (this->_master)
+	{
+		Net::Packet	packet(1);
+		packet << static_cast<uint8_t>(TCP::MASTER);
+		this->handleOutputPacket(packet);
+	}
 }
