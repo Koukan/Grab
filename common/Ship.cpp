@@ -531,10 +531,10 @@ void Ship::setDead(bool dead, bool command)
 			cmd->boolean = false;
 			Core::CommandDispatcher::get().pushCommand(*cmd);
 		}
-		this->_delete = 0;
+		this->setCollidable();
 		return ;
 	}
-	this->_delete = 3;
+	this->setCollidable(false);
 	this->resetPowerGauge();
 	if (this->_caracs.specialPowerType == ShipInfo::SHIELD && _specialPowerActive)
 	  this->disableShield();

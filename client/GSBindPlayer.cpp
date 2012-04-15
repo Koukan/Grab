@@ -57,6 +57,11 @@ void	GSBindPlayer::onResume()
 	for (std::list<GUIPlayerButton*>::const_iterator it = this->_buttons.begin();
 		it != this->_buttons.end(); it++)
 		(*it)->changeToSelect();
+	for (size_t i = 0; i < 4; ++i)
+		{
+			if (_players[i])
+				_players[i]->setShip(0);
+		}
 	if (!this->_online || !Game::get().isMaster())
 		return ;
 	Core::CommandDispatcher::get().pushCommand(*new Core::Command("ReBind"));
