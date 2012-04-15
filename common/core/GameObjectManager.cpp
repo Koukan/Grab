@@ -125,25 +125,14 @@ void		Group::removeObject(GameObject *object, bool id)
 		this->_gameState.removeObject(object->getId());
 }
 
+
 GameObjectManager::GameObjectManager() : _id(0)
 {
 }
 
 GameObjectManager::~GameObjectManager()
 {
-	IdMap::iterator	tmp;
-	for (IdMap::iterator it = this->_objects.begin();
-		 it != this->_objects.end();)
-	{
-		tmp = it++;
-		delete tmp->second;
-	}
-	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
-		 it != this->_collisionGroups.end(); it++)
-		delete it->second;
-	for (groupsMap::iterator it = this->_groups.begin();
-		 it != this->_groups.end(); it++)
-		delete it->second;
+	this->clear();
 }
 
 bool	GameObjectManager::existingGroup(const std::string &group) const
@@ -298,4 +287,22 @@ uint32_t			GameObjectManager::getLastAttributedId() const
 void				GameObjectManager::removeObject(uint32_t id)
 {
 	this->_objects.erase(id);
+}
+
+void				GameObjectManager::clear()
+{
+	IdMap::iterator	tmp;
+	for (IdMap::iterator it = this->_objects.begin();
+		 it != this->_objects.end();)
+	{
+		tmp = it++;
+		delete tmp->second;
+	}
+	for (collisionGroupsMap::iterator it = this->_collisionGroups.begin();
+		 it != this->_collisionGroups.end(); it++)
+		delete it->second;
+	for (groupsMap::iterator it = this->_groups.begin();
+		 it != this->_groups.end(); it++)
+		delete it->second;
+	this->_deleteList.clear();
 }
