@@ -12,7 +12,7 @@
 #include "MonsterGenerator.hpp"
 
 GameLogic::GameLogic(Game &game, const std::string &map)
-  : Core::GameState("GameLogic"), _game(game), _nbEnemies(0), _elapseTime(0), _gameStarted(false), _map(0)
+  : Core::GameState("GameLogic"), _game(game), _elapseTime(0), _gameStarted(false), _map(0)
 {
   this->addGroup("spawners", 0);
   this->addGroup("players", 40);
@@ -227,9 +227,6 @@ void		GameLogic::bonusCommand(Core::Command const &command)
 void		GameLogic::resetCommand(Core::Command const &command)
 {
 	this->_gameStarted = false;
-	if (this->_map)
-	{
-		this->_map->erase();
-		this->_map = 0;
-	}
+	this->_map = 0;
+	this->clear();
 }

@@ -256,4 +256,6 @@ void		Game::reset()
 	this->_readyPlayers = 0;
 	Core::Command	*cmd = new Core::Command("reset");
 	this->_logic.pushCommand(*cmd);
+	for (size_t i = 0; i < this->_maxPlayers; i++)
+		this->_players[i]->setShip(0);
 }
