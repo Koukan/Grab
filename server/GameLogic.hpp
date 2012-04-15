@@ -54,7 +54,6 @@ class GameLogic : public Core::GameState
 	void				resetCommand(Core::Command const &);
 
 	Game				&_game;
-	int					_nbEnemies;
 	double				_elapseTime;
 	bool				_gameStarted;
 	Net::MTRand			_rand;
