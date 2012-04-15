@@ -79,6 +79,25 @@ void	SFMLFont::setColor(int r, int g, int b)
   #endif
 }
 
+void	SFMLFont::setColor(Color const & color)
+{
+  #if (SFML_VERSION_MAJOR == 2)
+  sf::Color base = this->_str.getColor();
+
+  base.r = color.r;
+  base.g = color.g;
+  base.b = color.b;
+  this->_str.setColor(base);
+  #else
+  sf::Color base = this->_str.GetColor();
+
+  base.r = color.r;
+  base.g = color.g;
+  base.b = color.b;
+  this->_str.SetColor(base);
+  #endif
+}
+
 void	SFMLFont::setTransparency(int a)
 {
   #if (SFML_VERSION_MAJOR == 2)

@@ -305,7 +305,7 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"ServerGrab", &GSInGame::serverGrab},
 	{"ServerCannon", &GSInGame::serverCannon},
 	{"killPlayer", &GSInGame::killPlayer},
-	{"disableShield", &GSInGame::disableShield},
+	{"disableSpecialPower", &GSInGame::disableSpecialPower},
 	{"bonus", &GSInGame::bonus},
 	{"aura", &GSInGame::aura},
 	{"reBind", &GSInGame::reBind}
@@ -586,12 +586,12 @@ void		GSInGame::killPlayer(GameCommand const &cmd)
 		ship->setDead(cmd.boolean, false);
 }
 
-void		GSInGame::disableShield(GameCommand const &cmd)
+void		GSInGame::disableSpecialPower(GameCommand const &cmd)
 {
   	Ship*		ship = cmd.player->getShip();
 
   	if (ship)
-  		ship->disableShield();
+  		ship->stopSpecialPower();
 }
 
 void        GSInGame::bonus(GameCommand const &cmd)

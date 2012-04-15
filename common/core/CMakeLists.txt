@@ -39,6 +39,7 @@ set(INCLUDES_CORE
 	${CORE_DIR}Callback.hpp
 	${CORE_DIR}Callback.ipp
 	${CORE_DIR}CircleHitBox.hpp
+	${CORE_DIR}Color.hpp
 	${CORE_DIR}Command.hpp
 	${CORE_DIR}CommandDispatcher.hpp
 	${CORE_DIR}CommandHandler.hpp

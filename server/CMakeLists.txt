@@ -30,6 +30,14 @@ set(SRCS
 	${INCLUDES_CORE}
 	${COMMON_INCLUDE_DIR}BlackHole.hpp
 	${COMMON_INCLUDE_DIR}BlackHole.cpp
+	${COMMON_INCLUDE_DIR}BlackHolePower.hpp
+	${COMMON_INCLUDE_DIR}BlackHolePower.cpp
+	${COMMON_INCLUDE_DIR}Missile.hpp
+	${COMMON_INCLUDE_DIR}Missile.cpp
+	${COMMON_INCLUDE_DIR}Shield.hpp
+	${COMMON_INCLUDE_DIR}Shield.cpp	
+	${COMMON_INCLUDE_DIR}SpecialPower.hpp
+	${COMMON_INCLUDE_DIR}SpecialPower.cpp	
 	${COMMON_INCLUDE_DIR}PacketType.hpp
 	${COMMON_INCLUDE_DIR}PacketType.hpp
 	${COMMON_INCLUDE_DIR}Resources.hpp
