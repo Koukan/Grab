@@ -35,7 +35,6 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 
 void	Rules::limitWallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 {
-	o2.setDelete(1);
 	o2.erase();
 }
 
