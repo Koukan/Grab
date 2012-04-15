@@ -12,9 +12,6 @@ class Game : public Net::Singleton<Game>, public Core::ModuleManager
 {
 public:
   static const std::string PREF_FILE;
-  static int	NB_CHAR_NAME;
-  static int	NB_CHAR_IP;
-  static int	NB_CHAR_PORT;
 
   Game();
   virtual ~Game();
@@ -22,10 +19,8 @@ public:
   void		quit();
 
   void		readPreferencesFile();
-  void		savePreferencesFile(std::string const &name = "", std::string const &ip = "", std::string const &port = "");
-  std::string const &getName() const;
-  std::string const &getIP() const;
-  std::string const &getPort() const;
+  void		savePreferencesFile(std::vector<std::string> const &tab);
+  std::vector<std::string> const &getPreferences() const;
   bool		isMaster() const;
   void		setMaster(bool value);
 

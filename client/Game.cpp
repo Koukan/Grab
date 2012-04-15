@@ -14,20 +14,11 @@
 #include "MapProvider.hpp"
 
 const std::string Game::PREF_FILE = ".preferences";
-int Game::NB_CHAR_NAME = 7;
-int	Game::NB_CHAR_IP = 100;
-int Game::NB_CHAR_PORT = 5;
 
-Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE.c_str()), _preferences(3), _master(true)
+Game::Game() : _quit(false), _preferencesFile(Game::PREF_FILE.c_str()), _preferences(5), _master(true)
 {
 	if (this->_preferencesFile.is_open())
 	  this->readPreferencesFile();
-	else
-	  this->savePreferencesFile();
-	this->_preferences[0] = this->_preferences[0].substr(0, Game::NB_CHAR_NAME);
-	this->_preferences[1] = this->_preferences[1].substr(0, Game::NB_CHAR_IP);
-	this->_preferences[2] = this->_preferences[2].substr(0, Game::NB_CHAR_PORT);
-
 }
 
 Game::~Game()
@@ -49,6 +40,11 @@ void		Game::init()
 
   // add Module
   this->loadModule(Core::CommandDispatcher::get());
+  RendererManager::get().setFullscreen((_preferences[2] == "false") ? false : true);
+  int width = Net::Converter::toInt<int>(this->_preferences[3]);
+  int height = Net::Converter::toInt<int>(this->_preferences[4]);
+  if (width > 0 && height > 0)
+	RendererManager::get().setResolution(width, height);
   this->loadModule(RendererManager::get());
   this->loadModule(*(new InputModule));
   this->loadModule(*(new Core::PhysicManager));
@@ -60,39 +56,29 @@ void		Game::init()
 
 void		Game::readPreferencesFile()
 {
-  for (unsigned int i = 0; _preferencesFile.good() && i < _preferences.size(); ++i)
-    {
-      std::getline(_preferencesFile, this->_preferences[i]);
-    }
+	for (unsigned int i = 0; _preferencesFile.good() && i < _preferences.size(); ++i)
+	{
+		std::getline(_preferencesFile, this->_preferences[i]);
+	}
 }
 
-void		Game::savePreferencesFile(std::string const &name, std::string const &ip, std::string const &port)
+void		Game::savePreferencesFile(std::vector<std::string> const &tab)
 {
-  if (_preferencesFile.is_open())
-    _preferencesFile.close();
-  _preferencesFile.open(PREF_FILE.c_str(), std::ios_base::out | std::ios_base::trunc);
-  if (_preferencesFile.is_open())
-    {
-		_preferencesFile << name << std::endl;
-		_preferencesFile << ip << std::endl;
-		_preferencesFile << port << std::endl;
-    }
-  _preferencesFile.close();
+	if (_preferencesFile.is_open())
+		_preferencesFile.close();
+	_preferencesFile.open(PREF_FILE.c_str(), std::ios_base::out | std::ios_base::trunc);
+	if (_preferencesFile.is_open())
+	{
+		for (std::vector<std::string>::const_iterator it = tab.begin();
+			 it != tab.end(); it++)
+			_preferencesFile << *it << std::endl;
+	}
+	_preferencesFile.close();
 }
 
-std::string const &Game::getName() const
+std::vector<std::string> const &Game::getPreferences() const
 {
-	return (this->_preferences[0]);
-}
-
-std::string const &Game::getIP() const
-{
-	return (this->_preferences[1]);
-}
-
-std::string const &Game::getPort() const
-{
-	return (this->_preferences[2]);
+	return (this->_preferences);
 }
 
 void		Game::quit()

@@ -43,7 +43,7 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		int					_height;
 		bool				_fullscreen;
 		sf::RenderWindow	_window;
-		Shader			_shader;
+		Shader				_shader;
 
 private:
 		void				updateWindow();

@@ -35,53 +35,53 @@ void	MonsterGenerator::move(double time)
 	this->_y2 += this->_vy * time;
 }
 
-void	MonsterGenerator::addRandomBoss(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomBoss(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_bosses.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_bosses.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 }
 
-void	MonsterGenerator::addRandomMonster(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomMonster(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_randMonsters.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_randMonsters.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::sort(this->_randMonsters.begin(), this->_randMonsters.end());
 }
 
-void	MonsterGenerator::addMazeMonster(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addMazeMonster(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_mazeMonsters.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_mazeMonsters.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::sort(this->_mazeMonsters.begin(), this->_mazeMonsters.end());
 }
 
-void	MonsterGenerator::addRandomWall(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomWall(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_walls.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_walls.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::sort(this->_walls.begin(), this->_walls.end());
 }
 
-void	MonsterGenerator::addRandomHWall(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomHWall(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_hWalls.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_hWalls.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::stable_sort(this->_hWalls.begin(), this->_hWalls.end());
 }
 
-void	MonsterGenerator::addRandomVWall(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomVWall(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_vWalls.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_vWalls.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::stable_sort(this->_vWalls.begin(), this->_vWalls.end());
 }
 
-void	MonsterGenerator::addRandomBreakableWall(std::string const &name, bool scrollable, size_t level, int min, int max)
+void	MonsterGenerator::addRandomBreakableWall(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax)
 {
-	this->_breakableWalls.push_back(MonsterInfo(level, name, scrollable, min, max));
+	this->_breakableWalls.push_back(MonsterInfo(level, name, scrollable, min, max, ymin, ymax));
 	std::sort(this->_breakableWalls.begin(), this->_breakableWalls.end());
 }
 
-void	MonsterGenerator::addSquadSound(std::string const &name, bool /*scrollable*/, size_t /*level*/, int /*min*/, int /*max*/)
+void	MonsterGenerator::addSquadSound(std::string const &name, bool /*scrollable*/, size_t /*level*/, int /*min*/, int /*max*/, int /*ymin*/, int /*ymax*/)
 {
 	this->_squadSounds.push_back(name);
 }
 
-void	MonsterGenerator::addBossSound(std::string const &name, bool /*scrollable*/, size_t /*level*/, int /*min*/, int /*max*/)
+void	MonsterGenerator::addBossSound(std::string const &name, bool /*scrollable*/, size_t /*level*/, int /*min*/, int /*max*/, int ymin, int ymax)
 {
 	this->_bossSounds.push_back(name);
 }
@@ -181,14 +181,14 @@ void	MonsterGenerator::createMazeMonster(int x, int y)
 
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
 {
-	this->addElem("spawnspawner", info.name, this->_rand() % (/*RendererManager::get().getWidth()*/1280 - 100),
-		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, false, -100);
+	this->addElem("spawnspawner", info.name, this->_rand() % (info.xmax - info.xmin) + info.xmin,
+		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, false, this->_rand() % (info.ymax - info.ymin) + info.ymin);
 }
 
 void	MonsterGenerator::createBoss(MonsterInfo const &info)
 {
-	this->addElem("spawnspawner", info.name, this->_rand() % 500 + /*RendererManager::get().getWidth()*/1280 / 2 - 250,
-		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, true, -100);
+	this->addElem("spawnspawner", info.name, this->_rand() % (info.xmax - info.xmin) + info.xmin,
+		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, true, this->_rand() % (info.ymax - info.ymin) + info.ymin);
 }
 
 void	MonsterGenerator::createSquadSound()

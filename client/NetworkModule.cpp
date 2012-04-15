@@ -17,9 +17,9 @@ NetworkModule::~NetworkModule()
 
 void	    NetworkModule::init()
 {
-	this->_name = Game::get().getName();
-	this->_ip = Game::get().getIP();
-	this->_port = Game::get().getPort();
+	std::vector<std::string> const	&tab = Game::get().getPreferences();
+	this->_ip = tab[0];
+	this->_port = tab[1];
 	if (this->_port.empty())
 		this->_port = "25557";
 }
@@ -334,11 +334,6 @@ void		NetworkModule::auraActivated(Core::Command const &command)
 	this->sendPacketUDP(packet, true);
 }
 
-void		NetworkModule::setName(std::string const &name)
-{
-	this->_name = name;
-}
-
 void		NetworkModule::setPort(std::string const &port)
 {
 	this->_port = port;
@@ -347,11 +342,6 @@ void		NetworkModule::setPort(std::string const &port)
 void		NetworkModule::setIP(std::string const &ip)
 {
 	this->_ip = ip;
-}
-
-std::string const	&NetworkModule::getName() const
-{
-	return (this->_name);
 }
 
 std::string const	&NetworkModule::getPort() const
