@@ -44,12 +44,12 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::updatePlayerPacket,
 			&Server::removePlayerPacket,
 			&Server::shipSpawnPacket,
-			&Server::seedPacket
+			&Server::seedPacket,
+			&Server::mapChoicePacket
 	};
 	uint8_t			type;
 
 	packet >> type;
-	std::cout << "incomming packet " << int(type) << std::endl;
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != NULL)
 	{
 		return (this->*methods[type])(packet);
@@ -238,7 +238,15 @@ bool		Server::seedPacket(Net::Packet &packet)
 	uint32_t	seed;
 
 	packet >> seed;
-	std::cout << "seed receive" << std::endl;
 	Core::CommandDispatcher::get().pushCommand(*new GameCommand("seed", seed));
+	return true;
+}
+
+bool		Server::mapChoicePacket(Net::Packet &packet)
+{
+	GameCommand		*cmd = new GameCommand("mapChoice");
+
+	packet >> cmd->data;
+	Core::CommandDispatcher::get().pushCommand(*cmd);
 	return true;
 }

@@ -17,12 +17,13 @@ GSBindPlayer::GSBindPlayer(Modes::Mode mode, std::string const &map, unsigned in
 	this->_players[1] = 0;
 	this->_players[2] = 0;
 	this->_players[3] = 0;
+	this->_mapFont = this->getFont("listGameFont");
+	this->mapChoice(map);
+	this->addGameObject(_mapFont);
 }
 
 GSBindPlayer::~GSBindPlayer()
 {
-	if (this->_online)
-		Game::get().unloadModule("NetworkModule");
 }
 
 void	GSBindPlayer::onStart()
@@ -41,6 +42,12 @@ void	GSBindPlayer::onStart()
 
 	for (unsigned int i = 0; i < this->_nbPlayers; ++i)
 		_buttons.push_back(new GUIPlayerButton(*this, *(this->_players + i), this->_nbPending, this->_nbReady, *sprite, "buttonFont", layout, i));
+	if (_online)
+	{
+		GameCommand *cmd = new GameCommand("MapChange");
+		cmd->data = this->_map;
+		Core::CommandDispatcher::get().pushCommand(*cmd);
+	}
 }
 
 bool	GSBindPlayer::handleCommand(Core::Command const &command)
@@ -49,7 +56,8 @@ bool	GSBindPlayer::handleCommand(Core::Command const &command)
 		{"answerBind", &GSBindPlayer::answerBind},
 		{"updatePlayerPacket", &GSBindPlayer::updatePlayer},
 		{"removePlayer", &GSBindPlayer::removePlayer},
-		{"goToLoadGame", &GSBindPlayer::goToLoadGame}
+		{"goToLoadGame", &GSBindPlayer::goToLoadGame},
+		{"mapChoice", &GSBindPlayer::mapChoice}
 	};
 
 	for (size_t i = 0; i < sizeof(tab) / sizeof(*tab); i++)
@@ -187,6 +195,23 @@ void	GSBindPlayer::removePlayer(Core::Command const &command)
 		}
 		i++;
 	}
+}
+
+void	GSBindPlayer::mapChoice(std::string const &map)
+{
+	this->_map = map;
+	size_t slash = this->_map.find_last_of('/');
+	slash = (slash == std::string::npos) ? 0 : slash + 1;
+	size_t point = this->_map.find_last_of('.') - slash;
+	this->_mapFont->setText("Map: " + _map.substr(slash, point));
+	this->_mapFont->setX(VIEWX / 2 - this->_mapFont->getWidth() / 2);
+	this->_mapFont->setY(200);
+}
+
+void	GSBindPlayer::mapChoice(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	this->mapChoice(cmd.data);
 }
 
 void	GSBindPlayer::updatePlayer(uint32_t nb, uint32_t ship, bool ready)

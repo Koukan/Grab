@@ -130,6 +130,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, uint64_t)
 {
 	uint32_t	id;
 	packet >> id;
+	std::cout  << "Server retrieve Packet id = " << id << std::endl;
 	NetworkModule::get().retrievePacket(id);
 	return 1;
 }

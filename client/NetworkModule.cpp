@@ -81,7 +81,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"updateCannon", &NetworkModule::updateCannon},
 		{"deadPlayer", &NetworkModule::deadPlayer},
 		{"Bonus", &NetworkModule::bonus},
-		{"AuraActivated", &NetworkModule::auraActivated}
+		{"AuraActivated", &NetworkModule::auraActivated},
+		{"MapChoice", &NetworkModule::mapChoice}
 		/*must be completed */
 	};
 
@@ -230,6 +231,16 @@ void		NetworkModule::readyCommand(Core::Command const &)
 	this->_server->handleOutputPacket(packet);
 }
 
+void		NetworkModule::mapChoice(Core::Command const &command)
+{
+	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
+	Net::Packet			packet(2 + cmd.data.size());
+
+	packet << static_cast<uint8_t>(TCP::MAPCHOICE);
+	packet << cmd.data;
+	this->_server->handleOutputPacket(packet);
+}
+
 void		NetworkModule::fireCommand(Core::Command const &command)
 {
 	Net::Packet		packet(18);
@@ -304,7 +315,6 @@ void		NetworkModule::bonus(Core::Command const &command)
 
 void		NetworkModule::auraActivated(Core::Command const &command)
 {
-	
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
 	Net::Packet			packet(18);
 

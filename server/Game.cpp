@@ -241,3 +241,8 @@ void		Game::ready()
 	}
 	this->startGame();
 }
+
+void		Game::setMap(std::string const &map)
+{
+	this->_map = map;
+}
