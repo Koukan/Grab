@@ -40,6 +40,7 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 	      score = this->getFont("bigNumbersFont");
 	      if (score)
 		{
+		  score->setColor(ship->getColor());
 		  score->setText(Net::Converter::toString<unsigned int>(ship->getScore()));
 		  score->setX(x - score->getWidth() / 2);
 		  x += VIEWX / (_nbPlayers + 1);

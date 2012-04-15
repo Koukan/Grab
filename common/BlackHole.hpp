@@ -22,7 +22,7 @@ private:
 	double			_elapsedTime2;
 	int				_angle;
 	std::list<ConcreteObject *>	_particles;
-	int				_nbParticles;
+	unsigned int			_nbParticles;
 	ConcreteObject	*_end;
 	Ship			&_ship;
 };
