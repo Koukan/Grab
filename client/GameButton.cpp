@@ -30,6 +30,6 @@ void GameButton::push()
   command->idObject = this->_id;
 
   Core::CommandDispatcher::get().pushCommand(*command);
-  Core::GameStateManager::get().changeState(*(new GSMapChoice(static_cast<Modes::Mode>(_mode), _nbPlayers, true)));
+  Core::GameStateManager::get().pushState(*(new GSMapChoice(static_cast<Modes::Mode>(_mode), _nbPlayers, true)));
   Core::GameStateManager::get().pushState(*(new GSBindPlayer(static_cast<Modes::Mode>(_mode), _map, _nbPlayers, true)));
 }
