@@ -11,45 +11,74 @@
 #include "Game.hpp"
 #include "CommandDispatcher.hpp"
 #include "GSLoading.hpp"
+#include "Sprite.hpp"
 
 GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       Modes::Mode mode, std::string const& map, 
 		       unsigned int nbPlayers, bool online) :
   Core::GameState("gameOver"),
   _victory(victory), _players(players), _mode(mode), _map(map),
-  _nbPlayers(nbPlayers), _online(online), _state(this->getFont("bigNumbersFont"))
+  _nbPlayers(nbPlayers), _online(online)
 {
+  this->load("resources/xml/intro.xml");
+  _state = this->getFont("bigNumbersFont");
   if (_state)
     {
+      this->addGroup("texts", 40);
+      this->addGroup("auras", 30);
+      this->addGroup("background", 0);
+
+      Core::Sprite *bg = this->getSprite("ig-menu-background");
+      if (bg)
+	{
+	  bg->setX(VIEWX / 2);
+	  bg->setY(VIEWY / 2);
+	  this->addGameObject(bg, "background");
+	}
       if (victory)
-	_state->setText("VICTORY !!!");
+	_state->setText("YOU WIN !");
       else
 	_state->setText("YOU LOOOOOSE !!!");
       _state->setX(VIEWX / 2 - _state->getWidth() / 2);
       _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
-      this->addGameObject(_state);
+      this->addGameObject(_state, "texts");
 
       Ship* ship;
-
       unsigned int x = VIEWX / (_nbPlayers + 1);
       Core::CoreFont* score;
+      Core::Sprite*   sprite;
+      Core::Sprite*   aura;
+
       for (std::list<Player *>::const_iterator it = players.begin();
 	   it != players.end(); ++it)
 	{
 	  ship = (*it)->getShip();
 	  if (ship)
 	    {
+	      sprite = this->getSprite(ship->getShipCaracs().spriteName);
+	      if (sprite)
+		{
+		  aura = this->getSprite("playerAura");
+		  if (aura)
+		    {
+		      aura->setColor(ship->getColor());
+		      aura->setX(x);
+		      aura->setY(VIEWY / 2 - 180);
+		      this->addGameObject(aura, "auras");
+		    }
+		  sprite->setX(x);
+		  sprite->setY(VIEWY / 2 - 180);
+		  this->addGameObject(sprite, "texts");
+		}
 	      score = this->getFont("bigNumbersFont");
 	      if (score)
 		{
-		  score->setColor(ship->getColor());
 		  score->setText(Net::Converter::toString<unsigned int>(ship->getScore()));
 		  score->setX(x - score->getWidth() / 2);
 		  x += VIEWX / (_nbPlayers + 1);
 		  score->setY(VIEWY / 2 - 100);
-		  this->addGameObject(score);
+		  this->addGameObject(score, "texts");
 		}
-	      //	      new GUILabel(Net::Converter::toString<unsigned int>(ship->getScore()), "bigNumbersFont", "", layout);
 	    }
 	}
     }

@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "DrawableObject.hpp"
 #include "Resource.hpp"
+#include "Color.hpp"
 
 CORE_BEGIN_NAMESPACE
 class CORE_DLLREQ Sprite : public DrawableObject, public Resource
@@ -18,6 +19,7 @@ public:
 	// setter
 	virtual void	setTransparency(float){}
 	virtual void	setColor(int /*r*/, int /*g*/, int /*b*/){}
+	virtual void	setColor(Color const & /*color*/){}
 	virtual void	setScale(float /*x*/, float /*y*/){}
 	virtual void	setSpeed(double){}
 	virtual void	setRepeat(bool){}

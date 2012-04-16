@@ -25,6 +25,7 @@ class SFMLSprite : public Core::Sprite, public sf::Sprite
 
 		virtual void		setTransparency(float transparency);
 		virtual void		setColor(int r, int g, int b);
+		virtual void		setColor(Color const & color);
 		virtual void		setRotation(double angle);
 		virtual void		rotate(double angle);
 		virtual void		setCenter(double x, double y);
