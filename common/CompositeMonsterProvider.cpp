@@ -32,7 +32,7 @@ void    CompositeMonsterProvider::handleXML(TiXmlNode *parent, Core::ResourceMan
 		CompositeMonsterProvider::monster tmp;
 		tmp.x = 0;
 		tmp.y = 0;
-		for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(parent)->FirstAttribute(); attrib != 0; attrib = attrib->Next())
+		for (TiXmlAttribute	*attrib = static_cast<TiXmlElement*>(child)->FirstAttribute(); attrib != 0; attrib = attrib->Next())
 		{
 			name = attrib->Name();
 			if (name == "bulletml")
@@ -44,7 +44,17 @@ void    CompositeMonsterProvider::handleXML(TiXmlNode *parent, Core::ResourceMan
 			else if (name == "y")
 				tmp.y = Net::Converter::toInt<int>(attrib->Value());
 			else if (name == "depends")
-				tmp.depends.push_back(attrib->Value());
+				{
+					size_t index = 0;
+					size_t pos;
+					std::string	str(attrib->Value());
+					while ((pos = str.find(',', index)) != std::string::npos)
+					{
+						tmp.depends.push_back(str.substr(index, pos));
+						index = pos + 1;
+					}
+					tmp.depends.push_back(str.substr(index));
+				}
 		}
 		mon->addMonster(tmp);
 	}

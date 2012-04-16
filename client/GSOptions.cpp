@@ -55,6 +55,7 @@ void	GSOptions::onStart()
 void	GSOptions::fullscreen()
 {
 	RendererManager::get().setFullscreen(!RendererManager::get().isFullscreen());
+	RendererManager::get().updateWindow();
 }
 
 void	GSOptions::returnMenu()
@@ -78,7 +79,10 @@ void	GSOptions::applyResolution()
 	size_t pos = _resolution.find("x");
 	int height = Net::Converter::toInt<int>(_resolution.substr(pos + 1));
 	if (width > 0 && height > 0)
+	{
 		RendererManager::get().setResolution(width, height);
+		RendererManager::get().updateWindow();
+	}
 }
  
 void	GSOptions::changeResolution(Core::GUIElement &nb)

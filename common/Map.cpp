@@ -55,10 +55,7 @@ void    	Map::addElem(std::string const &command, std::string const &name, size_
 		data.vx = vx;
 		data.vy = vy;
 		data.pause = pause;
-		if (scrollable)
-			data.vScrolling = static_cast<int>(this->_vy);
-		else
-			data.vScrolling = 0;
+		data.vScrolling = (scrollable) ? static_cast<int>(this->_vy) : 0;
 		this->_prevY += ry;
 		this->_monsters.insert(std::make_pair((y) ? y : this->_prevY, data));
 	}

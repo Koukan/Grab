@@ -7,7 +7,7 @@ class	CompositeMaster;
 class	CompositeNode : public Core::BulletCommand
 {
 	public:
-			CompositeNode(CompositeMaster &parent, std::string const &script, Core::GameState &gstate);
+			CompositeNode(CompositeMaster &parent, std::string const &name, std::string const &script, Core::GameState &gstate);
 			~CompositeNode();
 			void	erase();
 			std::string	const &getName();

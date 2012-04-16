@@ -15,6 +15,6 @@ class	CompositeMaster : public Core::BulletCommand
 			void	registerCompositeNode(CompositeNode &node, std::list<std::string>  const &dependencies);
 				
 	private:
-			std::map<std::string, std::list<std::string> >		_dependencies;
-			Core::GameState										_state;
+			std::map<CompositeNode*, std::list<std::string> >	_dependencies;
+			Core::GameState										&_state;
 };

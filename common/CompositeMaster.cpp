@@ -11,11 +11,11 @@ CompositeMaster::~CompositeMaster()
 
 void    CompositeMaster::notifyDeath(CompositeNode &node)
 {
-	_dependencies.erase(node.getName());
-	std::map<std::string, std::list<std::string> >::iterator cpy;
-	for (std::map<std::string, std::list<std::string> >::iterator it = _dependencies.begin(); cpy != _dependencies.end();)
+	_dependencies.erase(&node);
+	std::map<CompositeNode*, std::list<std::string> >::iterator it;
+	for (std::map<CompositeNode*, std::list<std::string> >::iterator cpy = _dependencies.begin(); cpy != _dependencies.end();)
 	{
-		cpy = it++;
+		it = cpy++;
 		for (std::list<std::string>::iterator elem = it->second.begin(); elem != it->second.end(); ++elem)
 		{
 			if (*elem == node.getName())
@@ -23,14 +23,20 @@ void    CompositeMaster::notifyDeath(CompositeNode &node)
 		}
 		if (it->second.empty())
 		{	
-			CompositeNode *tmp = new CompositeNode(*this, it->first, _state);
-			_state.addGameObject(tmp, "monsters");
+			_state.addGameObject(it->first, "monsters");
+			it->first->setLink(this);
 			_dependencies.erase(it);
-		}		
+		}	
 	}
 }
 
 void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::string> const &dependencies)
 {
-	_dependencies[node.getName()] = dependencies;	
+	if (dependencies.empty())
+	{
+		_state.addGameObject(&node, "monsters");
+		node.setLink(this);
+	}
+	else
+		_dependencies[&node] = dependencies;
 }

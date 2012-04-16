@@ -48,7 +48,7 @@ void    MapProvider::handleXML(TiXmlNode *parent, Core::ResourceManager &manager
 			name = child->Value();
 			if (name == "monster")
 				this->handleElem(child, manager, &Map::addMonster);
-			else if (name == "compositeMonster")
+			else if (name == "compositemonster")
 				this->handleElem(child, manager, &Map::addCompositeMonster);
 			else if (name == "deco")
 				this->handleElem(child, manager, &Map::addDecoration);

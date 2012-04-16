@@ -470,9 +470,14 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 void		GSInGame::spawncomposite(GameCommand const &event)
 {
 	CompositeMonster *co = static_cast<CompositeMonster*>(this->getResource(event.data, 6));
+	std::cout << "compospawn " << event.data << " " << co << std::endl;
 	if (!co)
 		return ;
-	Core::BulletCommand *spawner = co->getBulletCommand(*this);	
+	Core::BulletCommand *spawner = co->getBulletCommand(*this);
+	spawner->setX(event.x);
+	spawner->setY(event.y);
+	spawner->setVx(event.vx);
+	spawner->setVy(event.vy);
 	spawner->setSeed(this->_rand());
 	spawner->setScrollY(event.position);
 	spawner->setRank(this->_nbPlayers);
