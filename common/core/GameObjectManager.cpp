@@ -304,5 +304,9 @@ void				GameObjectManager::clear()
 	for (groupsMap::iterator it = this->_groups.begin();
 		 it != this->_groups.end(); it++)
 		delete it->second;
+
+	this->_objects.clear();
+	this->_collisionGroups.clear();
+	this->_groups.clear();
 	this->_deleteList.clear();
 }

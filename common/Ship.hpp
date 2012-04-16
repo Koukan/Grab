@@ -79,6 +79,7 @@ public:
   void			setScore(unsigned int score);
   unsigned int		getPowerGauge() const;
   Color const &		getColor() const;
+  ShipInfo::ShipInfo const &	getShipCaracs() const;
   void			increasePowerGauge(unsigned int score);
   void			resetState();
   void			displayAura();

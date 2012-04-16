@@ -241,6 +241,24 @@ void	SFMLSprite::setColor(int r, int g, int b)
   #endif
 }
 
+void	SFMLSprite::setColor(Color const & color)
+{
+  #if (SFML_VERSION_MAJOR == 2)
+  sf::Color base = this->sf::Sprite::getColor();
+  #else
+  sf::Color base = this->GetColor();
+  #endif
+
+  base.r = color.r;
+  base.g = color.g;
+  base.b = color.b;
+  #if (SFML_VERSION_MAJOR == 2)
+  this->sf::Sprite::setColor(base);
+  #else
+  this->SetColor(base);
+  #endif
+}
+
 void	SFMLSprite::setRotation(double angle)
 {
 	#if (SFML_VERSION_MAJOR == 2)
