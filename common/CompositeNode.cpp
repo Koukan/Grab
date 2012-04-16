@@ -7,6 +7,12 @@ CompositeNode::CompositeNode(CompositeMaster &parent, std::string const &name, s
 CompositeNode::~CompositeNode()
 {}
 
+void	CompositeNode::createBullet(BulletMLState* state, double direction, double speed)
+{
+	Core::BulletCommand	*bullet = this->instantiateBullet(state, direction, speed);
+	bullet->setLink(&_parent);
+}
+
 void	CompositeNode::erase()
 {
 	if (_childs.empty())

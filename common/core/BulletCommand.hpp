@@ -66,6 +66,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 
 	void			setSpeedDirection();
 	void			insertChild(Bullet &bullet);
+	virtual	BulletCommand	*instantiateBullet(BulletMLState* state, double direction, double speed);
 
 	double					_direction;
 	double					_speed;

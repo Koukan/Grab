@@ -241,10 +241,15 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 void		BulletCommand::createBullet(BulletMLState* state,
 				  	    double direction, double speed)
 {
+	this->instantiateBullet(state, direction, speed);	
+}
+
+BulletCommand		*BulletCommand::instantiateBullet(BulletMLState* state, double direction, double speed)
+{	
 	HitBox			*box = 0;
 	double			vx, vy;
 	double			dir = dtor(direction);
-	BulletCommand	*bullet;
+	BulletCommand	*bullet = 0;
 
 	if (state->getShape() == "circle")
 		box = new CircleHitBox(this->getX(), this->getY(),
@@ -274,6 +279,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 		bullet->setRank(this->_rank);
 	}
 	delete state;
+	return bullet;
 }
 
 int			BulletCommand::getTurn()
