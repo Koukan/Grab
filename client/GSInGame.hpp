@@ -51,6 +51,7 @@ private:
 	void		move(GameCommand const &event);
 	void		rangeid(GameCommand const &event);
 	void		spawnspawner(GameCommand const &event);
+	void		spawncomposite(GameCommand const &event);
 	void		spawndecoration(GameCommand const &event);
 	void		spawnsound(GameCommand const &event);
 	void		spawnend(GameCommand const &event);

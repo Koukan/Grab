@@ -23,7 +23,7 @@ void    CompositeMonsterProvider::handleXML(TiXmlNode *parent, Core::ResourceMan
 		else if (name == "name")
 			bossname = attrib->Value();
 	}
-	CompositeMonster *mon = new CompositeMonster;
+	CompositeMonster *mon = new CompositeMonster(_bulletml);
 	for (TiXmlNode *child = parent->FirstChild(); child;
 		 child = child->NextSibling())
 	{
@@ -44,7 +44,7 @@ void    CompositeMonsterProvider::handleXML(TiXmlNode *parent, Core::ResourceMan
 			else if (name == "y")
 				tmp.y = Net::Converter::toInt<int>(attrib->Value());
 			else if (name == "depends")
-				tmp.depends = attrib->Value();
+				tmp.depends.push_back(attrib->Value());
 		}
 		mon->addMonster(tmp);
 	}

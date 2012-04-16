@@ -16,7 +16,7 @@ class	CompositeMonsterProvider : public Core::XMLProvider
 				int			y;
 				std::string	bulletmlscript;
 				std::string	name;
-				std::string	depends;
+				std::list<std::string>	depends;
 			};
 
 	private:

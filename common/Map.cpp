@@ -23,6 +23,11 @@ void		Map::addEnd(std::string const &name, size_t x, size_t y, int vx, int vy, b
   this->addElem("spawnend", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
 }
 
+void		Map::addCompositeMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
+{
+  this->addElem("spawncomposite", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
+}
+
 void		Map::addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry)
 {
   this->addElem("spawnspawner", name, x, y, vx, vy, scrollable, pause, spawnY, ry);
