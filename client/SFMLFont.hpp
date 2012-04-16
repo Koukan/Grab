@@ -16,6 +16,7 @@ public:
   virtual void		draw(int x, int y, double elapsedTime = 0);
   virtual void		setText(std::string const & text);
   virtual void		setColor(int, int, int);
+  virtual void		setColor(Color const & color);
   virtual void		setTransparency(int a);
 
   virtual int		getWidth() const;

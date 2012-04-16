@@ -6,7 +6,7 @@
 #include "icon.c"
 #include <GL/glu.h>
 
-RendererManager::RendererManager() : Core::GameStateObserver("RendererManager")
+RendererManager::RendererManager() : Core::GameStateObserver("RendererManager"), _width(0), _height(0)
 {
 	this->_targetRate = 20;
 	this->_fullscreen = true;
@@ -18,6 +18,8 @@ RendererManager::~RendererManager()
 
 void				RendererManager::init()
 {
+	if (this->_width == 0 || this->_height == 0)
+	{
 	#if (SFML_VERSION_MAJOR == 2)
 	sf::VideoMode video = sf::VideoMode::getDesktopMode();
 	this->_width = video.width;
@@ -27,6 +29,7 @@ void				RendererManager::init()
 	this->_width = video.Width;
 	this->_height = video.Height;
 	#endif
+	}
 	this->updateWindow();
 	//_shader.LoadFromFile("client/.fx", sf::Shader::Vertex);
 	//_shader.LoadFromFile("client/hfragment.fx", sf::Shader::Fragment);

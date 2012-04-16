@@ -145,48 +145,48 @@ double		BulletCommand::getBulletDirection()
 
 double		BulletCommand::getAimDirection()
 {
-	this->setRelativeObject(0);
+	/*this->setRelativeObject(0);
 	if (!this->_relativeObject || this->_relativeObject->isDelete())
-	{
+	{*/
 		GameObject	*obj = 0;
 		uint32_t	distance = static_cast<uint32_t>(-1);
 		Group		*group;
 		int			x, y;
+		uint32_t	calc;
 		for (std::set<std::string>::const_iterator it = this->_focus.begin();
 			it != this->_focus.end(); it++)
 		{
 			group = this->_state.getGroup(*it);
 			if (group)
 			{
-				uint32_t	calc;
-				for (Group::gameObjectSet::const_iterator it = group->getObjects().begin();
-				 it != group->getObjects().end(); it++)
+				for (Group::gameObjectSet::const_iterator lit = group->getObjects().begin();
+				 lit != group->getObjects().end(); lit++)
 				{
-					if ((*it)->isDelete())
+					if ((*lit)->isDelete())
 						continue;
-					x = this->getX() - (*it)->getX();
-					y = this->getY() - (*it)->getY();
+					x = this->getX() - (*lit)->getX();
+					y = this->getY() - (*lit)->getY();
 					calc = static_cast<int>(x * x + y * y);
 					if (calc < distance)
 					{
 						distance = calc;
-						obj = *it;
+						obj = *lit;
 					}
 				}
 			}
 		}
-		if (obj)
+		/*if (obj)
 			this->setRelativeObject(obj);
 		else
 			this->setRelativeObject(0);
-	}
-	if (this->_relativeObject)
+	}*/
+	if (obj/*this->_relativeObject*/)
 	{
-		PhysicObject	*ph = static_cast<PhysicObject*>(this->_relativeObject);
+		PhysicObject	*ph = static_cast<PhysicObject*>(obj/*this->_relativeObject*/);
 		HitBox			&hb = ph->getHitBox();
-		double			x = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
-		double			y = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
-		return rtod(::atan2(y, x));
+		double			px = (ph->getX() + ph->getXHitBoxOffset() + (hb.getWidth() / 2)) - this->getX();
+		double			py = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
+		return rtod(::atan2(py, px));
 	}
 	return 90;
 }

@@ -64,7 +64,7 @@ private:
 	void		serverGrab(GameCommand const &event);
 	void		serverCannon(GameCommand const &event);
 	void		killPlayer(GameCommand const &event);
-	void		disableShield(GameCommand const &event);
+	void		disableSpecialPower(GameCommand const &event);
 	void        bonus(GameCommand const &event);
 	void        aura(GameCommand const &event);
 	void		reBind(GameCommand const &event);

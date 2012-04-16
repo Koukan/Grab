@@ -18,6 +18,7 @@ namespace Core
 struct	Color;
 class	Cannon;
 class	Player;
+class	SpecialPower;
 
 class Ship : public ConcreteObject
 {
@@ -34,7 +35,7 @@ public:
   double		getSpeed() const;
   void			addCannon(Cannon *cannon, unsigned int nGrab);
   void			releaseCannon(unsigned int nb);
-  void			copyColor(Core::Sprite& sprite);
+  void			copyColor(Core::Sprite& sprite) const;
   virtual void	move(double time);
 
   void			manageFire();
@@ -69,17 +70,15 @@ public:
   void			launchGrab(std::string const &group, unsigned int nGrab, double x, double y);
   void			specialPower(Core::InputCommand const& cmd);
   void			specialPower();
+  void			stopSpecialPower();
   void			bomb();
-  void			shield();
-  void			missile();
-  void			blackHole();
-  void			disableShield();
   void			grab4();
 
   void			setNbSecRespawn(int nbSec);
   unsigned int		getScore() const;
   void			setScore(unsigned int score);
   unsigned int		getPowerGauge() const;
+  Color const &		getColor() const;
   void			increasePowerGauge(unsigned int score);
   void			resetState();
   void			displayAura();
@@ -127,16 +126,11 @@ private:
   bool			_target;
   uint32_t		_lastId;
   unsigned int		_powerGauge;
-  void (Ship::*_specialPower)();
+  SpecialPower*		_specialPower;
   bool			_specialPowerActive;
   ConcreteObject*	_electricAura;
   Core::GameState&	_state;
   
-  union
-  {
-    ConcreteObject*	_shield;
-    ConcreteObject*	_bomb;
-  };	
   void handleActions();
   void resetPowerGauge();
 };
