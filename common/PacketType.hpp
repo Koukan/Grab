@@ -50,7 +50,8 @@ namespace TCP
 		SEED = 21,
 		MAPCHOICE = 22,
 		REBIND = 23,
-		MASTER = 24
+		MASTER = 24,
+		RETRY = 25
 	};
 }
 

@@ -83,8 +83,8 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 		{"Bonus", &NetworkModule::bonus},
 		{"AuraActivated", &NetworkModule::auraActivated},
 		{"MapChoice", &NetworkModule::mapChoiceCommand},
-		{"ReBind", &NetworkModule::reBindCommand}
-		/*must be completed */
+		{"ReBind", &NetworkModule::reBindCommand},
+		{"Retry", &NetworkModule::retryCommand}
 	};
 
 	for (size_t i = 0;
@@ -247,6 +247,13 @@ void		NetworkModule::reBindCommand(Core::Command const &command)
 	Net::Packet		packet(1);
 
 	packet << static_cast<uint8_t>(TCP::REBIND);
+	this->_server->handleOutputPacket(packet);
+}
+
+void		NetworkModule::retryCommand(Core::Command const &command)
+{
+	Net::Packet		packet(1);
+	packet << static_cast<uint8_t>(TCP::RETRY);
 	this->_server->handleOutputPacket(packet);
 }
 

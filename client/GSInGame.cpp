@@ -20,6 +20,7 @@
 #include "MonsterGenerator.hpp"
 #include "Color.hpp"
 #include "ScoreBonus.hpp"
+#include "GSLoading.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -308,7 +309,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"disableSpecialPower", &GSInGame::disableSpecialPower},
 	{"bonus", &GSInGame::bonus},
 	{"aura", &GSInGame::aura},
-	{"reBind", &GSInGame::reBind}
+	{"reBind", &GSInGame::reBind},
+	{"retry", &GSInGame::retry}
   };
 
   for (size_t i = 0;
@@ -621,6 +623,21 @@ void		GSInGame::reBind(GameCommand const &)
 {
 	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
 		Core::GameStateManager::get().popState();
+}
+
+void		GSInGame::retry(GameCommand const &)
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "Game")
+		Core::GameStateManager::get().popState();
+	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	{
+		if (_nbPlayers > 1)
+			(*it)->setLife(-1);
+		else
+			(*it)->setLife(3);
+	}
+	GSLoading	*gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+	Core::GameStateManager::get().changeState(*gs);
 }
 
 void		GSInGame::createShips()

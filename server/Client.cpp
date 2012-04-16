@@ -65,7 +65,9 @@ int			Client::handleInputPacket(Net::Packet &packet)
 			0,
 			0,
 			&Client::mapChoice,
-			&Client::reBind
+			&Client::reBind,
+			0,
+			&Client::retry
 	};
 	uint8_t			type;
 
@@ -378,6 +380,19 @@ int					Client::reBind(Net::Packet &packet)
 	return 0;
 }
 
+int					Client::retry(Net::Packet &packet)
+{
+	if (this->_game && this->_master)
+	{
+		this->_game->retry();
+		Net::Packet		*broadcast = packet.clone();
+		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
+		delete broadcast;
+		return 1;
+	}
+	return 0;
+}
+
 Game				*Client::getGame() const
 {
 	if (this->_game)
@@ -424,6 +439,11 @@ uint32_t			Client::getLastRecvId() const
 void				Client::setLastRecvId(uint32_t id)
 {
 	_idRecvPacket = id;
+}
+
+void				Client::setReady(bool value)
+{
+	this->_ready = value;
 }
 
 bool				Client::isReady() const

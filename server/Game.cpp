@@ -263,6 +263,26 @@ void		Game::reset()
 		this->_players[i]->setReady(false);
 		this->_players[i]->setShip(0);
 	}
+	for (std::list<Client*>::const_iterator it = this->_clients.begin();
+		 it != this->_clients.end(); it++)
+		(*it)->setReady(false);
 	delete this->_logic;
 	this->_logic = new GameLogic(*this, this->_map);
+}
+
+void		Game::retry()
+{
+	Net::ScopedLock		lock(this->_mutex);
+	for (size_t i = 0; i < this->_maxPlayers; i++)
+	{
+		if (!this->_players[i])
+			continue ;
+		this->_players[i]->setShip(0);
+	}
+	for (std::list<Client*>::const_iterator it = this->_clients.begin();
+		 it != this->_clients.end(); it++)
+		(*it)->setReady(false);
+	delete this->_logic;
+	this->_logic = new GameLogic(*this, this->_map);
+	this->loadGame();
 }
