@@ -12,6 +12,7 @@
 #include "SFMLFontProvider.hpp"
 #include "OpenALSoundProvider.hpp"
 #include "MapProvider.hpp"
+#include "CompositeMonsterProvider.hpp"
 
 const std::string Game::PREF_FILE = ".preferences";
 
@@ -37,14 +38,15 @@ void		Game::init()
   Core::GlobalResourceManager::get().addProvider(*new SFMLFontProvider);
   Core::GlobalResourceManager::get().addProvider(*new OpenALSoundProvider);
   Core::GlobalResourceManager::get().addProvider(*new MapProvider);
+  Core::GlobalResourceManager::get().addProvider(*new CompositeMonsterProvider);
 
   // add Module
   this->loadModule(Core::CommandDispatcher::get());
-  RendererManager::get().setFullscreen((_preferences[2] == "false") ? false : true);
   int width = Net::Converter::toInt<int>(this->_preferences[3]);
   int height = Net::Converter::toInt<int>(this->_preferences[4]);
   if (width > 0 && height > 0)
 	RendererManager::get().setResolution(width, height);
+  RendererManager::get().setFullscreen(_preferences[2] == "true");
   this->loadModule(RendererManager::get());
   this->loadModule(*(new InputModule));
   this->loadModule(*(new Core::PhysicManager));

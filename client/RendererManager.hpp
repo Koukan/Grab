@@ -37,16 +37,18 @@ class RendererManager : public Core::GameStateObserver, public Net::Singleton<Re
 		void				setFullscreen(bool fullscreen);
 		bool				isFullscreen() const;
 		std::list<VideoMode>	getAvailableResolutions() const;
+		void				updateWindow();
 
 	protected:
 		int					_width;
 		int					_height;
+		int					_maxwidth;
+		int					_maxheight;
 		bool				_fullscreen;
 		sf::RenderWindow	_window;
 		Shader				_shader;
 
-private:
-		void				updateWindow();
+	private:
 		void 				drawQuadTree(Core::QuadTree const &quadTree);
 		void 				drawNode(Core::Node *node);
 		void				displayHitBox(Core::Group::gameObjectSet::const_iterator oit);

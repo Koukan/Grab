@@ -14,6 +14,7 @@ class	Map : public Core::Resource, public Core::PhysicObject
 		virtual	void				move(double time);
 		void	addEnd(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
 		void	addMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
+		void	addCompositeMonster(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
 		void    addDecoration(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
 		void    addSound(std::string const &name, size_t x, size_t y, int vx, int vy, bool scrollable, bool pause, int spawnY, size_t ry = 0);
 		void	decreasePaused();

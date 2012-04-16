@@ -21,6 +21,7 @@
 #include "Color.hpp"
 #include "ScoreBonus.hpp"
 #include "GSLoading.hpp"
+#include "CompositeMonster.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -294,6 +295,7 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"move", &GSInGame::move},
 	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
+	{"spawncomposite", &GSInGame::spawncomposite},
 	{"spawndecoration", &GSInGame::spawndecoration},
 	{"spawnsound", &GSInGame::spawnsound},
 	{"spawnend", &GSInGame::spawnend},
@@ -465,6 +467,22 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 	spawner->setScrollY(event.position);
 	spawner->setRank(this->_nbPlayers);
 	this->addGameObject(spawner, "spawners");
+}
+
+void		GSInGame::spawncomposite(GameCommand const &event)
+{
+	CompositeMonster *co = static_cast<CompositeMonster*>(this->getResource(event.data, 6));
+	std::cout << "compospawn " << event.data << " " << co << std::endl;
+	if (!co)
+		return ;
+	Core::BulletCommand *spawner = co->getBulletCommand(*this);
+	spawner->setX(event.x);
+	spawner->setY(event.y);
+	spawner->setVx(event.vx);
+	spawner->setVy(event.vy);
+	spawner->setSeed(this->_rand());
+	spawner->setScrollY(event.position);
+	spawner->setRank(this->_nbPlayers);
 }
 
 void		GSInGame::spawndecoration(GameCommand const &event)
