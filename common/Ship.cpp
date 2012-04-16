@@ -637,6 +637,10 @@ Color const &	Ship::getColor() const
   return _color;
 }
 
+ShipInfo::ShipInfo const & Ship::getShipCaracs() const
+{
+  return _caracs;
+}
 void		Ship::setNbSecRespawn(int nbSec)
 {
 	this->_nbSecRespawn = nbSec;

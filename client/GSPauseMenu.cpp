@@ -29,17 +29,18 @@ void	GSPauseMenu::onStart()
   // load xml
   this->load("resources/xml/intro.xml");
 
+  Core::Sprite *bg = this->getSprite("ig-menu-background");
+  if (bg)
+    {
+      bg->setX(VIEWX / 2);
+      bg->setY(VIEWY / 2);
+      this->addGameObject(bg, "background", 1);
+    }
+
   // add gui
 
   Core::GUILayout *layout = new GUIVLayout(VIEWX / 2,
 	  (VIEWY - 300) / 2, 300, 300, 20);
-  Core::Sprite *s = this->getSprite("black background");
-  if (s)
-  {
-	  s->setX(0);
-	  s->setY(0);
-	  this->addGameObject(s, "background", 1);
-  }
 
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
 
