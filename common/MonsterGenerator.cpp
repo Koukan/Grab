@@ -182,7 +182,7 @@ void	MonsterGenerator::createMazeMonster(int x, int y)
 void	MonsterGenerator::createMonster(MonsterInfo const &info)
 {
 	this->addElem("spawnspawner", info.name, this->_rand() % (info.xmax - info.xmin) + info.xmin,
-		static_cast<size_t>(this->_y + 100), 0, 0, info.scrollable, false, this->_rand() % (info.ymax - info.ymin) + info.ymin);
+		static_cast<size_t>(this->_y/* + 100*/), 0, 0, info.scrollable, true, this->_rand() % (info.ymax - info.ymin) + info.ymin);
 }
 
 void	MonsterGenerator::createBoss(MonsterInfo const &info)
@@ -272,7 +272,7 @@ void	MonsterGenerator::generateSquad(double)
 		level += info.level;
 	} while (level < this->_squadLevel);
 	if (this->_nbSquads + 1 < this->_nbSquadsMax)
-		this->_elapsedTime += this->_squadTime;
+		this->_elapsedTime /*+= this->_squadTime*/ = 1;
 	++this->_nbSquads;
 }
 
@@ -650,12 +650,12 @@ void	MonsterGenerator::generate(double time)
 			}
 			else if (this->_mazeY == HEIGHT * nbMaze + 1)
 				this->createDoor();
-			else if (this->_mazeY == HEIGHT * nbMaze + 7)
+			else if (this->_mazeY == HEIGHT * nbMaze + 9)
 			{
 				this->changeToBoss();
 				this->generateBoss(time);
 			}
-			else if (this->_mazeY > HEIGHT * nbMaze + 7 && this->_nbPaused == 0/*this->_elapsedTime <= 0*/)
+			else if (this->_mazeY > HEIGHT * nbMaze + 9 && this->_nbPaused == 0/*this->_elapsedTime <= 0*/)
 				this->changeToSquads();
 			++this->_mazeY;
 		}
@@ -667,7 +667,7 @@ void	MonsterGenerator::generate(double time)
 			this->createSquadSound();
 			this->_beginning = false;
 		}
-		if (this->_elapsedTime <= 0)
+		if (this->_elapsedTime <= 0 && this->_nbPaused == 0)
 		{
 			if (this->_nbSquads < this->_nbSquadsMax)
 				this->generateSquad(time);
@@ -683,7 +683,7 @@ void	MonsterGenerator::changeToSquads()
 	std::cout << "change to squad" << std::endl;
 	this->createSquadSound();
 	this->_inMaze = false;
-	this->_elapsedTime = 5.7;
+	this->_elapsedTime = 6;
 
 	this->_nbSquads = 0;
 	this->_squadLevel += this->_squadLevelSpeed;
