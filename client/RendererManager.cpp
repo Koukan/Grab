@@ -31,7 +31,7 @@ void				RendererManager::init()
 	this->setResolution(video.width, video.height);
 	#else
 	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
-	this->setResolution(video.Width, video.Height)
+	this->setResolution(video.Width, video.Height);
 	#endif
 	}
 	this->updateWindow();
