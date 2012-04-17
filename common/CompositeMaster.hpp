@@ -17,4 +17,5 @@ class	CompositeMaster : public Core::BulletCommand
 	private:
 			std::map<CompositeNode*, std::list<std::string> >	_dependencies;
 			Core::GameState										&_state;
+			size_t												_count;
 };
