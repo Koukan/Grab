@@ -9,6 +9,7 @@ class Rules
 	static void		limitWallTouchObject(Core::GameObject&, Core::GameObject&);
 	static void		shotTouchMonster(Core::GameObject&, Core::GameObject&);
 	static void		shotTouchPlayer(Core::GameObject&, Core::GameObject&);
+	static void		monsterTouchPlayer(Core::GameObject&, Core::GameObject&);
 	static void		deadlyWallsTouchPlayers(Core::GameObject&, Core::GameObject&);
 	static void		grabTouchMonster(Core::GameObject& o1, Core::GameObject& o2);
 	static void		grabTouchPlayer(Core::GameObject &o1, Core::GameObject &o2);

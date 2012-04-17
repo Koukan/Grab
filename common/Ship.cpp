@@ -490,10 +490,8 @@ void Ship::setDead(bool dead, bool command)
 			cmd->boolean = false;
 			Core::CommandDispatcher::get().pushCommand(*cmd);
 		}
-		this->setCollidable();
 		return ;
 	}
-	this->setCollidable(false);
 	this->resetPowerGauge();
 	this->stopSpecialPower();
 	if (this->getSprite())
