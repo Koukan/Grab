@@ -10,7 +10,7 @@ CompositeNode::~CompositeNode()
 void	CompositeNode::createBullet(BulletMLState* state, double direction, double speed)
 {
 	Core::BulletCommand	*bullet = this->instantiateBullet(state, direction, speed);
-	bullet->setLink(&_parent);
+	bullet->setLink(_parent.getBullet());
 }
 
 void	CompositeNode::erase()
@@ -20,7 +20,7 @@ void	CompositeNode::erase()
 	this->Core::BulletCommand::erase();
 }
 
-std::string const &CompositeNode::getName()
+std::string const &CompositeNode::getName() const
 {
 	return _name;
 }

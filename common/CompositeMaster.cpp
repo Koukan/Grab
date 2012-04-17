@@ -9,6 +9,11 @@ CompositeMaster::CompositeMaster(std::string const &script, Core::GameState &gst
 CompositeMaster::~CompositeMaster()
 {}
 
+void    CompositeMaster::createBullet(BulletMLState* state, double direction, double speed)
+{	
+	_bullet = this->instantiateBullet(state, direction, speed);
+}
+
 void    CompositeMaster::notifyDeath(CompositeNode &node)
 {
 	_dependencies.erase(&node);
@@ -36,11 +41,13 @@ void    CompositeMaster::notifyDeath(CompositeNode &node)
 void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::string> const &dependencies)
 {
 	if (dependencies.empty())
-	{
 		_state.addGameObject(&node, "monsters");
-		node.setLink(this);
-	}
 	else
 		_dependencies[&node] = dependencies;
 	_count++;
+}
+
+Core::BulletCommand *CompositeMaster::getBullet() const
+{
+	return _bullet;
 }
