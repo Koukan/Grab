@@ -84,7 +84,7 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	bullet->setYHitBoxOffset(-4);
 	if (bullet->getSprite())
 	{
-		bullet->getSprite()->setTransparency(0.75);
+		bullet->getSprite()->setTransparency(0.35);
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
 	}
 	if (this->_simpleGroup == "")
@@ -125,7 +125,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 	if (bullet->getSprite())
 	{
 		bullet->getSprite()->setColor(_colors[0], _colors[1], _colors[2]);
-		bullet->getSprite()->setTransparency(0.75);
+		bullet->getSprite()->setTransparency(0.35);
 	}
 	bullet->setColor(_colors[0], _colors[1], _colors[2]);
 	if (state->getGroup() == "")

@@ -91,7 +91,7 @@ void		GSInGame::preload()
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::invisibleWallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
-  this->setCollisionGroups("monster", "players", &Rules::shotTouchPlayer);
+  this->setCollisionGroups("monster", "players", &Rules::monsterTouchPlayer);
   this->setCollisionGroups("wallShot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "wallShot", &Rules::wallTouchObject);
@@ -523,8 +523,12 @@ void		GSInGame::destroy(GameCommand const &event)
 	{
 	    if (tmp->score > 0)
 	      {
-			ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
-			this->addGameObject(obj, "scoreBonus");
+			  for (int i = tmp->score / 10; i > 0; --i)
+			  {
+				  Core::BulletCommand *obj = new ScoreBonus(tmp->score, tmp->getX(), tmp->getY(), "bonus", *this);
+			  //ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
+				  this->addGameObject(obj, "scoreBonus");
+			  }
 	      }
 		tmp->erase();
 	}
@@ -646,10 +650,10 @@ void		GSInGame::createShips()
     int g;
     int b;
   } playerColors[] = {
-		{255, 0, 230},
 		{96, 254, 1},
-		{0, 255, 185},
-		{255, 57, 0}
+		{0, 255, 255},
+		{255, 130, 0},
+		{255, 220, 0}
   };
 
   Ship					*ship;

@@ -56,6 +56,10 @@ GameLogic::GameLogic(Game &game, const std::string &map)
 	this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   	this->setCollisionGroups("playerShots", "monster2", &Rules::shotTouchMonster);
   	this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
+  	this->setCollisionGroups("blackHoles", "monster", &Rules::blackHoleTouchObject);
+  	this->setCollisionGroups("blackHoles", "monster2", &Rules::blackHoleTouchObject);
+  	this->setCollisionGroups("blackHoleEnd", "monster", &Rules::blackHoleEndTouchMonster);
+  	this->setCollisionGroups("blackHoleEnd", "monster2", &Rules::blackHoleEndTouchMonster);
 	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
 	this->_rand.seed(rand());
@@ -228,5 +232,6 @@ void		GameLogic::resetCommand(Core::Command const &command)
 {
 	this->_gameStarted = false;
 	this->_map = 0;
-	this->clear();
+	this->Core::GameObjectManager::clear();
+	this->Core::CommandHandler::clear();
 }

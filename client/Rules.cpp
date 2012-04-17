@@ -60,8 +60,25 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	  {
 	    if (monster.score > 0)
 	      {
-		ConcreteObject *obj = new ScoreBonus("bonusScore", monster.score, *(new Core::CircleHitBox(monster.getX(), monster.getY(), 40)), 0, 150, -40, -40);
-		gameState.addGameObject(obj, "scoreBonus");
+			  std::cout << monster.score << std::endl;
+			  if (monster.score <= 10)
+			  {
+				  Core::BulletCommand *obj = new ScoreBonus(monster.score, monster.getX(), monster.getY(), "fixedBonus", gameState);
+				  gameState.addGameObject(obj, "spawners");
+			  }
+			  else
+			  {
+				  for (int i = monster.score / 10; i > 0; --i)
+				  {
+					  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+					  gameState.addGameObject(obj, "spawners");
+				  }
+				  if (monster.score % 10)
+				  {
+					  Core::BulletCommand *obj = new ScoreBonus(monster.score % 10, monster.getX(), monster.getY(), "bonus", gameState);
+					 gameState.addGameObject(obj, "spawners");
+				  }
+			  }
 	      }
 	    monster.erase();
 	  }
@@ -77,6 +94,14 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 		ship.setDead(true);
 		shot.erase();
 	}
+}
+
+void	Rules::monsterTouchPlayer(Core::GameObject &, Core::GameObject &o2)
+{	
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
+		ship.setDead(true);
 }
 
 void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
@@ -219,13 +244,15 @@ void	Rules::invisibleWallsTouchPlayers(Core::GameObject& o1, Core::GameObject& o
 void		Rules::playerTouchScore(Core::GameObject& o1, Core::GameObject& o2)
 {
   Ship& ship = static_cast<Ship&>(o1);
-  ScoreBonus& score = static_cast<ScoreBonus&>(o2);
+  ScoreBonus* score = dynamic_cast<ScoreBonus*>(&o2);
 
+  if (!score)
+	  return ;
   if (ship.isDead())
 	return ;
-  ship.setScore(ship.getScore() + score.score);
-  ship.increasePowerGauge(score.score);
-  score.erase();
+  ship.setScore(ship.getScore() + score->score);
+  ship.increasePowerGauge(score->score);
+  score->erase();
 }
 
 void		Rules::blackHoleTouchObject(Core::GameObject& blackHole, Core::GameObject& obj)
