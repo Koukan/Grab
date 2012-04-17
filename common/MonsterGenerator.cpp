@@ -7,7 +7,7 @@
 
 MonsterGenerator::MonsterGenerator(int seed)
 	: _maxId(0), _squadLevelSpeed(4), _mazeLevel(-1), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(5),
-	_leftFrequency(20), _rightFrequency(20), _upFrequency(1), _nbSquads(0), _nbSquadsMax(10), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(5.7),
+	_leftFrequency(20), _rightFrequency(20), _upFrequency(1), _nbSquads(0), _nbSquadsMax(5), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(5.7),
 	_inMaze(false), _tmpY(this->_y), _wallSize(185), _position(1), _lastPosition(_position), _mazeY(0),
 	_MazeEnemiesNb(0), _MazeBreakableWallsNb(0), _MazeMovableWallsNb(0), _MazeWallsNb(0), _y2(this->_y), _currentSound(0), _beginning(true)
 {
