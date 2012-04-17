@@ -120,13 +120,6 @@ void	Ship::move(double time)
 	Core::CommandDispatcher::get().pushCommand(*move);
 }
 
-#include <iostream>
-void Ship::bomb()
-{
-  std::cout << "throw bomb !" << std::endl;
-  //  _bomb = new ConcreteObject("weapon", *(new Core::CircleHitBox(0, 0, 
-}
-
 void 	Ship::launchGrab(std::string const &group, unsigned int nGrab, double x, double y)
 {
 	Grab* grab = new Grab("grab",
@@ -500,7 +493,10 @@ void Ship::setDead(bool dead, bool command)
 	this->_player.die();
 	this->_elapsedTime = 1000;
 	if (this->_timer)
-		this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
+	  {
+	    this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
+	    this->_timer->setColor(255, 255, 255);
+	  }
 	this->manageFire();
 	if (command)
 	{

@@ -28,4 +28,10 @@ private:
   unsigned int		_nbPlayers;
   bool			_online;
   Core::CoreFont*	_state;
+
+  void			coopMode();
+  void			oneWinnerMode();
+  void			displayScore(Core::Sprite* sprite, Core::Sprite* aura,
+				     Ship* ship, Core::CoreFont* score,
+				     unsigned int x, unsigned int y);
 };
