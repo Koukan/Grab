@@ -33,7 +33,7 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	gameState.addGameObject(explosion, "impacts", 100);
 }
 
-void	Rules::limitWallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
+void	Rules::limitWallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
 	o2.setDelete(1);
 	o2.erase();
@@ -60,10 +60,19 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	  {
 	    if (monster.score > 0)
 	      {
-			  for (int i = monster.score / 10; i > 0; --i)
+			  std::cout << monster.score << std::endl;
+			  if (monster.score == 10)
 			  {
-				  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+				  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "fixedBonus", gameState);
 				  gameState.addGameObject(obj, "spawners");
+			  }
+			  else
+			  {
+				  for (int i = monster.score / 10; i > 0; --i)
+				  {
+					  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+					  gameState.addGameObject(obj, "spawners");
+				  }
 			  }
 	      }
 	    monster.erase();
@@ -80,6 +89,14 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 		ship.setDead(true);
 		shot.erase();
 	}
+}
+
+void	Rules::monsterTouchPlayer(Core::GameObject &, Core::GameObject &o2)
+{	
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
+		ship.setDead(true);
 }
 
 void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
