@@ -41,7 +41,7 @@ public:
 
   //getter
   Player::type				getType() const;
-  Ship						*getShip() const;
+  Ship					*getShip() const;
   ShipInfo::ShipInfo const	*getShipInfo() const;
   Core::InputCommand		&getAction(Player::Action action);
   int						getLife() const;

@@ -28,7 +28,7 @@ public:
   ~Ship();
 
   void			setSpecialPowerActive(bool isActive);
-  virtual void	setPosition(double x, double y, double z = 0);
+  virtual void		setPosition(double x, double y, double z = 0);
   void			setGrabLaunched(bool grabLaunched);
   bool			getGrabLaunched() const;
   Player		&getPlayer() const;
@@ -71,7 +71,6 @@ public:
   void			specialPower(Core::InputCommand const& cmd);
   void			specialPower();
   void			stopSpecialPower();
-  void			bomb();
   void			grab4();
 
   void			setNbSecRespawn(int nbSec);

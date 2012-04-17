@@ -27,7 +27,7 @@ public:
 	void		preload();
 	unsigned int	getNbPlayers() const;
 	unsigned int	getNbDie() const;
-	bool		playerDie(Player &player);
+	bool		playerDie();
 	Map&		getMap() const;
 	void		setSeed(uint32_t seed);
 	void		gameover(bool victory);
@@ -76,6 +76,8 @@ private:
 
 	uint32_t	getNextId();
 
+	bool		classicMode();
+	bool		highlanderMode();
 	void		createShips();
 
 	uint16_t						_idPlayer;

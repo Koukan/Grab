@@ -18,74 +18,144 @@ GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
 		       unsigned int nbPlayers, bool online) :
   Core::GameState("gameOver"),
   _victory(victory), _players(players), _mode(mode), _map(map),
-  _nbPlayers(nbPlayers), _online(online)
+  _nbPlayers(nbPlayers), _online(online), _state(this->getFont("bigNumbersFont"))
 {
   this->load("resources/xml/intro.xml");
-  _state = this->getFont("bigNumbersFont");
+  this->addGroup("texts", 40);
+  this->addGroup("auras", 30);
+  this->addGroup("background", 0);
+
+  Core::Sprite *bg = this->getSprite("ig-menu-background");
+  if (bg)
+    {
+      bg->setX(VIEWX / 2);
+      bg->setY(VIEWY / 2);
+      this->addGameObject(bg, "background");
+    }
+  if (_mode == Modes::STORY)
+    coopMode();
+  else
+    oneWinnerMode();   
+}
+
+GSGameOver::~GSGameOver()
+{}
+
+void GSGameOver::oneWinnerMode()
+{
+  Ship* ship;
+  Ship* winner = 0;
+
+  for (std::list<Player *>::const_iterator it = _players.begin();
+       it != _players.end(); ++it)
+    {
+      ship = (*it)->getShip();
+      if (ship)
+	{
+	  if (winner == 0 || winner->getScore() <= ship->getScore())
+	    winner = ship;
+	}
+    }
+  unsigned int x = VIEWX / _nbPlayers;
+  Core::CoreFont* score = 0;
+  Core::Sprite*   sprite;
+  Core::Sprite*   aura;
+
+  if (winner)
+    {
+      sprite = this->getSprite(winner->getShipCaracs().spriteName);
+      if (sprite)
+	{
+	  sprite->setX(VIEWX / 2 - 100);
+	  sprite->setY(VIEWY / 2 - 380);
+	  this->addGameObject(sprite, "texts");
+	  aura = this->getSprite("playerAura");
+	  if (aura)
+	    {
+	      aura->setColor(winner->getColor());
+	      aura->setX(VIEWX / 2 - 100);
+	      aura->setY(VIEWY / 2 - 380);
+	      this->addGameObject(aura, "auras");
+	    }
+	}
+      if (_state)
+	{
+	  _state->setText("WINS with " + Net::Converter::toString<int>(winner->getScore()));
+	  _state->setX(VIEWX / 2);
+	  _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
+	  this->addGameObject(_state, "texts");
+	}
+    }
+  for (std::list<Player *>::const_iterator it = _players.begin();
+       it != _players.end(); ++it)
+    {
+      ship = (*it)->getShip();
+      if (ship != winner)
+	{
+	  displayScore(sprite, aura, ship, score, x, VIEWY / 2 - 180);
+	  x += VIEWX / (_nbPlayers);
+	}
+    }
+}
+
+void GSGameOver::coopMode()
+{
   if (_state)
     {
-      this->addGroup("texts", 40);
-      this->addGroup("auras", 30);
-      this->addGroup("background", 0);
-
-      Core::Sprite *bg = this->getSprite("ig-menu-background");
-      if (bg)
-	{
-	  bg->setX(VIEWX / 2);
-	  bg->setY(VIEWY / 2);
-	  this->addGameObject(bg, "background");
-	}
-      if (victory)
+      if (_victory)
 	_state->setText("YOU WIN !");
       else
 	_state->setText("YOU LOOOOOSE !!!");
       _state->setX(VIEWX / 2 - _state->getWidth() / 2);
       _state->setY(VIEWY / 2 - _state->getHeight() / 2 - 400);
       this->addGameObject(_state, "texts");
+    }
 
-      Ship* ship;
-      unsigned int x = VIEWX / (_nbPlayers + 1);
-      Core::CoreFont* score;
-      Core::Sprite*   sprite;
-      Core::Sprite*   aura;
+  Ship* ship;
+  unsigned int x = VIEWX / (_nbPlayers + 1);
+  Core::CoreFont* score = 0;
+  Core::Sprite*   sprite = 0;
+  Core::Sprite*   aura = 0;
 
-      for (std::list<Player *>::const_iterator it = players.begin();
-	   it != players.end(); ++it)
+  for (std::list<Player *>::const_iterator it = _players.begin();
+       it != _players.end(); ++it)
+    {
+      ship = (*it)->getShip();
+      if (ship)
 	{
-	  ship = (*it)->getShip();
-	  if (ship)
-	    {
-	      sprite = this->getSprite(ship->getShipCaracs().spriteName);
-	      if (sprite)
-		{
-		  aura = this->getSprite("playerAura");
-		  if (aura)
-		    {
-		      aura->setColor(ship->getColor());
-		      aura->setX(x);
-		      aura->setY(VIEWY / 2 - 180);
-		      this->addGameObject(aura, "auras");
-		    }
-		  sprite->setX(x);
-		  sprite->setY(VIEWY / 2 - 180);
-		  this->addGameObject(sprite, "texts");
-		}
-	      score = this->getFont("bigNumbersFont");
-	      if (score)
-		{
-		  score->setText(Net::Converter::toString<unsigned int>(ship->getScore()));
-		  score->setX(x - score->getWidth() / 2);
-		  x += VIEWX / (_nbPlayers + 1);
-		  score->setY(VIEWY / 2 - 100);
-		  this->addGameObject(score, "texts");
-		}
-	    }
+	  displayScore(sprite, aura, ship, score, x, VIEWY / 2 - 180);
+	  x += VIEWX / (_nbPlayers + 1);
 	}
     }
 }
 
-GSGameOver::~GSGameOver()
-{}
+void GSGameOver::displayScore(Core::Sprite* sprite, Core::Sprite* aura, Ship* ship,
+			      Core::CoreFont* score, unsigned int x, unsigned int y)
+{
+  sprite = this->getSprite(ship->getShipCaracs().spriteName);
+  if (sprite)
+    {
+      aura = this->getSprite("playerAura");
+      if (aura)
+	{
+	  aura->setColor(ship->getColor());
+	  aura->setX(x);
+	  aura->setY(y);
+	  this->addGameObject(aura, "auras");
+	}
+      sprite->setX(x);
+      sprite->setY(y);
+      this->addGameObject(sprite, "texts");
+    }
+  score = this->getFont("bigNumbersFont");
+  if (score)
+    {
+      score->setText(Net::Converter::toString<unsigned int>(ship->getScore()));
+      score->setX(x - score->getWidth() / 2);
+      score->setY(y + 80);
+      this->addGameObject(score, "texts");
+    }
+}
 
 void GSGameOver::onStart()
 {

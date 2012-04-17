@@ -327,9 +327,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
   return (false);
 }
 
-bool		GSInGame::playerDie(Player &)
+bool		GSInGame::classicMode()
 {
-	this->_nbDie++;
 	if (this->_nbDie == this->_players.size())
 	{
 	    if (this->_nbCredits > 0)
@@ -356,6 +355,25 @@ bool		GSInGame::playerDie(Player &)
 		}
 	}
 	return (false);
+}
+
+bool		GSInGame::highlanderMode()
+{
+  if (this->_nbDie == this->_players.size() - 1)
+    {
+      this->gameover(false);
+      return (true);
+    }
+  return (false);
+}
+
+bool		GSInGame::playerDie()
+{
+	this->_nbDie++;
+	if (!_mode != Modes::SURVIVAL_HIGHLANDER)
+	  return (this->classicMode());
+	else
+	  return (this->highlanderMode());
 }
 
 void		GSInGame::setSeed(uint32_t seed)

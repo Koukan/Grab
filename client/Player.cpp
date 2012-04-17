@@ -69,12 +69,15 @@ void			Player::setLife(int nb)
 
 void			Player::respawn()
 {
-	static int const nbSecRespawn = 1;
+  int nbSpawn =  this->_nbDie * 2;
 
-	GameCommand	*cmd = new GameCommand("respawnplayer");
-	cmd->player = this;
-	Core::CommandDispatcher::get().pushCommand(*cmd, (nbSecRespawn + this->_nbDie * 2) * 1000);
-	this->_ship->setNbSecRespawn(nbSecRespawn + this->_nbDie * 2);
+    if (nbSpawn > 8)
+      nbSpawn = 8;
+
+  GameCommand	*cmd = new GameCommand("respawnplayer");
+  cmd->player = this;
+  Core::CommandDispatcher::get().pushCommand(*cmd, nbSpawn * 1000); 
+  this->_ship->setNbSecRespawn(nbSpawn);
 }
 
 void			Player::die()
@@ -89,7 +92,7 @@ void			Player::die()
 			GSInGame	*state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
 
 			if (state)
-				state->playerDie(*this);
+				state->playerDie();
 		}
 	}
 	else // in this part, a "dead player" is a player in ghost mode
@@ -101,7 +104,7 @@ void			Player::die()
 		{
 			GSInGame&	state = static_cast<GSInGame&>(group->getState());
 			
-			if (!state.playerDie(*this))
+			if (!state.playerDie())
 				this->respawn();
 		}
 	}
