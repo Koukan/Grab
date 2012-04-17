@@ -2,7 +2,7 @@
 #include "CompositeNode.hpp"
 
 CompositeMaster::CompositeMaster(std::string const &script, Core::GameState &gstate) :
-	Core::BulletCommand(script, gstate), _state(gstate)
+	Core::BulletCommand(script, gstate), _state(gstate), _count(0)
 {
 }
 
@@ -28,6 +28,9 @@ void    CompositeMaster::notifyDeath(CompositeNode &node)
 			_dependencies.erase(it);
 		}	
 	}
+	_count--;
+	if (_count == 0)
+		delete this;
 }
 
 void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::string> const &dependencies)
@@ -39,4 +42,5 @@ void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::
 	}
 	else
 		_dependencies[&node] = dependencies;
+	_count++;
 }

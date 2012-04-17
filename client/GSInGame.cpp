@@ -294,7 +294,6 @@ bool		GSInGame::handleCommand(Core::Command const &command)
   static Method<std::string const> const	methods[] = {
 	{"score", &GSInGame::score},
 	{"move", &GSInGame::move},
-	{"rangeid", &GSInGame::rangeid},
 	{"spawnspawner", &GSInGame::spawnspawner},
 	{"spawncomposite", &GSInGame::spawncomposite},
 	{"spawndecoration", &GSInGame::spawndecoration},
@@ -326,31 +325,6 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 		}
 	}
   return (false);
-}
-
-void		GSInGame::displayScores()
-{
-  std::ostringstream	ss;
-
-  for (unsigned int i = 0; i < this->_nbPlayers; ++i)
-    {
-      ss.str("");
-      ss << "P" << (i+1);
-      this->_nameFonts[i] = this->getFont("buttonFont");
-      this->_nameFonts[i]->setText(ss.str());
-      this->_nameFonts[i]->setColor(255, 0, 0);
-      this->_nameFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_nameFonts[i]->getWidth() / 2, 680);
-      this->addGameObject(this->_nameFonts[i], "score");
-    }
-
-  for (unsigned int i = 0; i < this->_nbPlayers; ++i)
-    {
-      this->_scoreFonts[i] = this->getFont("buttonFont");
-      this->_scoreFonts[i]->setText("0000000");
-      this->_scoreFonts[i]->setColor(255, 0, 0);
-      this->_scoreFonts[i]->setPosition((1024 / (this->_nbPlayers + 1)) * (i+1) - this->_scoreFonts[i]->getWidth() / 2, 720);
-      this->addGameObject(this->_scoreFonts[i], "score");
-    }
 }
 
 bool		GSInGame::playerDie(Player &)
@@ -440,20 +414,6 @@ void		GSInGame::loadShoot(GameCommand const &event)
   obj->setId(event.idObject);
   this->addGameObject(static_cast<Core::GameObject *>(obj), "shoot");
 }
-
-void		GSInGame::rangeid(GameCommand const &event)
-{
-  this->_rangeBegin = event.idObject;
-  this->_rangeEnd = event.idResource;
-  this->_currentId = event.idObject;
-  this->addGroup("shoot", 8, event.idObject, event.idResource);
-  this->_idPlayer = event.x;
-  this->displayScores();
-  this->_nameFonts[this->_idPlayer]->setText(NetworkModule::get().getName());
-  this->_nameFonts[this->_idPlayer]->setPosition((1024 / (this->_nbPlayers + 1)) * (this->_idPlayer+1) - this->_nameFonts[this->_idPlayer]->getWidth() / 2, 680);
-  Core::CommandDispatcher::get().pushCommand(*(new GameListCommand("Player", PlayerStatus::READY, NetworkModule::get().getName())));
-}
-
 
 void		GSInGame::spawnend(GameCommand const &)
 {
@@ -545,8 +505,12 @@ void		GSInGame::destroy(GameCommand const &event)
 	{
 	    if (tmp->score > 0)
 	      {
-			ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
-			this->addGameObject(obj, "scoreBonus");
+			  for (int i = tmp->score / 10; i > 0; --i)
+			  {
+				  Core::BulletCommand *obj = new ScoreBonus(tmp->score, tmp->getX(), tmp->getY(), "bonus", *this);
+			  //ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
+				  this->addGameObject(obj, "scoreBonus");
+			  }
 	      }
 		tmp->erase();
 	}

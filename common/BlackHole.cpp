@@ -3,9 +3,12 @@
 #include "Ship.hpp"
 #include <cmath>
 
+std::string const BlackHole::tab[2] = {"blackHoleParticle", "blackHoleParticle2"};
+
+
 BlackHole::BlackHole(double x, double y, Core::GameState &gameState, Ship &ship)
 	: ConcreteObject(""/*"blackHole"*/, *(new Core::CircleHitBox(x, y, 500)), 0, 0, -500, -500),
-	_gameState(gameState), _elapsedTime(0), _elapsedTime2(15000), _angle(0), _nbParticles(500), _end(0), _ship(ship)
+	_gameState(gameState), _elapsedTime(0), _elapsedTime2(15000), _angle(0), _nbParticles(500), _end(0), _ship(ship), _i(0)
 {
 	this->_gameState.addGameObject(this, "blackHoles");
 }
@@ -30,12 +33,10 @@ void	BlackHole::createParticle(int angle)
 	}
 	else
 	{
-		static std::string const tab[] = {"blackHoleParticle", "blackHoleParticle2"};
-		static int i = 0;
-		obj = new ConcreteObject(tab[i], *(new Core::CircleHitBox(this->_x + ::cos(angle * 3.14 / 180), this->_y + ::sin(angle * 3.14 / 180), 5)),
+		obj = new ConcreteObject(BlackHole::tab[_i], *(new Core::CircleHitBox(this->_x + ::cos(angle * 3.14 / 180), this->_y + ::sin(angle * 3.14 / 180), 5)),
 			::cos((angle + 45) * 3.14 / 180) * 300, ::sin((angle + 45) * 3.14 / 180) * 300, -5, -5);
 		this->_gameState.addGameObject(obj, "particles");
-		i = (i + 1) % 2;
+		_i = (_i + 1) % 2;
 	}
 	this->_particles.push_front(obj);
 }

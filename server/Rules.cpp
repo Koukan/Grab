@@ -3,6 +3,8 @@
 #include "CommandDispatcher.hpp"
 #include "GameLogic.hpp"
 #include "DestroyCommand.hpp"
+#include "BlackHole.hpp"
+#include <cmath>
 
 void	Rules::wallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
@@ -29,25 +31,44 @@ void		Rules::shotTouchMonster(Core::GameObject&o1, Core::GameObject&o2)
 	shot.erase();
 }
 
-void		Rules::shotTouchClient(Core::GameObject &, Core::GameObject&)
+void		Rules::blackHoleTouchObject(Core::GameObject& blackHole, Core::GameObject& obj)
 {
-	//GameCommand *cmd = new GameCommand("Destroy");
-	//cmd->idObject = o1.getId();
-	//Core::Group *gr = o1.getGroup();
-	//Core::GameState const &state = gr->getState();
-	//GameLogic const &gl = static_cast<GameLogic const &>(state);
-	//cmd->game = &gl.getGame();
-	//Core::CommandDispatcher::get().pushCommand(*cmd);
-	//o1.erase();
-
-	//Core::PhysicObject &obj = static_cast<Core::PhysicObject &>(o2);
-	//GameCommand *cmd2 = new GameCommand("Destroy");
-	//cmd2->idObject = obj.getId();
-	//Core::Group *gr = o1.getGroup();
-	//Core::GameState const &state = gr->getState();
-	//GameLogic const &gl = static_cast<GameLogic const &>(state);
-	//cmd2->game = &gl.getGame();
-	//Core::CommandDispatcher::get().pushCommand(*cmd2);
-	//obj.erase();
+	Core::BulletCommand *b = dynamic_cast<Core::BulletCommand *>(&obj);
+	if (b != 0 && !b->isEnd())
+		b->isCommanded(false);
+	double const power = 300;
+	double vx = blackHole.getX() - obj.getX();
+	double vy = blackHole.getY() - obj.getY();
+	double angle = ::atan2(vy, vx);
+	double distance = (1000 - ::sqrt(vx * vx + vy * vy)) / 1000;
+	distance *= distance;
+	Core::PhysicObject &o = static_cast<Core::PhysicObject &>(obj);
+	if (static_cast<BlackHole &>(blackHole).isEnd())
+	{
+		o.setAx(o.getAx() - ::cos(angle) * power * distance * 2);
+		o.setAy(o.getAy() - ::sin(angle) * power * distance * 2);
+		o.setVx(o.getVx() * 1.01);
+		o.setVy(o.getVy() * 1.01);
+	}
+	else
+	{
+		o.setAx(o.getAx() + ::cos(angle) * power * distance);
+		o.setAy(o.getAy() + ::sin(angle) * power * distance);
+		o.setVx(o.getVx() * 0.99);
+		o.setVy(o.getVy() * 0.99);
+	}
 }
 
+void		Rules::blackHoleEndTouchShot(Core::GameObject& /*blackHole*/, Core::GameObject& obj)
+{
+	obj.erase();
+}
+
+void		Rules::blackHoleEndTouchMonster(Core::GameObject& /*blackHole*/, Core::GameObject& obj)
+{
+	Core::BulletCommand *b = dynamic_cast<Core::BulletCommand *>(&obj);
+	if (b)
+		b->isCommanded(true);
+	else
+		obj.erase();
+}
