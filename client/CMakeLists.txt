@@ -198,7 +198,7 @@ set_source_files_properties (
   ${SRCS}
   PROPERTIES
   COMPILE_FLAGS
-  "-W -Wall -Wextra -g3"
+  "-W -Wall -Wextra -g3")
 ENDIF(WIN32)
 
 ##### Setting the output directory for the solution

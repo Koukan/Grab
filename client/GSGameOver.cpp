@@ -110,7 +110,13 @@ bool	GSGameOver::handleCommand(Core::Command const &)
 void	GSGameOver::retry()
 {
 	Core::GameStateManager::get().popState();
-
+	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	  {
+	    if (_nbPlayers > 1)
+	      (*it)->setLife(-1);
+	    else
+	      (*it)->setLife(3);
+	  }
 	Core::GameState	*gs;
 	if (_online)
 	{

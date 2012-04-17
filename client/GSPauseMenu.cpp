@@ -89,6 +89,13 @@ void	GSPauseMenu::retry()
 {
 	Core::GameStateManager::get().popState();
 	Core::GameState	*gs;
+	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	  {
+	    if (_nbPlayers > 1)
+	      (*it)->setLife(-1);
+	    else
+	      (*it)->setLife(3);
+	  }
 	if (_online)
 	{
 		gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
