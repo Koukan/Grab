@@ -58,7 +58,7 @@ void		GSInGame::preload()
   this->addGroup("background", 2);
   this->addGroup("starobjects", 3);
   this->addGroup("impacts", 43);
-  this->addGroup("scoreBonus", 42);
+  this->addGroup("scoreBonus", 7);
   this->addGroup("map", 0);
   this->addGroup("traversableWalls", 5);
   this->addGroup("wallShot", 9);

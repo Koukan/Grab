@@ -61,7 +61,7 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	    if (monster.score > 0)
 	      {
 			  std::cout << monster.score << std::endl;
-			  if (monster.score <= 10)
+			  if (monster.score <= 10 && monster.getRank() == 1)
 			  {
 				  Core::BulletCommand *obj = new ScoreBonus(monster.score, monster.getX(), monster.getY(), "fixedBonus", gameState);
 				  gameState.addGameObject(obj, "spawners");
@@ -70,13 +70,19 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 			  {
 				  for (int i = monster.score / 10; i > 0; --i)
 				  {
-					  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
-					  gameState.addGameObject(obj, "spawners");
+					  for (int j = 0; j < monster.getRank(); ++j)
+					  {
+						  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+						  gameState.addGameObject(obj, "spawners");
+					  }
 				  }
 				  if (monster.score % 10)
 				  {
-					  Core::BulletCommand *obj = new ScoreBonus(monster.score % 10, monster.getX(), monster.getY(), "bonus", gameState);
-					 gameState.addGameObject(obj, "spawners");
+					  for (int j = 0; j < monster.getRank(); ++j)
+					  {
+						  Core::BulletCommand *obj = new ScoreBonus(monster.score % 10, monster.getX(), monster.getY(), "bonus", gameState);
+						  gameState.addGameObject(obj, "spawners");
+					  }
 				  }
 			  }
 	      }
