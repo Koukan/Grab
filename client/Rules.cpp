@@ -60,10 +60,19 @@ void	Rules::shotTouchMonster(Core::GameObject &o1, Core::GameObject &o2)
 	  {
 	    if (monster.score > 0)
 	      {
-			  for (int i = monster.score / 10; i > 0; --i)
+			  std::cout << monster.score << std::endl;
+			  if (monster.score == 10)
 			  {
-				  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+				  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "fixedBonus", gameState);
 				  gameState.addGameObject(obj, "spawners");
+			  }
+			  else
+			  {
+				  for (int i = monster.score / 10; i > 0; --i)
+				  {
+					  Core::BulletCommand *obj = new ScoreBonus(10, monster.getX(), monster.getY(), "bonus", gameState);
+					  gameState.addGameObject(obj, "spawners");
+				  }
 			  }
 	      }
 	    monster.erase();
