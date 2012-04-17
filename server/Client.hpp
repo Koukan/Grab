@@ -33,6 +33,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	int					getRemoteAddr(Net::InetAddr &addr);
 	void				setUDPAddr(Net::InetAddr &addr);
 	Net::InetAddr const		&getUDPAddr() const;
+	void				setReady(bool value);
 	bool				isReady() const;
 	std::list<Player*> const	&getPlayers() const;
 
@@ -54,6 +55,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	int			removePlayer(Net::Packet &packet);
 	int			mapChoice(Net::Packet &packet);
 	int			reBind(Net::Packet &packet);
+	int			retry(Net::Packet &packet);
 
 	int			sendError(Error::Type error);
 	int			sendResources();

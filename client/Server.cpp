@@ -47,7 +47,8 @@ int			Server::handleInputPacket(Net::Packet &packet)
 			&Server::seedPacket,
 			&Server::mapChoicePacket,
 			&Server::reBindPacket,
-			&Server::masterPacket
+			&Server::masterPacket,
+			&Server::retryPacket
 	};
 	uint8_t			type;
 
@@ -262,5 +263,11 @@ bool		Server::reBindPacket(Net::Packet &)
 bool		Server::masterPacket(Net::Packet &)
 {
 	Game::get().setMaster(true);
+	return true;
+}
+
+bool		Server::retryPacket(Net::Packet &)
+{
+	Core::CommandDispatcher::get().pushCommand(*new Core::Command("retry"));
 	return true;
 }

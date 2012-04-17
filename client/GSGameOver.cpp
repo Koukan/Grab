@@ -9,6 +9,8 @@
 #include "GUIHLayout.hpp"
 #include "GUILabel.hpp"
 #include "Game.hpp"
+#include "CommandDispatcher.hpp"
+#include "GSLoading.hpp"
 #include "Sprite.hpp"
 
 GSGameOver::GSGameOver(bool victory, std::list<Player *>& players,
@@ -91,9 +93,9 @@ void GSGameOver::onStart()
 					   VIEWY / 2,
 					   300, 500, 10, 100, "up arrow", "down arrow");
   Core::ButtonSprite *sprite = new Core::ButtonSprite("default button", "selected button", "pressed button");
-  new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
   if (Game::get().isMaster())
   {
+	  new GUIButton<GSGameOver>(*this, &GSGameOver::retry, "Retry", "buttonFont", *sprite, layout);
 	  new GUIButton<GSGameOver>(*this, &GSGameOver::reBind, "Change Ship", "buttonFont", *sprite, layout);
 	  new GUIButton<GSGameOver>(*this, &GSGameOver::changeMap, "Change Map", "buttonFont", *sprite, layout);
   }
@@ -108,14 +110,19 @@ bool	GSGameOver::handleCommand(Core::Command const &)
 void	GSGameOver::retry()
 {
 	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
 
-	if (!_online)
-	  {
-	    GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-	    gs->preload();
-	    Core::GameStateManager::get().pushState(*gs);
-	  }
+	Core::GameState	*gs;
+	if (_online)
+	{
+		gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+		Core::CommandDispatcher::get().pushCommand(*new Core::Command("Retry"));
+	}
+	else
+	{
+		gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
+		static_cast<GSInGame*>(gs)->preload();
+	}
+	Core::GameStateManager::get().changeState(*gs);
 }
 
 void	GSGameOver::returnToMainMenu()

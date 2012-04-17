@@ -30,6 +30,7 @@ class Server : public Net::SizeHeaderPacketHandler<>
 	bool			mapChoicePacket(Net::Packet &packet);
 	bool			reBindPacket(Net::Packet &packet);
 	bool			masterPacket(Net::Packet &packet);
+	bool			retryPacket(Net::Packet &packet);
 
 	std::string		_name;
 	Game			*_game;

@@ -96,6 +96,10 @@ set(SRCS
 	${INCLUDES_COMMON_DIR}CompositeMonsterProvider.cpp
 	${INCLUDES_COMMON_DIR}CompositeMonster.hpp
 	${INCLUDES_COMMON_DIR}CompositeMonster.cpp
+	${INCLUDES_COMMON_DIR}CompositeMaster.hpp
+	${INCLUDES_COMMON_DIR}CompositeMaster.cpp
+	${INCLUDES_COMMON_DIR}CompositeNode.hpp
+	${INCLUDES_COMMON_DIR}CompositeNode.cpp
 	main.cpp
 	SFMLFont.cpp
 	SFMLFont.hpp

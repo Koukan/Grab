@@ -10,6 +10,8 @@
 #include "RendererManager.hpp"
 #include "Player.hpp"
 #include "GSInGame.hpp"
+#include "CommandDispatcher.hpp"
+#include "GSLoading.hpp"
 
 GSPauseMenu::GSPauseMenu(GSInGame &inGame, std::list<Player *>& players,
 			 Modes::Mode mode, std::string const& map, 
@@ -47,10 +49,10 @@ void	GSPauseMenu::onStart()
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::resumeGame, "Resume Game", "buttonFont", *sprite, layout);
   if (Game::get().isMaster())
   {
+	new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::retry, "Retry", "buttonFont", *sprite, layout);
 	new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::reBind, "Change Ship", "buttonFont", *sprite, layout);
 	new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::changeMap, "Change Map", "buttonFont", *sprite, layout);
   }
-  new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::retry, "Retry", "buttonFont", *sprite, layout);
   new GUIButton<GSPauseMenu>(*this, &GSPauseMenu::returnMainMenu, "Return to Menu", "buttonFont", *sprite, layout);
 }
 
@@ -86,13 +88,17 @@ void	GSPauseMenu::changeMap()
 void	GSPauseMenu::retry()
 {
 	Core::GameStateManager::get().popState();
-	Core::GameStateManager::get().popState();
-
-	if (!_online)
+	Core::GameState	*gs;
+	if (_online)
 	{
-		GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
-		gs->preload();
-		Core::GameStateManager::get().pushState(*gs);
+		gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+		Core::CommandDispatcher::get().pushCommand(*new Core::Command("Retry"));
 	}
+	else
+	{
+		gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
+		static_cast<GSInGame*>(gs)->preload();
+	}
+	Core::GameStateManager::get().changeState(*gs);
 }
 

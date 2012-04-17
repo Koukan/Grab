@@ -143,7 +143,7 @@ double		BulletCommand::getBulletDirection()
 	return rtod(_direction);
 }
 
-double		BulletCommand::getAimDirection()
+double		BulletCommand::getAimDirection(double defaultValue)
 {
 	/*this->setRelativeObject(0);
 	if (!this->_relativeObject || this->_relativeObject->isDelete())
@@ -188,7 +188,12 @@ double		BulletCommand::getAimDirection()
 		double			py = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
 		return rtod(::atan2(py, px));
 	}
-	return 90;
+	return defaultValue;
+}
+
+double		BulletCommand::getAimDirection()
+{
+	return this->getAimDirection(90);
 }
 
 double		BulletCommand::getBulletSpeed()
@@ -241,10 +246,15 @@ void		BulletCommand::createSimpleBullet(double direction, double speed)
 void		BulletCommand::createBullet(BulletMLState* state,
 				  	    double direction, double speed)
 {
+	this->instantiateBullet(state, direction, speed);	
+}
+
+BulletCommand		*BulletCommand::instantiateBullet(BulletMLState* state, double direction, double speed)
+{	
 	HitBox			*box = 0;
 	double			vx, vy;
 	double			dir = dtor(direction);
-	BulletCommand	*bullet;
+	BulletCommand	*bullet = 0;
 
 	if (state->getShape() == "circle")
 		box = new CircleHitBox(this->getX(), this->getY(),
@@ -274,6 +284,7 @@ void		BulletCommand::createBullet(BulletMLState* state,
 		bullet->setRank(this->_rank);
 	}
 	delete state;
+	return bullet;
 }
 
 int			BulletCommand::getTurn()

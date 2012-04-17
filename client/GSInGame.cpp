@@ -20,6 +20,8 @@
 #include "MonsterGenerator.hpp"
 #include "Color.hpp"
 #include "ScoreBonus.hpp"
+#include "GSLoading.hpp"
+#include "CompositeMonster.hpp"
 
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
@@ -35,6 +37,7 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 
 GSInGame::~GSInGame()
 {
+	Core::CommandDispatcher::get().clear();
 }
 
 void		GSInGame::preload()
@@ -292,6 +295,7 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"score", &GSInGame::score},
 	{"move", &GSInGame::move},
 	{"spawnspawner", &GSInGame::spawnspawner},
+	{"spawncomposite", &GSInGame::spawncomposite},
 	{"spawndecoration", &GSInGame::spawndecoration},
 	{"spawnsound", &GSInGame::spawnsound},
 	{"spawnend", &GSInGame::spawnend},
@@ -307,7 +311,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"disableSpecialPower", &GSInGame::disableSpecialPower},
 	{"bonus", &GSInGame::bonus},
 	{"aura", &GSInGame::aura},
-	{"reBind", &GSInGame::reBind}
+	{"reBind", &GSInGame::reBind},
+	{"retry", &GSInGame::retry}
   };
 
   for (size_t i = 0;
@@ -423,6 +428,22 @@ void		GSInGame::spawnspawner(GameCommand const &event)
 	spawner->setScrollY(event.position);
 	spawner->setRank(this->_nbPlayers);
 	this->addGameObject(spawner, "spawners");
+}
+
+void		GSInGame::spawncomposite(GameCommand const &event)
+{
+	CompositeMonster *co = static_cast<CompositeMonster*>(this->getResource(event.data, 6));
+	std::cout << "compospawn " << event.data << " " << co << std::endl;
+	if (!co)
+		return ;
+	Core::BulletCommand *spawner = co->getBulletCommand(*this);
+	spawner->setX(event.x);
+	spawner->setY(event.y);
+	spawner->setVx(event.vx);
+	spawner->setVy(event.vy);
+	spawner->setSeed(this->_rand());
+	spawner->setScrollY(event.position);
+	spawner->setRank(this->_nbPlayers);
 }
 
 void		GSInGame::spawndecoration(GameCommand const &event)
@@ -581,6 +602,21 @@ void		GSInGame::reBind(GameCommand const &)
 {
 	while (Core::GameStateManager::get().getCurrentState().name != "bindPlayers")
 		Core::GameStateManager::get().popState();
+}
+
+void		GSInGame::retry(GameCommand const &)
+{
+	while (Core::GameStateManager::get().getCurrentState().name != "Game")
+		Core::GameStateManager::get().popState();
+	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	{
+		if (_nbPlayers > 1)
+			(*it)->setLife(-1);
+		else
+			(*it)->setLife(3);
+	}
+	GSLoading	*gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
+	Core::GameStateManager::get().changeState(*gs);
 }
 
 void		GSInGame::createShips()

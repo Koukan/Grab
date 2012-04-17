@@ -50,6 +50,7 @@ private:
 	void		score(GameCommand const &event);
 	void		move(GameCommand const &event);
 	void		spawnspawner(GameCommand const &event);
+	void		spawncomposite(GameCommand const &event);
 	void		spawndecoration(GameCommand const &event);
 	void		spawnsound(GameCommand const &event);
 	void		spawnend(GameCommand const &event);
@@ -66,6 +67,7 @@ private:
 	void		bonus(GameCommand const &event);
 	void		aura(GameCommand const &event);
 	void		reBind(GameCommand const &event);
+	void		retry(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;

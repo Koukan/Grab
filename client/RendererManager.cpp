@@ -10,6 +10,12 @@ RendererManager::RendererManager() : Core::GameStateObserver("RendererManager"),
 {
 	this->_targetRate = 20;
 	this->_fullscreen = true;
+	std::list<RendererManager::VideoMode> tmp = this->getAvailableResolutions();
+	if (!tmp.empty())
+	{
+		this->_maxwidth = tmp.front().width;
+		this->_maxheight = tmp.front().height;
+	}
 }
 
 RendererManager::~RendererManager()
@@ -22,12 +28,10 @@ void				RendererManager::init()
 	{
 	#if (SFML_VERSION_MAJOR == 2)
 	sf::VideoMode video = sf::VideoMode::getDesktopMode();
-	this->_width = video.width;
-	this->_height = video.height;
+	this->setResolution(video.width, video.height);
 	#else
 	sf::VideoMode video = sf::VideoMode::GetDesktopMode();
-	this->_width = video.Width;
-	this->_height = video.Height;
+	this->setResolution(video.Width, video.Height);
 	#endif
 	}
 	this->updateWindow();
@@ -152,8 +156,11 @@ int					RendererManager::getHeight() const
 void				RendererManager::setResolution(int width, int height)
 {
 	this->_width = width;
+	if (this->_width > this->_maxwidth || width <= 0)
+		this->_width = this->_maxwidth;
 	this->_height = height;
-	this->updateWindow();
+	if (this->_height > this->_maxheight || height <= 0)
+		this->_height = this->_maxheight;
 }
 
 void				RendererManager::setFullscreen(bool fullscreen)
@@ -161,7 +168,6 @@ void				RendererManager::setFullscreen(bool fullscreen)
 	if (fullscreen != _fullscreen)
 		{
 			_fullscreen = fullscreen;
-			this->updateWindow();
 		}
 }
 

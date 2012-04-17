@@ -703,7 +703,7 @@ void	MonsterGenerator::changeToMaze()
 	} const mazeStages[] =
 	{
 		{20, 20, 1, 0, 1, 0},
-		{1, 1, 2, 3, 0, 1},
+		{1, 1, 2, 1, 0, 2},
 		{20, 20, 1, 1, 1, 1}
 	};
 	static int const size = sizeof mazeStages / sizeof *mazeStages;

@@ -55,6 +55,7 @@ class NetworkModule : public Core::Module, public Net::Singleton<NetworkModule>
 	void		readyCommand(Core::Command const &command);
 	void		mapChoiceCommand(Core::Command const &command);
 	void		reBindCommand(Core::Command const &command);
+	void		retryCommand(Core::Command const &command);
 
 	struct	Method
 	{
