@@ -37,6 +37,7 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 
 GSInGame::~GSInGame()
 {
+	Core::CommandDispatcher::get().clear();
 }
 
 void		GSInGame::preload()

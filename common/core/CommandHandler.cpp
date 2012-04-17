@@ -123,3 +123,11 @@ void			CommandHandler::removeFather(CommandHandler &handler)
 	if (it != this->_fathers.end())
 		this->_fathers.erase(it);
 }
+
+void			CommandHandler::clear()
+{
+	while (!this->_timeCommands.empty())
+		this->_timeCommands.pop();
+	while (!this->_commands.empty())
+		this->_commands.pop();
+}

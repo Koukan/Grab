@@ -22,6 +22,7 @@ class CORE_DLLREQ CommandHandler
 	void				removeHandler(CommandHandler &handler);
 	void				removeHandler();
 	void				removeFather(CommandHandler &handler);
+	void				clear();
 
   private:
 	typedef std::pair<int, Command const *>		CommandPair;
