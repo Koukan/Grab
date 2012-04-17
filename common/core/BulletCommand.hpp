@@ -42,6 +42,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
     virtual double	getBulletSpeedY();
 	void			removeChild(uint32_t id);
 
+	double			getAimDirection(double defaultValue);
 	void			isCommanded(bool commanded);
 	bool			isCommanded() const;
 	void			addFocus(std::string const &name);

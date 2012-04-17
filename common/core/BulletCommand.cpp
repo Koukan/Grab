@@ -143,7 +143,7 @@ double		BulletCommand::getBulletDirection()
 	return rtod(_direction);
 }
 
-double		BulletCommand::getAimDirection()
+double		BulletCommand::getAimDirection(double defaultValue)
 {
 	/*this->setRelativeObject(0);
 	if (!this->_relativeObject || this->_relativeObject->isDelete())
@@ -188,7 +188,12 @@ double		BulletCommand::getAimDirection()
 		double			py = (ph->getY() + ph->getYHitBoxOffset() + (hb.getHeight() / 2)) - this->getY();
 		return rtod(::atan2(py, px));
 	}
-	return 90;
+	return defaultValue;
+}
+
+double		BulletCommand::getAimDirection()
+{
+	return this->getAimDirection(90);
 }
 
 double		BulletCommand::getBulletSpeed()

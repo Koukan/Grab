@@ -24,7 +24,8 @@ class CORE_DLLREQ CommandHandler
 	void				removeFather(CommandHandler &handler);
 
   private:
-	typedef std::priority_queue<std::pair<int, Command const *> >	TimedQueue;
+	typedef std::pair<int, Command const *>		CommandPair;
+	typedef std::priority_queue<CommandPair, std::vector<CommandPair>, std::less<CommandPair> >	TimedQueue;
 
 	int							_time;
 	std::list<CommandHandler*>	_handlers;

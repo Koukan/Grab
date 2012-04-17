@@ -56,12 +56,6 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 	double		vx, vy;
 	if (this->_isConcentrated)
 	{
-		//if (direction <= 20)
-		//	direction = direction / 3;
-		//else if (direction >= 340)
-		//	direction = ((direction - 360) / 3) + 360;
-		//else if (direction >= 160 && direction <= 200)
-		//	direction = ((direction - 180) / 3) + 180;
 		if (direction < 270)
 			direction = (direction + 3 * 90) / 4;
 		else
@@ -75,7 +69,7 @@ void	PlayerBullet::createSimpleBullet(double direction, double speed)
 
 	Core::HitBox		*box = new Core::CircleHitBox(this->getX(), this->getY(), 4);
 	vx = speed * cos(dir);
-	vy = -speed * sin(dir);
+	vy = speed * sin(dir);
 	if (this->_simpleSprite == "")
 		bullet = new Core::Bullet(_state, "playershot", *box, vx, vy, 0, 0);
 	else
@@ -105,12 +99,6 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 
 	if (this->_isConcentrated)
 	{
-		//if (direction <= 20)
-		//	direction = direction / 3;
-		//else if (direction >= 340)
-		//	direction = ((direction - 360) / 3) + 360;
-		//else if (direction >= 160 && direction <= 200)
-		//	direction = ((direction - 180) / 3) + 180;
 		if (direction < 270)
 			direction = (direction + 3 * 90) / 4;
 		else
@@ -124,7 +112,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 
 	Core::HitBox		*box = new Core::CircleHitBox(this->getX(), this->getY(), 4);
 	vx = speed * cos(dir);
-	vy = -speed * sin(dir);
+	vy = speed * sin(dir);
 	bullet = new PlayerBullet(*state, _state, *box, this->_groupName, vx, vy, state->getHitboxX(), state->getHitboxY(), this->_angle, this->_relative, this->_constraint);
 	if ((this->_constraint & PhysicObject::X) != 0)
 		bullet->setX(0);
@@ -150,11 +138,7 @@ void	PlayerBullet::createBullet(BulletMLState* state, double direction, double s
 
 double	PlayerBullet::getAimDirection()
 {
-	double	tmp = this->BulletCommand::getAimDirection();
-
-	/*if (!this->_relativeObject)
-		return 270;*/
-	return tmp;
+	return this->BulletCommand::getAimDirection(270);
 }
 
 void	PlayerBullet::move(double time)
