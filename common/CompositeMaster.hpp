@@ -21,4 +21,5 @@ class	CompositeMaster : public Core::BulletCommand
 			Core::GameState										&_state;
 			size_t												_count;
 			Core::BulletCommand 								*_bullet;
+			std::list<CompositeNode*>							_toadd;
 };
