@@ -15,6 +15,7 @@ public:
 	virtual void	draw(double);
 	void			createParticle(int angle);
 	bool			isEnd() const;
+	static std::string const tab[2];
 
 private:
 	Core::GameState &_gameState;
@@ -25,4 +26,5 @@ private:
 	unsigned int			_nbParticles;
 	ConcreteObject	*_end;
 	Ship			&_ship;
+	int				_i;
 };

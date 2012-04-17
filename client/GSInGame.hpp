@@ -24,12 +24,12 @@ public:
 	virtual void	onEnd();
 	virtual void	update(double elapsedTime);
 	virtual bool	handleCommand(Core::Command const &command);
-	void			preload();
+	void		preload();
 	unsigned int	getNbPlayers() const;
 	unsigned int	getNbDie() const;
-	bool			playerDie(Player &player);
-	Map&			getMap() const;
-	void			setSeed(uint32_t seed);
+	bool		playerDie(Player &player);
+	Map&		getMap() const;
+	void		setSeed(uint32_t seed);
 	void		gameover(bool victory);
 	void		setGameOver(int gameOver);
 
@@ -49,7 +49,6 @@ private:
 
 	void		score(GameCommand const &event);
 	void		move(GameCommand const &event);
-	void		rangeid(GameCommand const &event);
 	void		spawnspawner(GameCommand const &event);
 	void		spawncomposite(GameCommand const &event);
 	void		spawndecoration(GameCommand const &event);
@@ -65,14 +64,13 @@ private:
 	void		serverCannon(GameCommand const &event);
 	void		killPlayer(GameCommand const &event);
 	void		disableSpecialPower(GameCommand const &event);
-	void        bonus(GameCommand const &event);
-	void        aura(GameCommand const &event);
+	void		bonus(GameCommand const &event);
+	void		aura(GameCommand const &event);
 	void		reBind(GameCommand const &event);
 	void		retry(GameCommand const &event);
 
 	void		retrieve(uint32_t idPacket);
 	void		updatePositions(GameCommand const &event, Core::PhysicObject &obj) const;
-	void		displayScores();
 
   	void		loadShoot(GameCommand const &event);
 
