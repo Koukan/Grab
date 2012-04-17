@@ -25,7 +25,7 @@ class CORE_DLLREQ CommandHandler
 
   private:
 	typedef std::pair<int, Command const *>		CommandPair;
-	typedef std::priority_queue<CommandPair, std::vector<CommandPair>, std::less<CommandPair> >	TimedQueue;
+	typedef std::priority_queue<CommandPair, std::vector<CommandPair>, std::greater<CommandPair> >	TimedQueue;
 
 	int							_time;
 	std::list<CommandHandler*>	_handlers;
