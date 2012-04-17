@@ -23,8 +23,8 @@ set(SFML_INCLUDE_DIR "/usr/include/SFML")
 set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
+	sfml-audio
 	sfml-system
-	dl
 )
 ELSE(LINUX)
 set(TYPE "BSD")
@@ -33,6 +33,7 @@ LINK_DIRECTORIES ("/usr/local/lib/")
 set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
+	sfml-audio
 	sfml-system
 )
 ENDIF(WIN32)
@@ -105,6 +106,8 @@ set(SRCS
 	SFMLFont.hpp
 	SFMLFontProvider.cpp
 	SFMLFontProvider.hpp
+	SFMLMusic.hpp
+	SFMLMusic.cpp
 	${INCLUDES_COMMON_DIR}ConcreteObject.cpp
 	${INCLUDES_COMMON_DIR}ConcreteObject.hpp
 	Game.cpp
