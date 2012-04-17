@@ -189,9 +189,12 @@ set(SRCS
 )
 
 IF(WIN32)
-	SET(CMAKE_C_FLAGS "")
 ELSE(WIN32)
-	SET(CMAKE_C_FLAGS "-std=c++0x -W -Wall -Wextra -O2")
+set_source_files_properties (
+  ${SRCS}
+  PROPERTIES
+  COMPILE_FLAGS
+  "-W -Wall -Wextra -g3"
 ENDIF(WIN32)
 
 ##### Setting the output directory for the solution

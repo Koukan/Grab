@@ -90,13 +90,6 @@ void	GSPauseMenu::retry()
 
 	if (!_online)
 	{
-		for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
-		{
-			if (_nbPlayers > 1)
-				(*it)->setLife(-1);
-			else
-				(*it)->setLife(3);
-		}
 		GSInGame *gs = new GSInGame(this->_players, this->_mode, this->_map, this->_players.size(), this->_online, Modes::modesList[this->_mode].nbCredits);
 		gs->preload();
 		Core::GameStateManager::get().pushState(*gs);

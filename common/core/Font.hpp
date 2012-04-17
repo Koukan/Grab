@@ -19,7 +19,7 @@ public:
 	// setter
 	virtual void	setText(std::string const & /*text*/){}
 	virtual void	setColor(int, int, int) {}
-	virtual void	setColor(Color const &color) {}
+	virtual void	setColor(Color const &/*color*/) {}
 	virtual void	setTransparency(int) {}
 
 	// getter
