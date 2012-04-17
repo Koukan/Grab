@@ -505,8 +505,12 @@ void		GSInGame::destroy(GameCommand const &event)
 	{
 	    if (tmp->score > 0)
 	      {
-			ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
-			this->addGameObject(obj, "scoreBonus");
+			  for (int i = tmp->score / 10; i > 0; --i)
+			  {
+				  Core::BulletCommand *obj = new ScoreBonus(tmp->score, tmp->getX(), tmp->getY(), "bonus", *this);
+			  //ConcreteObject *obj = new ScoreBonus("bonusScore", tmp->score, *(new Core::CircleHitBox(tmp->getX(), tmp->getY(), 40)), 0, 150, -40, -40);
+				  this->addGameObject(obj, "scoreBonus");
+			  }
 	      }
 		tmp->erase();
 	}
