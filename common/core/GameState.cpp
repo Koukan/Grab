@@ -14,7 +14,7 @@ GameState::~GameState()
 	for (std::list<Core::Sound*>::const_iterator it = this->_sounds.begin();
 		  it != this->_sounds.end(); it++)
 		delete *it;
-	this->clear();
+	this->GameObjectManager::clear();
 }
 
 void		GameState::onStart()
