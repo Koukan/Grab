@@ -33,7 +33,7 @@ void	Rules::wallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
 	gameState.addGameObject(explosion, "impacts", 100);
 }
 
-void	Rules::limitWallTouchObject(Core::GameObject &o1, Core::GameObject &o2)
+void	Rules::limitWallTouchObject(Core::GameObject &, Core::GameObject &o2)
 {
 	o2.setDelete(1);
 	o2.erase();
@@ -77,6 +77,14 @@ void	Rules::shotTouchPlayer(Core::GameObject &o1, Core::GameObject &o2)
 		ship.setDead(true);
 		shot.erase();
 	}
+}
+
+void	Rules::monsterTouchPlayer(Core::GameObject &, Core::GameObject &o2)
+{	
+	Ship			&ship = static_cast<Ship&>(o2);
+
+	if (!ship.isDead() && ship.getPlayer().getType() != Player::ONLINE)
+		ship.setDead(true);
 }
 
 void	Rules::deadlyWallsTouchPlayers(Core::GameObject &, Core::GameObject &o2)
