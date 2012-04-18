@@ -53,6 +53,9 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	uint32_t		getSeed() const;
 	Bullet			*getChild(uint32_t id) const;
 	std::string const	&getBulletScript() const;
+	void			start();
+	void			stop();
+	bool			isStarted() const;
 
 	virtual void	erase();
 
@@ -93,6 +96,7 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	Net::MTRand				_rand;
 	bool					_paused;
 	bool					_isCommanded;
+	bool					_stop;
 
  public:
 	unsigned int const	score;

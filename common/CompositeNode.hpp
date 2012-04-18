@@ -12,8 +12,10 @@ class	CompositeNode : public Core::BulletCommand
 			void	createBullet(BulletMLState* state, double direction, double speed);
 			void	erase();
 			std::string	const &getName() const;
+			void	begin();
 		
 	private:
 			CompositeMaster		&_parent;
-			std::string			_name;	
+			std::string			_name;
+			bool				_begin;
 };

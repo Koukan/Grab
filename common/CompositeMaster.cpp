@@ -12,11 +12,10 @@ CompositeMaster::~CompositeMaster()
 void    CompositeMaster::createBullet(BulletMLState* state, double direction, double speed)
 {	
 	_bullet = this->instantiateBullet(state, direction, speed);
+	_bullet->setCollidable(false);
 	for (std::list<CompositeNode*>::iterator it = _toadd.begin(); it != _toadd.end(); ++it)
-	{
-		_state.addGameObject(*it, "monsters");
-		it = _toadd.erase(it);
-	}
+		(*it)->begin();
+	this->_toadd.clear();
 }
 
 void    CompositeMaster::notifyDeath(CompositeNode &node)
@@ -33,21 +32,25 @@ void    CompositeMaster::notifyDeath(CompositeNode &node)
 		}
 		if (it->second.empty())
 		{	
-			_state.addGameObject(it->first, "monsters");
+			it->first->start();
 			_dependencies.erase(it);
 		}	
 	}
 	_count--;
 	if (_count == 0)
-		delete this;
+	{
+		_bullet->setCollidable(true);
+		this->erase();
+	}
 }
 
 void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::string> const &dependencies)
 {
-	if (dependencies.empty())
-		_toadd.push_back(&node);
-	else
+	_state.addGameObject(&node, "spawner");
+	if (!dependencies.empty())
 		_dependencies[&node] = dependencies;
+	else
+		_toadd.push_back(&node);
 	_count++;
 }
 

@@ -61,6 +61,14 @@ void		Bullet::move(double time)
 	this->setAy(0);
 }
 
+void		Bullet::start()
+{
+}
+
+void		Bullet::stop()
+{
+}
+
 void		Bullet::setSprite(ResourceManager &resource, std::string const &name)
 {
 	if (this->_sprite)
