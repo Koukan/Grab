@@ -23,8 +23,9 @@ class	SpecialPower;
 class Ship : public ConcreteObject
 {
 public:
-  Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, Color const &color,
-	   unsigned int nbMaxGrabs = 3);
+  Ship(Player &player, ShipInfo::ShipInfo const &info,
+       Core::GameState &state, Color const &color, int lifes,
+       unsigned int nbMaxGrabs = 3);
   ~Ship();
 
   void			setSpecialPowerActive(bool isActive);
@@ -62,7 +63,6 @@ public:
   void			inputGrab2(Core::InputCommand const &cmd);
   void			inputGrab3(Core::InputCommand const &cmd);
   void			defineGrabPosition(GrabPosition::Position position, unsigned int nGrab, int angle);
-  void			setDead(bool dead, bool command = true);
   bool			isDead() const;
   virtual void	draw(double elapsedTime);
   void			updateCannonsTrajectory();
@@ -73,6 +73,11 @@ public:
   void			stopSpecialPower();
   void			grab4();
 
+  void			setDead(bool dead, bool command = true);
+  void			setNbDeath(int nbDeath);
+  int			getLifes() const;
+  void			setLifes(int nb);
+
   void			setNbSecRespawn(int nbSec);
   unsigned int		getScore() const;
   void			setScore(unsigned int score);
@@ -82,9 +87,12 @@ public:
   void			increasePowerGauge(unsigned int score);
   void			resetState();
   void			displayAura();
+  void			respawn();
+  void			kill();
 
 private:
   void			manageGrab(std::string const &group, unsigned int nGrab);
+  void			die();
 
  // ship control
   enum Actions
@@ -130,6 +138,8 @@ private:
   bool			_specialPowerActive;
   ConcreteObject*	_electricAura;
   Core::GameState&	_state;
+  int			_nbDeath;
+  int			_lifes;
   
   void handleActions();
   void resetPowerGauge();

@@ -13,9 +13,13 @@
 #include "SpecialPower.hpp"
 #include "Shield.hpp"
 #include "Missile.hpp"
+#ifdef _CLIENT_
+#include "GSInGame.hpp"
+#endif
 
-Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &state, Color const & color,
-		   unsigned int nbMaxGrabs)
+Ship::Ship(Player &player, ShipInfo::ShipInfo const &info,
+	   Core::GameState &state, Color const & color, int lifes,
+	   unsigned int nbMaxGrabs)
 	: ConcreteObject(info.spriteName, *new Core::CircleHitBox(0, 0, 5), 0, 0),
 	  _caracs(info),
 	  _player(player), _speed(info.speed), _tmpSpeed(info.speed),
@@ -29,7 +33,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info, Core::GameState &stat
 	  _targetx(0), _targety(0), _target(false),
 	  _powerGauge(100), //will be reset to 0 when I finish my tests
 	  _specialPower(0),
-	  _specialPowerActive(false), _electricAura(0), _state(state)
+	  _specialPowerActive(false), _electricAura(0), _state(state),
+	  _nbDeath(0), _lifes(lifes)
 {
        state.addGameObject(this, "players");
        if (info.specialPowerType == ShipInfo::SHIELD)
@@ -466,6 +471,16 @@ void Ship::grab4()
   this->manageGrab("grabs", 3);
 }
 
+void Ship::kill() // tmp, I'm lazy and tired
+{
+  _dead = true;
+  if (this->getSprite())
+    this->getSprite()->setTransparency(0);
+  this->resetPowerGauge();
+  this->stopSpecialPower();
+  this->manageFire();
+}
+
 void Ship::setDead(bool dead, bool command)
 {
   	if (this->_dead == dead)
@@ -487,16 +502,10 @@ void Ship::setDead(bool dead, bool command)
 	}
 	this->resetPowerGauge();
 	this->stopSpecialPower();
+	this->manageFire();
 	if (this->getSprite())
 		this->getSprite()->setTransparency(0.4f);
-	this->_player.die();
-	this->_elapsedTime = 1000;
-	if (this->_timer)
-	  {
-	    this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
-	    this->_timer->setColor(255, 255, 255);
-	  }
-	this->manageFire();
+	this->die();
 	if (command)
 	{
 		GameCommand		*cmd = new GameCommand("deadPlayer");
@@ -504,6 +513,48 @@ void Ship::setDead(bool dead, bool command)
 		cmd->boolean = true;
 		Core::CommandDispatcher::get().pushCommand(*cmd);
 	}
+}
+
+void			Ship::respawn()
+{
+  int nbSpawn =  2 + this->_nbDeath * 2;
+
+    if (nbSpawn > 8)
+      nbSpawn = 8;
+
+  GameCommand	*cmd = new GameCommand("respawnplayer");
+  cmd->player = &this->_player;
+  this->getGroup()->getState().pushCommand(*cmd, nbSpawn * 1000); 
+  this->setNbSecRespawn(nbSpawn);
+  if (this->_timer)
+    {
+      this->_timer->setText(Net::Converter::toString<int>(this->_nbSecRespawn));
+      this->_timer->setColor(255, 255, 255);
+    }
+}
+
+void			Ship::die()
+{
+  if (this->_lifes != -1)
+    {
+      --this->_lifes;
+      if (this->_lifes > 0)
+	this->respawn();
+      #ifdef _CLIENT_
+      else
+	static_cast<GSInGame&>(_state).playerDie();
+      #endif
+    }
+  else // in this part, a "dead player" is a player in ghost mode
+    {
+      ++this->_nbDeath; // increase respawn timer
+      #ifdef _CLIENT_
+      GSInGame&	state = static_cast<GSInGame&>(_state);
+			
+      if (!state.playerDie())
+	this->respawn();
+      #endif
+    }
 }
 
 bool Ship::isDead() const
@@ -643,6 +694,21 @@ void		Ship::setNbSecRespawn(int nbSec)
 unsigned int	Ship::getPowerGauge() const
 {
   return (_powerGauge);
+}
+
+int		Ship::getLifes() const
+{
+  return (_lifes);
+}
+
+void		Ship::setLifes(int lifes)
+{
+  _lifes = lifes;
+}
+
+void		Ship::setNbDeath(int nbDeath)
+{
+  _nbDeath = nbDeath;
 }
 
 void		Ship::increasePowerGauge(unsigned int score)

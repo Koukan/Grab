@@ -8,7 +8,8 @@ GSLoading::GSLoading(std::list<Player *>& players, Modes::Mode mode,
 		std::string const &map, unsigned int nbPlayers, bool online)
 	: Core::GameState("Loading"), _players(players), _nbPlayers(nbPlayers), _nbShip(0),
 	  _game(*new GSInGame(players, mode, map,
-			      nbPlayers, online, Modes::modesList[mode].nbCredits))
+			      nbPlayers, online, Modes::modesList[mode].nbCredits)),
+	  _mode(mode)
 {
 }
 
@@ -61,7 +62,8 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 };
 
 	GameCommand	const		&cmd = static_cast<GameCommand const &>(command);
-	uint32_t				i = 0;
+	uint32_t			i = 0;
+	int		life = (_players.size() == 1) ? (Modes::modesList[_mode].singleNbLife) : (Modes::modesList[_mode].multiNbLife);
 
 	for (std::list<Player*>::const_iterator it = this->_players.begin();
 		 it != this->_players.end(); it++)
@@ -73,7 +75,7 @@ void		GSLoading::shipSpawn(Core::Command const &command)
 				this->_nbShip++;
 			ship = new Ship(**it, *(*it)->getShipInfo(), this->_game,
 					Color(playerColors[i].r, playerColors[i].g, 
-					      playerColors[i].b));
+					      playerColors[i].b), life);
 			ship->setX(cmd.x);
 			ship->setY(cmd.y);
 			ship->setId(cmd.idObject);

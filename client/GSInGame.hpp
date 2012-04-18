@@ -26,13 +26,12 @@ public:
 	virtual bool	handleCommand(Core::Command const &command);
 	void		preload();
 	unsigned int	getNbPlayers() const;
-	unsigned int	getNbDie() const;
 	bool		playerDie();
 	Map&		getMap() const;
 	void		setSeed(uint32_t seed);
 	void		gameover(bool victory);
 	void		setGameOver(int gameOver);
-
+	bool		allDied(unsigned int nbPlayers) const;
 private:
 	template<typename T>
 	class Method
@@ -76,16 +75,16 @@ private:
 
 	uint32_t	getNextId();
 
-	bool		classicMode();
-	bool		highlanderMode();
+	bool		coopMode();
+	bool		oneWinnerMode();
 	void		createShips();
+	void		eliminateLowerScore(GameCommand const& /*cmd*/);
 
 	uint16_t						_idPlayer;
 	std::list<Player *>				&_players;
 	Modes::Mode						_mode;
 	std::string const				_map;
 	unsigned int					_nbPlayers;
-	unsigned int					_nbDie;
 	bool							_online;
 	std::vector<uint32_t>			_scores;
 	std::vector<Core::CoreFont*>	_scoreFonts;

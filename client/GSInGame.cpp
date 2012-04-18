@@ -26,7 +26,7 @@
 GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string const &map, unsigned int nbPlayers, bool online, unsigned int nbCredits)
 	: GameState("Game"), _idPlayer(0),
 	  _players(players), _mode(mode), _map(map),
-	  _nbPlayers(nbPlayers), _nbDie(0), _online(online),
+	  _nbPlayers(nbPlayers), _online(online),
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits),
@@ -254,7 +254,6 @@ void		GSInGame::registerShipCallbacks()
   }
 }
 
-#include <iostream>
 void		GSInGame::onStart()
 {
 	GameState *state = Core::GameStateManager::get().getGameState("Preload");
@@ -271,7 +270,8 @@ void		GSInGame::onStart()
 	//	obj3->pushSprite("ingame background 2");
 	//	obj3->pushSprite("ingame background 3");
 	this->addGameObject(obj3, "background");
-	 //test map
+
+	//map
 	_mapObj = static_cast<Map*>(this->getResource(this->_map, 5));
 	this->addGameObject(_mapObj, "map");
 	if (!_online)
@@ -279,7 +279,10 @@ void		GSInGame::onStart()
   	this->registerShipCallbacks();
 	MonsterGenerator	*generator = dynamic_cast<MonsterGenerator*>(this->_mapObj);
 	if (generator)
-		generator->setSeed(this->_rand());
+	  {
+	    generator->setSeed(this->_rand());
+	    generator->setMode(_mode);
+	  }
 }
 
 void		GSInGame::onEnd()
@@ -312,7 +315,8 @@ bool		GSInGame::handleCommand(Core::Command const &command)
 	{"bonus", &GSInGame::bonus},
 	{"aura", &GSInGame::aura},
 	{"reBind", &GSInGame::reBind},
-	{"retry", &GSInGame::retry}
+	{"retry", &GSInGame::retry},
+	{"eliminateLowerScore", &GSInGame::eliminateLowerScore}
   };
 
   for (size_t i = 0;
@@ -327,53 +331,74 @@ bool		GSInGame::handleCommand(Core::Command const &command)
   return (false);
 }
 
-bool		GSInGame::classicMode()
+bool		GSInGame::allDied(unsigned int nbPlayers) const
 {
-	if (this->_nbDie == this->_players.size())
-	{
-	    if (this->_nbCredits > 0)
-		{
-			int	life = Modes::modesList[_mode].singleNbLife;
-			
-			this->_nbDie = 0;
-			--this->_nbCredits;
-			if (this->_players.size() != 1)
-				life = Modes::modesList[_mode].multiNbLife;
-			for (std::list<Player *>::iterator it = this->_players.begin();
-				 it != this->_players.end(); ++it)
-			{
-				(*it)->getShip()->resetState();
-				(*it)->setLife(life);
-				(*it)->getShip()->setDead(false);
-			}
-			Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), (_online) ? NONE : PHYSIC);
-		}
-		else
-		{
-			this->gameover(false);
-			return (true);
-		}
-	}
-	return (false);
+  unsigned int	dead = 0;
+  Ship*		ship;
+
+  for (std::list<Player *>::iterator it = this->_players.begin();
+       it != this->_players.end(); ++it)
+    {
+      ship = (*it)->getShip();
+      if (ship && ship->isDead())
+	++dead;
+    }
+  return (dead == nbPlayers);
 }
 
-bool		GSInGame::highlanderMode()
+bool		GSInGame::coopMode()
 {
-  if (this->_nbDie == this->_players.size() - 1)
+  if (this->allDied(this->_nbPlayers))
     {
-      this->gameover(false);
-      return (true);
+      if (this->_nbCredits > 0)
+	{
+	  int	life = (_nbPlayers == 1) ? (Modes::modesList[_mode].singleNbLife) :
+	    Modes::modesList[_mode].multiNbLife;
+	  Ship* ship;
+			
+	  --this->_nbCredits;
+	  for (std::list<Player *>::iterator it = this->_players.begin();
+	       it != this->_players.end(); ++it)
+	    {
+	      ship = (*it)->getShip();
+	      if (ship)
+		{
+		  ship->resetState();
+		  ship->setLifes(life);
+		  ship->setNbDeath(0);
+		  ship->respawn();
+		}
+	    }
+	  Core::GameStateManager::get().pushState(*new GSContinue(*this, this->_players, _nbCredits), (_online) ? NONE : PHYSIC);
+	}
+      else
+	{
+	  this->gameover(false);
+	  return (true);
+	}
+    }
+  return (false);
+}
+
+bool		GSInGame::oneWinnerMode()
+{
+  if (this->allDied(this->_nbPlayers - 1))
+    {
+      if (this->_mode != Modes::SURVIVAL_SCORING)
+	{
+	  this->gameover(false);
+	  return (true);
+	}
     }
   return (false);
 }
 
 bool		GSInGame::playerDie()
 {
-	this->_nbDie++;
-	if (!_mode != Modes::SURVIVAL_HIGHLANDER)
-	  return (this->classicMode());
+	if (_mode == Modes::STORY)
+	  return (this->coopMode());
 	else
-	  return (this->highlanderMode());
+	  return (this->oneWinnerMode());
 }
 
 void		GSInGame::setSeed(uint32_t seed)
@@ -493,12 +518,11 @@ void		GSInGame::increasePaused(GameCommand const &)
 
 void		GSInGame::respawnplayer(GameCommand const &event)
 {
-	Ship*	ship = event.player->getShip();
+  Ship*		ship = event.player->getShip();
 
-	if (ship)
-	  ship->setDead(false);
-	if (event.player->getLife() == -1)
-	  --this->_nbDie;
+  if (ship)
+    ship->setDead(false);
+  //  if (event.player->getShip()->getLifes() == -1)
 }
 
 void		GSInGame::setSeed(GameCommand const &event)
@@ -581,6 +605,28 @@ void		GSInGame::serverCannon(GameCommand const &cmd)
 	}
 }
 
+void		GSInGame::eliminateLowerScore(GameCommand const& /*cmd*/)
+{
+  Ship*		loser = 0;
+  Ship*		ship;
+
+  for (std::list<Player*>::iterator it = _players.begin();
+       it != _players.end(); ++it)
+    {
+      ship = (*it)->getShip();
+      if (ship && (!loser || loser->getScore() > ship->getScore()))
+	loser = ship;
+    }
+  if (loser)
+    {
+      loser->kill();
+      if (this->allDied(this->_nbPlayers - 1))
+	{
+	  this->gameover(false);
+	}
+    }
+}
+
 void		GSInGame::killPlayer(GameCommand const &cmd)
 {
 	Ship	*ship = static_cast<Ship*>(this->getGameObject(cmd.idObject));
@@ -628,14 +674,16 @@ void		GSInGame::reBind(GameCommand const &)
 
 void		GSInGame::retry(GameCommand const &)
 {
+	int		life = (this->_players.size() == 1) ? (Modes::modesList[_mode].singleNbLife) : (Modes::modesList[_mode].multiNbLife);
+
+	Ship*		ship;
 	while (Core::GameStateManager::get().getCurrentState().name != "Game")
 		Core::GameStateManager::get().popState();
 	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	{
-		if (_nbPlayers > 1)
-			(*it)->setLife(-1);
-		else
-			(*it)->setLife(3);
+	  ship = (*it)->getShip();
+	  if (ship)
+	    ship->setLifes(life);
 	}
 	GSLoading	*gs = new GSLoading(this->_players, this->_mode, this->_map, this->_players.size(), this->_online);
 	Core::GameStateManager::get().changeState(*gs);
@@ -657,12 +705,15 @@ void		GSInGame::createShips()
   };
 
   Ship					*ship;
-  unsigned int			i = 0;
+  unsigned int				i = 0;
+  int					life = (_players.size() == 1) ? (Modes::modesList[_mode].singleNbLife) : 
+    (Modes::modesList[_mode].multiNbLife);
+
   for (std::list<Player *>::const_iterator it = _players.begin(); it != _players.end(); ++it, ++i)
     {
 		ship = new Ship(**it, *(*it)->getShipInfo(), *this, Color(playerColors[i].r, 
 									  playerColors[i].g,
-									  playerColors[i].b));
+									  playerColors[i].b), life);
 		ship->setY(600);
 		ship->setX(i * 250 + 150);
     }
@@ -685,11 +736,6 @@ Map&		GSInGame::getMap() const
 unsigned int	GSInGame::getNbPlayers() const
 {
   return (_nbPlayers);
-}
-
-unsigned int	GSInGame::getNbDie() const
-{
-  return (_nbDie);
 }
 
 void		GSInGame::setGameOver(int gameOver)

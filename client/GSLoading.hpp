@@ -35,5 +35,6 @@ class GSLoading : public Core::GameState
 	std::list<Player *>			&_players;
 	unsigned int				_nbPlayers;
 	unsigned int				_nbShip;
-	GSInGame					&_game;
+	GSInGame				&_game;
+	Modes::Mode				_mode;
 };

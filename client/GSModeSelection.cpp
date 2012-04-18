@@ -35,7 +35,7 @@ void	GSModeSelection::onStart()
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::story, "Story", "buttonFont", *sprite, layout);
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::survivalScoring, "Survival Scoring", "buttonFont", *sprite, layout);
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::survivalHighlander, "Survival Highlander", "buttonFont", *sprite, layout);
-  new GUIButton<GSModeSelection>(*this, &GSModeSelection::tryAndRetry, "Try and Retry", "buttonFont", *sprite, layout);
+  //  new GUIButton<GSModeSelection>(*this, &GSModeSelection::tryAndRetry, "Try and Retry", "buttonFont", *sprite, layout);
   new GUIButton<GSModeSelection>(*this, &GSModeSelection::back, "Back", "buttonFont", *sprite, layout);
 }
 

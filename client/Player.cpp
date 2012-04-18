@@ -1,11 +1,7 @@
 #include "Player.hpp"
-#include "GameCommand.hpp"
-#include "CommandDispatcher.hpp"
-#include "GSInGame.hpp"
-#include "GameStateManager.hpp"
 
-Player::Player(Player::type type, int life, Ship* ship)
-  : _life(life), _type(type), _ship(ship), _shipInfo(0), _nbDie(0)
+Player::Player(Player::type type, Ship* ship)
+  : _type(type), _ship(ship), _shipInfo(0)
 {
 	if (type == Player::KEYBOARD)
 	{
@@ -62,54 +58,6 @@ void			Player::setShipInfo(ShipInfo::ShipInfo const *info)
 	this->_shipInfo = info;
 }
 
-void			Player::setLife(int nb)
-{
-	this->_life = nb;
-}
-
-void			Player::respawn()
-{
-  int nbSpawn =  this->_nbDie * 2;
-
-    if (nbSpawn > 8)
-      nbSpawn = 8;
-
-  GameCommand	*cmd = new GameCommand("respawnplayer");
-  cmd->player = this;
-  Core::CommandDispatcher::get().pushCommand(*cmd, nbSpawn * 1000); 
-  this->_ship->setNbSecRespawn(nbSpawn);
-}
-
-void			Player::die()
-{
-	if (this->_life != -1)
-	{
-	    this->_life--;
-	    if (this->_life > 0)
-			this->respawn();
-	    else
-		{
-			GSInGame	*state = static_cast<GSInGame*>(Core::GameStateManager::get().getGameState("Game"));
-
-			if (state)
-				state->playerDie();
-		}
-	}
-	else // in this part, a "dead player" is a player in ghost mode
-	{
-		++this->_nbDie;
-	    Core::Group *group = this->_ship->getGroup();
-
-	    if (group)
-		{
-			GSInGame&	state = static_cast<GSInGame&>(group->getState());
-			
-			if (!state.playerDie())
-				this->respawn();
-		}
-	}
-}
-
 Player::type	Player::getType() const
 {
 	return (this->_type);
@@ -130,7 +78,3 @@ Core::InputCommand	&Player::getAction(Player::Action action)
 	return (this->_actions[action]);
 }
 
-int				Player::getLife() const
-{
-	return this->_life;
-}

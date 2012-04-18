@@ -5,6 +5,7 @@
 #include <string>
 #include <MTRand.hpp>
 #include "Sound.hpp"
+#include "Modes.hpp"
 
 class MonsterGenerator : public Map
 {
@@ -25,6 +26,7 @@ public:
 	void	addBossSound(std::string const &name, bool scrollable, size_t level, int min, int max, int ymin, int ymax);
 
 	void	setSeed(uint32_t seed);
+	void	setMode(Modes::Mode mode);
 
 private:
 	struct MonsterInfo
@@ -116,6 +118,7 @@ private:
 	Core::Sound	*_sounds[2];
 	int			_currentSound;
 	bool		_beginning;
+	Modes::Mode	_mode;
 
 	void	generate(double time);
 	void	generateSquad(double time);

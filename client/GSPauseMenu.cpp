@@ -89,12 +89,15 @@ void	GSPauseMenu::retry()
 {
 	Core::GameStateManager::get().popState();
 	Core::GameState	*gs;
+
+	int		life = (_players.size() == 1) ? (Modes::modesList[_mode].singleNbLife) : (Modes::modesList[_mode].multiNbLife);
+	Ship*		ship;
+
 	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	  {
-	    if (_nbPlayers > 1)
-	      (*it)->setLife(-1);
-	    else
-	      (*it)->setLife(3);
+	    ship = (*it)->getShip();
+	    if (ship)
+	      ship->setLifes(life);
 	  }
 	if (_online)
 	{

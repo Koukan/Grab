@@ -52,7 +52,7 @@ void GSGameOver::oneWinnerMode()
       ship = (*it)->getShip();
       if (ship)
 	{
-	  if (winner == 0 || winner->getScore() <= ship->getScore())
+	  if (winner == 0 || (_mode == Modes::SURVIVAL_SCORING && winner->getScore() <= ship->getScore()) || (_mode == Modes::SURVIVAL_HIGHLANDER && !ship->isDead()))
 	    winner = ship;
 	}
     }
@@ -180,12 +180,14 @@ bool	GSGameOver::handleCommand(Core::Command const &)
 void	GSGameOver::retry()
 {
 	Core::GameStateManager::get().popState();
+	int		life = (this->_players.size() == 1) ? (Modes::modesList[_mode].singleNbLife) : (Modes::modesList[_mode].multiNbLife);
+	Ship*		ship;
+
 	for (std::list<Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	  {
-	    if (_nbPlayers > 1)
-	      (*it)->setLife(-1);
-	    else
-	      (*it)->setLife(3);
+	    ship = (*it)->getShip();
+	    if (ship)
+	      ship->setLifes(life);
 	  }
 	Core::GameState	*gs;
 	if (_online)

@@ -3,13 +3,13 @@
 #include "GameState.hpp"
 #include "GameCommand.hpp"
 #include "CommandDispatcher.hpp"
-//#include "RendererManager.hpp"
 
 MonsterGenerator::MonsterGenerator(int seed)
 	: _maxId(0), _squadLevelSpeed(4), _mazeLevel(-1), _mazeEnemiesFrequency(0), _mazeBreakableWallsFrequency(1), _mazeNoObstacleFrequency(5),
 	_leftFrequency(20), _rightFrequency(20), _upFrequency(1), _nbSquads(0), _nbSquadsMax(10), _squadTime(/*10*/5), _bossTime(10), _rand(seed), _elapsedTime(5.7),
 	_inMaze(false), _tmpY(this->_y), _wallSize(185), _position(1), _lastPosition(_position), _mazeY(0),
-	_MazeEnemiesNb(0), _MazeBreakableWallsNb(0), _MazeMovableWallsNb(0), _MazeWallsNb(0), _y2(this->_y), _currentSound(0), _beginning(true)
+	  _MazeEnemiesNb(0), _MazeBreakableWallsNb(0), _MazeMovableWallsNb(0), _MazeWallsNb(0), _y2(this->_y), _currentSound(0), _beginning(true),
+	  _mode(Modes::SURVIVAL_SCORING)
 {
 	this->_sounds[0] = 0;
 	this->_sounds[1] = 0;
@@ -680,14 +680,21 @@ void	MonsterGenerator::generate(double time)
 
 void	MonsterGenerator::changeToSquads()
 {
-	std::cout << "change to squad" << std::endl;
-	this->createSquadSound();
-	this->_inMaze = false;
-	this->_elapsedTime = 6;
+  if (_mode == Modes::SURVIVAL_SCORING)
+    {
+        GameCommand	*cmd = new GameCommand("eliminateLowerScore");
 
-	this->_nbSquads = 0;
-	this->_squadLevel += this->_squadLevelSpeed;
-	this->updateId();
+	if (this->getGroup())
+	    this->getGroup()->getState().pushCommand(*cmd); 
+    }
+  std::cout << "change to squad" << std::endl;
+  this->createSquadSound();
+  this->_inMaze = false;
+  this->_elapsedTime = 6;
+
+  this->_nbSquads = 0;
+  this->_squadLevel += this->_squadLevelSpeed;
+  this->updateId();
 }
 
 void	MonsterGenerator::changeToMaze()
@@ -740,4 +747,9 @@ void	MonsterGenerator::changeToMaze()
 void	MonsterGenerator::changeToBoss()
 {
 	this->createBossSound();
+}
+
+void	MonsterGenerator::setMode(Modes::Mode mode)
+{
+  _mode = mode;
 }
