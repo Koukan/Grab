@@ -1,5 +1,6 @@
 #include "OpenALSoundProvider.hpp"
 #include "OpenALSound.hpp"
+#include "SFMLMusic.hpp"
 
 OpenALSoundProvider::OpenALSoundProvider()
 {	
@@ -23,7 +24,7 @@ Core::Sound	*OpenALSoundProvider::addSound(std::string const &soundname, std::st
 	ResourceMap::const_iterator it = this->_resources.find(soundname);
 
 	if (it == this->_resources.end())
-		return new OpenALSound(soundfile);
+		return new SFMLMusic(soundfile);
 	else
 		return static_cast<Core::Sound*>(it->second);
 }

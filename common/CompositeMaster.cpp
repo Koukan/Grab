@@ -2,12 +2,21 @@
 #include "CompositeNode.hpp"
 
 CompositeMaster::CompositeMaster(std::string const &script, Core::GameState &gstate) :
-	Core::BulletCommand(script, gstate), _state(gstate), _count(0)
+	Core::BulletCommand(script, gstate), _state(gstate), _count(0), _bullet(0)
 {
 }
 
 CompositeMaster::~CompositeMaster()
 {}
+
+void    CompositeMaster::createBullet(BulletMLState* state, double direction, double speed)
+{	
+	_bullet = this->instantiateBullet(state, direction, speed);
+	_bullet->setCollidable(false);
+	for (std::list<CompositeNode*>::iterator it = _toadd.begin(); it != _toadd.end(); ++it)
+		(*it)->begin();
+	this->_toadd.clear();
+}
 
 void    CompositeMaster::notifyDeath(CompositeNode &node)
 {
@@ -23,24 +32,29 @@ void    CompositeMaster::notifyDeath(CompositeNode &node)
 		}
 		if (it->second.empty())
 		{	
-			_state.addGameObject(it->first, "monsters");
-			it->first->setLink(this);
+			it->first->start();
 			_dependencies.erase(it);
 		}	
 	}
 	_count--;
 	if (_count == 0)
-		delete this;
+	{
+		_bullet->setCollidable(true);
+		this->erase();
+	}
 }
 
 void	CompositeMaster::registerCompositeNode(CompositeNode &node, std::list<std::string> const &dependencies)
 {
-	if (dependencies.empty())
-	{
-		_state.addGameObject(&node, "monsters");
-		node.setLink(this);
-	}
-	else
+	_state.addGameObject(&node, "spawner");
+	if (!dependencies.empty())
 		_dependencies[&node] = dependencies;
+	else
+		_toadd.push_back(&node);
 	_count++;
+}
+
+Core::BulletCommand *CompositeMaster::getBullet() const
+{
+	return _bullet;
 }

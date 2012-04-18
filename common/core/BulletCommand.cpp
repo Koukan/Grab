@@ -42,7 +42,7 @@ BulletCommand::BulletCommand(BulletMLParser &parser, GameState &gstate,
 	  _direction(0), _speed(0), _turn(0), _end(false),
 	  _state(gstate), _shape(BulletCommand::Circle),
 	  _width(1), _height(1), _rank(1), _nextId(1),
-	  _paused(paused), _isCommanded(true), score(0)
+	  _paused(paused), _isCommanded(true), _stop(false), score(0)
 {
 	this->_shape = BulletCommand::Circle;
 	this->_simpleXHitbox = 0;
@@ -372,11 +372,14 @@ void		BulletCommand::setRank(double rank)
 void		BulletCommand::move(double time)
 {
 	_turn += time * 50;
-	this->run();
-	if (!this->_end)
-		Bullet::move(time);
-	else
-		this->erase();
+	if (!_stop)
+	{
+		this->run();
+		if (!this->_end)
+			Bullet::move(time);
+		else
+			this->erase();
+	}
 }
 
 void		BulletCommand::setSeed(uint32_t seed)
@@ -401,6 +404,29 @@ Bullet		*BulletCommand::getChild(uint32_t id) const
 std::string const &BulletCommand::getBulletScript() const
 {
 	return this->_grabBullet;
+}
+
+void		BulletCommand::start()
+{
+	this->_stop = false;
+	this->setCollidable(true);
+	for (BulletMap::iterator it = this->_childs.begin();
+		 it != this->_childs.end(); it++)
+		 it->second->start();
+}
+
+void		BulletCommand::stop()
+{
+	this->_stop = true;
+	this->setCollidable(false);
+	for (BulletMap::iterator it = this->_childs.begin();
+		 it != this->_childs.end(); it++)
+		 it->second->stop();
+}
+
+bool		BulletCommand::isStarted() const
+{
+	return !this->_stop;
 }
 
 void		BulletCommand::erase()

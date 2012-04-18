@@ -31,7 +31,8 @@ Ship::Ship(Player &player, ShipInfo::ShipInfo const &info,
 	  _score(0), _nbSecRespawn(0),
 	  _timer(state.getFont("listGameFont")),
 	  _targetx(0), _targety(0), _target(false),
-	  _powerGauge(100), //will be reset to 0 when I finish my tests
+	  _powerGauge(0), //will be reset to 0 when I finish my tests
+	  _powerMax(info.powerMax),
 	  _specialPower(0),
 	  _specialPowerActive(false), _electricAura(0), _state(state),
 	  _nbDeath(0), _lifes(lifes)
@@ -716,9 +717,9 @@ void		Ship::increasePowerGauge(unsigned int score)
   if (!_specialPowerActive)
     {
       _powerGauge += score;
-      if (_powerGauge > 100)
-	_powerGauge = 100;
-      if (_powerGauge == 100 && !_electricAura)
+      if (_powerGauge > _powerMax)
+	_powerGauge = _powerMax;
+      if (_powerGauge == _powerMax && !_electricAura)
 	  {
 		this->displayAura();
 		if (this->_player.getType() == Player::ONLINE)
@@ -740,7 +741,7 @@ void		Ship::specialPower(Core::InputCommand const&)
 
 void		Ship::specialPower()
 {
-  if (_powerGauge == 100 && _specialPower)
+  if (_powerGauge == _powerMax && _specialPower)
     {
       this->resetPowerGauge();
       this->_specialPower->start();

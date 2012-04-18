@@ -11,11 +11,12 @@ set(TYPE "Windows")
 set(SFML_INCLUDE_DIR "C:/Development/Environment/SFML-1.6/include")
 set(SFMLDIR "C:/Development/Environment/SFML-1.6")
 set(SFML_STATIC_LIBRARIES TRUE)
-find_package(SFML 1.6 REQUIRED SYSTEM GRAPHICS WINDOW)
+find_package(SFML 1.6 REQUIRED SYSTEM AUDIO GRAPHICS WINDOW)
 set(SFML_LIBRARIES
 	${SFML_GRAPHICS_LIBRARY}
 	${SFML_WINDOW_LIBRARY}
 	${SFML_SYSTEM_LIBRARY}
+	${SFML_AUDIO_LIBRARY}
 )
 ELSEIF(LINUX)
 set(TYPE "Linux")
@@ -23,8 +24,8 @@ set(SFML_INCLUDE_DIR "/usr/include/SFML")
 set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
+	sfml-audio
 	sfml-system
-	dl
 )
 ELSE(LINUX)
 set(TYPE "BSD")
@@ -33,6 +34,7 @@ LINK_DIRECTORIES ("/usr/local/lib/")
 set(SFML_LIBRARIES
 	sfml-graphics
 	sfml-window
+	sfml-audio
 	sfml-system
 )
 ENDIF(WIN32)
@@ -105,6 +107,8 @@ set(SRCS
 	SFMLFont.hpp
 	SFMLFontProvider.cpp
 	SFMLFontProvider.hpp
+	SFMLMusic.hpp
+	SFMLMusic.cpp
 	${INCLUDES_COMMON_DIR}ConcreteObject.cpp
 	${INCLUDES_COMMON_DIR}ConcreteObject.hpp
 	Game.cpp

@@ -58,7 +58,7 @@ void		GSInGame::preload()
   this->addGroup("background", 2);
   this->addGroup("starobjects", 3);
   this->addGroup("impacts", 43);
-  this->addGroup("scoreBonus", 42);
+  this->addGroup("scoreBonus", 7);
   this->addGroup("map", 0);
   this->addGroup("traversableWalls", 5);
   this->addGroup("wallShot", 9);
@@ -68,6 +68,7 @@ void		GSInGame::preload()
   this->addGroup("particles", 3);
   this->addGroup("playerAuras", 3);
   this->addGroup("playerAurasPower", 4);
+  this->addGroup("boss", 7);
 
   this->setCollisionGroups("players", "trigger", &Rules::playerTouchTrigger);
   this->setCollisionGroups("Wall", "shot", &Rules::limitWallTouchObject);
@@ -88,10 +89,12 @@ void		GSInGame::preload()
   this->setCollisionGroups("grabs", "players", &Rules::grabTouchPlayer);
   this->setCollisionGroups("playerShots", "monster", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "monster2", &Rules::shotTouchMonster);
+  this->setCollisionGroups("playerShots", "boss", &Rules::shotTouchMonster);
   this->setCollisionGroups("playerShots", "breakableWalls", &Rules::shotTouchMonster);
   this->setCollisionGroups("invisibleWalls", "players", &Rules::invisibleWallsTouchPlayers);
   this->setCollisionGroups("shot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("monster", "players", &Rules::monsterTouchPlayer);
+  this->setCollisionGroups("boss", "players", &Rules::monsterTouchPlayer);
   this->setCollisionGroups("wallShot", "players", &Rules::shotTouchPlayer);
   this->setCollisionGroups("walls", "shot", &Rules::wallTouchObject);
   this->setCollisionGroups("walls", "wallShot", &Rules::wallTouchObject);

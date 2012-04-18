@@ -134,6 +134,7 @@ private:
   bool			_target;
   uint32_t		_lastId;
   unsigned int		_powerGauge;
+  unsigned int		_powerMax;
   SpecialPower*		_specialPower;
   bool			_specialPowerActive;
   ConcreteObject*	_electricAura;
