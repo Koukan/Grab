@@ -1,0 +1,2 @@
+<load xml="player.xml" />
+<load bulletml="resources/test.xml" name="Test" />

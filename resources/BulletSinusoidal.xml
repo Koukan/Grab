@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+		<bulletRef label="enemySinusoidal"/>
+    </fire>
+    <wait>800</wait>
+</action>
+
+<bullet label="enemySinusoidal" group="ship" sprite="enemy star" simpleGroup="shot" simpleSprite="animated shot">
+	<hitbox shape="rectangle" width="48" height="48" />
+	<simpleHitbox shape="circle" raidus="6" />
+	<direction type="absolute">90</direction>
+	<speed>40</speed>
+	
+	<action>
+		<repeat><times>10</times>
+			<action>
+				<repeat><times>9</times>
+					<actionRef label="loop">
+						<param>1</param>
+					</actionRef>
+				</repeat>
+				<repeat><times>9</times>
+					<actionRef label="loop">
+						<param>-1</param>
+					</actionRef>
+				</repeat>
+			</action>
+		</repeat>
+	</action>
+</bullet>
+
+<action label="loop">
+	<changeDirection>
+		<direction type="relative">20 * $1</direction>
+		<term>1</term>
+	</changeDirection>
+	<fire>
+		<direction type="sequence">20</direction>
+		<speed>250</speed>
+		<bulletRef label="plop"/>
+	</fire>
+	<wait>30</wait>
+</action>
+
+<bullet label="plop" group="shot" sprite="animated shot">
+	<hitbox shape="circle" raidus="6"/>
+	<simpleHitbox shape="circle" raidus="6"/>
+</bullet>
+
+</bulletml>

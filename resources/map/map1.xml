@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bulletml path="../enemies.xml" name="enemies">
+<!--<load xml="../decoration.xml">  -->
+<map name="level1" background="default">
+<monster name="enemy bomb" y="740" x="200"/>
+<deco name="wall" y="720" x="200" />
+</map>
