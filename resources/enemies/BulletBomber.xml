@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical"
+          xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+      <direction type="absolute">90</direction>
+      <bulletRef label="bomb"/>
+    </fire>
+    <vanish/>
+</action>
+
+<bullet label="bomb" sprite="bomber" group="monster" simpleGroup="shot" simpleSprite="bombshot">
+<hitbox shape="circle" radius="19" x="-19" y="-19"/>
+<simpleHitbox shape="circle" radius="17" x="-17" y="-17"/>
+<genericstr grabbullet="playerbomber" />
+<genericint score="15"/>
+<life value="5" rank="10"/>
+	<action>
+		<repeat><times>2000</times>
+			<action>
+			<wait>100 - $rank * 10</wait>
+			<fire>
+				<speed>150</speed>
+				<direction type="absolute">0</direction>
+				<bullet/>
+			</fire>
+			<repeat><times>15</times><action>
+				<fire>
+					<speed>150</speed>
+					<direction type="sequence">22.5</direction>
+					<bullet/>
+				</fire>
+			</action></repeat>
+			</action>
+		</repeat>
+	</action>
+</bullet>
+
+</bulletml>

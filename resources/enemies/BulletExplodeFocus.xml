@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+	<bulletRef label="enemy1"/>
+    </fire>
+    <vanish />
+</action>
+
+<bullet label="enemy1" group="monster" sprite="jelly">
+	<hitbox shape="circle" radius="28" x="-28" y ="-28"/>
+	<direction type="absolute">90</direction>
+	<life value="4" rank="2" />
+	<genericint score="15" />
+	<genericstr grabbullet="playerExplodeFocus" />
+	<speed>200</speed>
+	<action>
+		<wait>20</wait>
+		<changeDirection>
+			<direction type="absolute">180</direction>
+			<term>50</term>
+		</changeDirection>
+		<wait>30</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>30</term>
+		</changeSpeed>
+		<wait>20</wait>
+		<repeat><times>20</times><action>
+			<fire>
+				<bulletRef label="shot" />
+			</fire>
+		</action></repeat>
+		<wait>50</wait>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>30</term>
+		</changeSpeed>
+		<changeDirection>
+			<direction type="absolute">270</direction>
+			<term>70</term>
+		</changeDirection>
+		
+	</action>
+</bullet>
+
+<bullet label="shot" group="shot" sprite="shot">
+	<hitbox shape="circle" radius="6" x="-6" y="-6"/>
+	<direction type="absolute">$rand * 360</direction>
+	<speed>1</speed>
+	<action>
+		<changeSpeed>
+			<speed>$rand * 800</speed>
+			<term>1</term>
+		</changeSpeed>
+		<wait>10</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>1</term>
+		</changeSpeed>
+		<wait>15</wait>
+		<changeDirection>
+			<direction type="aim">$rand * 30 - 15</direction>
+			<term>1</term>
+		</changeDirection>
+		<changeSpeed>
+			<speed>600</speed>
+			<term>10</term>
+		</changeSpeed>
+	</action>
+</bullet>
+
+</bulletml>

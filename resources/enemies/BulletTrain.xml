@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <repeat><times>20</times><action>
+    <fire>
+	<bulletRef label="enemy1"/>
+    </fire>
+    <wait>30</wait>
+    </action></repeat>
+    <vanish />
+</action>
+
+<bullet label="enemy1" group="monster2" sprite="jelly" simpleGroup="shot" simpleSprite="shot">
+	<hitbox shape="circle" radius="28" x="-28" y ="-28"/>
+	<direction type="absolute">0</direction>
+	<life value="500" rank="200" />
+	<speed>200</speed>
+	<action>
+		<wait>$rand * 420</wait>
+		<bulletRef label="torpille" />
+	</action>
+</bullet>
+
+<bullet label="torpille" group="monster2" sprite="pieuvre" simpleGroup="shot" simpleSprite="shot">
+	<hitbox shape="rectangle" width="30" height="80" x="-15" y="-42"/>
+	<simpleHitbox shape="circle" radius="6" x="-6" y="-6"/>
+	<direction type="absolute">270</direction>
+	<life value="5" rank="3" />
+	<speed>200</speed>
+	<genericint score="10" />
+	<genericstr grabbullet="playerTrain" />
+	<action>
+		<repeat><times>$rand * 5 + 3</times><action>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>10</term>
+		</changeSpeed>
+		<wait>15</wait>
+		<changeSpeed>
+			<speed>50</speed>
+			<term>10</term>
+		</changeSpeed>
+		<wait>15</wait>
+		</action></repeat>
+		<fire>
+			<direction type="absolute">-60</direction>
+			<speed>300</speed>
+			<bullet />
+		</fire>
+		<repeat><times>4</times><action>
+			<fire>
+				<direction type="sequence">30</direction>
+				<speed>300</speed>
+				<bullet />
+			</fire>
+		</action></repeat>
+		<fire>
+			<direction type="absolute">120</direction>
+			<speed>300</speed>
+			<bullet />
+		</fire>
+		<repeat><times>4</times><action>
+			<fire>
+				<direction type="sequence">30</direction>
+				<speed>300</speed>
+				<bullet />
+			</fire>
+		</action></repeat>
+		<repeat><times>10</times><action>
+		<wait>15</wait>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>10</term>
+		</changeSpeed>
+		<wait>15</wait>
+		<changeSpeed>
+			<speed>50</speed>
+			<term>10</term>
+		</changeSpeed>
+		</action></repeat>
+	</action>
+</bullet>
+
+</bulletml>

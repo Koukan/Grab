@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<sound name="playerShotSound" file="resources/sound/fireguns.ogg" loop="true" />
+<sprite name="player1">
+  <image file="resources/sprite/ships/vaisseau-3.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="playerAura">
+  <image file="resources/sprite/ships/auraBlanche.png"/>
+  <scale x="0.7" y="0.7" />
+</sprite>
+
+<sprite name="playerAuraPower">
+  <image file="resources/sprite/ships/auraPower.png">
+    <grid pos="0,0"
+	  size="266,266"
+	  array="1,5"
+	  spacing="0,0"
+	  />
+  </image>
+  <animation
+      speed="400"
+      pingpong="yes"
+      />
+</sprite>
+
+<sprite name="player2">
+  <image file="resources/sprite/ships/vaisseau-4.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="player3">
+  <image file="resources/sprite/ships/vaisseau-5.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="player4">
+  <image file="resources/sprite/ships/vaisseau-6.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="player5">
+  <image file="resources/sprite/ships/vaisseau-7.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="blackHoleParticle">
+  <image file="resources/sprite/particle.png" />
+  <scale x="0.7" y="0.7" />
+</sprite>
+
+<sprite name="blackHoleParticle2">
+  <image file="resources/sprite/particle2.png" />
+  <scale x="0.7" y="0.7" />
+</sprite>
+
+<sprite name="blackHole" transparency="0.7">
+  <image file="resources/sprite/blackHole.png" >
+	    <grid pos="0,0"
+		  size="400,400"
+		  array="1,10"
+		  spacing="0,0"
+		  />
+	</image>
+	<animation
+		speed="1000"
+		loop="yes"
+	/>
+</sprite>
+
+<sprite name="shield">
+  <image file="resources/sprite/shield.png">
+	    <grid pos="0,0"
+		  size="250,250"
+		  array="1,8"
+		  spacing="0,0"
+		  direction="back"
+		  />
+	</image>
+	<animation
+		speed="250"
+	/>
+</sprite>
+
+<sprite name="shield-disparition">
+  <image file="resources/sprite/shield.png">
+	    <grid pos="0,0"
+		  size="250,250"
+		  array="1,8"
+		  spacing="0,0"
+		  />
+	</image>
+	<animation
+		speed="250"
+	/>
+</sprite>
+
+</resources>

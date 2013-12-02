@@ -3,7 +3,7 @@
 
 #include <map>
 #include <list>
-#include "Callback.hpp"
+#include <functional>
 #include "Input.hpp"
 #include "CommandHandler.hpp"
 
@@ -28,13 +28,16 @@ public:
 private:
 	struct	CallbackElem
 	{
-		Callback		*callback;
+		CallbackElem(std::function<void (const InputCommand &event)> callback, int key, int joystickId) :
+				callback(callback), key(key), joystickId(joystickId)
+		{}
+		std::function<void (const InputCommand &event)> callback;
 		int				key;
 		int				joystickId;
 	};
 
-	typedef std::map<InputCommand::EventType, std::list<CallbackElem*> > InputMap;
-	
+	typedef std::map<InputCommand::EventType, std::list<CallbackElem> > InputMap;
+
 	GameState	&_gs;
 	bool		_flush;
 	InputMap  	_inputCallbacks;
@@ -46,11 +49,7 @@ void		InputManager::registerInputCallback(InputCommand::EventType eventType,
 {
   if (!method)
     return ;
-  CallbackElem	*tmp = new CallbackElem();
-  tmp->callback = new Callback(instance, method);
-  tmp->key = key;
-  tmp->joystickId = joystickId;
-  _inputCallbacks[eventType].push_back(tmp);
+  _inputCallbacks[eventType].emplace_back(std::bind(method, &instance, std::placeholders::_1), key, joystickId);
 }
 
 CORE_END_NAMESPACE

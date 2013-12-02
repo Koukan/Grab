@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical"
+          xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+      <bulletRef label="enemy"/>
+    </fire>
+    <vanish />
+</action>
+
+<bullet label="enemy" group="walls" sprite="squareWall">
+	<hitbox shape="rectangle" x="-110" y="-110" width="220" height="220" />
+	<direction type="absolute">-90</direction>
+	<speed>150</speed>
+	<action>
+		<repeat><times>3000</times><action>
+			<changeSpeed>
+				<speed>-150</speed>
+				<term>1</term>
+			</changeSpeed>
+			<wait>60</wait>
+			<changeSpeed>
+				<speed>150</speed>
+				<term>1</term>
+			</changeSpeed>
+			<wait>60</wait>
+		</action></repeat>
+	</action>
+</bullet>
+
+</bulletml>

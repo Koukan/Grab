@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<sound name="intro-sound" file="resources/sound/Nostalgica.ogg" />
+<sprite name="space background 4">
+  <image file="resources/sprite/menu-bg5-repeat.jpg" />
+  <translation x="1280" y="525" />
+</sprite>
+ <sprite name="long button">
+    <image file="resources/sprite/long_button.png" />
+    <translation x="512" y="52" />
+ </sprite>
+ <sprite name="ig-menu-background">
+    <image file="resources/sprite/igMenuBackground.png" />
+ </sprite>
+ <sprite name="pressed button">
+	<image file="resources/sprite/button_selected4.png">
+	    <grid pos="0,0"
+		  size="360,113"
+		  array="1,3"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="1000"
+		pingpong="yes"
+	/>
+	<translation x="180" y="56" />
+ </sprite>
+ <sprite name="selected button" >
+    <image file="resources/sprite/button_selected4.png">
+	    <grid pos="0,0"
+		  size="360,113"
+		  array="1,3"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="1000"
+		pingpong="yes"
+	/>
+	<translation x="180" y="56" />
+ </sprite>
+
+ <sprite name="logo">
+    <image file="resources/sprite/title.png" />
+    <translation x="243" y="77" />
+ </sprite>
+  <sprite name="subTitle">
+    <image file="resources/sprite/thepowerofthelostgrapple.png" />
+    <translation x="554" y="37" /> 
+  </sprite>
+  
+ <sprite name="up arrow">
+    <image file="resources/sprite/up arrow.png" />
+ </sprite>
+ <sprite name="down arrow">
+    <image file="resources/sprite/down arrow.png" />
+ </sprite>
+ <sprite name="left list arrow">
+    <image file="resources/sprite/selected left list arrow2.png">
+	<grid pos="0,0"
+	      size="80,100"
+	      array="1,1"
+	/>
+    </image>
+    <translation x="40" y="50" />
+ </sprite>
+ <sprite name="selected left list arrow">
+    <image file="resources/sprite/selected left list arrow2.png">
+	    <grid pos="0,0"
+		  size="80,100"
+		  array="1,3"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="1000"
+		pingpong="yes"
+	/>
+	<translation x="40" y="50" />
+ </sprite>
+ <sprite name="selected right list arrow">
+    <image file="resources/sprite/selected right list arrow2.png">
+	    <grid pos="0,0"
+		  size="80,100"
+		  array="1,3"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="1000"
+		pingpong="yes"
+	/>
+	<translation x="40" y="50" />
+ </sprite>
+ <sprite name="right list arrow">
+    <image file="resources/sprite/selected right list arrow2.png">
+	<grid pos="0,0"
+	      size="80,100"
+	      array="1,1"
+	/>
+    </image>
+    <translation x="40" y="50" />
+ </sprite>
+ <sprite name="pressed left list arrow">
+    <image file="resources/sprite/pressed left list arrow2.png" />
+    <translation x="40" y="50" />
+ </sprite>
+ <sprite name="pressed right list arrow">
+    <image file="resources/sprite/pressed right list arrow2.png" />
+    <translation x="40" y="50" />
+ </sprite>
+
+ <font name="buttonFont" file="resources/font/actionj.ttf" size="40"/>
+
+ <font name="bindFont" file="resources/font/TechnoHideo.ttf" size="30" color="255,255,255"/>
+
+ <font name="listGameFont" file="resources/font/Patinio.ttf" size="25"/>
+ <font name="bigNumbersFont" file="resources/font/Patinio.ttf" size="60"/>
+
+ </resources>

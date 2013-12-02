@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+  <fire>
+    <direction type="absolute">0</direction>
+    <bulletRef label="enemy"/>
+  </fire>
+  <vanish />
+</action>
+
+<bullet label="enemy" group="monster" sprite="jelly" simpleGroup="shot" simpleSprite="shot">
+	<hitbox shape="circle" radius="28" x="-28" y ="-28"/>
+	<genericint score=30/>
+	<simpleHitbox shape="circle" radius="7" />
+	<life value="30" rank="1" />
+	<genericstr grabbullet="playerfollow" />
+	<direction type="absolute">90</direction>
+	<speed>200</speed>
+	<action>
+	<wait>40</wait>
+	<changeSpeed>
+		<speed>0</speed>
+		<term>1</term>
+	</changeSpeed>
+	<repeat><times>50</times><action>
+		<fire>
+			<bulletRef label="shot"/>
+		</fire>
+		<wait>50</wait>
+	</action></repeat>
+	</action>
+</bullet>
+
+<bullet label="shot" group="shot" sprite="shot">
+<hitbox shape="circle" radius="6" x="-6" y="-6" />
+<speed>100</speed>
+<action>
+	<changeSpeed>
+		<speed>400</speed>
+		<term>40</term>
+	</changeSpeed>
+	<repeat><times>10</times><action>
+	<changeDirection>
+	   	<direction type="aim">0</direction>
+		<term>30</term>
+	</changeDirection>
+	<wait>15</wait>
+</action></repeat>
+</action>
+</bullet>
+</bulletml>

@@ -14,9 +14,6 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 set(CORE_DIR
 	"./"
 )
-set(CORE_CALLBACK_DIR
-	"Callback_Impl/"
-)
 set(CORE_QUADTREE_INCLUDE_DIR
 	"QuadTree/"
 )
@@ -36,8 +33,6 @@ set(INCLUDES_CORE
 	${CORE_DIR}BulletCommand.hpp
 	${CORE_DIR}BulletResourceManager.hpp
 	${CORE_DIR}ButtonSprite.hpp
-	${CORE_DIR}Callback.hpp
-	${CORE_DIR}Callback.ipp
 	${CORE_DIR}CircleHitBox.hpp
 	${CORE_DIR}Color.hpp
 	${CORE_DIR}Command.hpp
@@ -85,7 +80,6 @@ set(INCLUDES_CORE
 	${CORE_DIR}SpriteProvider.hpp
 	${CORE_DIR}TimeEffectManager.hpp
 	${CORE_DIR}XMLProvider.hpp
-	${CORE_CALLBACK_DIR}Callback_Impl.hpp
 	${CORE_QUADTREE_INCLUDE_DIR}QuadTree.hpp
 	${CORE_BULLETML_DIR}bulletmlparser.h
 	${CORE_TINYXML_DIR}tinyxml.h
@@ -97,7 +91,6 @@ set(SRCS_CORE
 	${CORE_DIR}BulletCommand.cpp
 	${CORE_DIR}BulletResourceManager.cpp
 	${CORE_DIR}ButtonSprite.cpp
-	${CORE_DIR}Callback.cpp
 	${CORE_DIR}CircleHitBox.cpp
 	${CORE_DIR}CommandDispatcher.cpp
 	${CORE_DIR}CommandHandler.cpp
@@ -142,7 +135,6 @@ set(SRCS_CORE
 	${CORE_TINYXML_DIR}tinyxml.cpp
 	${CORE_TINYXML_DIR}tinyxmlerror.cpp
 	${CORE_TINYXML_DIR}tinyxmlparser.cpp
-	${CORE_CALLBACK_DIR}/Callback_Impl_Function.cpp
 )
 SOURCE_GROUP (core_headers FILES(${INCLUDES_CORE}))
 
@@ -160,7 +152,6 @@ add_subdirectory(../libnet ../libnet_build)
 
 include_directories (
 	${CORE_DIR}
-	${CORE_CALLBACK_DIR}
 	${CORE_QUADTREE_INCLUDE_DIR}
 	${CORE_BULLETML_DIR}
 	${CORE_TINYXML_DIR}

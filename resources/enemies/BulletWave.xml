@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+		<bulletRef label="enemySinusoidal"/>
+    </fire>
+	<vanish />
+</action>
+
+<bullet label="enemySinusoidal" group="monster" sprite="sinus2" simpleGroup="shot" simpleSprite="sinusshot">
+	<hitbox shape="circle" radius="35" x="-33" y="-33" />
+	<simpleHitbox shape="circle" radius="8" x="-8" y ="-8"/>
+	<life value="12" rank="8" />
+	<genericint score="10"/>
+	<genericstr grabbullet="playerwave" />
+	<direction type="absolute">90</direction>
+	<speed>200</speed>
+	<action>
+		<wait>40</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>40</term>
+		</changeSpeed>
+		<repeat><times>20</times><action>
+		<actionRef label="wave"/>
+		<wait>40</wait>
+		</action></repeat>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>1</term>
+		</changeSpeed>
+	</action>
+</bullet>
+
+<action label="wave">
+	<fire>
+		<direction type="absolute">50</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">60</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">70</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">80</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">100</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">110</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">120</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+	<fire>
+		<direction type="absolute">130</direction>
+		<speed>300</speed>
+		<bullet/>
+	</fire>
+</action>
+</bulletml>

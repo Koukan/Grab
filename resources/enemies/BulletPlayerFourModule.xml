@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+	<repeat><times>50000</times><action>
+		<fire>
+			<direction type="absolute">-90</direction>
+			<speed>500</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">-70</direction>
+			<speed>500</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">-110</direction>
+			<speed>500</speed>
+			<bullet/>
+	  	</fire>
+		<wait>20</wait>
+	</action></repeat>
+</action>
+</bulletml>

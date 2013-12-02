@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<sprite name="boss1master">
+	<image file="resources/sprite/enemies/boss.png" />
+	<scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="boss1module">
+	<image file="resources/sprite/enemies/module.png" />
+	<scale x="0.5" y="0.5" />
+</sprite>
+<bulletml name="bulletBoss1" file="resources/enemies/BulletBoss1.xml"/>
+<bulletml name="bulletGun1" file="resources/enemies/BulletBossGun.xml"/>
+<compositemonster name="Boss1" bulletml="bulletBoss1">
+	<monster y="40" x="-200" bulletml="bulletGun1" name="first" />
+	<monster y="40" x="200" bulletml="bulletGun1" name="second" />
+	<monster y="10" x="400" bulletml="bulletGun1" name="third" depends="first,second" />
+	<monster y="10" x="-400" bulletml="bulletGun1" name="fourth" depends="first,second" />
+</compositemonster>
+</resources>

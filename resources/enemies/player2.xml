@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+	<repeat><times>3000000</times><action>
+		<fire>
+			<direction type="absolute">270</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">350</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">170</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">190</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">10</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">180</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<fire>
+			<direction type="absolute">0</direction>
+			<speed>1000</speed>
+			<bullet/>
+	  	</fire>
+		<wait>5</wait>
+	</action></repeat>
+</action>
+</bulletml>

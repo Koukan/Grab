@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+	<repeat><times>1000000000</times><action>
+		<fire>
+			<bulletRef label="enemy1"/>
+		</fire>
+		<wait>5</wait>
+	</action></repeat>
+	<vanish />
+</action>
+
+<bullet label="enemy1" group="spawner">
+	<action>
+		<repeat><times>36</times><action>
+			<fire>
+				<direction type="sequence">10</direction>
+				<speed>800</speed>
+				<bulletRef label="fire"/>
+			</fire>
+		</action></repeat>
+		<vanish />
+	</action>
+</bullet>
+
+<bullet label="fire">
+	<action>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>25</term>
+		</changeSpeed>
+		<wait>20</wait>
+		<vanish />
+	</action>
+</bullet>
+
+</bulletml>

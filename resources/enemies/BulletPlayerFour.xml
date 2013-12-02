@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+<repeat><times>50000</times><action>
+			<fire>
+				<direction type="absolute">-50</direction>
+				<speed>200</speed>
+				<bullet />
+			</fire>
+			<wait>11</wait>
+			<repeat><times>13</times><action>
+				<fire>
+					<direction type="sequence">6</direction>
+					<speed>200</speed>
+					<bullet />
+				</fire>
+				<wait>11</wait>
+			</action></repeat>
+			<repeat><times>12</times><action>
+				<fire>
+					<direction type="sequence">-6</direction>
+					<speed>200</speed>
+					<bullet />
+				</fire>
+				<wait>11</wait>
+			</action></repeat>
+		</action></repeat>
+
+</action>
+</bulletml>

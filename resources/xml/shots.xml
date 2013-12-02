@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<sprite name="default shot">
+  <image file="resources/sprite/r-typesheet1.png">
+    <grid pos="200,120"
+	  size="32,12"
+	  array="2,1"
+	  spacing="2,0"
+    />
+  </image>
+  <animation
+      speed="300"
+		loop="yes"
+   />
+  <scale x="2.0" y="2.0" />
+  <translation x="16.0" y="6.0" />
+</sprite>
+
+<sprite name="color shot">
+  <image file="resources/sprite/r-typesheet2.png">
+    <grid pos="37,470"
+	  size="64,32"
+	  array="4,2"
+	  spacing="2,2"
+    />
+  </image>
+  <animation
+      speed="1000"
+		loop="yes"
+   />
+  <scale x="2.0" y="2.0" />
+  <translation x="32.0" y="16.0" />
+</sprite>
+
+<sprite name="animated shot">
+  <image file="resources/sprite/r-typesheet1.png">
+    <grid pos="208,276"
+	  size="14,12"
+	  array="7,1"
+	  spacing="3,0"
+    />
+  </image>
+  <animation
+      speed="1500"
+	  loop="yes"
+	  pingpong="no"
+   />
+  <translation x="7.0" y="6.0" />
+</sprite>
+
+<sprite name="boss shot">
+  <image file="resources/sprite/r-typesheet18.png">
+    <grid pos="100,36"
+	  size="32,28"
+	  array="1,1"
+	  spacing="0,0"
+    />
+  </image>
+  <scale x="0.8" y="0.8" />
+  <translation x="16.0" y="14.0" />
+</sprite>
+
+
+<sprite name="explosion">
+  <image file="resources/sprite/r-typesheet1.png">
+    <grid pos="200,296"
+	  size="32,12"
+	  array="6,1"
+	  spacing="5,0"
+    />
+  </image>
+  <animation
+      speed="300"
+   />
+  <scale x="2.0" y="2.0" />
+  <translation x="16.0" y="6.0" />
+</sprite>
+
+<sprite name="bomb shot">
+    <image file="resources/sprite/shot.png" />
+    <scale x="1.0" y="1.0" />
+    <translation x="-10" y="-10" />
+</sprite>
+
+</resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+	<repeat><times>10</times><action>
+		<fire>
+			<bulletRef label="missile"/>
+	  	</fire>
+		<wait>5</wait>
+	</action></repeat>
+	<vanish />
+</action>
+
+<bullet label="missile">
+	<direction type="absolute">$rand * 180 + 180</direction>
+	<speed>100</speed>
+	<genericstr deathbullet="explosionSpecialPowerPlayer3" />
+	<action>
+		<changeSpeed>
+			<speed>700</speed>
+			<term>30</term>
+		</changeSpeed>
+		<repeat><times>3000000</times><action>
+			<changeDirection>
+				<direction type="aim">0</direction>
+				<term>20</term>
+			</changeDirection>
+			<fire>
+				<bulletRef label="trace">
+					<param>150</param>
+				</bulletRef>
+			</fire>
+			<fire>
+				<bulletRef label="trace">
+					<param>210</param>
+				</bulletRef>
+			</fire>
+			<fire>
+				<bulletRef label="trace">
+					<param>90</param>
+				</bulletRef>
+			</fire>
+			<wait>1</wait>
+		</action></repeat>
+	</action>
+</bullet>
+
+<bullet label="trace">
+	<direction type="absolute">$1</direction>
+	<speed>300</speed>
+	<action>
+		<wait>3</wait>
+		<vanish />
+	</action>
+</bullet>
+</bulletml>
+

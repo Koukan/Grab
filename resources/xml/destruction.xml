@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+<sprite name="destruction">
+  <image file="resources/sprite/destruction.png">
+    <grid pos="1,1"
+	  size="64,64"
+	  array="7,1"
+	  spacing="1,0"
+    />
+  </image>
+  <animation
+      speed="800"
+   />
+</sprite>
+
+</resources>

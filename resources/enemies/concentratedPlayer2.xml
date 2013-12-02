@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+	<repeat><times>3000000</times><action>
+		<fire>
+			<bulletRef label="topShot">
+				<param>30</param>
+				<param>-12</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>20</param>
+				<param>-8</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>-20</param>
+				<param>8</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>-30</param>
+				<param>12</param>
+			</bulletRef>
+	  	</fire>
+
+		<fire>
+			<bulletRef label="topShot">
+				<param>210</param>
+				<param>-12</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>200</param>
+				<param>-8</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>160</param>
+				<param>8</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>150</param>
+				<param>12</param>
+			</bulletRef>
+	  	</fire>
+
+		<fire>
+			<bulletRef label="topShot">
+				<param>0</param>
+				<param>0</param>
+			</bulletRef>
+	  	</fire>
+		<fire>
+			<bulletRef label="topShot">
+				<param>180</param>
+				<param>0</param>
+			</bulletRef>
+	  	</fire>
+
+		<wait>4</wait>
+	</action></repeat>
+	<vanish />
+</action>
+
+<bullet label="topShot">
+	<direction type="absolute">$1</direction>
+	<speed>1000</speed>
+	<action>
+		<repeat><times>4</times><action>
+			<changeDirection>
+				<direction type="relative">$2</direction>
+				<term>1</term>
+			</changeDirection>
+			<wait>5</wait>
+		</action></repeat>
+		<vanish/>
+	</action>
+</bullet>
+</bulletml>
+

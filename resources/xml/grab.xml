@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <sprite name="grab">
+    <image file="resources/sprite/grappin.png">
+	    <grid pos="0,512"
+		  size="76,58"
+		  array="1,1"
+		/>
+    </image>
+ </sprite>
+ <sprite name="grab-action">
+    <image file="resources/sprite/grappin.png">
+	    <grid pos="0,56"
+		  size="76,58"
+		  array="1,4"
+		  direction="back"
+		  spacing="0,56"
+		/>
+	</image>
+	<animation
+		speed="200"
+	/>
+ </sprite>
+</resources>

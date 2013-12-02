@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+<repeat><times>3000</times><action>
+	<fire>
+	<direction type="absolute">0</direction>
+	<bulletRef label="shot"/>
+	</fire>
+	<wait>20</wait>
+</action></repeat>
+<vanish />
+</action>
+
+<bullet label="shot">
+<genericint score=10/>
+<hitbox shape="circle" radius="5" />
+<speed>100</speed>
+<action>
+	<changeSpeed>
+		<speed>300</speed>
+		<term>20</term>
+	</changeSpeed>
+	<repeat><times>10</times><action>
+	<changeDirection>
+	   	<direction type="aim">0</direction>
+		<term>25</term>
+	</changeDirection>
+	<wait>15</wait>
+</action></repeat>
+</action>
+</bullet>
+</bulletml>

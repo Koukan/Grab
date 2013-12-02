@@ -1,0 +1,186 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+      <bulletRef label="center"/>
+    </fire>
+	<vanish />
+</action>
+
+<bullet label="center" group="monster" sprite="triangle" simpleGroup="shot" simpleSprite="triangleshot">
+	<genericint score="40" />
+	<hitbox shape="circle" radius="30" x="-30" y="-30" />
+	<simpleHitbox shape="circle" radius="6" x="-6" y ="-6"/>
+	<life value="40" rank="20" />
+	<genericstr grabbullet="fourPlayer" />
+	<direction type="absolute">90</direction>
+	<action>
+		<actionRef label="createmodule2">
+			<param>20</param>
+			<param>-30</param>
+		</actionRef>
+		<actionRef label="createmodule">
+			<param>90</param>
+		</actionRef>
+		<actionRef label="createmodule2">
+			<param>160</param>
+			<param>30</param>
+		</actionRef>
+		<wait>10</wait>
+		<changeDirection>
+			<direction type="absolute">90</direction>
+			<term>1</term>
+		</changeDirection>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>1</term>
+		</changeSpeed>
+		<wait>50</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>40</term>
+		</changeSpeed>
+		<wait>40</wait>
+		<repeat><times>2</times><action>
+			<fire>
+				<direction type="absolute">50</direction>
+				<speed>200</speed>
+				<bullet />
+			</fire>
+			<wait>11</wait>
+			<repeat><times>13</times><action>
+				<fire>
+					<direction type="sequence">6</direction>
+					<speed>200</speed>
+					<bullet />
+				</fire>
+				<wait>11</wait>
+			</action></repeat>
+			<repeat><times>12</times><action>
+				<fire>
+					<direction type="sequence">-6</direction>
+					<speed>200</speed>
+					<bullet />
+				</fire>
+				<wait>11</wait>
+			</action></repeat>
+		</action></repeat>
+		<wait>28</wait>
+		<actionRef label="quit" />
+	</action>
+</bullet>
+
+<bullet label="module" group="monster" sprite="littletriangle" simpleGroup="shot" simpleSprite="triangleshot">
+	<hitbox shape="circle" radius="12" x="-12" y="-8" />
+	<simpleHitbox shape="circle" radius="5" x="-6" y ="-6"/>
+	<life value="20" rank="10" />
+	<genericstr grabbullet="modulePlayer" />
+	<genericint score="10" />
+	<action>
+		<wait>10</wait>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>1</term>
+		</changeSpeed>
+		<changeDirection>
+			<direction type="absolute">90</direction>
+			<term>1</term>
+		</changeDirection>
+		<wait>50</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>40</term>
+		</changeSpeed>
+		<wait>40</wait>
+		<repeat><times>30</times><action>
+			<fire>
+				<direction type="absolute">70</direction>
+				<speed>200</speed>
+				<bullet />
+			</fire>
+			<fire>
+				<direction type="absolute">90</direction>
+				<speed>200</speed>
+				<bullet />
+			</fire>
+			<fire>
+				<direction type="absolute">110</direction>
+				<speed>200</speed>
+				<bullet />
+			</fire>
+			<wait>20</wait>
+		</action></repeat>
+		<actionRef label="quit" />
+	</action>
+</bullet>
+
+<bullet label="module2" group="monster" sprite="littletriangle" simpleGroup="shot" simpleSprite="triangleshot">
+	<hitbox shape="circle" radius="12" x="-12" y="-8" />
+	<simpleHitbox shape="circle" radius="5" x="-6" y ="-6"/>
+	<life value="20" rank="10" />
+	<genericstr grabbullet="modulePlayer2" />
+	<genericint score="10" />
+	<action>
+		<wait>10</wait>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>1</term>
+		</changeSpeed>
+		<changeDirection>
+			<direction type="absolute">90</direction>
+			<term>1</term>
+		</changeDirection>
+		<wait>50</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>40</term>
+		</changeSpeed>
+		<wait>40</wait>
+		<repeat><times>4</times><action>
+			<repeat><times>20</times><action>
+				<fire>
+					<direction type="absolute">90 + $1</direction>
+					<speed>400</speed>
+					<bullet />
+				</fire>
+				<wait>5</wait>
+			</action></repeat>
+			<wait>50</wait>
+		</action></repeat>
+		<actionRef label="quit" />
+	</action>
+</bullet>
+
+<action label="createmodule">
+	<fire>
+		<direction type="absolute">$1</direction>
+		<speed>400</speed>
+		<bulletRef label="module" />
+	</fire>
+</action>
+
+<action label="createmodule2">
+	<fire>
+		<direction type="absolute">$1</direction>
+		<speed>300</speed>
+		<bulletRef label="module2">
+			<param>$2</param>
+		</bulletRef>
+	</fire>
+</action>
+
+<action label="quit">
+	<changeDirection>
+		<direction type="absolute">90</direction>
+		<term>1</term>
+	</changeDirection>
+	<changeSpeed>
+		<speed>200</speed>
+		<term>50</term>
+	</changeSpeed>
+</action>
+
+</bulletml>

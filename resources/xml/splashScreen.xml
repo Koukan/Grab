@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<sprite name="screen">
+	<image file="resources/sprite/menu-bg1-3.jpg" />
+	<translation x="840" y="525" />
+</sprite>
+<sprite name="title">
+	<image file="resources/sprite/title.png" />
+	<translation x="243" y="77" />
+</sprite>
+<sprite name="subTitle">
+	<image file="resources/sprite/thepowerofthelostgrapple.png" />
+	<translation x="554" y="37" />
+</sprite>
+</resources>

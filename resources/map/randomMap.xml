@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<load xml="resources/xml/enemies.xml"/>
+<load xml="resources/xml/players.xml"/>
+<load xml="resources/xml/grab.xml"/>
+
+<sound name="test" file="resources/sound/02-Filippo Vicarelli-The War Begins.ogg" />
+<sound name="test2" file="resources/sound/01-Filippo Vicarelli-Vampire Castle.ogg" />
+
+<!-- BONUS -->
+<bulletml name="bonus" file="resources/enemies/bonus.xml"/>
+<bulletml name="fixedBonus" file="resources/enemies/fixedBonus.xml"/>
+<!-- PLAYER SHOTS -->
+<bulletml name="player1" file="resources/enemies/player1.xml"/>
+<bulletml name="player2" file="resources/enemies/player2.xml"/>
+<bulletml name="concentratedPlayer2" file="resources/enemies/concentratedPlayer2.xml"/>
+<bulletml name="player3" file="resources/enemies/player3.xml"/>
+<bulletml name="concentratedPlayer3" file="resources/enemies/concentratedPlayer3.xml"/>
+<bulletml name="explosionConcentratedPlayer3" file="resources/enemies/explosionConcentratedPlayer3.xml"/>
+<bulletml name="specialPowerPlayer3" file="resources/enemies/SpecialPowerPlayer3.xml"/>
+<bulletml name="explosionSpecialPowerPlayer3" file="resources/enemies/explosionSpecialPowerPlayer3.xml"/>
+<bulletml name="player4" file="resources/enemies/player4.xml"/>
+<bulletml name="concentratedPlayer4" file="resources/enemies/concentratedPlayer4.xml"/>
+<!------------------>
+
+<bulletml name="single" file="resources/enemies/BulletSimple.xml"/>
+<bulletml name="playerSimple" file="resources/enemies/BulletPlayerSimple.xml"/>
+<bulletml name="fixedSquareWall" file="resources/enemies/fixeSquare.xml"/>
+<bulletml name="shotWall" file="resources/enemies/ShotWall.xml"/>
+<bulletml name="sinus" file="resources/enemies/BulletSinus.xml" />
+<bulletml name="invsinus" file="resources/enemies/BulletInvSinus.xml" />
+
+<bulletml name="hSquareWall" file="resources/enemies/hSquare.xml"/>
+<bulletml name="vSquareWall" file="resources/enemies/vSquare.xml"/>
+<bulletml name="invHSquareWall" file="resources/enemies/invHSquare.xml"/>
+<bulletml name="invVSquareWall" file="resources/enemies/invVSquare.xml"/>
+
+<bulletml name="hSquareWall2" file="resources/enemies/speedHSquare.xml"/>
+<bulletml name="vSquareWall2" file="resources/enemies/speedVSquare.xml"/>
+<bulletml name="invHSquareWall2" file="resources/enemies/invSpeedHSquare.xml"/>
+<bulletml name="invVSquareWall2" file="resources/enemies/invSpeedVSquare.xml"/>
+
+<bulletml name="hSquareWall3" file="resources/enemies/deadlyHSquare.xml"/>
+<bulletml name="vSquareWall3" file="resources/enemies/deadlyVSquare.xml"/>
+<bulletml name="invHSquareWall3" file="resources/enemies/invDeadlyHSquare.xml"/>
+<bulletml name="invVSquareWall3" file="resources/enemies/invDeadlyVSquare.xml"/>
+
+<bulletml name="BreakableWall" file="resources/enemies/BreakableWall.xml"/>
+<bulletml name="InvisibleBreakableWall" file="resources/enemies/invisibleBreakableWall.xml"/>
+
+<bulletml name="mine" file="resources/enemies/BulletMine.xml" />
+<bulletml name="train" file="resources/enemies/BulletTrain.xml" />
+<bulletml name="waveAttack" file="resources/enemies/BulletWaveAttack.xml" />
+<bulletml name="deathExplode" file="resources/enemies/BulletDeathExplode.xml" />
+<bulletml name="explodeFocus" file="resources/enemies/BulletExplodeFocus.xml" />
+<bulletml name="circle" file="resources/enemies/BulletCircle.xml" />
+<bulletml name="circleTower" file="resources/enemies/BulletCircleTower.xml" />
+<bulletml name="bombAll" file="resources/enemies/BulletBombAll.xml" />
+<bulletml name="focus" file="resources/enemies/BulletFocus.xml" />
+<bulletml name="arc" file="resources/enemies/BulletArc.xml" />
+<bulletml name="side" file="resources/enemies/BulletSide.xml" />
+<bulletml name="side2" file="resources/enemies/BulletSide2.xml" />
+<bulletml name="fourmob" file="resources/enemies/BulletFour.xml" />
+<bulletml name="boss1" file="resources/enemies/BulletBoss1.xml" />
+<bulletml name="bomber" file="resources/enemies/BulletBomber.xml"/>
+<bulletml name="single" file="resources/enemies/BulletSimple.xml"/>
+<bulletml name="invader" file="resources/enemies/BulletInvader.xml"/>
+<bulletml name="playerinvader" file="resources/enemies/BulletPlayerInvader.xml" />
+<bulletml name="playerbomber" file="resources/enemies/BulletPlayerBomber.xml" />
+<bulletml name="playerwave" file="resources/enemies/BulletPlayerWave.xml" />
+<bulletml name="fourPlayer" file="resources/enemies/BulletPlayerFour.xml"/>
+<bulletml name="modulePlayer" file="resources/enemies/BulletPlayerFourModule.xml"/>
+<bulletml name="modulePlayer2" file="resources/enemies/BulletPlayerFourModule2.xml"/>
+<bulletml name="wave" file="resources/enemies/BulletWave.xml" />
+<bulletml name="follow" file="resources/enemies/BulletFollow.xml" />
+<bulletml name="playerfollow" file="resources/enemies/BulletPlayerFollow.xml" />
+<bulletml name="Boss" file="resources/enemies/Boss.xml" />
+<bulletml name="mobwave" file="resources/enemies/BulletMobWave.xml" />
+<bulletml name="playerCircle" file="resources/enemies/BulletPlayerCircle.xml"/>
+<bulletml name="playerExplodeFocus" file="resources/enemies/BulletPlayerExplodeFocus.xml"/>
+<bulletml name="playerTube" file="resources/enemies/BulletPlayerTube.xml" />
+<bulletml name="playerBomber" file="resources/enemies/BulletPlayerBomber.xml" />
+<bulletml name="playerTrain" file="resources/enemies/BulletPlayerTrain.xml" />
+<bulletml name="playerWaveAttack" file="resources/enemies/BulletPlayerWaveAttack.xml" />
+<map name="resources/map/randomMap.xml" background="default" scrollingSpeed="100" random="true">
+	<!---------- MANDATORY FOR THE MAZE ----------->
+
+	<randomBreakableWall level="0" name="BreakableWall"/>
+
+	<randomWall  level="0" name="fixedSquareWall"/>
+	<randomHWall level="0" name="hSquareWall"/>
+	<randomHWall level="0" name="invHSquareWall"/>
+	<randomVWall level="0" name="vSquareWall"/>
+	<randomVWall level="0" name="invVSquareWall"/>
+
+	<randomBreakableWall level="1" name="InvisibleBreakableWall"/>
+	<randomWall  level="1" name="fixedSquareWall"/>
+	<randomWall  level="1" name="fixedSquareWall"/>
+	<randomWall  level="1" name="fixedSquareWall"/>
+	<randomWall  level="1" name="fixedSquareWall"/>
+	<randomWall  level="1" name="fixedSquareWall"/>
+	<randomWall  level="1" name="shotWall"/>
+	<randomHWall level="1" name="hSquareWall"/>
+	<randomHWall level="1" name="invHSquareWall"/>
+	<randomVWall level="1" name="vSquareWall"/>
+	<randomVWall level="1" name="invVSquareWall"/>
+
+	<randomWall  level="2" name="fixedSquareWall"/>
+	<randomHWall level="2" name="hSquareWall3"/>
+	<randomHWall level="2" name="invHSquareWall3"/>
+	<randomVWall level="2" name="vSquareWall3"/>
+	<randomVWall level="2" name="invVSquareWall3"/>
+	<randomHWall level="2" name="hSquareWall"/>
+	<randomHWall level="2" name="invHSquareWall"/>
+	<randomVWall level="2" name="vSquareWall"/>
+	<randomVWall level="2" name="invVSquareWall"/>
+
+	<randomWall  level="3" name="fixedSquareWall"/>
+	<randomHWall level="3" name="hSquareWall3"/>
+	<randomHWall level="3" name="invHSquareWall3"/>
+	<randomVWall level="3" name="vSquareWall3"/>
+	<randomVWall level="3" name="invVSquareWall3"/>
+
+	<randomWall  level="4" name="fixedSquareWall"/>
+	<randomWall  level="4" name="fixedSquareWall"/>
+	<randomWall  level="4" name="fixedSquareWall"/>
+	<randomWall  level="4" name="shotWall"/>
+	<randomHWall level="4" name="hSquareWall3"/>
+	<randomHWall level="4" name="invHSquareWall3"/>
+	<randomVWall level="4" name="vSquareWall3"/>
+	<randomVWall level="4" name="invVSquareWall3"/>
+
+	<mazeMonster level="0" name="bomber"/>
+	<!--------------------------------------------->
+
+	<squadSound name="test" />
+	<bossSound name="test2" />
+	
+	<randomMonster level="1" name="single" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="2" name="explodeFocus" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="2" name="arc" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="3" name="circle" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="3" name="bomber" scrollable="true" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="3" name="wave" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="3" name="sinus" scrollable="false" xmin="0" xmax="1" ymin="100" ymax="600" />
+	<randomMonster level="3" name="invsinus" scrollable="false" xmin="1680" xmax="1681" ymin="100" ymax="600" />
+	<randomMonster level="5" name="focus" scrollable="true" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="5" name="side" scrollable="false" xmin="0" xmax="100" ymin="-101" ymax="-100" />
+	<randomMonster level="5" name="side2" scrollable="false" xmin="1500" xmax="1600" ymin="-101" ymax="-100" />
+	<randomMonster level="5" name="circleTower" scrollable="true" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="6" name="train" scrollable="false" xmin="-50" xmax="-49" ymin="900" ymax="1000" />
+	<randomMonster level="6" name="fourmob" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="6" name="mobwave" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="6" name="invader" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="8" name="follow" scrollable="false" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	<randomMonster level="8" name="bombAll" scrollable="true" xmin="0" xmax="1100" ymin="-101" ymax="-100" />
+	
+	<randomBoss level="1" name="Boss" scrollable="false"  xmin="440" xmax="840" ymin="-101" ymax="-100" />
+</map>
+</resources>
+

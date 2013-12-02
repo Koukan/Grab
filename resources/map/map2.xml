@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<load xml="resources/xml/enemies.xml"/>
+<load xml="resources/xml/players.xml"/>
+<load xml="resources/xml/grab.xml"/>
+<sound name="test" file="resources/sound/Grossing the Battlefield.ogg" />
+<!--<sound name="shot" file="resources/sound/shot.ogg" />-->
+
+<!-- BONUS -->
+<bulletml name="bonus" file="resources/enemies/bonus.xml"/>
+<bulletml name="fixedBonus" file="resources/enemies/fixedBonus.xml"/>
+<!-- PLAYER SHOTS -->
+<bulletml name="player1" file="resources/enemies/player1.xml"/>
+<bulletml name="player2" file="resources/enemies/player2.xml"/>
+<bulletml name="concentratedPlayer2" file="resources/enemies/concentratedPlayer2.xml"/>
+<bulletml name="player3" file="resources/enemies/player3.xml"/>
+<bulletml name="concentratedPlayer3" file="resources/enemies/concentratedPlayer3.xml"/>
+<bulletml name="explosionConcentratedPlayer3" file="resources/enemies/explosionConcentratedPlayer3.xml"/>
+<bulletml name="specialPowerPlayer3" file="resources/enemies/SpecialPowerPlayer3.xml"/>
+<bulletml name="explosionSpecialPowerPlayer3" file="resources/enemies/explosionSpecialPowerPlayer3.xml"/>
+<bulletml name="player4" file="resources/enemies/player4.xml"/>
+<bulletml name="concentratedPlayer4" file="resources/enemies/concentratedPlayer4.xml"/>
+<!-- -->
+<bulletml name="playerSimple" file="resources/enemies/BulletPlayerSimple.xml"/>
+<bulletml name="playerCircle" file="resources/enemies/BulletPlayerCircle.xml"/>
+<bulletml name="playerExplodeFocus" file="resources/enemies/BulletPlayerExplodeFocus.xml"/>
+<bulletml name="playerTube" file="resources/enemies/BulletPlayerTube.xml" />
+<bulletml name="playerBomber" file="resources/enemies/BulletPlayerBomber.xml" />
+<bulletml name="playerTrain" file="resources/enemies/BulletPlayerTrain.xml" />
+<bulletml name="playerWaveAttack" file="resources/enemies/BulletPlayerWaveAttack.xml" />
+  
+<bulletml name="test" file="resources/enemies/BulletTest.xml" />
+<bulletml name="test2" file="resources/enemies/BulletTest2.xml" />
+<bulletml name="circle" file="resources/enemies/BulletCircle.xml" />
+<bulletml name="deathExplode" file="resources/enemies/BulletDeathExplode.xml" />
+<bulletml name="explodeFocus" file="resources/enemies/BulletExplodeFocus.xml" />
+<bulletml name="waveAttack" file="resources/enemies/BulletWaveAttack.xml" />
+<bulletml name="tube" file="resources/enemies/BulletTube.xml" />
+<bulletml name="mineWave" file="resources/enemies/BulletMineWave.xml" />
+<bulletml name="mine" file="resources/enemies/BulletMine.xml" />
+<bulletml name="train" file="resources/enemies/BulletTrain.xml" />
+<map name="resources/map/map2.xml" background="default" scrollingSpeed="50">
+	<sound y="0" name="test" />
+	<monster ry="0" x="0" name="test" spawnY="-50" scrollable="false" />
+	<monster ry="200" x="1300" name="test2" spawnY="-50" scrollable="false" />>
+	<monster ry="0" x="1450" name="test2" spawnY="-50" scrollable="false" />
+	<monster ry="650" x="300" name="test" spawnY="-50" scrollable="false" />
+	<monster ry="200" x="1000" name="circle" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1000" name="circle" spawnY="-50" scrollable="false" />
+	<monster ry="650" x="50" name="waveAttack" spawnY="-50" scrollable="false" />
+	<monster ry="1000" x="500" name="circle" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1180" name="circle" spawnY="-50" scrollable="false" />
+	<monster ry="300" x="1000" name="test2" spawnY="-50" scrollable="false" />
+	<monster ry="100" x="840" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="50" x="400" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="50" x="1280" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="100" x="500" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1180" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="200" x="200" name="circle" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="500" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1180" name="explodeFocus" spawnY="-50" scrollable="false" />
+	<monster ry="400" x="400" name="tube" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1280" name="tube" spawnY="-50" scrollable="false" />
+	<monster ry="400" x="420" name="mineWave" spawnY="100"/>
+	<monster ry="0" x="1260" name="mineWave" spawnY="100"/>
+	<monster ry="500" x="400" name="mineWave" spawnY="-50" />
+	<monster ry="0" x="1280" name="mineWave" spawnY="-50" />
+	<monster ry="600" x="-100" name="train" spawnY="950" scrollable="false" />
+	<end name="end" ry="1400" />
+</map>
+</resources>

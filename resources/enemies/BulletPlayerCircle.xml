@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+	<repeat><times>5000000</times><action>
+		<fire>
+			<direction type="aim">0</direction>
+			<speed>300</speed>
+			<bulletRef label="circle" />
+		</fire>
+		<repeat><times>11</times><action>
+			<fire>
+				<direction type="sequence">30</direction>
+				<speed>300</speed>
+				<bulletRef label="circle" />
+			</fire>
+		</action></repeat>
+		<wait>150</wait>
+	</action></repeat>
+</action>
+
+<bullet label="circle">
+	<hitbox shape="circle" radius="6" x="-6" y="-6"/>
+	<action>
+		<wait>20</wait>
+		<changeSpeed>
+			<speed>400</speed>
+			<term>1</term>
+		</changeSpeed>
+		<changeDirection>
+			<direction type="aim">0</direction>
+			<term>1</term>
+		</changeDirection>		
+	</action>
+</bullet>
+
+</bulletml>

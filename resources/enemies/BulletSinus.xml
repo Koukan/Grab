@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <repeat><times>7</times><action>
+    <fire>
+	<bulletRef label="enemySinusoidal"/>
+    </fire>
+    <wait>10</wait>
+    </action></repeat>
+    <vanish />
+</action>
+
+<bullet label="enemySinusoidal" group="monster" sprite="rotatedsquare" simpleGroup="shot" simpleSprite="shot">
+	<genericint score=5/>
+	<hitbox shape="circle" radius="25" x="-25" y="-25"/>
+	<simpleHitbox shape="circle" radius="6" x="-6" y="-6"/>
+	<direction type="absolute">0</direction>
+	<life value="3" rank="2" />
+	<speed>200</speed>
+	<action>
+		<repeat><times>2</times><action>
+			<accel>
+				<vertical type="absolute">-250</vertical>
+				<term>40</term>
+			</accel>
+			<wait>40</wait>
+			<accel>
+				<vertical type="absolute">250</vertical>
+				<term>40</term>
+			</accel>
+			<wait>40</wait>
+			<fire>
+				<direction type="absolute">90 - $rand * 45</direction>
+				<speed>150</speed>
+				<bullet />
+			</fire>	
+		</action></repeat>
+		<accel>
+			<vertical type="absolute">-250</vertical>
+			<term>40</term>
+		</accel>
+		<wait>40</wait>
+		<accel>
+			<vertical type="absolute">0</vertical>
+			<term>1</term>
+		</accel>
+		<changeDirection>
+			<direction type="absolute">90</direction>
+			<term>40</term>
+		</changeDirection>
+		<wait>40</wait>
+		<changeSpeed>
+			<speed>200</speed>
+			<term>1</term>
+		</changeSpeed>
+		<repeat><times>3</times><action>
+			<accel>
+				<horizontal type="absolute">-250</horizontal>
+				<term>40</term>
+			</accel>
+			<wait>40</wait>
+			<fire>
+				<direction type="absolute">135 + $rand * 45</direction>
+				<speed>150</speed>
+				<bullet />
+			</fire>
+			<accel>
+				<horizontal type="absolute">250</horizontal>
+				<term>40</term>
+			</accel>
+			<wait>40</wait>
+			<fire>
+				<direction type="absolute">135 + $rand * 45</direction>
+				<speed>150</speed>
+				<bullet />
+			</fire>
+		</action></repeat>
+		
+	</action>
+</bullet>
+</bulletml>

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+	<repeat><times>5</times><action>
+    	<fire>
+			<bulletRef label="side">
+				<param>100</param>
+			</bulletRef>
+	    </fire>
+		<wait>50</wait>
+    	<fire>
+			<bulletRef label="side">
+				<param>50</param>
+			</bulletRef>
+	    </fire>
+		<wait>50</wait>
+	</action></repeat>
+	<vanish />
+</action>
+
+<bullet label="side" group="monster" sprite="sinus2" simpleGroup="shot" simpleSprite="sinusshot">
+	<genericint score=5/>
+	<hitbox shape="circle" radius="35" x="-33" y="-33" />
+	<simpleHitbox shape="circle" radius="8" x="-8" y ="-8"/>
+	<life value="12" />
+	<genericstr grabbullet="playerwave" />
+	<direction type="absolute">90</direction>
+	<speed>150</speed>
+	<action>
+		<wait>$1</wait>
+		<repeat><times>5</times><action>
+			<fire>
+				<direction type="absolute">5</direction>
+				<speed>100</speed>
+				<bullet />
+			</fire>
+			<fire>
+				<direction type="absolute">20</direction>
+				<speed>100</speed>
+				<bullet />
+			</fire>
+			<fire>
+				<direction type="absolute">35</direction>
+				<speed>100</speed>
+				<bullet />
+			</fire>
+			<wait>150</wait>
+		</action></repeat>
+	</action>
+</bullet>
+</bulletml>

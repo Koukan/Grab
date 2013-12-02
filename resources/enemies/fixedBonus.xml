@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<bulletml type="vertical">
+
+<action label="top">
+	<fire>
+		<bulletRef label="bonus"/>
+  	</fire>
+	<vanish />
+</action>
+
+<bullet label="bonus" sprite="bonusScore" group="scoreBonus">
+	<hitbox shape="circle" radius="40" x="-40" y="-40"/>
+	<direction type="absolute">90</direction>
+	<speed>150</speed>
+	<action>
+	</action>
+</bullet>
+</bulletml>
+

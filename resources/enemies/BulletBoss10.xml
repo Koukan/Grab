@@ -1,0 +1,227 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+    <fire>
+      <bulletRef label="boss"/>
+    </fire>
+	<vanish />
+</action>
+
+<bullet label="boss" group="monster" sprite="rotatedsquare" simpleSprite="rotatedsquare" simpleGroup="shot">
+	<hitbox shape="circle" radius="27" x="8" y="8"/>
+	<simpleHitbox shape="circle" radius="8" x="6" y ="6"/>
+	<life value="100" rank="100" />
+	<direction type="absolute">90</direction>
+	<speed>200</speed>
+	<action>
+	<wait>50</wait>
+	<changeSpeed>
+		<speed>0</speed>
+		<term>40</term>
+	</changeSpeed>
+	<repeat><times>3000</times>
+	<action>
+		<repeat><times>4</times><action>
+			<actionRef label="target">
+				<param>10</param>
+			</actionRef>
+			<wait>30</wait>
+		</action></repeat>
+		<actionRef label="move">
+			<param>0</param>
+		</actionRef>
+		<actionRef label="random">
+			<param>50</param>
+		</actionRef>
+		<actionRef label="move">
+			<param>180</param>
+		</actionRef>
+		<actionRef label="followwave">
+			<param>10</param>
+		</actionRef>
+		<actionRef label="move">
+			<param>180</param>
+		</actionRef>
+		<actionRef label="laserwave">
+			<param>3</param>
+		</actionRef>
+		<actionRef label="move">
+			<param>0</param>
+		</actionRef>
+	</action>
+	</repeat>
+	</action>
+</bullet>
+
+<action	label="move">
+	<changeDirection>
+		<direction type="absolute">$1</direction>
+		<term>1</term>
+	</changeDirection>
+	<changeSpeed>
+		<speed>200</speed>
+		<term>20</term>
+	</changeSpeed>
+	<wait>100</wait>
+	<changeSpeed>
+		<speed>0</speed>
+		<term>40</term>
+	</changeSpeed>
+	<wait>50</wait>
+</action>
+
+<action label="target">
+	<repeat><times>$1</times><action>
+		<fire>
+			<bulletRef label="shoot">
+				<param>$1 * 4</param>
+			</bulletRef>
+		</fire>
+		<wait>2</wait>
+	</action></repeat>
+</action>
+
+<action label="random">
+	<repeat><times>$1</times><action>
+		<fire>
+			<direction type="absolute">$rand * 40 + 70</direction>
+			<speed>$rand * 200 + 200</speed>
+			<bullet />
+		</fire>
+		<fire>
+			<direction type="absolute">$rand * 40 + 110</direction>
+			<speed>$rand * 200 + 200</speed>
+			<bullet />
+		</fire>
+		<fire>
+			<direction type="absolute">$rand * 40 + 150</direction>
+			<speed>$rand * 200 + 200</speed>
+			<bullet />
+		</fire>
+		<wait>10</wait>
+	</action></repeat>
+</action>
+
+<action label="followwave">
+	<repeat><times>$1 + $rank * 10</times><action>
+		<fire>
+			<bulletRef label="enemy" />
+		</fire>
+		<wait>20 - $rank * 2</wait>
+	</action></repeat>
+</action>
+
+<action label="laserwave">
+	<bulletRef label="fallen" />
+	<repeat><times>$1</times><action>
+		<fire>
+			<direction type="absolute">0</direction>
+			<speed>500</speed>
+			<bullet />
+		</fire>
+		<wait>10</wait>
+		<repeat><times>14</times><action>
+			<fire>
+				<direction type="sequence">8</direction>
+				<speed>500</speed>
+				<bullet />
+			</fire>
+			<wait>10</wait>
+		</action></repeat>
+		<repeat><times>14</times><action>
+			<fire>
+				<direction type="sequence">-8</direction>
+				<speed>500</speed>
+				<bullet />
+			</fire>
+			<wait>10</wait>
+		</action></repeat>
+	</action></repeat>
+</action>
+
+<bullet label="fallen" group="shot" simpleGroup="shot" simpleSprite="rotatedsquare">
+	<hitbox shape="circle" radius="27" x="8" y="8"/>
+	<simpleHitbox shape="circle" radius="8" x="6" y ="6"/>
+	<life value="1" />
+	<direction type="absolute">315</direction>
+	<speed>1000</speed>
+	<action>
+		<wait>50</wait>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>1</term>
+		</changeSpeed>
+		<repeat><times>40</times><action>
+			<bulletRef label="mobfallen" />
+			<wait>$rand * 20</wait>
+		</action></repeat>
+	<vanish />
+	</action>
+</bullet>
+
+<bullet label="mobfallen" group="shot" sprite="rotatedsquare" simpleGroup="shot" simpleSprite="rotatedsquare">
+	<hitbox shape="circle" radius="27" x="8" y="8"/>
+	<simpleHitbox shape="circle" radius="8" x="6" y ="6"/>
+	<life value="1" />
+	<direction type="absolute">$rand * 180</direction>
+	<speed>$rand * 150 + 200</speed>
+	<action>
+		<wait>50</wait>
+		<changeDirection>
+			<direction type="absolute">90</direction>
+			<term>1</term>
+		</changeDirection>
+	</action>
+</bullet>
+
+<bullet label="shoot" group="shot" sprite="rotatedsquare" simpleGroup="shot" simpleSprite="rotatedsquare">
+	<hitbox shape="circle" radius="27" x="8" y="8"/>
+	<simpleHitbox shape="circle" radius="8" x="6" y ="6"/>
+	<life value="1" />
+	<genericstr grabbullet="playerinvader" />
+	<direction type="absolute">$rand * 360</direction>
+	<speed>$rand * 200 + 100</speed>
+	<action>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>40</term>
+		</changeSpeed>
+		<wait>$1</wait>
+		<changeDirection>
+			<direction type="aim">$rand * 50 - 25</direction>
+			<term>1</term>
+		</changeDirection>
+		<changeSpeed>
+			<speed>900</speed>
+			<term>50</term>
+		</changeSpeed>
+	</action>
+</bullet>
+
+
+<bullet label="enemy" group="monster" sprite="rotatedsquare" simpleGroup="shot" simpleSprite="rotatedsquare">
+	<hitbox shape="circle" radius="27" x="8" y="8"/>
+	<simpleHitbox shape="circle" radius="8" x="6" y ="6"/>
+	<life value="5" />
+	<genericstr grabbullet="playerinvader" />
+	<direction type="absolute">$rand * 180</direction>
+	<speed>400</speed>
+	<action>
+		<changeSpeed>
+			<speed>250</speed>
+			<term>40</term>
+		</changeSpeed>
+		<wait>20</wait>
+		<repeat><times>80</times><action>
+		<changeDirection>
+			<direction type="aim">0</direction>
+			<term>20</term>
+		</changeDirection>
+		<wait>10</wait>
+		</action></repeat>
+	</action>
+</bullet>
+</bulletml>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+ <sprite name="shot">
+    <image file="resources/sprite/missiles/missile-12.png" />
+ </sprite>
+ <sprite name="playershot">
+    <image file="resources/sprite/missiles/missile-player.png" />
+    <scale x="0.2" y="0.2" />
+ </sprite>
+<sprite name="jelly">
+  <image file="resources/sprite/missiles/missile-5.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="bomber">
+  <image file="resources/sprite/missiles/missile-4.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="bombshot">
+  <image file="resources/sprite/missiles/missile-2.png" />
+  <scale x="0.2" y="0.2" />
+</sprite>
+<sprite name="sinus">
+  <image file="resources/sprite/missiles/missile-3.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="sinusshot">
+  <image file="resources/sprite/missiles/missile-1-anim.png">
+    <grid pos="0,0"
+	  size="138,138"
+	  array="3,1"
+	  spacing="0,0"
+    />
+  </image>
+  <animation
+      speed="200"
+      loop="yes"
+   />
+  <scale x="0.2" y="0.2" />
+</sprite>
+<sprite name="wallShot" color="255, 0, 0">
+  <image file="resources/sprite/missiles/wallShot.png"/>
+</sprite>
+<sprite name="sinus2">
+  <image file="resources/sprite/missiles/missile-6.png" />
+  <scale x="0.5" y="0.5" />
+</sprite>
+
+<sprite name="sinusshot2">
+  <image file="resources/sprite/missiles/missile-10.png" />
+  <scale x="0.2" y="0.2" />
+</sprite>
+
+<sprite name="rotatedsquare">
+	<image file="resources/sprite/rotatedoublesquare.png">
+		<grid pos="0,0"
+			size="240, 240"
+			array="4,1"
+			spacing="0,0"
+		/>
+	</image>
+	<animation speed="200" loop="yes" />
+	<scale x="0.3" y="0.3" />
+</sprite>
+<sprite name="triangle">
+	<image file="resources/sprite/triangle.png" />
+	<scale x="0.3" y="0.3" />
+</sprite>
+<sprite name="littletriangle">
+	<image file="resources/sprite/littletriangle.png" />
+	<scale x="0.3" y="0.3" />
+</sprite>
+<sprite name="triangleshot">
+	<image file="resources/sprite/triangleshot.png" />
+	<scale x="0.15" y="0.15" />
+</sprite>
+<sprite name="bulletMine">
+	<image file="resources/sprite/bulletMine.png" />
+	<scale x="0.2" y="0.2" />
+</sprite>
+<sprite name="mine">
+	<image file="resources/sprite/mine.png">
+		<grid pos="0,0"
+			size="300, 300"
+			array="1,4"
+			spacing="0,0"
+		/>
+	</image>
+	<animation speed="400" loop="yes" pingpong="yes" />
+	<scale x="0.3" y="0.3" />
+</sprite>
+<sprite name="pieuvre">
+	<image file="resources/sprite/pieuvre.png">
+		<grid pos="0,0"
+			size="150, 250"
+			array="1,4"
+			spacing="0,0"
+		/>
+	</image>
+	<animation speed="400" loop="yes" pingpong="yes" />
+	<scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="wheel">
+	<image file="resources/sprite/wheel.png">
+		<grid pos="0,0"
+			size="500, 450"
+			array="1,10"
+			spacing="0,0"
+		/>
+	</image>
+	<animation speed="1000" loop="yes" />
+	<scale x="0.2" y="0.2" />
+</sprite>
+
+<sprite name="fireImpact" transparency="0.5">
+    <image file="resources/sprite/missiles/explosion-1.png">
+	    <grid pos="0,0"
+		  size="225,199"
+		  array="10,1"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="800"
+	/>
+	<scale x="0.3" y="0.3" />
+ </sprite>
+
+<sprite name="clouds">
+  <image file="resources/sprite/nuages.png" />
+  <translation x="840" y="1827" />
+</sprite>
+<sprite name="stars">
+  <image file="resources/sprite/etoiles.png" />
+  <translation x="840" y="1827" />
+</sprite>
+<sprite name="bonusScore">
+  <image file="resources/sprite/bonus2.png" />
+</sprite>
+<sprite name="bonus" color="0,50,255">
+    <image file="resources/sprite/bonus.png">
+	    <grid pos="0,0"
+		  size="100,100"
+		  array="1,6"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="500"
+		pingpong="yes"
+	/>
+	<scale x="0.5" y="0.5" />
+</sprite>
+<sprite name="squareWall">
+	<image file="resources/sprite/square2.png" />
+</sprite>
+<sprite name="shotWall" color="255, 0, 0">
+	<image file="resources/sprite/shotSquare.png" />
+</sprite>
+<sprite name="deadlySquareWall" color="0,250,0">
+    <image file="resources/sprite/deadlySquare.png">
+	    <grid pos="0,0"
+		  size="400,400"
+		  array="1,6"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="500"
+		loop="yes"
+	/>
+</sprite>
+<sprite name="movingSquareWall">
+    <image file="resources/sprite/square3.png">
+	    <grid pos="0,0"
+		  size="400,400"
+		  array="1,6"
+		  spacing="0,0"
+		/>
+	</image>
+	<animation
+		speed="1000"
+		loop="yes"
+	/>
+</sprite>
+<sprite name="breakableSquareWall" color="250,0,0">
+	<image file="resources/sprite/square2.png" />
+</sprite>
+
+<sprite name="ingame background">
+  <image file="resources/sprite/menu-bg1.jpg" />
+  <translation x="840" y="525" />
+</sprite>
+<sprite name="ingame background 2">
+  <image file="resources/sprite/menu-bg1-2.jpg" />
+  <translation x="840" y="525" />
+</sprite>
+<sprite name="ingame background 3">
+  <image file="resources/sprite/menu-bg1-3.jpg" />
+  <translation x="840" y="525" />
+</sprite>
+
+<sprite name="ennemiship">
+  <image file="resources/sprite/ennemiship.png" />
+  <scale x="0.3" y="0.3" />
+</sprite>
+
+</resources>

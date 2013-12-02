@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "../bulletml.dtd">
+
+<bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+
+<action label="top">
+	<fire>
+		<bulletRef label="boss"/>
+	</fire>
+	<vanish />
+</action>
+
+<bullet label="boss" group="monster" sprite="boss1module" simpleGroup="shot" simpleSprite="shot">
+	<hitbox shape="rectangle" width="40" height="80" x="-20" y="-40"/>
+	<simpleHitbox shape="circle" radius="6" x="-6" y="-6" />
+	<direction type="absolute">90</direction>
+	<speed>1</speed>
+	<life value="10" rank="40" />
+	<action>
+		<changeSpeed>
+			<speed>0</speed>
+			<term>1</term>
+		</changeSpeed>
+		<repeat><times>50000</times><action>
+			<wait>50</wait>
+			<repeat><times>10</times><action>
+				<fire>
+					<direction type="absolute">70</direction>
+					<speed>400</speed>
+					<bullet />
+				</fire>
+				<repeat><times>4</times><action>
+					<fire>
+						<direction type="sequence">10</direction>
+						<speed>400</speed>
+						<bullet />
+					</fire>
+				</action></repeat>
+				<wait>10</wait>
+			</action></repeat>
+		</action></repeat>
+	</action>
+</bullet>
+
+</bulletml>
