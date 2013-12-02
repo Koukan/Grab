@@ -25,7 +25,7 @@ Game		*GameManager::createGame(uint8_t maxClients, Modes::Mode type, std::string
 	if (maxClients == 0)
 		return 0;
 
-	Net::ScopedLock lock(this->_mutex);
+	Net::LockGuard lock(this->_mutex);
 
 	while (this->_games.find(this->_id) != this->_games.end())
 		this->_id++;
@@ -42,14 +42,14 @@ GameManager::gamesMap const &GameManager::getGameList() const
 
 void			GameManager::removeGame(uint16_t id)
 {
-	Net::ScopedLock	lock(this->_mutex);
+	Net::LockGuard	lock(this->_mutex);
 
 	this->_games.erase(id);
 }
 
 bool			GameManager::gameExist(Game *game)
 {
-	Net::ScopedLock	lock(this->_mutex);
+	Net::LockGuard	lock(this->_mutex);
 
 	if (game == 0)
 		return false;

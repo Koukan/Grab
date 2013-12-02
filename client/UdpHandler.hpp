@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include "Net.hpp"
 
 class UdpHandler : public Net::UdpPacketHandler
@@ -12,7 +13,7 @@ public:
 	virtual int 	handleClose(Net::Socket &);
 	virtual int 	handleInputPacket(Net::Packet &packet);
 
-private:	
+private:
 	struct		functions
 	{
 		 int (UdpHandler::*	func)(Net::Packet&, uint64_t);

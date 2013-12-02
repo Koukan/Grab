@@ -82,7 +82,7 @@ void			CommandHandler::handle(double elapsedTime)
 void			CommandHandler::pushCommand(Command const &command, bool treatNow)
 {
 	{
-		Net::ScopedLock		lock(this->_mutex);
+		Net::LockGuard		lock(this->_mutex);
 		this->_commands.push(&command);
 	}
 	if (treatNow)

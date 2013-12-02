@@ -36,8 +36,6 @@ bool		NetworkModule::connect()
 		Net::printLastError();
 		return false;
 	}
-	else
-		this->_udp.init();
 	_initudp = true;
   }
   if (this->_connector.setup(addr, this->_reactor, false) < 0)
@@ -103,7 +101,7 @@ bool		NetworkModule::handleCommand(Core::Command const &command)
 void		NetworkModule::connectionCommand(Core::Command const &command)
 {
 	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
-	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + cmd._login.length() + 1);
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::CONNECTION);
 	packet << cmd._login;
@@ -113,7 +111,7 @@ void		NetworkModule::connectionCommand(Core::Command const &command)
 void		NetworkModule::createGameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
-	Net::Packet		packet(6 + cmd.data.size());
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::CREATE_GAME);
 	packet << static_cast<uint8_t>(cmd.idObject); // nbplayers
@@ -124,7 +122,7 @@ void		NetworkModule::createGameCommand(Core::Command const &command)
 
 void		NetworkModule::listGamesCommand(Core::Command const &)
 {
-	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t));
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::LIST_GAMES);
 	this->_server->handleOutputPacket(packet);
@@ -133,7 +131,7 @@ void		NetworkModule::listGamesCommand(Core::Command const &)
 void		NetworkModule::connectGameCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
-	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint16_t));
+	Net::Packet		packet;
 	packet << static_cast<uint8_t>(TCP::CONNECT_GAME);
 	packet << (static_cast<int16_t>(cmd.idObject)); // idObject represents here idGame
 	this->_server->handleOutputPacket(packet);
@@ -142,7 +140,7 @@ void		NetworkModule::connectGameCommand(Core::Command const &command)
 void		NetworkModule::playerCommand(Core::Command const &command)
 {
 	GameListCommand const &cmd = static_cast<GameListCommand const &>(command);
-	Net::Packet		packet(sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint8_t) + cmd._login.length() + 1);
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::PLAYER);
 	packet << static_cast<uint8_t>(cmd._status);
@@ -153,7 +151,7 @@ void		NetworkModule::playerCommand(Core::Command const &command)
 void		NetworkModule::moveCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
-	Net::Packet		packet(21);
+	Net::Packet		packet;
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::MOVE);
 	packet << cmd.idObject;
@@ -167,7 +165,7 @@ void		NetworkModule::moveCommand(Core::Command const &command)
 void		NetworkModule::retrieveCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
-	Net::Packet		packet(13);
+	Net::Packet		packet;
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::RETRIEVE);
 	packet << cmd.idObject;
@@ -177,7 +175,7 @@ void		NetworkModule::retrieveCommand(Core::Command const &command)
 void		NetworkModule::spawnCommand(Core::Command const &command)
 {
 	GameCommand const &cmd = static_cast<GameCommand const &>(command);
-	Net::Packet		packet(29);
+	Net::Packet		packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::SPAWN);
@@ -194,7 +192,7 @@ void		NetworkModule::spawnCommand(Core::Command const &command)
 void		NetworkModule::demandPlayerCommand(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(5);
+	Net::Packet			packet;
 
 	packet << static_cast<uint8_t>(TCP::DEMANDPLAYER);
 	packet << cmd.idObject;
@@ -204,7 +202,7 @@ void		NetworkModule::demandPlayerCommand(Core::Command const &command)
 void		NetworkModule::unBindPlayerCommand(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(5);
+	Net::Packet			packet;
 
 	packet << static_cast<uint8_t>(TCP::REMOVEPLAYER);
 	packet << static_cast<uint8_t>(cmd.idObject);
@@ -214,7 +212,7 @@ void		NetworkModule::unBindPlayerCommand(Core::Command const &command)
 void		NetworkModule::updatePlayerCommand(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(4);
+	Net::Packet			packet;
 
 	packet << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 	packet << static_cast<uint8_t>(cmd.idObject);
@@ -225,7 +223,7 @@ void		NetworkModule::updatePlayerCommand(Core::Command const &command)
 
 void		NetworkModule::readyCommand(Core::Command const &)
 {
-	Net::Packet		packet(2);
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::GAMESTATE);
 	packet << static_cast<uint8_t>(GameStateEnum::READY);
@@ -235,7 +233,7 @@ void		NetworkModule::readyCommand(Core::Command const &)
 void		NetworkModule::mapChoiceCommand(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(2 + cmd.data.size());
+	Net::Packet			packet;
 
 	packet << static_cast<uint8_t>(TCP::MAPCHOICE);
 	packet << cmd.data;
@@ -244,7 +242,7 @@ void		NetworkModule::mapChoiceCommand(Core::Command const &command)
 
 void		NetworkModule::reBindCommand(Core::Command const &command)
 {
-	Net::Packet		packet(1);
+	Net::Packet		packet;
 
 	packet << static_cast<uint8_t>(TCP::REBIND);
 	this->_server->handleOutputPacket(packet);
@@ -252,14 +250,14 @@ void		NetworkModule::reBindCommand(Core::Command const &command)
 
 void		NetworkModule::retryCommand(Core::Command const &command)
 {
-	Net::Packet		packet(1);
+	Net::Packet		packet;
 	packet << static_cast<uint8_t>(TCP::RETRY);
 	this->_server->handleOutputPacket(packet);
 }
 
 void		NetworkModule::fireCommand(Core::Command const &command)
 {
-	Net::Packet		packet(18);
+	Net::Packet		packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::FIRESTATE);
@@ -271,7 +269,7 @@ void		NetworkModule::fireCommand(Core::Command const &command)
 
 void		NetworkModule::launchGrab(Core::Command const &command)
 {
-	Net::Packet			packet(22);
+	Net::Packet			packet;
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
@@ -287,7 +285,7 @@ void		NetworkModule::launchGrab(Core::Command const &command)
 void		NetworkModule::updateCannon(Core::Command const &command)
 {
 	GameCommand	const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(23 + cmd.data.size());
+	Net::Packet			packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::UPDATECANNON);
@@ -306,7 +304,7 @@ void		NetworkModule::updateCannon(Core::Command const &command)
 void		NetworkModule::deadPlayer(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(18);
+	Net::Packet			packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::DEADPLAYER);
@@ -318,9 +316,8 @@ void		NetworkModule::deadPlayer(Core::Command const &command)
 
 void		NetworkModule::bonus(Core::Command const &command)
 {
-	
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(18);
+	Net::Packet			packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::BONUS);
@@ -332,7 +329,7 @@ void		NetworkModule::bonus(Core::Command const &command)
 void		NetworkModule::auraActivated(Core::Command const &command)
 {
 	GameCommand const	&cmd = static_cast<GameCommand const &>(command);
-	Net::Packet			packet(18);
+	Net::Packet			packet;
 
 	packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	packet << static_cast<uint8_t>(UDP::AURAACTIVE);

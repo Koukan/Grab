@@ -1,3 +1,6 @@
+#define NOMINMAX
+#include <algorithm>
+#include <functional>
 #include "Converter.hpp"
 #include "InetAddr.hpp"
 #include <stdlib.h>
@@ -5,8 +8,9 @@
 
 NET_USE_NAMESPACE
 
-InetAddr::InetAddr(Family family)
+InetAddr::InetAddr(Family family) : len_(0)
 {
+	::memset(&addr_, 0, sizeof(addr_));
 	addr_.ss_family = family;
 	this->setPort(0);
 	this->setAnyAddr();
@@ -39,8 +43,8 @@ InetAddr::InetAddr(std::string const &port, Family family, int flags)
 
 void	InetAddr::assign(sockaddr &addr, socklen_t size)
 {
-  ::memcpy(&addr_, &addr, size);
-  len_ = size;
+	::memcpy(&addr_, &addr, size);
+	len_ = size;
 }
 
 int		InetAddr::initAddr(std::string const &host, std::string const &port, int family, int flags)
@@ -49,6 +53,8 @@ int		InetAddr::initAddr(std::string const &host, std::string const &port, int fa
 	 struct addrinfo hints;
 	 struct addrinfo *result;
 
+	 len_ = 0;
+	 ::memset(&addr_, 0, sizeof(addr_));
 	 ::memset(&hints, 0, sizeof(hints));
 	 hints.ai_family = family;
 	 hints.ai_flags = flags;
@@ -66,25 +72,25 @@ int		InetAddr::initAddr(std::string const &host, std::string const &port, int fa
 
 void	InetAddr::setAnyAddr()
 {
-  if (addr_.ss_family == AF_INET)
-	  (reinterpret_cast<struct sockaddr_in *>(&addr_))->sin_addr.s_addr = INADDR_ANY;
-  else if (addr_.ss_family == AF_INET6)
-	  (reinterpret_cast<struct sockaddr_in6 *>(&addr_))->sin6_addr = in6addr_any;
+	if (addr_.ss_family == AF_INET)
+		 (reinterpret_cast<struct sockaddr_in *>(&addr_))->sin_addr.s_addr = INADDR_ANY;
+	else if (addr_.ss_family == AF_INET6)
+		 (reinterpret_cast<struct sockaddr_in6 *>(&addr_))->sin6_addr = in6addr_any;
 }
 
 void	InetAddr::setPort(std::string const &port)
 {
-  struct servent *serv = ::getservbyname(port.c_str(), 0);
-  if (serv)
-    this->setPort(serv->s_port);
+	struct servent *serv = ::getservbyname(port.c_str(), 0);
+	if (serv)
+		this->setPort(serv->s_port);
 }
 
 void	InetAddr::setPort(unsigned short port)
 {
-  if (addr_.ss_family == AF_INET)
-   reinterpret_cast<struct sockaddr_in *>(&this->addr_)->sin_port = htons(port);
-  else if (addr_.ss_family == AF_INET6)
-   reinterpret_cast<struct sockaddr_in6 *>(&this->addr_)->sin6_port = htons(port);
+	if (addr_.ss_family == AF_INET)
+		reinterpret_cast<struct sockaddr_in *>(&this->addr_)->sin_port = htons(port);
+	else if (addr_.ss_family == AF_INET6)
+		reinterpret_cast<struct sockaddr_in6 *>(&this->addr_)->sin6_port = htons(port);
 }
 
 void    InetAddr::setHost(std::string const &host)
@@ -94,39 +100,39 @@ void    InetAddr::setHost(std::string const &host)
 
 int  	InetAddr::getPort() const
 {
- if (addr_.ss_family == AF_INET)
-   return ntohs((reinterpret_cast<struct sockaddr_in const *>(&addr_))->sin_port);
- else if (addr_.ss_family == AF_INET6)
-   return ntohs((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_port);
- else
-   return -1;
+	if (addr_.ss_family == AF_INET)
+		return ntohs((reinterpret_cast<struct sockaddr_in const *>(&addr_))->sin_port);
+	else if (addr_.ss_family == AF_INET6)
+		return ntohs((reinterpret_cast<struct sockaddr_in6 const *>(&addr_))->sin6_port);
+	else
+		return -1;
 }
 
 std::string const	&InetAddr::getHost(int flags, bool refresh) const
 {
- if (!host_.empty() && !refresh)
-   return host_;
- char hbuf[NI_MAXHOST];
+	if (!host_.empty() && !refresh)
+		return host_;
+	char hbuf[NI_MAXHOST];
 
- int ret = ::getnameinfo(reinterpret_cast<sockaddr const*>(&addr_), len_, hbuf, sizeof(hbuf), 0, 0, flags);
- if (ret == -1)
- {
-	 printLastError();
-	 host_.clear();
- }
- else
-	host_ = hbuf;
- return host_;
+	int ret = ::getnameinfo(reinterpret_cast<sockaddr const*>(&addr_), len_, hbuf, sizeof(hbuf), 0, 0, flags);
+	if (ret == -1)
+	{
+		printLastError();
+		host_.clear();
+	}
+	else
+		host_ = hbuf;
+	return host_;
 }
 
 InetAddr::Family		InetAddr::getFamily() const
 {
-  return static_cast<Family>(addr_.ss_family);
+	return static_cast<Family>(addr_.ss_family);
 }
 
 socklen_t			InetAddr::getSize() const
 {
-  return len_;
+	return len_;
 }
 
 bool				InetAddr::isAnyAddr() const
@@ -161,25 +167,70 @@ bool				InetAddr::isLoopback() const
 
 InetAddr::operator sockaddr const *() const
 {
-  return reinterpret_cast<sockaddr const *>(&addr_);
+	return reinterpret_cast<sockaddr const *>(&addr_);
 }
 
 InetAddr::operator sockaddr *()
 {
-  return reinterpret_cast<sockaddr *>(&addr_);
+	return reinterpret_cast<sockaddr *>(&addr_);
 }
 
 bool	InetAddr::operator<(InetAddr const &other) const
 {
-	return (::memcmp(&addr_, &other.addr_, len_) < 0);
+	return (::memcmp(&addr_, &other.addr_, std::min(len_, other.len_)) < 0);
 }
 
 bool 	InetAddr::operator==(InetAddr const & other) const
 {
-	return (::memcmp(&addr_, &other.addr_, len_) == 0);
+	return (::memcmp(&addr_, &other.addr_, std::min(len_, other.len_)) == 0);
 }
 
 bool 	InetAddr::operator!=(InetAddr const & other) const
 {
 	return !(*this == other);
+}
+
+std::size_t	InetAddr::hash() const
+{
+	int addr = (this->getFamily() == AF_INET) ? ((sockaddr_in const *)(&addr_))->sin_addr.s_addr
+		   	: *((int*)&(((sockaddr_in6 const *)(&addr_))->sin6_addr.s6_addr));
+	return (addr ^ this->getPort());
+}
+
+std::size_t	InetAddr::HashInetAddr::operator()(InetAddr const &addr) const
+{
+	return addr.hash();
+}
+
+std::ostream	&operator<<(std::ostream& os, InetAddr const &addr)
+{
+	sockaddr const *sock = addr;
+
+	if (addr.getFamily() == AF_INET)
+	{
+		sockaddr_in const *ipv4 = (sockaddr_in const *)sock;
+		uint8_t *ip = (uint8_t*)&ipv4->sin_addr.s_addr;
+		for (int i = 0; i < 4; ++i)
+		{
+			if (i)
+				os << ".";
+			os << static_cast<int>(ip[i]);
+		}
+		os << ":" << addr.getPort();
+	}
+	else if (addr.getFamily() == AF_INET6)
+	{
+		sockaddr_in6 const *ipv6 = (sockaddr_in6 const *)sock;
+		uint16_t *ip = (uint16_t*)&ipv6->sin6_addr.s6_addr;
+		os.setf(std::ios::hex);
+		for (int i = 0; i < 8; ++i)
+		{
+			if (i)
+				os << ":";
+			if (ip[i])
+				os << static_cast<int>(ip[i]);
+		}
+		os << "." << addr.getPort();
+	}
+	return os;
 }

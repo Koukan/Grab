@@ -13,58 +13,48 @@ UdpPacketHandler::UdpPacketHandler() : _enableWhitelist(false)
 {
 }
 
-UdpPacketHandler::~UdpPacketHandler()
-{
-}
-
-int	UdpPacketHandler::handleOutput(Socket &sock)
-{
-	int ret = 1;
-
-	while (!_outputPacket.empty())
-	{
-		ret = this->_iohandler.sendPacket(_outputPacket.front());
-		if (ret <= 0)
-		{
-			if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
-				return 1;
-			_outputPacket.pop_front();
-			return ret;
-		}
-		_outputPacket.pop_front();
-	}
-  	if (_outputPacket.empty())
-		this->_reactor->registerHandler(sock, *this, Reactor::READ);
-  	return ret;
-}
-
-int UdpPacketHandler::handleInput(Socket &)
+int		UdpPacketHandler::handleInput(Socket &)
 {
 	int	ret = 0;
 	do
 	{
-		ret = this->_iohandler.recvPacket(*_inpacket);
+		ret = this->_iohandler.recvPacket(_inpacket);
 		if (ret > 0)
 		{
-			_inpacket->wr_ptr(0);
-			Packet	packet(*_inpacket);
+			_inpacket.wr_ptr(0);
+			Packet	packet(_inpacket);
 			packet.setSize(ret);
 			if (_enableWhitelist)
 			{
-				if (_whitelist.find(_inpacket->getAddr()) != _whitelist.end() 
+				if (_whitelist.find(_inpacket.getAddr()) != _whitelist.end() 
 								&& this->handleInputPacket(packet) <= 0)
 					return 0;
 			}
 			else if (this->handleInputPacket(packet) <= 0)
 				return 0;
 		}
-		else if (ret == -1 && (errno == EWOULDBLOCK || errno == EINTR))
+		else if (ret == -1 && wouldBlock())
 			return 1;
 	}
 	while (!this->_iohandler.isBlocking());
 	return ret;
 }
 
+bool	UdpPacketHandler::setup(InetAddr const &addr, Reactor &reactor, bool listen)
+{
+	this->setReactor(reactor);
+	if (this->getIOHandler().setup(addr, listen) == -1)
+		return false;
+	this->init();
+	return true;
+}
+
+int	UdpPacketHandler::send(Packet const &packet, InetAddr const &dest)
+{
+	Packet tmp(packet);
+	tmp.setDestination(dest);
+	return this->PacketHandler<SocketDatagram>::handleOutputPacket(tmp);
+}
 
 void	UdpPacketHandler::enableWhitelist(bool enable)
 {

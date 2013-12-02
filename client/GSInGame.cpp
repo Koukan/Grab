@@ -30,7 +30,7 @@ GSInGame::GSInGame(std::list<Player *> &players, Modes::Mode mode, std::string c
 	  _scores(4, 0), _scoreFonts(nbPlayers, this->getFont("buttonFont")),
 	  _nameFonts(nbPlayers, this->getFont("buttonFont")), _rangeBegin(0), _rangeEnd(0),
 	  _currentId(0), _fire(false), _elapsedTime(0), _nbCredits(nbCredits),
-	  _gameOver(0) 
+	  _gameOver(0)
 {
 	Rules::setOnline(online);
 }
@@ -358,7 +358,7 @@ bool		GSInGame::coopMode()
 	  int	life = (_nbPlayers == 1) ? (Modes::modesList[_mode].singleNbLife) :
 	    Modes::modesList[_mode].multiNbLife;
 	  Ship* ship;
-			
+
 	  --this->_nbCredits;
 	  for (std::list<Player *>::iterator it = this->_players.begin();
 	       it != this->_players.end(); ++it)

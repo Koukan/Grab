@@ -86,17 +86,23 @@ int		SocketDatagram::setTTLMulticast(uint32_t value, InetAddr const &addr)
 	  return -1;
 }
 
+int		SocketDatagram::broadcast(bool flag)
+{
+	sockopt f = (flag) ? 1 : 0;
+	return ::setsockopt(_handle, SOL_SOCKET, SO_BROADCAST, &f, sizeof(f));
+}
+
 int		SocketDatagram::recvPacket(Packet &packet, int flags, int packsize)
 {
 	struct sockaddr_storage		tmp;
 	socklen_t					size = sizeof(tmp);
 
-	int ret = ::recvfrom(_handle, packet.base(), packet.capacity(), flags, reinterpret_cast<sockaddr*>(&tmp), &size);
+	int ret = ::recvfrom(_handle, _receivebuffer, sizeof(_receivebuffer), flags, reinterpret_cast<sockaddr*>(&tmp), &size);
 	if (ret > 0)
 	{
-		packet.wr_ptr(ret);
-		packet.getAddr().assign(reinterpret_cast<sockaddr&>(tmp), size);
-		packet.setSize(ret);
+		packet.addBuffer(_receivebuffer, ret);
+		InetAddr addr(reinterpret_cast<sockaddr&>(tmp), size);
+		packet.setDestination(addr);
 	}
 	return ret;
 }

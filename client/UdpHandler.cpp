@@ -17,6 +17,7 @@ UdpHandler::~UdpHandler()
 void		UdpHandler::init()
 {
 	this->getIOHandler().setBufferReceiveSize(1024);
+	this->getIOHandler().setNonBlocking(true);
 	this->_reactor->registerHandler(this->getIOHandler(), *this, Net::Reactor::READ);
 }
 
@@ -137,11 +138,11 @@ int         UdpHandler::retrieve(Net::Packet &packet, uint64_t)
 
 int         UdpHandler::ping(Net::Packet &, uint64_t time_recv)
 {
-	Net::Packet     pong(9);
+	Net::Packet     pong;
 	pong << static_cast<uint64_t>(time_recv);
 	pong << static_cast<uint8_t>(UDP::PONG);
 	NetworkModule::get().sendPacketUDP(pong);
-	Net::Packet     pong2(9);
+	Net::Packet     pong2;
 	pong2 << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	pong2 << static_cast<uint8_t>(UDP::PING);
 	NetworkModule::get().sendPacketUDP(pong2);
@@ -230,7 +231,7 @@ bool		UdpHandler::testPacketId(uint32_t id)
 		++_lastPacketId;
 		for (; _lastPacketId != id; ++_lastPacketId)
 		{
-			Net::Packet	packet(17);
+			Net::Packet	packet;
 			packet << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 			packet << static_cast<uint8_t>(UDP::RETRIEVE);
 			packet << 0;

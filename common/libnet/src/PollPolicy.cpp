@@ -16,7 +16,7 @@ NET_USE_NAMESPACE
 PollPolicy::pollpolicydata::pollpolicydata()
 {}
 
-PollPolicy::pollpolicydata::pollpolicydata(NetHandler *h, Socket *s, size_t i) : handler(h), socket(s), index(i)
+PollPolicy::pollpolicydata::pollpolicydata(EventHandler *h, Socket *s, size_t i) : handler(h), socket(s), index(i)
 {}
 
 PollPolicy::PollPolicy() : _size(0)
@@ -25,7 +25,7 @@ PollPolicy::PollPolicy() : _size(0)
 	for	(size_t i = 0; i < 64; ++i)
 	{
 		_fds[i].events = 0;
-		_fds[i].fd = INVALID_HANDLE;
+		_fds[i].fd = -1;
 		_fds[i].revents = 0;
 	}
 }
@@ -35,12 +35,12 @@ PollPolicy::~PollPolicy()
 	delete[] _fds;
 }
 
-int	PollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
+bool	PollPolicy::registerHandler(Socket &socket, EventHandler &handler, int mask)
 {
   size_t	i;
 
   if (socket.getHandle() == INVALID_HANDLE)
-	 return -1;
+	 return false;
   HandleMap::iterator it = _handles.find(socket.getHandle());
   if (it != _handles.end())
 	 i = it->second.index;
@@ -56,7 +56,7 @@ int	PollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
 	 i = _size++;
   }
   if (_size > 64)
-	  return -1;
+	  return false;
   _fds[i].fd = socket.getHandle();
   _fds[i].events = 0;
   if ((mask & Reactor::READ )|| (mask & Reactor::ACCEPT))
@@ -66,19 +66,19 @@ int	PollPolicy::registerHandler(Socket &socket, NetHandler &handler, int mask)
   return 0;
 }
 
-int	PollPolicy::removeHandler(Socket &socket)
+bool	PollPolicy::removeHandler(Socket &socket)
 {
   HandleMap::iterator it = _handles.find(socket.getHandle());
   if (it == _handles.end())
-	  return -1;
+	  return false;
   size_t index = it->second.index;
-  _fds[index].fd = INVALID_HANDLE;
+  _fds[index].fd = -1;
   _handles.erase(it);
 #if defined(_WIN32)
   size_t first = 0;
   for (size_t second = 0; second < _size; second++)
   {
-	  if (_fds[second].fd != INVALID_HANDLE)
+	  if (_fds[second].fd != -1)
 	  {
 		 _handles[_fds[second].fd].index = first;
 		 _fds[first++] = _fds[second];
@@ -88,7 +88,7 @@ int	PollPolicy::removeHandler(Socket &socket)
 #else
   _emptySlot.push(index);
 #endif
-  return 0;
+  return true;
 }
 
 int		PollPolicy::waitForEvent(int timeout)
@@ -99,7 +99,13 @@ int		PollPolicy::waitForEvent(int timeout)
 
 	while (_wait)
 	{
-		ret = ::poll(_fds, _size, this->handleTimers(timeout));
+		if (_size > 0)
+			ret = ::poll(_fds, _size, this->handleTimers(timeout));
+		else
+		{
+			Clock::sleep(this->handleTimers(timeout));
+			ret = 0;
+		}
 		if (ret > 0)
 		{
 			nb = 0;

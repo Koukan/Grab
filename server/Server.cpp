@@ -31,11 +31,6 @@ bool			Server::initServer(std::string const &port, size_t nbthread)
 	Core::GlobalResourceManager::get().addProvider(*new MapProvider);
 	Core::GlobalResourceManager::get().addProvider(*provider);
 	this->Core::ModuleManager::init();
-	if (!this->ThreadPool::init(nbthread))
-	{
-		Core::Logger::logger << "Can't init threads";
-	    return false;
-	}
 	network.setPort(port);
 	this->loadModule(Core::CommandDispatcher::get());
 	this->loadModule(network);

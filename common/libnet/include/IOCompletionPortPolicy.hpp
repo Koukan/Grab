@@ -5,7 +5,7 @@
 #include <map>
 #include <queue>
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 
 NET_BEGIN_NAMESPACE
 
@@ -15,9 +15,9 @@ public:
 	IOCompletionPortPolicy();
 	~IOCompletionPortPolicy();
 
-	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
-	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout);
+	int		registerHandler(Socket &socket, EventHandler &handler, int mask) override;
+	int		removeHandler(Socket &socket) override;
+	int		waitForEvent(int timeout) override;
 
 private:
 	HANDLE							_iocompletionport;

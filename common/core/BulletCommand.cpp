@@ -385,11 +385,12 @@ void		BulletCommand::move(double time)
 void		BulletCommand::setSeed(uint32_t seed)
 {
 	this->_rand.seed(seed);
+	this->_seed = seed;
 }
 
 uint32_t	BulletCommand::getSeed() const
 {
-	return this->_rand.getSeed();
+	return this->_seed;
 }
 
 Bullet		*BulletCommand::getChild(uint32_t id) const

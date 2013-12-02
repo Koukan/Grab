@@ -5,35 +5,36 @@
  *      Author: snap
  */
 
-#ifndef EPOLLPOLICY_HPP_
-#define EPOLLPOLICY_HPP_
+#pragma once
 
-#include <map>
+#include <unordered_map>
 #include "NetDef.hpp"
 #include "network.h"
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 
 NET_BEGIN_NAMESPACE
 
-class NET_DLLREQ EpollPolicy : public Reactor, public NetHandler, public Socket
+/*!
+ \brief Reactor base on epoll()
+ \details Only available on linux but performant and robust
+ */
+class NET_DLLREQ EpollPolicy : public Reactor, public EventHandler, public Socket
 {
 public:
 	EpollPolicy();
 	~EpollPolicy();
 
-	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
-	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout = -1);
+	bool	registerHandler(Socket &socket, EventHandler &handler, int mask) override;
+	bool	removeHandler(Socket &socket) override;
+	int		waitForEvent(int timeout = -1) override;
 	
-	int		handleInput(Socket &socket);
-	int		scheduleTimer(NetHandler &handler, size_t delay, bool repeat = false);
-	int		cancelTimer(NetHandler &handler);
+	int		handleInput(Socket &socket) override;
+	uint32_t	scheduleTimer(EventHandler &handler, size_t delay, bool repeat = false) override;
+	bool		cancelTimer(uint32_t timerId) override;
 
 private:
-	std::map<NetHandler*, Socket*>   	_timers;
+	std::unordered_map<uint32_t, Socket*>   	_timers;
 };
 
 NET_END_NAMESPACE
-
-#endif /* EPOLLPOLICY_HPP_ */

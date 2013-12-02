@@ -30,7 +30,7 @@ void		Game::update(double elapsedTime)
 	if (this->_clients.empty())
 	{
 		Server::get().removeGame(this->_id);
-		Net::ScopedLock		lock(this->_mutex);
+		Net::LockGuard		lock(this->_mutex);
 		this->stop();
 	}
 	else
@@ -43,7 +43,7 @@ void		Game::destroy()
 
 void		Game::updateGameState(double elapsedTime)
 {
-	Net::ScopedLock		lock(this->_mutex);
+	Net::LockGuard		lock(this->_mutex);
 
 	Core::PhysicManager::apply(*this->_logic, elapsedTime);
 	this->_logic->update(elapsedTime);
@@ -253,7 +253,7 @@ void		Game::setMap(std::string const &map)
 
 void		Game::reset()
 {
-	Net::ScopedLock		lock(this->_mutex);
+	Net::LockGuard		lock(this->_mutex);
 
 	this->_readyPlayers = 0;
 	for (size_t i = 0; i < this->_maxPlayers; i++)
@@ -272,7 +272,7 @@ void		Game::reset()
 
 void		Game::retry()
 {
-	Net::ScopedLock		lock(this->_mutex);
+	Net::LockGuard		lock(this->_mutex);
 	for (size_t i = 0; i < this->_maxPlayers; i++)
 	{
 		if (!this->_players[i])

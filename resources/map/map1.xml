@@ -1,7 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bulletml path="../enemies.xml" name="enemies">
-<!--<load xml="../decoration.xml">  -->
-<map name="level1" background="default">
-<monster name="enemy bomb" y="740" x="200"/>
-<deco name="wall" y="720" x="200" />
+<resources>
+<load xml="resources/xml/enemies.xml"/>
+<load xml="resources/xml/players.xml"/>
+<load xml="resources/xml/grab.xml"/>
+<sound name="test" file="resources/sound/02-Filippo Vicarelli-The War Begins.ogg" />
+<sound name="test2" file="resources/sound/01-Filippo Vicarelli-Vampire Castle.ogg" />
+<!--<sound name="shot" file="resources/sound/shot.ogg" />-->
+
+<!-- BONUS -->
+<bulletml name="bonus" file="resources/enemies/bonus.xml"/>
+<bulletml name="fixedBonus" file="resources/enemies/fixedBonus.xml"/>
+<!-- PLAYER SHOTS -->
+<bulletml name="player1" file="resources/enemies/player1.xml"/>
+<bulletml name="player2" file="resources/enemies/player2.xml"/>
+<bulletml name="concentratedPlayer2" file="resources/enemies/concentratedPlayer2.xml"/>
+<bulletml name="player3" file="resources/enemies/player3.xml"/>
+<bulletml name="concentratedPlayer3" file="resources/enemies/concentratedPlayer3.xml"/>
+<bulletml name="explosionConcentratedPlayer3" file="resources/enemies/explosionConcentratedPlayer3.xml"/>
+<bulletml name="specialPowerPlayer3" file="resources/enemies/SpecialPowerPlayer3.xml"/>
+<bulletml name="explosionSpecialPowerPlayer3" file="resources/enemies/explosionSpecialPowerPlayer3.xml"/>
+<bulletml name="player4" file="resources/enemies/player4.xml"/>
+<bulletml name="concentratedPlayer4" file="resources/enemies/concentratedPlayer4.xml"/>
+<!------------------>
+<bulletml name="playerSimple" file="resources/enemies/BulletPlayerSimple.xml"/>
+<bulletml name="fourPlayer" file="resources/enemies/BulletPlayerFour.xml"/>
+<bulletml name="modulePlayer" file="resources/enemies/BulletPlayerFourModule.xml"/>
+<bulletml name="modulePlayer2" file="resources/enemies/BulletPlayerFourModule2.xml"/>
+<bulletml name="single" file="resources/enemies/BulletSimple.xml"/>
+<bulletml name="fixedSquareWall" file="resources/enemies/fixeSquare.xml"/>
+<bulletml name="deadlyHSquare" file="resources/enemies/deadlyHSquare.xml"/>
+<bulletml name="invDeadlyVSquareWall" file="resources/enemies/invDeadlyVSquare.xml"/>
+<bulletml name="invDeadlyHSquareWall" file="resources/enemies/invDeadlyHSquare.xml"/>
+<bulletml name="shotWall" file="resources/enemies/ShotWall.xml"/>
+<bulletml name="breakableWall" file="resources/enemies/BreakableWall.xml"/>
+<bulletml name="hSquareWall" file="resources/enemies/hSquare.xml"/>
+<bulletml name="vSquareWall" file="resources/enemies/vSquare.xml"/>
+<bulletml name="invHSquareWall" file="resources/enemies/invHSquare.xml"/>
+<bulletml name="invVSquareWall" file="resources/enemies/invVSquare.xml"/>
+<bulletml name="bomber" file="resources/enemies/BulletBomber.xml"/>
+<bulletml name="invader" file="resources/enemies/BulletInvader.xml"/>
+<bulletml name="playerinvader" file="resources/enemies/BulletPlayerInvader.xml" />
+<bulletml name="playerbomber" file="resources/enemies/BulletPlayerBomber.xml" />
+<bulletml name="playerwave" file="resources/enemies/BulletPlayerWave.xml" />
+<bulletml name="wave" file="resources/enemies/BulletWave.xml" />
+<bulletml name="follow" file="resources/enemies/BulletFollow.xml" />
+<bulletml name="playerfollow" file="resources/enemies/BulletPlayerFollow.xml" />
+<bulletml name="mobwave" file="resources/enemies/BulletMobWave.xml" />
+<bulletml name="boss1" file="resources/enemies/BulletBoss1.xml" />
+<bulletml name="fourmob" file="resources/enemies/BulletFour.xml" />
+<bulletml name="side" file="resources/enemies/BulletSide.xml" />
+<bulletml name="side2" file="resources/enemies/BulletSide2.xml" />
+<bulletml name="arc" file="resources/enemies/BulletArc.xml" />
+<bulletml name="focus" file="resources/enemies/BulletFocus.xml" />
+<bulletml name="bombAll" file="resources/enemies/BulletBombAll.xml" />
+<bulletml name="sinus" file="resources/enemies/BulletSinus.xml" />
+<bulletml name="invsinus" file="resources/enemies/BulletInvSinus.xml" />
+<bulletml name="circleTower" file="resources/enemies/BulletCircleTower.xml" />
+<map name="resources/map/map1.xml" background="default" scrollingSpeed="50">
+<sound y="0" name="test" />
+	<monster ry="10" x="420" name="fixedSquareWall" spawnY="-50" />
+	<monster ry="0" x="1260" name="fixedSquareWall" spawnY="-50" />
+	<monster ry="340" x="-150" name="sinus" spawnY="300" scrollable="false" />
+	<monster ry="0" x="1830" name="invsinus" spawnY="300" scrollable="false" />
+	<monster ry="600" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="320" x="213" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="313" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="790" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="840" name="single" spawnY="-120" scrollable="false" />
+	<monster ry="0" x="890" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1367" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="0" x="1467" name="single" spawnY="-50" scrollable="false" />
+	<monster ry="270" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="50" x="420" name="fourmob" spawnY="-200" scrollable="false"/>
+	<monster ry="0" x="1260" name="fourmob" spawnY="-200" scrollable="false"/>
+	<monster ry="480" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="hSquareWall" spawnY="-320"/>
+	<monster ry="0" x="655" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="invHSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="shotWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+.
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="bomber" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="285" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="655" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1395" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="shotWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="285" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="655" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1395" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="950" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="100" x="420" name="invader" spawnY="-100" scrollable="false" />
+	<monster ry="0" x="840" name="wave" spawnY="-200" scrollable="false"/>
+	<monster ry="0" x="1260" name="invader" spawnY="-100" scrollable="false" />
+	<monster ry="400" x="-150" name="sinus" spawnY="300" scrollable="false" />
+	<monster ry="0" x="1830" name="invsinus" spawnY="300" scrollable="false" />
+	<monster ry="200" x="100" name="side" spawnY="-50" scrollable="false" />
+	<monster ry="50" x="1080" name="mobwave" spawnY="-100" scrollable="false" />
+	<monster ry="450" x="1580" name="side2" spawnY="-50" scrollable="false" />
+	<monster ry="50" x="200" name="mobwave" spawnY="-100" scrollable="false" />
+	<monster ry="500" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="50" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="200" x="-150" name="sinus" spawnY="300" scrollable="false" />
+	<monster ry="0" x="1830" name="invsinus" spawnY="300" scrollable="false" />
+	
+
+	<monster ry="280" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="deadlyHSquare" spawnY="-320"/>
+	<monster ry="0" x="655" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="invDeadlyHSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>7
+
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="50" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+
+	<monster ry="75" x="100" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="shotWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+.
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="420" name="circleTower" spawnY="-320"/>
+	<monster ry="0" x="1260" name="circleTower" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="285" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="655" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="shotWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1395" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="invDeadlyHSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="deadlyHSquare" spawnY="-320"/>
+
+	<monster ry="185" x="100" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="285" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="470" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="655" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="840" name="breakableWall" spawnY="-320"/>
+	<monster ry="0" x="1025" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1210" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1395" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="0" x="1580" name="fixedSquareWall" spawnY="-320"/>
+	<monster ry="950" x="200" name="mobwave" spawnY="-100" scrollable="false" />
+	<monster ry="0" x="200" name="bombAll" spawnY="-100"/>
+	<monster ry="0" x="840" name="mobwave" spawnY="-100" scrollable="false" />
+	<monster ry="0" x="1480" name="bombAll" spawnY="-100"/>
+	<monster ry="0" x="1480" name="mobwave" spawnY="-100" scrollable="false" />
+	<monster ry="50" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<monster ry="20" x="840" name="arc" spawnY="-150" scrollable="false" />
+	<sound ry="150" name="test2" />
+	<end name="end" ry="1400" />
 </map>
+</resources>
+

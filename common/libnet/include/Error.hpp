@@ -16,6 +16,7 @@ NET_BEGIN_NAMESPACE
 
 std::string		NET_DLLREQ getLastError();
 void			NET_DLLREQ printLastError();
+bool			NET_DLLREQ wouldBlock();
 
 NET_END_NAMESPACE
 

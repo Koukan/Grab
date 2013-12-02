@@ -10,38 +10,50 @@
 
 #include "network.h"
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 #include "InetAddr.hpp"
 #include "SocketAcceptor.hpp"
 #include "Service.hpp"
 
 NET_BEGIN_NAMESPACE
 
+/*!
+ \brief Abstraction of a server accepting client
+
+ \tparam UserService User-defined class to be instancied whenever a client is connecting
+ \tparam AcceptPolicy Allow to redefine how the client is accepted
+ */
 template<typename UserService, typename AcceptPolicy = SocketAcceptor>
-class	Acceptor : public NetHandler
+class	Acceptor : public EventHandler
 {
 public:
-	Acceptor() : _reactor(0), _nonblocking(false)
+	Acceptor() : _reactor(nullptr), _nonblocking(false)
 	{
 	}
 
 	~Acceptor()
 	{
-		if (_reactor)
-	  		_reactor->removeHandler(_acceptor);
+		this->close();
 	}
 
-	int		setup(InetAddr const &addr, Reactor &reactor, bool nonblocking = true)
+	/*!
+	 \brief prepare the Acceptor to receive client
+
+	 \param addr Address to listen, like 0.0.0.0:80
+	 \param reactor A reference to a Reactor
+	 \param nonblocking Whether or not a client is accepted on a non-blocking fashion
+	 \return false on failure true otherwise
+	 */
+	bool		setup(InetAddr const &addr, Reactor &reactor, bool nonblocking = true)
 	{
 		_reactor = &reactor;
 		_nonblocking = nonblocking;
-		int ret = _acceptor.setup(addr);
-		if (ret != -1)
-		  _reactor->registerHandler(_acceptor, *this, Reactor::ACCEPT);
-		return ret;
+		if (_acceptor.setup(addr) == -1)
+			return false;
+		return _reactor->registerHandler(_acceptor, *this, Reactor::ACCEPT);
 	}
 
-	virtual	int	handleInput(Socket &)
+	int	handleInput(Socket &) override
 	{
 	  UserService	*stream = new UserService();
 	  int	ret = _acceptor.accept(stream->getIOHandler(), 0, _nonblocking);
@@ -59,6 +71,16 @@ public:
 	AcceptPolicy	&getAcceptorPolicy()
 	{
 		return _acceptor;
+	}
+
+	/*!
+	 \brief Close the sokets and finalize the object
+	 */
+	void	close()
+	{
+		_acceptor.close();	
+		if (_reactor)
+	  		_reactor->removeHandler(_acceptor);
 	}
 
 private:

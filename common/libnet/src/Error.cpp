@@ -43,6 +43,10 @@ std::string		getLastError()
     LocalFree(lpMsgBuf);
     LocalFree(lpDisplayBuf);
     return tmp;
+#elif defined(ANDROID)
+	char    buffer[1024];
+	::strerror_r(errno, buffer, 1024);
+	return buffer;
 #elif defined(__linux__)
 	char	buffer[1024];
 	return ::strerror_r(errno, buffer, 1024);
@@ -60,6 +64,17 @@ void			printLastError()
   #else
   std::cerr << getLastError() << std::endl;
   #endif
+}
+
+bool			wouldBlock()
+{
+#if defined (_WIN32)
+	int err = WSAGetLastError();
+	return (err == WSAEWOULDBLOCK || err == WSAEINTR);
+#else
+	int err = errno;
+	return ((err == EWOULDBLOCK || err == EAGAIN || err == EINTR));
+#endif
 }
 
 NET_END_NAMESPACE

@@ -9,7 +9,6 @@ class NET_DLLREQ PoolAllocator
 	public:
 		static void	*allocate(std::size_t size);
 		static void	deallocate(void *p, std::size_t size);
-		static void	init();
 		struct	elempool
 		{
 			struct  elempool	*next;

@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <cstdlib>
+#include <list>
 #include "Net.hpp"
 #include "CoreDef.hpp"
 

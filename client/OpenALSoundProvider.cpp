@@ -3,7 +3,7 @@
 #include "SFMLMusic.hpp"
 
 OpenALSoundProvider::OpenALSoundProvider()
-{	
+{
   if (!(this->_device = alcOpenDevice(NULL)))
  	{}
   if (!(this->_context = alcCreateContext(this->_device, NULL)))
@@ -13,7 +13,7 @@ OpenALSoundProvider::OpenALSoundProvider()
 }
 
 OpenALSoundProvider::~OpenALSoundProvider()
-{	
+{
   alcMakeContextCurrent(NULL);
   alcDestroyContext(this->_context);
   alcCloseDevice(this->_device);

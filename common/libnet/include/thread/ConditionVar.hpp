@@ -4,38 +4,40 @@
 #include "NetDef.hpp"
 
 
-#if defined  (_WIN32)
+#include <functional>
+#if defined  (_WIN32) && _MSC_VER < 1700
 #define _WINSOCKAPI_
 #include <windows.h>
 #else
-#include <pthread.h>
+#include <condition_variable>
 #endif
 
 #include "Mutex.hpp"
 
 NET_BEGIN_NAMESPACE
 
-# if defined (_WIN32)
-typedef	CONDITION_VARIABLE cond_t;
-#else
-typedef pthread_cond_t cond_t;
-# endif
-
-class NET_DLLREQ ConditionVar : public Mutex
+# if (defined (_WIN32) && _MSC_VER < 1700) || defined (ANDROID)
+class NET_DLLREQ ConditionVar
 {
 public:
 	ConditionVar();
 	~ConditionVar();
-	bool	signal();
-	bool	broadcast();
-	bool	uniqueWait();
-	bool	uniqueTimedWait(int ms);
-	bool	wait();
-	bool	timedWait(int ms);
+	void	notify_one();
+	void	notify_all();
+	void	wait(Mutex &mutex);
+	void	wait(Mutex &mutex, std::function<bool ()> predicate);
+	bool	wait_for(Mutex &mutex, int ms);
 
 private:
-	cond_t 	_cond;
+#if defined (_WIN32)
+	CONDITION_VARIABLE 	_cond;
+#else
+	pthread_cond_t		_cond;
+#endif
 };
+#else
+typedef std::condition_variable ConditionVar;
+# endif
 
 NET_END_NAMESPACE
 

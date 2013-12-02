@@ -1,57 +1,82 @@
-#if defined (_WIN32)
+#if defined (_WIN32) && _MSC_VER < 1700
 #include <windows.h>
 #include "ConditionVar.hpp"
 
 NET_USE_NAMESPACE
 
-ConditionVar::ConditionVar() : Mutex()
+ConditionVar::ConditionVar()
 {
-  InitializeConditionVariable(&_cond);
+	InitializeConditionVariable(&_cond);
+}
+
+ConditionVar::~ConditionVar()
+{}
+
+void    ConditionVar::notify_one()
+{
+	WakeConditionVariable(&_cond);
+}
+
+void    ConditionVar::notify_all()
+{
+	WakeAllConditionVariable(&_cond);
+}
+
+void	ConditionVar::wait(Mutex &mutex)
+{
+	SleepConditionVariableCS(&_cond, (PCRITICAL_SECTION)mutex.native_handle(), INFINITE);
+}
+
+void	ConditionVar::wait(Mutex &mutex, std::function<bool ()> predicate)
+{
+	while (!predicate())
+		this->wait(mutex);
+}
+
+bool		ConditionVar::wait_for(Mutex &mutex, int ms)
+{
+	return (SleepConditionVariableCS(&_cond, (PCRITICAL_SECTION)mutex.native_handle(), ms) != 0);
+}
+
+#elif defined (ANDROID)
+#include "ConditionVar.hpp"
+
+NET_USE_NAMESPACE
+
+ConditionVar::ConditionVar()
+{
+	pthread_cond_init(&_cond, 0);
 }
 
 ConditionVar::~ConditionVar()
 {
-  
+	pthread_cond_destroy(&_cond);
 }
 
-bool    ConditionVar::signal()
+void    ConditionVar::notify_one()
 {
-  WakeConditionVariable(&_cond);
-  return (true);
+	pthread_cond_signal(&_cond);
 }
 
-bool    ConditionVar::broadcast()
+void    ConditionVar::notify_all()
 {
-  WakeAllConditionVariable(&_cond);
-  return (true);
+	pthread_cond_broadcast(&_cond);
 }
 
-bool	ConditionVar::wait()
+void	ConditionVar::wait(Mutex &mutex)
 {
-  return (SleepConditionVariableCS(&_cond, &_mutex, INFINITE) != 0);
+	pthread_cond_wait(&_cond, mutex.native_handle());
 }
 
-bool	ConditionVar::uniqueWait()
+void	ConditionVar::wait(Mutex &mutex, std::function<bool ()> predicate)
 {
-  bool	ret;
-
-  this->lock();
-  ret = this->wait();
-  return (ret);
+	while (!predicate())
+		this->wait(mutex);
 }
 
-bool	ConditionVar::uniqueTimedWait(int ms)
+bool		ConditionVar::wait_for(Mutex &mutex, int ms)
 {
-  bool	ret;
-
-  this->lock();
-  ret = this->timedWait(ms);
-  return (ret);
-}
-
-bool		ConditionVar::timedWait(int ms)
-{
-  return (SleepConditionVariableCS(&_cond, &_mutex, ms) != 0);
+	return false;
 }
 
 #endif

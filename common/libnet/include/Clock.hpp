@@ -1,51 +1,74 @@
+#pragma once
 
-#ifndef _CLOCK_
-#define _CLOCK_
-
-#include <stdint.h>
 #include <string>
-#include <time.h>
+#include <chrono>
 #include "NetDef.hpp"
-
-#if defined (_WIN32)
-#define _WINSOCKAPI_
-#define EPOCHFILETIME (116444736000000000LL)
-#include <windows.h>
-#else
-#include <unistd.h>
-#include <sys/time.h>
-#endif
 
 NET_BEGIN_NAMESPACE
 
-# if defined (_WIN32)
-typedef	DWORD clocktime_t;
-#else
-typedef struct timeval clocktime_t;
-# endif
-
+/*!
+	\brief Utility to manipulate time
+*/
 class NET_DLLREQ Clock
 {
 public:
+	/*!
+		\brief Construct an empty clock
+	*/
 	Clock();
 	~Clock();
 
+	/*!
+	 	\brief Resume the clock
+	*/
 	void	play();
+	/*!
+	 	\brief Pause the clock
+	*/
 	void	pause();
+	/*!
+	 	\brief Update the clock
+	*/
 	void	update();
+	/*!
+	 	\brief Reset the clock
+	*/
 	void	reset();
+	/*!
+	 	\brief Check if the clock is paused
+	 	\return true if paused, false otherwise 
+	*/
 	bool	isPaused() const;
-
+	/*!
+	 	\brief Get the number of miliseconds since last update
+	 	\return the number of miliseconds since last update 
+	*/
 	uint64_t	getElapsedTime() const;
+	/*!
+	 	\brief Get the number of miliseconds since EPOCH
+	 	\details EPOCH is January, 1st, 1970 at 00:00
+	 	\return the number of miliseconds since EPOCH
+	*/
 	static uint64_t getMsSinceEpoch();
-	static std::string getTimeInStr();
+	/*!
+	 	\brief Get the current date in a string
+	 	\return a string containing the formatted time 
+	*/
+	static std::string getTimeInStr(std::string const &format = "%c");
+	/*!
+	 	\brief OS agnostic sleep
+	 	\param ms number of miliseconds to sleep
+	*/
 	static void			sleep(int ms);
 
 private:
-	bool						_paused;
-	clocktime_t					_time;
+	bool											_paused;
+#if defined (_WIN32)
+	typedef std::chrono::system_clock clock;
+#else
+	typedef std::chrono::steady_clock clock;
+#endif
+	std::chrono::time_point<clock>					_clock;
 };
 
 NET_END_NAMESPACE
-
-#endif /* _CLOCK_ */

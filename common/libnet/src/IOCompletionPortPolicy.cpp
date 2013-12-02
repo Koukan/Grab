@@ -47,11 +47,11 @@ IOCompletionPortPolicy::~IOCompletionPortPolicy()
 {
 }
 
-int     registerHandler(Socket &socket, NetHandler &handler, int mask)
+int     registerHandler(Socket &socket, EventHandler &handler, int mask)
 {
-	if (socket.getNetHandler() == 0)
+	if (socket.getEventHandler() == 0)
 		CreateIoCompletionPort((HANDLE)socket.getHandle(), _iocompletionport, &socket, 0);
-	socket.setNetHandler(&handler);
+	socket.setEventHandler(&handler);
 	return 0;
 }
 

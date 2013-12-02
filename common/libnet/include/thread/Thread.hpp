@@ -1,57 +1,59 @@
 # ifndef	_OOPTHREAD_H
 #  define	_OOPTHREAD_H
 
-# if defined (_WIN32)
-
+# if defined (_WIN32)  && _MSC_VER < 1700
 #define _WINSOCKAPI_
 #include <windows.h>
-#define THREAD HANDLE
+# elif defined (ANDROID)
+#include <pthread.h>
 # else
-#include	<pthread.h>
-#include	<stdlib.h>
+#include <thread>
 # endif
-
+#include <functional>
 #include "NetDef.hpp"
-#include "ThreadSubscriber.hpp"
+
+# if (defined (_WIN32)  && _MSC_VER < 1700) || defined (ANDROID)
+namespace std
+{
+	namespace thread
+	{
+		typedef int id;
+	};
+};
 
 NET_BEGIN_NAMESPACE
 
-# if defined (_WIN32)
-typedef	HANDLE thread_t;
-#else
-typedef pthread_t thread_t;
-# endif
+namespace this_thread
+{
+	 NET_DLLREQ std::thread::id		get_id();
+};
 
 class NET_DLLREQ	Thread
 {
  public:
- Thread(IThreadSubscriber &func);
-
- template <typename Functor>
- Thread(Functor &functor) : _func(new ThreadFunctor<Functor>(functor)), _state(false)
- {}
-
- template <typename Functor, typename Arg>
- Thread(Functor &functor, Arg arg) : _func(new ThreadFunctorArg<Functor, Arg>(functor, arg)), _state(false)
- {}
-
- template <typename Object>
- Thread(Object *obj, void (Object::*func)()) : _func(new ThreadMemberFunc<Object>(obj, func)), _state(false)
- {}
-
+ Thread(std::function<void ()> function);
  ~Thread();
 
- bool           start();
- bool			cancel(void);
- bool			join(void **exit_value = 0);
- bool			tryjoin(void **exit_value = 0);
- void			run();
+ bool			joinable() const;
+ void			join();
+ void			detach();
+
+ static int hardware_concurrency();
 
  private:
- IThreadSubscriber 	*_func;
- bool				_state;
- thread_t			_tid;
+ std::function<void ()>	_func;
+ bool					_joinable;
+#if defined (_WIN32)
+ HANDLE					_tid;
+#else
+ pthread_t				_tid;
+#endif
 };
+#else
+NET_BEGIN_NAMESPACE
+typedef std::thread Thread;
+namespace this_thread = std::this_thread;
+#endif
 
 NET_END_NAMESPACE
 

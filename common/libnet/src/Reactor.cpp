@@ -8,16 +8,34 @@
 #define NOMINMAX
 #include <algorithm>
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 
 NET_USE_NAMESPACE
 
-bool Reactor::schedulingdata::operator<(schedulingdata const &other) const
+class TimeoutHelper : public EventHandler
+{
+  public:
+	TimeoutHelper(std::function <void (size_t)> func, bool repeat) : _func(func), _repeat(repeat)
+	{}
+
+	void handleTimeout(size_t delay)
+	{
+		_func(delay);
+		if (!_repeat)
+			delete this;
+	}
+
+  private:
+	std::function <void (size_t)> 	_func;
+	bool				_repeat;
+};
+
+bool Reactor::timerdata::operator<(timerdata const &other) const
 {
 	return this->timeout < other.timeout;
 }
 
-Reactor::Reactor() : _wait(true)
+Reactor::Reactor() : _wait(true), _timerIdgenerator(0)
 {}
 
 Reactor::~Reactor()
@@ -28,34 +46,44 @@ void	Reactor::stopWaiting()
 	_wait = false;
 }
 
-int		Reactor::scheduleTimer(NetHandler &handler, size_t delay, bool repeat)
+uint32_t	Reactor::scheduleTimer(EventHandler &handler, size_t delay, bool repeat)
 {
-  schedulingdata data;
+	timerdata data;
 
-  data.delay = delay;
-  data.repeat = repeat;
-  data.handler = &handler;
-  data.timeout = static_cast<size_t>(_clock.getElapsedTime()) + delay;
-  _mapHandler[&handler] = (_listTimeout.insert(data)).first;
-  return 0;
+	data.repeat = repeat;
+	data.delay = delay;
+	data.handler = &handler;
+	data.timeout = static_cast<size_t>(_clock.getElapsedTime()) + delay;
+	data.timerId = this->getTimerId();
+	_mapHandler[data.timerId] = _listTimeout.insert(data);
+	return true;
 }
 
-int		Reactor::cancelTimer(NetHandler &handler)
+uint32_t	Reactor::scheduleTimer(std::function<void (size_t)> func, size_t delay, bool repeat)
 {
-  mapTimeout::iterator it = _mapHandler.find(&handler);
-  if (it != _mapHandler.end())
-  {
-	  _listTimeout.erase(it->second);
-	  _mapHandler.erase(it);
-	  return 0;
-  }
-  return -1;
+	auto handler = new TimeoutHelper(func, repeat);
+	return this->scheduleTimer(*handler, delay, repeat);
+}
+
+bool		Reactor::cancelTimer(uint32_t timerId)
+{
+	mapTimeout::iterator it = _mapHandler.find(timerId);
+	if (it == _mapHandler.end())
+		return false;
+	_listTimeout.erase(it->second);
+	_mapHandler.erase(it);
+	return true;
+}
+
+uint32_t Reactor::getTimerId()
+{
+	return ++_timerIdgenerator;
 }
 
 int		Reactor::handleTimers(int &timeout)
 {
-  size_t	time = static_cast<size_t>(_clock.getElapsedTime());
-  std::set<schedulingdata>::iterator it;
+  auto	time = _clock.getElapsedTime();
+  std::multiset<timerdata>::iterator it;
   if (timeout > 0)
   {
 	  timeout -= time;
@@ -65,7 +93,7 @@ int		Reactor::handleTimers(int &timeout)
   while (!_listTimeout.empty())
   {
 	  it = _listTimeout.begin();
-	  schedulingdata const &tmp = *it;
+	  auto &tmp = const_cast<timerdata &>(*it);
 	  if (tmp.timeout > time)
 	  {
 		 if (timeout < 0)
@@ -73,12 +101,12 @@ int		Reactor::handleTimers(int &timeout)
 		 else
 			return (std::min(static_cast<int>(tmp.timeout - time), timeout));
 	  }
-	  tmp.handler->handleTimeout();
+	  tmp.handler->handleTimeout(time - (tmp.timeout - tmp.delay));
 	  if (tmp.repeat)
 	  {
-		  schedulingdata copy = tmp;
-		  copy.timeout += tmp.delay;
-		  _mapHandler[tmp.handler] = (_listTimeout.insert(copy)).first;
+		  timerdata copy(tmp);
+		  copy.timeout = _clock.getElapsedTime() + tmp.delay;
+		  _mapHandler[tmp.timerId] = _listTimeout.insert(copy);
 	  }
 	  _listTimeout.erase(it);
   }

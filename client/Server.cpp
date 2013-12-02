@@ -9,8 +9,7 @@
 #include "Command.hpp"
 #include "Modes.hpp"
 
-Server::Server() : Net::SizeHeaderPacketHandler<>(4096),
-		_name(""), _game(0)
+Server::Server() : _name(""), _game(0)
 {
 	NetworkModule::get().setServer(this);
 }
@@ -71,7 +70,7 @@ bool		Server::treatEtablishedPacket(Net::Packet &packet)
 {
 	uint32_t	udpauth;
 	packet >> udpauth;
-	Net::Packet auth(13);
+	Net::Packet auth;
 	auth << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	auth << static_cast<uint8_t>(UDP::AUTH);
 	auth << udpauth;

@@ -62,7 +62,8 @@ GameLogic::GameLogic(Game &game, const std::string &map)
   	this->setCollisionGroups("blackHoleEnd", "monster2", &Rules::blackHoleEndTouchMonster);
 	//this->setCollisionGroups("shoot", "players", &Rules::shotTouchClient);
 	//this->setCollisionGroups("ship", "players", &Rules::shotTouchClient);
-	this->_rand.seed(rand());
+	this->_seed = rand();
+	this->_rand.seed(this->_seed);
 }
 
 GameLogic::~GameLogic()
@@ -140,7 +141,7 @@ void		GameLogic::startGame()
 
 uint32_t	GameLogic::getSeed() const
 {
-	return this->_rand.getSeed();
+	return this->_seed;
 }
 
 void		GameLogic::spawnSpawnerCommand(Core::Command const &command)

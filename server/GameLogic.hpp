@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include <list>
 #include <string>
 #include "GameState.hpp"
@@ -56,6 +57,7 @@ class GameLogic : public Core::GameState
 	Game				&_game;
 	double				_elapseTime;
 	bool				_gameStarted;
-	Net::MTRand			_rand;
+	std::mt19937		_rand;
 	Map					*_map;
+	uint32_t			_seed;
 };

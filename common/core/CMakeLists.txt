@@ -146,6 +146,16 @@ set(SRCS_CORE
 )
 SOURCE_GROUP (core_headers FILES(${INCLUDES_CORE}))
 
+if(UNIX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	if (CMAKE_COMPILER_IS_GNUCXX)
+		add_definitions (-flto)
+	endif()
+endif(UNIX)
+if(WIN32)
+	add_definitions (/MP)
+endif()
+
 add_subdirectory(../libnet ../libnet_build)
 
 include_directories (

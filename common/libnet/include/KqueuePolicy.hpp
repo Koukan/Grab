@@ -1,39 +1,41 @@
-/*
- * KqueuePolicy.hpp
- *
- *  Created on: Nov 9, 2011
- *      Author: snap
- */
+#pragma once
 
-#ifndef KQUEUEPOLICY_HPP_
-#define KQUEUEPOLICY_HPP_
-
-#include <map>
+#include <unordered_map>
 #include "NetDef.hpp"
 #include "network.h"
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
+#include "Clock.hpp"
 
 NET_BEGIN_NAMESPACE
 
+/*!
+ \brief Reactor based on kqueue()
+ \details Available on Mac OS, FreeBSD and other BSD
+ */
 class NET_DLLREQ KqueuePolicy : public Reactor, public Socket
 {
 public:
 	KqueuePolicy();
 	~KqueuePolicy();
 
-	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
-	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout = -1);
+	bool	registerHandler(Socket &socket, EventHandler &handler, int mask) override;
+	bool	removeHandler(Socket &socket) override;
+	int		waitForEvent(int timeout = -1) override;
 
-	int		scheduleTimer(NetHandler &handler, size_t delay, bool repeat = false);
-	int		cancelTimer(NetHandler &handler);
+	uint32_t	scheduleTimer(EventHandler &handler, size_t delay, bool repeat = false) override;
+	bool		cancelTimer(uint32_t timerId) override;
 
 private:
-	size_t	_timerid;
-	std::map<NetHandler*, size_t>   	_timers;
+	struct	timerdata
+	{
+		EventHandler	*handler;
+		size_t		delay;
+		size_t		timerid;
+		Clock		clock;
+	};
+
+	std::unordered_map<uint32_t, timerdata*>   	_timers;
 };
 
 NET_END_NAMESPACE
-
-#endif /* KQUEUEPOLICY_HPP_ */

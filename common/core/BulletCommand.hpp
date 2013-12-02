@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <random>
 #include "Net.hpp"
 #include "bulletmlrunner.h"
 #include "Sprite.hpp"
@@ -93,7 +94,8 @@ class CORE_DLLREQ BulletCommand : public Bullet, public BulletMLRunner
 	double					_simpleYHitbox;
 	std::string				_grabBullet;
 	std::string				_deathBullet;
-	Net::MTRand				_rand;
+	std::mt19937			_rand;
+	uint32_t				_seed;
 	bool					_paused;
 	bool					_isCommanded;
 	bool					_stop;

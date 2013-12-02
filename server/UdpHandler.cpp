@@ -72,7 +72,7 @@ int			UdpHandler::handleInputPacket(Net::Packet &packet)
 
 void		UdpHandler::sendRetrieve(uint32_t id, Client &client)
 {
-	Net::Packet			retrieve(17);
+	Net::Packet			retrieve;
 	retrieve << static_cast<uint64_t>(Net::Clock::getMsSinceEpoch());
 	retrieve << static_cast<uint8_t>(UDP::RETRIEVE);
 	retrieve << 0;
@@ -187,9 +187,8 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 	{
 		std::list<Client*>	list;
 		list.push_back(&client);
-		Net::Packet *packet = tmp->duplicate();
-		NetworkModule::get().sendUDPPacket(*packet, list, false);
-		delete packet;
+		Net::Packet tosend(*tmp);
+		NetworkModule::get().sendUDPPacket(tosend, list, false);
 	}
 	return 1;
 }
@@ -197,7 +196,7 @@ int         UdpHandler::retrieve(Net::Packet &packet, Client &client)
 
 int         UdpHandler::ping(Net::Packet &packet, Client &)
 {
-	Net::Packet     pong(9);
+	Net::Packet     pong;
 	pong << _time_recv;
 	pong << static_cast<uint8_t>(UDP::PONG);
 	pong.setDestination(packet.getAddr());
@@ -267,7 +266,7 @@ int         UdpHandler::deadPlayer(Net::Packet &packet, Client &client)
 	return 1;
 }
 
-int			UdpHandler::bonus(Net::Packet &packet, Client &client)	
+int			UdpHandler::bonus(Net::Packet &packet, Client &client)
 {
 	if (!client.getGame())
 		return 1;
@@ -287,8 +286,6 @@ int         UdpHandler::aura(Net::Packet &packet, Client &client)
 }
 
 void		UdpHandler::broadcastPacket(Net::Packet &packet, Client &client, bool reliable)
-{	
-	Net::Packet		*broadcast = packet.clone();
-	NetworkModule::get().sendUDPPacket(*broadcast, client.getGame()->getClients(), reliable, &client);
-	delete broadcast;
+{
+	NetworkModule::get().sendUDPPacket(packet, client.getGame()->getClients(), reliable, &client);
 }

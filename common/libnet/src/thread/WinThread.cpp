@@ -1,69 +1,104 @@
-#if defined (_WIN32)
+#if defined (_WIN32) && _MSC_VER < 1700
 #include "Thread.hpp"
-#include "PoolAllocator.hpp"
 
 NET_USE_NAMESPACE
 
 static DWORD WINAPI		starter(void *arg)
 {
-  Thread	*tmp = static_cast<Thread*>(arg);
-  PoolAllocator::init();
-  tmp->run();
-  return (0);
+  	auto func = static_cast<std::function<void ()> *>(arg);
+  	(*func)();
+  	return (0);
 }
 
-bool	Thread::start()
- {
-   if (this->_state == false)
-   {
-     _tid = CreateThread(0, 0, &starter, static_cast<void*>(this), 0, 0);
-	 this->_state = (_tid) ? true : false;
-   }
-  return (this->_state);
-}
-
-bool	Thread::cancel()
+Thread::Thread(std::function<void ()> function) : _func(function), _joinable(true), _tid(INVALID_HANDLE_VALUE)
 {
-  bool	ret;
-
-  if (_state == true)
-  {
-    ret = TerminateThread(_tid, 0) != 0;
-    if (ret)
-      _state = false;
-    return (ret);
-  }
-  else
-    return (false);
+	_tid = ::CreateThread(0, 0, &starter, static_cast<void*>(&_func), 0, 0);
 }
 
-bool		Thread::join(void **exit_value)
+Thread::~Thread()
 {
-   DWORD	ret;
-
-   if (_state != false)
-    {
-      ret = WaitForSingleObject(_tid, INFINITE);
-      if (ret == WAIT_OBJECT_0)
-      	_state = false;
-      return (ret == WAIT_OBJECT_0);
-    }
-   else
-      return false;
+  if (_joinable)
+	  ::TerminateThread(_tid, 0);
+  if (_tid != INVALID_HANDLE_VALUE)
+	  ::CloseHandle(_tid);
 }
 
-bool		Thread::tryjoin(void **exit_value)
+bool		Thread::joinable() const
 {
-   DWORD	ret;
+	return _joinable;
+}
 
-    if (_state != false)
-     {
-       ret = WaitForSingleObject(_tid, 0);
-       if (ret == WAIT_OBJECT_0)
-	 _state = false;
-       return (ret == WAIT_OBJECT_0);
-     }
-   else
-     return false;
+void		Thread::join()
+{
+	if (_joinable)
+		::WaitForSingleObject(_tid, INFINITE);
+}
+
+void		Thread::detach()
+{
+	_joinable = false;
+	::CloseHandle(_tid);
+	_tid = INVALID_HANDLE_VALUE;
+}
+
+std::thread::id		this_thread::get_id()
+{
+	return ::GetCurrentThreadId();
+}
+
+int			Thread::hardware_concurrency()
+{
+	SYSTEM_INFO SystemInfo;
+	::GetSystemInfo(&SystemInfo);
+	return SystemInfo.dwNumberOfProcessors;
+}
+#elif defined (ANDROID)
+#include "Thread.hpp"
+
+NET_USE_NAMESPACE
+
+static void		*starter(void *arg)
+{
+	auto func = static_cast<std::function<void ()> *>(arg);
+  	(*func)();
+  	return (nullptr);
+}
+
+Thread::Thread(std::function<void ()> function) : _func(function), _joinable(true), _tid(0)
+{
+	pthread_create(&_tid,0, &starter, static_cast<void*>(&_func));
+}
+
+Thread::~Thread()
+{
+}
+
+bool		Thread::joinable() const
+{
+	return _joinable;
+}
+
+void		Thread::join()
+{
+	if (_joinable)
+		pthread_join(_tid, nullptr);
+}
+
+void		Thread::detach()
+{
+	_joinable = false;
+	pthread_detach(_tid);
+}
+
+std::thread::id		this_thread::get_id()
+{
+	return pthread_self();
+}
+
+int			Thread::hardware_concurrency()
+{
+	return 4;
 }
 #endif
+
+

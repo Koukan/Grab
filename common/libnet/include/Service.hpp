@@ -10,13 +10,13 @@
 
 #include "NetDef.hpp"
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 #include "SocketStream.hpp"
 
 NET_BEGIN_NAMESPACE
 
 template<typename IOHandler = SocketStream>
-class Service : public NetHandler
+class Service : public EventHandler
 {
 public:
 	Service(int flags = Reactor::READ) : _reactor(0), _flags(flags)
@@ -24,8 +24,8 @@ public:
 
 	virtual ~Service()
 	{
-	  if (_reactor)
-	   _reactor->cancelTimer(*this);
+//	  if (_reactor)
+//	   _reactor->cancelTimer(*this);
 	}
 
 	virtual	void	init() {};

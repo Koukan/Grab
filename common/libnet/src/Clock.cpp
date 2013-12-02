@@ -1,3 +1,5 @@
+#include <thread>
+#include <ctime>
 #include "Clock.hpp"
 
 NET_USE_NAMESPACE
@@ -33,15 +35,9 @@ bool	Clock::isPaused() const
 	 return _paused;
 }
 
-#if defined (_WIN32)
-#define _WINSOCKAPI_
-#define EPOCHFILETIME (116444736000000000LL)
-#   pragma comment(lib, "Winmm.lib") 
-#include <windows.h>
-
 void	Clock::update()
 {
-	 _time = timeGetTime();
+	_clock = Clock::clock::now();
 }
 
 uint64_t	Clock::getElapsedTime() const
@@ -49,43 +45,35 @@ uint64_t	Clock::getElapsedTime() const
 	if (this->isPaused())
 		return 0;
 	else
-		return (timeGetTime() - _time);
+		return (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _clock).count());
 }
 
-uint64_t Clock::getMsSinceEpoch()
+uint64_t	Clock::getMsSinceEpoch()
 {
-	FILETIME        ft;
-	LARGE_INTEGER   li;
-
-	GetSystemTimeAsFileTime(&ft);
-	li.LowPart  = ft.dwLowDateTime;
-	li.HighPart = ft.dwHighDateTime;
-	uint64_t ret = (li.QuadPart - EPOCHFILETIME) / 10;
-	return (ret);
-}
-
-std::string Clock::getTimeInStr()
-{
-   	time_t rawtime = time(0);
-	char buffer[26];
-
-    ctime_s(buffer, 26, &rawtime);
-	std::string str(buffer);
-
-    if (!str.empty())
-    	str.resize(str.size() - 1);
-    return (str);
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 void		Clock::sleep(int ms)
 {
-	::Sleep(ms);
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+std::string Clock::getTimeInStr(std::string const &format)
+{
+	char			tmp[256];
+	std::time_t		t = std::time(nullptr);
+	std::tm			tm;
+#if defined (_WIN32)
+	localtime_s(&tm, &t);
+	std::strftime(tmp, sizeof(tmp), format.c_str(), &tm);
 #else
+	std::strftime(tmp, sizeof(tmp), format.c_str(), localtime_r(&t, &tm));
+#endif
+	return tmp;
+}
 
+/* will be usefull for Android
 #include <sys/time.h>
-
 
 void	Clock::update()
 {
@@ -118,19 +106,11 @@ uint64_t Clock::getMsSinceEpoch()
 std::string Clock::getTimeInStr()
 {
    	time_t rawtime = time(0);
-	char buffer[26];
-
-   	ctime_r(&rawtime, buffer);
-	std::string str(buffer);
-
-   	if (!str.empty())
-    	str.resize(str.size() - 1);
-   	return (str);
+   	return ctime(&rawtime);
 }
 
 void		Clock::sleep(int ms)
 {
 	::usleep(ms * 1000);
 }
-
-#endif
+*/

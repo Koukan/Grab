@@ -1,344 +1,123 @@
 /*
  * Packet.cpp
  *
- *  Created on: Nov 20, 2011
+ *  Created on: Dec 3, 2011
  *      Author: snap
  */
 
-#include <iostream>
-#include <cstring>
 #include "Packet.hpp"
 
 NET_USE_NAMESPACE
 
-Packet::Packet(size_t size) : _rindex(0), _windex(0), _size(0), _allocdata(true)
+Packet::Packet() : _rindex(0), _windex(0), _size(0), _ss(new std::string)
 {
-	_data = new DataBlock(size);
-}
-
-Packet::Packet(DataBlock &data, size_t size) : _rindex(0), _windex(0), _size(size), _allocdata(false)
-{
-  _data = &data;
-  data.seize();
-}
-
-Packet::Packet(Packet const &other)
-{
-   if (&other != this)
-   {
-	  this->_rindex = 0;
-	  this->_windex = 0;
-	  this->_size = other._size;
-	  this->_allocdata = other._allocdata;
-	  this->_data = other._data;
-	  this->_addr = other._addr;
-	  if (this->_data)
-		  this->_data->seize();
-   }
 }
 
 Packet::~Packet()
 {
-	this->release();
 }
 
-Packet	*Packet::clone()
+Packet::Packet(Packet const &other)
 {
-	if (!_data)
-	  return 0;
-	Packet	*ret = new Packet(this->size());
-	::memcpy(ret->base(), this->base(), this->size());
-	ret->setSize(this->size());
-	return ret;
+	if (this != &other)
+	{
+		this->_rindex = 0;
+		this->_windex = 0;
+		this->_size = other._size;
+		this->_ss = other._ss;
+		this->_addr = other._addr;
+	}
 }
 
-Packet	*Packet::duplicate() const
-{
- if (!_data)
-	  return 0;
-  Packet *ret = new Packet(*this);
-  return ret;
-}
+Packet::Packet(Packet &&other) : _rindex(0), _windex(0), _size(other._size),
+								 _addr(std::move(other._addr)), _ss(std::move(other._ss))
+{}
 
-void	Packet::release()
+Packet&	Packet::operator=(Packet const &other)
 {
-  if (_data)
-  {
-	  _data->release();
-	  if (_allocdata && _data->getRefCount() == 0)
-		delete _data;
-	  _data = 0;
-  }
-}
-
-size_t	Packet::size() const
-{
-	return this->_size;
-}
-
-size_t	Packet::capacity() const
-{
-	return ((_data) ? _data->_vec.iov_len : 0);
-}
-
-char	*Packet::rd_ptr()
-{
-  return &(this->base())[_rindex];
-}
-
-char	*Packet::wr_ptr()
-{
-  return &(this->base())[_windex];
-}
-
-void	Packet::rd_ptr(size_t index)
-{
-  _rindex = (index < this->capacity()) ? index : this->capacity();
-}
-
-void	Packet::wr_ptr(size_t index)
-{
-  _windex = (index < this->capacity()) ? index : this->capacity();
-}
-
-char	*Packet::base() const
-{
-  return static_cast<char*>(_data->_vec.iov_base);
-}
-
-DataBlock	*Packet::getDataBlock() const
-{
-  return _data;
-}
-
-void	Packet::reset()
-{
-  _windex = 0;
-  _rindex = 0;
-  _size = 0;
-}
-
-size_t	Packet::getRindex() const
-{
-  return _rindex;
-}
-
-size_t	Packet::getWindex() const
-{
-  return _windex;
-}
-
-bool	Packet::isConsumned() const
-{
-  return _windex >= _size;
-}
-
-bool	Packet::isFull() const
-{
-	return _windex >= this->capacity();
-}
-
-InetAddr	&Packet::getAddr()
-{
-  return _addr;
-}
-
-Packet& Packet::operator<<(bool value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  tmp[_windex++] = static_cast<char>(value);
-  if (_size < _windex)
-	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(char value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  tmp[_windex++] = static_cast<char>(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(int8_t value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  tmp[_windex++] = static_cast<char>(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(uint8_t value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  tmp[_windex++] = static_cast<char>(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(int16_t value)
-{
-  int16_t *tmp = reinterpret_cast<int16_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-  *tmp = htons(value);
-  _windex += sizeof(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(uint16_t value)
-{
-  uint16_t *tmp = reinterpret_cast<uint16_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-  *tmp = htons(value);
-  _windex += sizeof(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
-}
-
-Packet& Packet::operator<<(int32_t value)
-{
-	int32_t *tmp = reinterpret_cast<int32_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-	*tmp = htonl(value);
-	_windex += sizeof(value);
-	 if (_size < _windex)
-		_size = _windex;
+	if (this != &other)
+	{	
+		this->_rindex = 0;
+		this->_windex = 0;
+		this->_size = other._size;
+		this->_ss = other._ss;
+		this->_addr = other._addr;
+	}
 	return *this;
-}
-
-Packet& Packet::operator<<(uint32_t value)
-{
-	uint32_t *tmp = reinterpret_cast<uint32_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-	*tmp = htonl(value);
-	_windex += sizeof(value);
-	 if (_size < _windex)
-		_size = _windex;
-	return *this;
-}
-
-Packet& Packet::operator<<(int64_t value)
-{
-	uint64_t *tmp = reinterpret_cast<uint64_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-	*tmp = htonll(value);
-	_windex += sizeof(value);
-	 if (_size < _windex)
-		_size = _windex;
-	return *this;
-}
-
-Packet& Packet::operator<<(uint64_t value)
-{
-  uint64_t *tmp = reinterpret_cast<uint64_t*>(&static_cast<char*>(_data->_vec.iov_base)[_windex]);
-  *tmp = htonll(value);
-  _windex += sizeof(value);
-  if (_size < _windex)
- 	_size = _windex;
-  return *this;
 }
 
 Packet& Packet::operator<<(std::string const &str)
 {
-  char *tmp = &static_cast<char*>(_data->_vec.iov_base)[_windex];
-  if (str.size() < this->capacity() - _windex)
-  {
-	  ::memcpy(tmp, str.c_str(), str.size() + 1);
-	  _windex += str.size() + 1;
-	  if (_size < _windex)
-	 	_size = _windex;
-  }
-  return *this;
-}
-
-Packet& Packet::operator<<(char const *str)
-{
-  return *this << std::string(str);
-}
-
-Packet& Packet::operator>>(bool &value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  value = tmp[_rindex++] > 0;
-  return *this;
-}
-
-Packet& Packet::operator>>(char &value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  value = tmp[_rindex++];
-  return *this;
-}
-
-Packet& Packet::operator>>(int8_t &value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  value = tmp[_rindex++];
-  return *this;
-}
-
-Packet& Packet::operator>>(uint8_t &value)
-{
-  char *tmp = static_cast<char*>(_data->_vec.iov_base);
-  value = tmp[_rindex++];
-  return *this;
-}
-
-Packet& Packet::operator>>(int16_t &value)
-{
-  int16_t *tmp = reinterpret_cast<int16_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohs(*tmp);
-  _rindex += sizeof(value);
-  return *this;
-}
-
-Packet& Packet::operator>>(uint16_t &value)
-{
-  uint16_t *tmp = reinterpret_cast<uint16_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohs(*tmp);
-  _rindex += sizeof(value);
-  return *this;
-}
-
-Packet& Packet::operator>>(int32_t &value)
-{
-  int32_t *tmp = reinterpret_cast<int32_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohl(*tmp);
-  _rindex += sizeof(value);
-  return *this;
-}
-
-Packet& Packet::operator>>(uint32_t &value)
-{
-  int32_t *tmp = reinterpret_cast<int32_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohl(*tmp);
-  _rindex += sizeof(value);
-  return *this;
-}
-
-Packet& Packet::operator>>(int64_t &value)
-{
-  int64_t *tmp = reinterpret_cast<int64_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohll(*tmp);
-  _rindex += sizeof(value);
-  return *this;
-}
-
-Packet& Packet::operator>>(uint64_t &value)
-{
-  uint64_t *tmp = reinterpret_cast<uint64_t*>(&static_cast<char*>(_data->_vec.iov_base)[_rindex]);
-  value = ntohll(*tmp);
-  _rindex += sizeof(value);
-  return *this;
+	uint16_t tmp = str.size();
+	*this << tmp;
+	this->addBuffer(str.c_str(), tmp);
+	return *this;
 }
 
 Packet& Packet::operator>>(std::string &str)
 {
-  char *tmp = &static_cast<char*>(_data->_vec.iov_base)[_rindex];
-  str.assign(tmp, ::strnlen(tmp, this->size()));
-  _rindex += str.size() + 1;
-  return *this;
+	uint16_t size;
+	*this >> size;
+	if (size > _size - _rindex)
+		throw std::runtime_error("Insuffient place to extract data");
+	str.assign(rd_ptr(), size);
+	_rindex += size;
+	return *this;
+}
+
+Packet& Packet::operator<<(std::wstring const &str)
+{
+	*this << (uint16_t)str.size();
+	this->addBuffer(reinterpret_cast<const char *>(str.c_str()), str.size() * sizeof(wchar_t));
+	return *this;
+}
+
+Packet& Packet::operator>>(std::wstring &str)
+{
+	uint16_t slen;
+	*this >> slen;
+	if (slen > _size - _rindex)
+		throw std::runtime_error("Insuffient place to extract data");
+	str.assign(reinterpret_cast<const wchar_t *>(rd_ptr()), slen);
+	_rindex += slen;
+	return *this;
+}
+
+void	Packet::addBuffer(char const *buf, size_t size)
+{
+	if (!_ss.unique())
+		_ss.reset(new std::string(this->base(), this->size()));
+	if (_windex == _size)
+		_ss->append(buf, size);
+	else
+		_ss->insert(_windex, buf, size);
+	_windex += size;
+	_size = _ss->size();
+}
+
+char const	*Packet::rd_ptr()
+{
+	return _ss->c_str() + _rindex;
+}
+
+char const	*Packet::wr_ptr()
+{
+	return _ss->c_str() + _windex;
+}
+
+void	Packet::rd_ptr(size_t index)
+{
+	_rindex = index;
+}
+
+void	Packet::wr_ptr(size_t index)
+{
+	_windex = index;
+}
+
+size_t	Packet::size() const
+{
+	return _size;
 }
 
 void	Packet::setSize(size_t size)
@@ -346,23 +125,56 @@ void	Packet::setSize(size_t size)
 	_size = size;
 }
 
+char const	*Packet::base() const
+{
+	return _ss->c_str();
+}
+
+void	Packet::reset()
+{
+	_windex = 0;
+	_rindex = 0;
+	_size = 0;
+	_ss->clear();
+}
+
+size_t	Packet::getRindex() const
+{
+	return _rindex;
+}
+
+size_t	Packet::getWindex() const
+{
+	return _windex;
+}
+
+bool	Packet::isConsumned() const
+{
+	return (_windex == _size);
+}
+
+InetAddr const	&Packet::getAddr() const
+{
+	return _addr;
+}
+
 void	Packet::setDestination(InetAddr const &addr)
 {
 	_addr = addr;
 }
 
-void	Packet::addBuffer(char *src, size_t size)
+std::string const &Packet::getString() const
 {
-  char *tmp = &static_cast<char*>(_data->_vec.iov_base)[_windex];
-  ::memcpy(tmp, src, size);
-  _windex += size;
-  _size += size;
+	return *_ss;
 }
 
-void	Packet::getBuffer(char *dest, size_t size)
+void	Packet::reserve(size_t size)
 {
-  char *tmp = &static_cast<char*>(_data->_vec.iov_base)[_rindex];
-  size_t res = _size - _rindex;
-  ::memcpy(dest, tmp, ((size < res) ? size : res));
-  _rindex += size;
+	_ss->reserve(size);
+}
+
+void	Packet::assign(std::string &&string)
+{
+	_ss->append(string);
+	_size = _ss->size();
 }

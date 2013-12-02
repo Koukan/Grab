@@ -30,5 +30,6 @@ int		SocketConnector::connect(SocketStream &stream, InetAddr const &addr, size_t
 	if (ret == INVALID_HANDLE)
 		return -1;
 	stream.setHandle(_handle);
+	_handle = INVALID_HANDLE;
 	return 0;
 }

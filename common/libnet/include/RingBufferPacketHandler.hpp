@@ -8,78 +8,64 @@
 #ifndef RINGBUFFERPACKETHANDLER_H_
 #define RINGBUFFERPACKETHANDLER_H_
 
+#include <stdexcept>
 #include "PacketHandler.hpp"
 
 NET_BEGIN_NAMESPACE
 
+/*!
+ \brief PacketHandler with a string delimiter
+ 
+ \tparam IOType Underlying connection type
+ */
 template <typename IOType = SocketStream>
 class	RingBufferPacketHandler : public PacketHandler<IOType>
 {
 public:
-	RingBufferPacketHandler(size_t size, std::string const &deli) : PacketHandler<IOType>(size), _delimiter(deli)
+	
+	/*!
+	 \brief Construct a RingBufferPacketHandler
+	 \param deli Delimiter to delimit packet
+	 */
+	RingBufferPacketHandler(std::string const &deli) : PacketHandler<IOType>()
 	{
+		this->setDelimeter(deli);
 	}
 	
-	virtual	int	handleInput(Socket &)
+	int	handleInput(Socket &) override
 	{	
 		int				ret = 0;
+
 		do
 		{
-			 ret = this->_iohandler.recvPacket(*this->_inpacket);
-			 if (ret > 0)
-			 {
-			  if (this->_inpacket->isFull())
-			  {
-				  this->_inpacket->wr_ptr(0);
-				  if (_delimiter.empty())
-				  {
-					Packet	packet(*this->_inpacket);
-					if (this->handleInputPacket(packet) <= 0)
-						return -1;
-				  }
-			  }
-			  else if (!_delimiter.empty())
-			  {
-				  size_t	windex = this->_inpacket->getWindex();
-				  char	*base = this->_inpacket->base();
-				  char	*current = base;
-				  size_t prev = std::string::npos;
-				  _tmp.assign(base, windex);
-				  size_t pos = _tmp.find(_delimiter, 0);
-				  for (; pos != std::string::npos; pos = _tmp.find(_delimiter, pos + _delimiter.size()))
-				  {
-					  base[pos] = '\0';
-					  _temp.assign(current, &base[pos] - current);
-					  Packet	result(_temp, _temp._vec.iov_len);
-					  if (this->handleInputPacket(result) <= 0)
-						  return -1;
-					  current =  &base[pos + _delimiter.size()];
-					  prev = pos;
-				  }
-				  if (prev != std::string::npos)
-				  {
-					  prev = windex - prev - _delimiter.size();
-					  ::memmove(base, current, prev);
-					  this->_inpacket->wr_ptr(prev);
-				  }
-				 }
-			  }
-			  if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
-				return 1;
+			ret = this->_iohandler.recvPacket(this->_inpacket);
+			if (ret == -1 && wouldBlock())
+					return 1;
+			if (ret > 0)
+			{
+				_tmp.assign(this->_inpacket.base(), this->_inpacket.size());
+
 			}
-			while (!this->_iohandler.isBlocking());
-			return ret;
+		}
+		while (!this->_iohandler.isBlocking());
+		return ret;
 	}
 
+	/*!
+	 \brief Change the delimiter
+	 \details It can be risky to change the delimiter when you are receiving Packet
+	 \param deli new delimeter
+	 */
 	void	setDelimiter(std::string const &deli)
 	{
+		if (deli.empty())
+			throw std::logic_error("Delimeter cannot be an empty string");
 		this->_delimiter = deli;
 	}
 
 private:
-	std::string			_tmp;
 	std::string			_delimiter;
-	DataBlock			_temp;
+	std::string			_tmp;
 };
 
 NET_END_NAMESPACE

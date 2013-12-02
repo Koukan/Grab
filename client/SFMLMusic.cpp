@@ -53,7 +53,6 @@ void		SFMLMusic::setPosition(double x, double y, double z)
 
 void      	SFMLMusic::setVelocity(double , double , double )
 {
-	
 }
 
 void		SFMLMusic::setLoop(bool loop)

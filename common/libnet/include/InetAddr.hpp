@@ -3,6 +3,7 @@
 
 #include "NetDef.hpp"
 #include "network.h"
+#include <iostream>
 #include <string>
 
 NET_BEGIN_NAMESPACE
@@ -10,6 +11,11 @@ NET_BEGIN_NAMESPACE
 class NET_DLLREQ InetAddr
 {
 public:
+	struct HashInetAddr
+	{
+		std::size_t operator()(InetAddr const &addr) const;
+	};
+
 	enum Family
 	{
 		IPV4 = AF_INET,
@@ -37,10 +43,12 @@ public:
 	bool		isLoopback() const;
 
 	operator	sockaddr const *() const;
-	operator    sockaddr*();
+	operator	sockaddr*();
 	bool operator<(InetAddr const & other) const;
 	bool operator==(InetAddr const & other) const;
 	bool operator!=(InetAddr const & other) const;
+
+	std::size_t	hash() const;
 
 
 private:
@@ -51,6 +59,9 @@ private:
 	socklen_t		len_;
 };
 
+
 NET_END_NAMESPACE
+
+std::ostream NET_DLLREQ &operator<<(std::ostream& os, Net::InetAddr const &addr);
 
 #endif /* _INETADDR_ */

@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
+#include <random>
 #include "GameState.hpp"
 #include "BulletCommand.hpp"
 #include "GameCommand.hpp"
@@ -94,7 +95,7 @@ private:
 	uint32_t						_currentId;
 	bool							_fire;
 	double							_elapsedTime;
-	Net::MTRand						_rand;
+	std::mt19937					_rand;
 	Map*							_mapObj;
 	unsigned int					_nbCredits;
 	int								_gameOver; // 1 -> victory, 2 -> defeat

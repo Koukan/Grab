@@ -2,13 +2,8 @@
 
 NET_USE_NAMESPACE
 
-TimerSocket::TimerSocket(Handle handle, NetHandler &handler) : _nethandler(handler)
+TimerSocket::TimerSocket(Handle handle, EventHandler &handler, size_t delay) : handler(handler), delay(delay)
 {
 	this->setHandle(handle);
-}
-
-NetHandler	&TimerSocket::getTimeoutHandler()
-{
-	return _nethandler;
 }
 

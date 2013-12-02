@@ -8,15 +8,19 @@
 #ifndef POLLPOLICY_HPP_
 #define POLLPOLICY_HPP_
 
-#include <map>
+#include <unordered_map>
 #include <queue>
 #include "NetDef.hpp"
 #include "network.h"
 #include "Reactor.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 
 NET_BEGIN_NAMESPACE
 
+/*!
+ \brief Reactor based on poll()
+ \details Available on all OSes but not very efficient nor stable
+ */
 class NET_DLLREQ PollPolicy : public Reactor
 {
 public:
@@ -24,21 +28,21 @@ public:
 	PollPolicy();
 	~PollPolicy();
 
-	int		registerHandler(Socket &socket, NetHandler &handler, int mask);
-	int		removeHandler(Socket &socket);
-	int		waitForEvent(int timeout = -1);
+	bool	registerHandler(Socket &socket, EventHandler &handler, int mask) override;
+	bool	removeHandler(Socket &socket) override;
+	int		waitForEvent(int timeout = -1) override;
 
 private:
 	struct	pollpolicydata
 	{
 		pollpolicydata();
-		pollpolicydata(NetHandler *h, Socket *s, size_t i);
-		NetHandler	*handler;
+		pollpolicydata(EventHandler *h, Socket *s, size_t i);
+		EventHandler	*handler;
 		Socket		*socket;
 		size_t		index;
 	};
 
-	typedef std::map<Handle, pollpolicydata> HandleMap;
+	typedef std::unordered_map<Handle, pollpolicydata> HandleMap;
 
 
 	size_t						_size;

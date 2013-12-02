@@ -12,29 +12,35 @@ NET_BEGIN_NAMESPACE
 template <typename T, typename LockingStrategy = NullMutex>
 class Singleton : private NonCopyable
 {
-    public:
-        static T        *getInstance()
-        {
-            if (_singleton == 0)
-            	allocSingleton();
-            return (static_cast<T*>(_singleton));
-        }
+public:
+	static T        *getInstance()
+	{
+		if (_singleton == nullptr)
+			allocSingleton();
+		return (static_cast<T*>(_singleton));
+	}
 
-        static T        &get()
-        {
-            if (_singleton == 0)
-				allocSingleton();
-            return *(static_cast<T*>(_singleton));
-        }
+	static T        &get()
+	{
+		if (_singleton == nullptr)
+			allocSingleton();
+		return *(static_cast<T*>(_singleton));
+	}
 
-        static void     kill()
-        {
-            if (_singleton != 0)
-			{
-                delete _singleton;
-                _singleton = 0;
-            }
-        }
+	static void     kill()
+	{
+		if (_singleton != nullptr)
+		{
+			delete _singleton;
+			_singleton = nullptr;
+		}
+	}
+
+	static void		setPointer(T &pointer)
+	{
+		kill();
+		_singleton = &pointer;
+	}
 
     protected:
 	Singleton()
@@ -42,24 +48,24 @@ class Singleton : private NonCopyable
 
 	virtual ~Singleton()
 	{
-		_singleton = 0;
+		_singleton = nullptr;
 	}
 
-    private:
-		static void				allocSingleton()
-		{
-			_lockstrategy.lock();
-			if (_singleton == 0)
-				_singleton = new T;
-			_lockstrategy.unlock();
-		}
+private:
+	static void				allocSingleton()
+	{
+		_lockstrategy.lock();
+		if (_singleton == nullptr)
+			_singleton = new T;
+		_lockstrategy.unlock();
+	}
 
-        static T    			*_singleton;
-		static LockingStrategy	_lockstrategy;
+	static T    			*_singleton;
+	static LockingStrategy	_lockstrategy;
 };
 
-template <typename T, typename LockingStrategy> T		*Singleton<T, LockingStrategy>::_singleton = 0;
-template <typename T, typename LockingStrategy> LockingStrategy		Singleton<T, LockingStrategy>::_lockstrategy;
+template <typename T, typename LockingStrategy> T				*Singleton<T, LockingStrategy>::_singleton = nullptr;
+template <typename T, typename LockingStrategy> LockingStrategy	Singleton<T, LockingStrategy>::_lockstrategy;
 
 NET_END_NAMESPACE
 

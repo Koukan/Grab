@@ -4,8 +4,7 @@
 #include "Server.hpp"
 #include "NetworkModule.hpp"
 
-Client::Client() : Net::SizeHeaderPacketHandler<>(4096),
-		_id(0), _name(""), _game(0), _idPacket(0), _idRecvPacket(0), _idShip(0), _nblatency(0), _latency(0), _ready(false), _master(false)
+Client::Client() : _id(0), _name(""), _game(0), _idPacket(0), _idRecvPacket(0), _idShip(0), _nblatency(0), _latency(0), _ready(false), _master(false)
 {
 }
 
@@ -21,7 +20,7 @@ Client::~Client()
 		for (std::list<Player*>::iterator it = this->_players.begin();
 			 it != this->_players.end(); it++)
 		{
-			Net::Packet		packet(2);
+			Net::Packet		packet;
 			packet << static_cast<uint8_t>(TCP::REMOVEPLAYER);
 			packet << static_cast<uint8_t>((*it)->getId());
 			NetworkModule::get().sendTCPPacket(packet, this->_game->getClients(), this);
@@ -72,7 +71,7 @@ int			Client::handleInputPacket(Net::Packet &packet)
 	uint8_t			type;
 
 	packet >> type;
-	Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
+	//Core::Logger::logger << "Incoming packet " << int(type) << " of size " << packet.size();
 	if (type < sizeof(methods) / sizeof(*methods) && methods[type] != 0)
 	{
 		return (this->*methods[type])(packet);
@@ -130,7 +129,7 @@ Net::Packet const	*Client::getPacket(uint32_t id) const
 
 int		Client::connection(Net::Packet &packet)
 {
-	Net::Packet		answer(5);
+	Net::Packet		answer;
 	Net::InetAddr	addr;
 
 	uint32_t	authid = rand();
@@ -151,7 +150,7 @@ int		Client::listGame(Net::Packet&)
 	for (GameManager::gamesMap::const_iterator it = map.begin(); it != map.end(); ++it)
 	{
 		Game			*game = it->second;
-		Net::Packet		tmp(15 + game->getMap().size());
+		Net::Packet		tmp;
 
 		tmp << static_cast<uint8_t>(TCP::GAME);
 		tmp << static_cast<uint16_t>(game->getId());
@@ -162,7 +161,7 @@ int		Client::listGame(Net::Packet&)
 		this->handleOutputPacket(tmp);
 	}
 	Server::get().unlock();
-	Net::Packet		end(3);
+	Net::Packet		end;
 	end << static_cast<uint8_t>(TCP::END_LIST_GAME);
 	this->handleOutputPacket(end);
 	return 1;
@@ -189,7 +188,7 @@ int		Client::connectGame(Net::Packet &packet)
 			{
 				if (players[i] != 0)
 				{
-					Net::Packet		answer(4);
+					Net::Packet		answer;
 					answer << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 					answer << static_cast<uint8_t>(i);
 					answer << static_cast<uint8_t>(players[i]->getShipType());
@@ -273,12 +272,12 @@ int		Client::demandPlayer(Net::Packet &packet)
 		if (player != 0)
 		{
 			this->_players.push_back(player);
-			Net::Packet		answer(6);
+			Net::Packet		answer;
 			answer << static_cast<uint8_t>(TCP::DEMANDPLAYER);
 			answer << id;
 			answer << static_cast<uint8_t>(player->getId());
 			this->handleOutputPacket(answer);
-			Net::Packet		broadcast(4);
+			Net::Packet		broadcast;
 			broadcast << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 			broadcast << static_cast<uint8_t>(player->getId());
 			broadcast << static_cast<uint8_t>(0);
@@ -294,7 +293,7 @@ int		Client::updatePlayer(Net::Packet &packet)
 {
 	if (this->_game)
 	{
-		Net::Packet		broadcast(4);
+		Net::Packet		broadcast;
 		uint8_t			nb;
 		uint8_t			ship;
 		bool			ready;
@@ -330,7 +329,7 @@ int		Client::removePlayer(Net::Packet &packet)
 	if (this->_game)
 	{
 		this->_game->removePlayer(nb);
-		Net::Packet		broadcast(2);
+		Net::Packet		broadcast;
 		broadcast << static_cast<uint8_t>(TCP::REMOVEPLAYER);
 		broadcast << static_cast<uint8_t>(nb);
 		NetworkModule::get().sendTCPPacket(broadcast, _game->getClients(), this);
@@ -351,7 +350,7 @@ int					Client::mapChoice(Net::Packet &packet)
 		{
 			if (players[i] != 0)
 			{
-				Net::Packet		answer(4);
+				Net::Packet		answer;
 				answer << static_cast<uint8_t>(TCP::UPDATEPLAYER);
 				answer << static_cast<uint8_t>(i);
 				answer << static_cast<uint8_t>(players[i]->getShipType());
@@ -359,9 +358,7 @@ int					Client::mapChoice(Net::Packet &packet)
 				this->handleOutputPacket(answer);
 			}
 		}
-		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
-		delete broadcast;
+		NetworkModule::get().sendTCPPacket(packet, _game->getClients(), this);
 		return 1;
 	}
 	return 0;
@@ -371,10 +368,8 @@ int					Client::reBind(Net::Packet &packet)
 {
 	if (this->_game && this->_master)
 	{
-		this->_game->reset();
-		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
-		delete broadcast;
+		this->_game->reset();;
+		NetworkModule::get().sendTCPPacket(packet, _game->getClients(), this);
 		return 1;
 	}
 	return 0;
@@ -385,9 +380,7 @@ int					Client::retry(Net::Packet &packet)
 	if (this->_game && this->_master)
 	{
 		this->_game->retry();
-		Net::Packet		*broadcast = packet.clone();
-		NetworkModule::get().sendTCPPacket(*broadcast, _game->getClients(), this);
-		delete broadcast;
+		NetworkModule::get().sendTCPPacket(packet, _game->getClients(), this);
 		return 1;
 	}
 	return 0;
@@ -409,7 +402,7 @@ GameLogic			*Client::getGameLogic() const
 
 int         		Client::sendError(Error::Type error)
 {
-	Net::Packet		answer(7);
+	Net::Packet		answer;
 	Net::InetAddr		addr;
 
 	this->getRemoteAddr(addr);
@@ -456,7 +449,7 @@ std::list<Player*> const	&Client::getPlayers() const
 	return this->_players;
 }
 
-void				Client::setUDPAddr(Net::InetAddr &addr)
+void				Client::setUDPAddr(Net::InetAddr const &addr)
 {
 	_udpaddr = addr;
 }
@@ -476,7 +469,7 @@ void					Client::setMaster(bool value)
 	this->_master = value;
 	if (this->_master)
 	{
-		Net::Packet	packet(1);
+		Net::Packet	packet;
 		packet << static_cast<uint8_t>(TCP::MASTER);
 		this->handleOutputPacket(packet);
 	}

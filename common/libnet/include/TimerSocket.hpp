@@ -1,22 +1,19 @@
-#ifndef TIMERSOCKET_HPP_
-#define TIMERSOCKET_HPP_
+#pragma once
 
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 #include "Socket.hpp"
+#include "Clock.hpp"
 
 NET_BEGIN_NAMESPACE
 
 class NET_DLLREQ TimerSocket : public Socket
 {
 public:
-	TimerSocket(Handle handle, NetHandler &handler);
-	NetHandler			&getTimeoutHandler();
+	TimerSocket(Handle handle, EventHandler &handler, size_t delay);
+	size_t const			delay;
+	EventHandler			&handler;
+	Clock					clock;
 
-private:
-	NetHandler			&_nethandler;
 };
 
 NET_END_NAMESPACE
-
-#endif /* SOCKET_HPP_ */
-

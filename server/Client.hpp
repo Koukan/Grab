@@ -31,7 +31,7 @@ class Client : public Net::SizeHeaderPacketHandler<>
 	uint32_t			getLastRecvId() const;
 	void				setLastRecvId(uint32_t id);
 	int					getRemoteAddr(Net::InetAddr &addr);
-	void				setUDPAddr(Net::InetAddr &addr);
+	void				setUDPAddr(Net::InetAddr const &addr);
 	Net::InetAddr const		&getUDPAddr() const;
 	void				setReady(bool value);
 	bool				isReady() const;

@@ -12,5 +12,4 @@ private:
       NonCopyable &operator=(const NonCopyable &other);
 };
 
-
 #endif /* _NONCOPYABLE_ */

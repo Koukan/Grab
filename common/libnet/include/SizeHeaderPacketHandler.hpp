@@ -12,63 +12,75 @@
 
 NET_BEGIN_NAMESPACE
 
-template <typename IOType = SocketStream>
+/*!
+ \brief PacketHandler which implements a simple size header
+ \details A size field is added at the beginining of the Packet
+ \tparam SizeInt Primary type representing the size, can be 8,16,32,64 bits
+ \tparam IOType Type of underlying connection
+ */
+template <typename SizeInt = uint16_t, typename IOType = SocketStream>
 class SizeHeaderPacketHandler : public PacketHandler<IOType>
 {
 public:
-	SizeHeaderPacketHandler(size_t size = 2048) : PacketHandler<IOType>(size), _left(0)
+	SizeHeaderPacketHandler() : PacketHandler<IOType>(), _left(0), _header(0)
+	{}
+
+	virtual ~SizeHeaderPacketHandler()
 	{}
 	
-	virtual int handleInput(Socket &)
+	int handleInput(Socket &socket) override
 	{	
 		int	ret	= 0;
 		do
 		{
 			if (_left == 0)
-				ret = this->_iohandler.recv((char*)&this->_header, sizeof(_left));
+			{
+				ret = this->_iohandler.recv((char*)(&this->_left) + _header, sizeof(_left) - _header);
+				if (ret > 0)
+				{
+					if (ret < sizeof(_left) - _header)
+					{
+						_header = ret;
+						continue ;
+					}
+					_left += sizeof(_left);
+					_header = 0;
+				}
+			}
 			else
-				ret = this->_iohandler.recvPacket(*this->_inpacket, 0, _left);
+				ret = this->_iohandler.recvPacket(this->_inpacket, 0, _left);
 			if (ret <= 0)
 			{
-				if (ret == -1 && (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR))
+				if (ret == -1 && wouldBlock())
 					return 1;
-				printLastError();
+				if (ret == -1)
+					printLastError();
 				return ret;
-			}
-			if (_left == 0)
-			{
-				_left = ntohs(_header); 
-				continue ;
 			}
 			_left -= ret;
 			if (_left == 0)
 			{
-				Packet	packet(*this->_inpacket);
-				packet.setSize(this->_inpacket->getWindex());
+				Packet	packet(this->_inpacket);
 				if (this->handleInputPacket(packet) <= 0)
 					return -1;
-				this->_inpacket->reset();
+				this->_inpacket.reset();
 			}
 		}
 		while (!this->_iohandler.isBlocking());
 		return ret;
 	}
 
-	virtual	int handleOutputPacket(Packet const &output)
+	int handleOutputPacket(Packet const &output) override
 	{
-		if (this->_outputPacket.empty())
-			this->_reactor->registerHandler(this->_iohandler, *this, Reactor::READ | Reactor::WRITE);
-		Packet		header(sizeof(uint16_t));
-		uint16_t tmp = output.size();
-		header << tmp;
-		this->_outputPacket.push_back(header);
-		this->_outputPacket.push_back(output);
-		return 1;
+		Net::Packet header;
+		header << static_cast<SizeInt>(output.size());
+		PacketHandler<IOType>::handleOutputPacket(header);
+		return PacketHandler<IOType>::handleOutputPacket(output);
 	}
 
 private:
-	uint16_t			_left;
-	uint16_t			_header;
+	SizeInt			_left;
+	short			_header;
 };
 
 NET_END_NAMESPACE

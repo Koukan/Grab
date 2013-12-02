@@ -6,12 +6,21 @@
  */
 
 #include "Socket.hpp"
-#include "NetHandler.hpp"
+#include "EventHandler.hpp"
 
 NET_USE_NAMESPACE
 
-Socket::Socket() : _handle(INVALID_HANDLE), _local(0), _remote(0), _blocking(true), _nethandler(0)
+#if defined (_WIN32)
+Socket::Socket(HANDLE handle) : _associatedHandle(handle), _handle(INVALID_HANDLE), _local(nullptr), _remote(nullptr), _blocking(true), _nethandler(nullptr)
 {
+}
+#endif
+
+Socket::Socket() : _handle(INVALID_HANDLE), _local(nullptr), _remote(nullptr), _blocking(true), _nethandler(nullptr)
+{
+	#if defined (_WIN32)
+	_associatedHandle = ::WSACreateEvent();
+	#endif
 }
 
 Socket::~Socket()
@@ -20,14 +29,17 @@ Socket::~Socket()
 		delete _local;
 	if (_remote)
 		delete _remote;
-	if (_handle != INVALID_HANDLE)
-		this->close();
+	this->close();
+	#if defined (_WIN32)
+	if (_associatedHandle)
+		::WSACloseEvent(_associatedHandle);
+	#endif
 }
 
+#include <iostream>
 int	Socket::open(InetAddr const &addr, int type, int protocol)
 {
-  if (_handle != INVALID_HANDLE)
-	this->close();
+  this->close();
 #if defined (_WIN32)
   _handle = WSASocket(addr.getFamily(), type, protocol, NULL, 0, 0/*WSA_FLAG_OVERLAPPED*/);
 #else
@@ -40,6 +52,8 @@ int	Socket::open(InetAddr const &addr, int type, int protocol)
 
 int	Socket::close()
 {
+  if (_handle == INVALID_HANDLE)
+	  return -1;
   int	ret = ::closesocket(_handle);
   _handle = INVALID_HANDLE;
   return (ret);
@@ -52,17 +66,13 @@ int	Socket::setNonBlocking(bool flag)
   u_long	val = (flag) ? 1 : 0;
   ret = ::ioctlsocket(_handle, FIONBIO, &val);
 #else
-  int	sockflag;
-  ret = ::fcntl(_handle, F_GETFL, &sockflag);
-  if (ret == -1)
-	  return ret;
   if (flag)
-	  ret = ::fcntl(_handle, F_SETFL, sockflag | O_NONBLOCK);
+	  ret = ::fcntl(_handle, F_SETFL, O_NONBLOCK);
   else
-	  ret = ::fcntl(_handle, F_SETFL, sockflag & (~O_NONBLOCK));
+	  ret = ::fcntl(_handle, F_SETFL, 0);
 #endif
   if (ret != -1)
-	 _blocking = flag;
+	 _blocking = !flag;
   return ret;
 }
 
@@ -122,17 +132,24 @@ Handle	Socket::getHandle() const
   return _handle;
 }
 
+#if defined (_WIN32)
+HANDLE	Socket::getAssociatedHandle() const
+{
+	return _associatedHandle;
+}
+#endif
+
 void	Socket::setHandle(Handle sock)
 {
   _handle = sock;
 }
 
-NetHandler          *Socket::getNetHandler() const
+EventHandler          *Socket::getEventHandler() const
 {
 	return _nethandler;
 }
 
-void                Socket::setNetHandler(NetHandler *handler)
+void                Socket::setEventHandler(EventHandler *handler)
 {
 	_nethandler = handler;
 }

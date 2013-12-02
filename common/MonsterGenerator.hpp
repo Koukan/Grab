@@ -3,7 +3,7 @@
 #include "Map.hpp"
 #include <vector>
 #include <string>
-#include <MTRand.hpp>
+#include <random>
 #include "Sound.hpp"
 #include "Modes.hpp"
 
@@ -100,7 +100,7 @@ private:
 	size_t		_nbSquadsMax;
 	size_t		_squadTime;
 	size_t		_bossTime;
-	Net::MTRand	_rand;
+	std::mt19937	_rand;
 	double		_elapsedTime;
 	bool		_inMaze;
 	double		_tmpY;

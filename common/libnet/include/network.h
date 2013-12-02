@@ -17,6 +17,7 @@ typedef	char	sockopt;
 #	include <arpa/inet.h>
 #	include <netdb.h>
 #	include <netinet/in.h>
+#	include <netinet/tcp.h>
 #	include <signal.h>
 #	include <fcntl.h>
 #	include <errno.h>

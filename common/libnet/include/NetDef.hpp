@@ -1,9 +1,9 @@
-/**
- * @file NetDef.hpp
- * @brief 
- * @author Vivien Botton
- * @version 1.0
- * @date 2012-03-01
+/*!
+ \file NetDef.hpp
+ \brief Define used by libnet
+ \author Vivien Botton
+ \version 1.0
+ \date 2013-03-15
  */
 
 #ifndef NETDEF_HPP_
@@ -46,5 +46,16 @@
 #ifndef NET_USE_NAMESPACE
 #define NET_USE_NAMESPACE using namespace NET_NAMESPACE;
 #endif
+
+#if defined (_WIN32)
+#	pragma warning( disable: 4251 4275 4305 4244 4355 4800 4996 4067)
+#endif
+
+
+/*!
+ \brief Contains network and thread utility, and other things OS dependant
+ */
+NET_BEGIN_NAMESPACE
+NET_END_NAMESPACE
 
 #endif /* NETDEF_HPP_ */

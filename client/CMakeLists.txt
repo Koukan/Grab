@@ -196,6 +196,16 @@ set(SRCS
 	${GUI_SRC_DIR}/GUIHLayout.hpp
 )
 
+if(UNIX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	if (CMAKE_COMPILER_IS_GNUCXX)
+		add_definitions (-flto)
+	endif()
+endif(UNIX)
+if(WIN32)
+	add_definitions (/MP)
+endif()
+
 IF(WIN32)
 ELSE(WIN32)
 set_source_files_properties (
@@ -217,8 +227,7 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 IF(WIN32)
 add_executable(
 	${TARGET_NAME} WIN32 resource.rc
-	${SRCS}
-	
+	${SRCS}	
 )
 ELSE(WIN32)
 add_executable(

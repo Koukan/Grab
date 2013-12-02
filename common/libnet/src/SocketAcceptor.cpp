@@ -56,7 +56,7 @@ int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, bool nonblockin
   if (sock == INVALID_HANDLE)
 	  return (-1);
   stream.setHandle(sock);
-#if defined (__linux__)
+#if defined (__linux__) && not defined (ANDROID)
   stream._blocking = !nonblocking;
 #else
   if (nonblocking)
@@ -67,14 +67,14 @@ int		SocketAcceptor::accept(SocketStream &stream, InetAddr *src, bool nonblockin
 
 Handle	SocketAcceptor::accept(InetAddr *src, bool nonblocking)
 {
-#if defined (__linux__)
+#if defined (__linux__) && not defined (ANDROID)
   int flags = (nonblocking) ? SOCK_NONBLOCK : 0;
 #endif
   if (src)
   {
 	struct sockaddr_storage	tmp;
 	socklen_t	size = sizeof(tmp);
-#if defined (__linux__)
+#if defined (__linux__) && not defined (ANDROID)
 	Handle ret = ::accept4(_handle, reinterpret_cast<sockaddr*>(&tmp), &size, flags);
 #else
 	Handle ret = ::accept(_handle, reinterpret_cast<sockaddr*>(&tmp), &size);
@@ -84,7 +84,7 @@ Handle	SocketAcceptor::accept(InetAddr *src, bool nonblocking)
 	return ret;
   }
   else
-#if defined (__linux__)
+#if defined (__linux__) && not defined (ANDROID)
   	return ::accept4(_handle, 0, 0, flags);
 #else
 	return ::accept(_handle, 0, 0);
